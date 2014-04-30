@@ -1,5 +1,11 @@
-log('draw2')
-//////////////////////////////////////////
+// PV Systems drawing generator
+
+
+
+
+
+
+///////////////////
 // misc functions
 
 function get_JSON(URL, name) {
