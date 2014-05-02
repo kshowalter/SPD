@@ -78,17 +78,25 @@ l_attr.base = {
 
 }
 l_attr.DC_pos = Object.create(l_attr.base)
+l_attr.DC_pos.stroke = '#ff0000'
 l_attr.DC_neg = Object.create(l_attr.base)
-l_attr.DC_neg.stroke = '#ff0000'
+l_attr.DC_neg.stroke = '#000000'
 l_attr.module = Object.create(l_attr.base)
 l_attr.box = Object.create(l_attr.base)
 l_attr.text = Object.create(l_attr.base)
 l_attr.text.stroke = '#0000ff'
+l_attr.terminal = Object.create(l_attr.base)
 
 fonts = {}
 fonts.signs = {
     family:   'Helvetica',
     size:     5,
+    anchor:   'middle',
+    leading:  '1.5em',
+}
+fonts.label = {
+    family:   'Helvetica',
+    size:     2,
     anchor:   'middle',
     leading:  '1.5em',
 }
@@ -183,6 +191,13 @@ var rect = function(loc, size, layer){
     rec.h = size[1]
     return rec
 }
+
+var circ = function(loc, diameter, layer){
+    var cir = add('circ', [loc], layer)
+    cir.d = diameter
+    return cir
+}
+
 var text = function(loc, string, font, layer){
     var txt = add('text', [loc], layer)
     txt.string = string
@@ -223,7 +238,6 @@ wire.offset_base = 5
 wire.offset_gap = module_size.w
 
 var string = {}
-string.num = 5
 string.gap = module_size.frame.w/42
 string.gap_missing = string.gap + module_size.frame.w
 string.h = (module_size.h * 4) + (string.gap * 2) + string.gap_missing
@@ -234,6 +248,12 @@ jb.box = {}
 jb.box.h = 100
 jb.box.w = 50
 
+terminal = {}
+terminal.size = 5
+
+var system = {}
+system.DC = {}
+system.DC.string_num = 5
 
 ///////////////
 // build drawing
@@ -244,65 +264,121 @@ var mk_drawing = function(){
     // PV array
     var coor = { x:200, y:400 }
     blocks.push( mk_array(coor) )
-    blocks.push( mk_DC_j_box(coor))
+    blocks.push( mk_DC(coor))
 }
 
-var mk_DC_j_box = function( coor ){
+var mk_DC = function( coor ){
     var coor = { x:coor.x, y:coor.y }
     var blk = Object.create(Blk)
     blk.type = 'DV Junction Box'
 
     var x = coor.x
     var y = coor.y
-    var w = 80
-    var h = 140
+    var jBox_w = 80
+    var jBox_h = 140 + wire.offset_base*2 * system.DC.string_num 
 
     var fuse_width = wire.offset_gap
     var to_disconnect_x = 200
-    var to_disconnect_y = 100
+    var to_disconnect_y = -100
+
+    var discBox_w = 80 + wire.offset_base*2 * system.DC.string_num 
+    var discBox_h = 140
 
     // combiner box
+    
     blk.add(rect(
-        [x+w/2,y-h/10],
-        [w,h],
+        [x+jBox_w/2,y-jBox_h/10],
+        [jBox_w,jBox_h],
         'box'
     ))
 
-    // DC disconect
-    blk.add(rect(
-        [x+w/2,y-h/10],
-        [w,h],
-        'box'
-    ))
 
-    for( i in _.range(string.num)) {
+    for( i in _.range(system.DC.string_num)) {
         var offset = wire.offset_gap + ( i * wire.offset_base )
 
         blk.add([
             line([
                 [ x , y-offset],
-                [ x+(w-fuse_width)/2 , y-offset],
+                [ x+(jBox_w-fuse_width)/2 , y-offset],
             ], 'DC_pos'),
             line([
-                [ x+(w+fuse_width)/2 , y-offset],
-                [ x+w+to_disconnect_x-offset , y-offset],
-                [ x+w+to_disconnect_x-offset , y-to_disconnect_y],
-            ], 'DC_pos')
+                [ x+(jBox_w+fuse_width)/2 , y-offset],
+                [ x+jBox_w+to_disconnect_x-offset , y-offset],
+                [ x+jBox_w+to_disconnect_x-offset , y+to_disconnect_y-terminal.size],
+                [ x+jBox_w+to_disconnect_x-offset , y+to_disconnect_y-terminal.size-terminal.size*3],
+            ], 'DC_pos'),
+            mk_terminal( { x: x+jBox_w+to_disconnect_x-offset, y: y+to_disconnect_y-terminal.size/2 } )
         ])
 
         blk.add([
             line([
                 [ x , y+offset],
-                [ x+(w-fuse_width)/2 , y+offset],
+                [ x+(jBox_w-fuse_width)/2 , y+offset],
             ], 'DC_neg'),
             line([
-                [ x+(w+fuse_width)/2 , y+offset],
-                [ x+w+to_disconnect_x+offset , y+offset],
-                [ x+w+to_disconnect_x+offset , y-to_disconnect_y],
-            ], 'DC_neg')
+                [ x+(jBox_w+fuse_width)/2 , y+offset],
+                [ x+jBox_w+to_disconnect_x+offset , y+offset],
+                [ x+jBox_w+to_disconnect_x+offset , y+to_disconnect_y-terminal.size],
+                [ x+jBox_w+to_disconnect_x+offset , y+to_disconnect_y-terminal.size-terminal.size*3],
+            ], 'DC_neg'),
+            mk_terminal( { x: x+jBox_w+to_disconnect_x+offset, y: y+to_disconnect_y-terminal.size/2 } )
         ])
     }
 
+    x += jBox_w
+
+    x += to_disconnect_x
+    y += to_disconnect_y
+
+    // DC disconect combiner lines
+    if( system.DC.string_num > 1){
+        offset_min = wire.offset_gap
+        offset_max = wire.offset_gap + ( (system.DC.string_num-1) * wire.offset_base )
+        line([
+            [ x-offset_min, y-terminal.size-terminal.size*3],
+            [ x-offset_max , y-terminal.size-terminal.size*3],
+        ], 'DC_pos')
+        line([
+            [ x+offset_min, y-terminal.size-terminal.size*3],
+            [ x+offset_max, y-terminal.size-terminal.size*3],
+        ], 'DC_neg')
+    }
+    
+
+
+
+
+    // DC disconect
+    blk.add(rect(
+        [x, y-discBox_h/2],
+        [discBox_w,discBox_h],
+        'box'
+    ))
+    return blk
+}
+
+var mk_terminal = function(coor){
+    var coor = { x:coor.x, y:coor.y }
+    var blk = Object.create(Blk)
+    blk.type = 'terminal'
+
+    x = coor.x
+    y = coor.y
+    size = terminal.size
+
+    blk.add(
+        rect(
+            [x,y],
+            [size,size],
+            'terminal'
+            ),
+        circ(
+            [x,y],
+            size,
+            'term'
+            )
+    )
+    
     return blk
 }
 
@@ -321,7 +397,7 @@ var mk_array = function(coor){
     pv_array.lower = pv_array.upper + string.h
     pv_array.right = coor_array.x - module_size.frame.h*2
     pv_array.center = coor_array.y
-    for( i in _.range(string.num)) {
+    for( i in _.range(system.DC.string_num)) {
         var offset = i * wire.offset_base
 
         blk.add(mk_pv_string(coor))
@@ -465,7 +541,8 @@ var display_svg = function(container_id){
             } else if( elem.type == 'text') {
                 var t = svg.text( elem.string ).move( elem.points[0][0], elem.points[0][1] ).attr( l_attr[layer_name] )
                 t.font(fonts[elem.font])
-
+            } else if( elem.type == 'circ') {
+                svg.circle( elem.r ).move( elem.points[0][0]-elem.d/2, elem.points[0][1]-elem.d/2 ).attr( l_attr[layer_name] )
             }
         }
 
@@ -487,7 +564,7 @@ var update_drawing = function(){
         var svg_container = document.getElementById(svg_container_id)
     }
     var select_string = document.getElementById('string_select')
-    string.num = Number( select_string[select_string.selectedIndex].value )
+    system.DC.string_num = Number( select_string[select_string.selectedIndex].value )
 
     clear_drawing()
 
@@ -522,6 +599,9 @@ $(document).ready( function() {
         }
     }
     $('#drawing_page').append(string_select)
+    document.getElementById('string_select').selectedIndex = 4-1
+
+    
     // When number of strings change, update model, display
     string_select.change(function(){
         update_drawing()
