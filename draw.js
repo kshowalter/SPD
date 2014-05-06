@@ -2,7 +2,20 @@
 
 
 
-
+var appendElement = function(parentElement,name,attrs,text){
+  var doc = parentElement.ownerDocument
+  var svg = parentElement
+  while (svg.tagName!='svg') svg = svg.parentNode
+  var el = doc.createElementNS(svg.namespaceURI,name)
+  for (var a in attrs){
+    if (!attrs.hasOwnProperty(a)) continue
+    var p = a.split(':')
+    if (p[1]) el.setAttributeNS(svg.getAttribute('xmlns:'+p[0]),p[1],attrs[a])
+    else el.setAttribute(a,attrs[a])
+  }
+  if (text) el.appendChild(doc.createTextNode(text))
+  return parentElement.appendChild(el)
+}
 
 
 ///////////////////
@@ -81,6 +94,8 @@ l_attr.DC_pos = Object.create(l_attr.base)
 l_attr.DC_pos.stroke = '#ff0000'
 l_attr.DC_neg = Object.create(l_attr.base)
 l_attr.DC_neg.stroke = '#000000'
+l_attr.DC_ground = Object.create(l_attr.base)
+l_attr.DC_ground.stroke = '#006600'
 l_attr.module = Object.create(l_attr.base)
 l_attr.box = Object.create(l_attr.base)
 l_attr.text = Object.create(l_attr.base)
@@ -193,6 +208,7 @@ var rect = function(loc, size, layer){
 }
 
 var circ = function(loc, diameter, layer){
+    //log('circle', loc, diameter, layer)
     var cir = add('circ', [loc], layer)
     cir.d = diameter
     return cir
@@ -221,52 +237,98 @@ var mk_SVG = function(){
 
 }
 
-
-//////////////
-// define drawing info
-
-var module_size = {}
-module_size.frame = {}
-module_size.frame.w = 10
-module_size.frame.h = 30
-module_size.lead = module_size.frame.w*2/3
-module_size.h = module_size.frame.h + module_size.lead*2
-module_size.w = module_size.frame.w
-
-var wire = {}
-wire.offset_base = 5
-wire.offset_gap = module_size.w
-
-var string = {}
-string.gap = module_size.frame.w/42
-string.gap_missing = string.gap + module_size.frame.w
-string.h = (module_size.h * 4) + (string.gap * 2) + string.gap_missing
-string.w = module_size.frame.w * 2.5
-
-jb = {}
-jb.box = {}
-jb.box.h = 100
-jb.box.w = 50
-
-terminal = {}
-terminal.size = 5
+///////////////
+//#system parameters
 
 var system = {}
 system.DC = {}
-system.DC.string_num = 5
+system.DC.string_num = 6
+
+
+
+//////////////
+//#drawing parameters
+
+var size = {}
+
+size.module_frame = {}
+size.module_frame.w = 10
+size.module_frame.h = 30
+size.module_lead = size.module_frame.w*2/3
+size.module_h = size.module_frame.h + size.module_lead*2
+size.module_w = size.module_frame.w
+
+size.wire_offset_base = 5
+size.wire_offset_gap = size.module_w
+size.wire_offset_max = system.DC.string_num * size.wire_offset_base
+size.wire_offset_ground = size.wire_offset_max + size.wire_offset_base*2
+
+size.string_gap = size.module_frame.w/42
+size.string_gap_missing = size.string_gap + size.module_frame.w
+size.string_h = (size.module_h * 4) + (size.string_gap * 2) + size.string_gap_missing
+size.string_w = size.module_frame.w * 2.5
+
+size.jb_box_h = 100
+size.jb_box_w = 50
+
+size.terminal_diam = 5
+
+var loc = {}
+
+loc.array = { x:200, y:600 }
+loc.DC = loc.array
+loc.inverter = { x:loc.array+300, y:loc.array-350 }
+loc.inverter.bottom = loc.inverter.y + size.inverter_h
+
 
 ///////////////
 // build drawing
 
+//#start drawing
 var mk_drawing = function(){
     log('making drawing')
 
     // PV array
-    var coor = { x:200, y:400 }
-    blocks.push( mk_array(coor) )
-    blocks.push( mk_DC(coor))
+    var coor = { x:200, y:600 }
+    blocks.push( mk_array(loc.array) )
+    blocks.push( mk_DC(loc.DC))
+    //blocks.push( mk_inverter(loc.inverter) )
 }
 
+//#inverter
+var mk_inverter = function(coor){
+    log('makeing inverter')
+
+    var coor = { x:coor.x, y:coor.y }
+    var blk = Object.create(Blk)
+    blk.type = 'Inverter'
+
+    inverter_w = 200
+    inverter_h = 150
+
+    blk.add(
+        rect(
+            [coor.x,coor.y],
+            [inverter_w, inverter_h],
+            'box'
+        ),
+        circ(
+            [coor.x,coor.y],
+            5,
+            'DC_neg'
+        
+        ),
+        text()
+    
+    
+    )
+    return blk
+}
+
+//#AC
+
+
+//#DC
 var mk_DC = function( coor ){
     var coor = { x:coor.x, y:coor.y }
     var blk = Object.create(Blk)
@@ -275,13 +337,13 @@ var mk_DC = function( coor ){
     var x = coor.x
     var y = coor.y
     var jBox_w = 80
-    var jBox_h = 140 + wire.offset_base*2 * system.DC.string_num 
+    var jBox_h = 140 + size.wire_offset_base*2 * system.DC.string_num 
 
-    var fuse_width = wire.offset_gap
-    var to_disconnect_x = 200
+    var fuse_width = size.wire_offset_gap
+    var to_disconnect_x = 150
     var to_disconnect_y = -100
 
-    var discBox_w = 80 + wire.offset_base*2 * system.DC.string_num 
+    var discBox_w = 80 + size.wire_offset_base*2 * system.DC.string_num 
     var discBox_h = 140
 
     // combiner box
@@ -294,7 +356,7 @@ var mk_DC = function( coor ){
 
 
     for( i in _.range(system.DC.string_num)) {
-        var offset = wire.offset_gap + ( i * wire.offset_base )
+        var offset = size.wire_offset_gap + ( i * size.wire_offset_base )
 
         blk.add([
             line([
@@ -304,10 +366,10 @@ var mk_DC = function( coor ){
             line([
                 [ x+(jBox_w+fuse_width)/2 , y-offset],
                 [ x+jBox_w+to_disconnect_x-offset , y-offset],
-                [ x+jBox_w+to_disconnect_x-offset , y+to_disconnect_y-terminal.size],
-                [ x+jBox_w+to_disconnect_x-offset , y+to_disconnect_y-terminal.size-terminal.size*3],
+                [ x+jBox_w+to_disconnect_x-offset , y+to_disconnect_y-size.terminal_diam],
+                [ x+jBox_w+to_disconnect_x-offset , y+to_disconnect_y-size.terminal_diam-size.terminal_diam*3],
             ], 'DC_pos'),
-            mk_terminal( { x: x+jBox_w+to_disconnect_x-offset, y: y+to_disconnect_y-terminal.size/2 } )
+            mk_terminal( { x: x+jBox_w+to_disconnect_x-offset, y: y+to_disconnect_y-size.terminal_diam/2 } )
         ])
 
         blk.add([
@@ -318,10 +380,10 @@ var mk_DC = function( coor ){
             line([
                 [ x+(jBox_w+fuse_width)/2 , y+offset],
                 [ x+jBox_w+to_disconnect_x+offset , y+offset],
-                [ x+jBox_w+to_disconnect_x+offset , y+to_disconnect_y-terminal.size],
-                [ x+jBox_w+to_disconnect_x+offset , y+to_disconnect_y-terminal.size-terminal.size*3],
+                [ x+jBox_w+to_disconnect_x+offset , y+to_disconnect_y-size.terminal_diam],
+                [ x+jBox_w+to_disconnect_x+offset , y+to_disconnect_y-size.terminal_diam-size.terminal_diam*3],
             ], 'DC_neg'),
-            mk_terminal( { x: x+jBox_w+to_disconnect_x+offset, y: y+to_disconnect_y-terminal.size/2 } )
+            mk_terminal( { x: x+jBox_w+to_disconnect_x+offset, y: y+to_disconnect_y-size.terminal_diam/2 } )
         ])
     }
 
@@ -332,19 +394,25 @@ var mk_DC = function( coor ){
 
     // DC disconect combiner lines
     if( system.DC.string_num > 1){
-        offset_min = wire.offset_gap
-        offset_max = wire.offset_gap + ( (system.DC.string_num-1) * wire.offset_base )
+        offset_min = size.wire_offset_gap
+        offset_max = size.wire_offset_gap + ( (system.DC.string_num-1) * size.wire_offset_base )
         line([
-            [ x-offset_min, y-terminal.size-terminal.size*3],
-            [ x-offset_max , y-terminal.size-terminal.size*3],
+            [ x-offset_min, y-size.terminal_diam-size.terminal_diam*3],
+            [ x-offset_max , y-size.terminal_diam-size.terminal_diam*3],
         ], 'DC_pos')
         line([
-            [ x+offset_min, y-terminal.size-terminal.size*3],
-            [ x+offset_max, y-terminal.size-terminal.size*3],
+            [ x+offset_min, y-size.terminal_diam-size.terminal_diam*3],
+            [ x+offset_max, y-size.terminal_diam-size.terminal_diam*3],
         ], 'DC_neg')
     }
     
-
+    // Inverter conection
+    blk.add(
+        line([
+            [ x-offset_min, y-size.terminal_diam-size.terminal_diam*3],
+            [ x-offset_min, y-size.terminal_diam-size.terminal_diam*3],
+        ],'DC_pos')
+    )
 
 
 
@@ -364,17 +432,11 @@ var mk_terminal = function(coor){
 
     x = coor.x
     y = coor.y
-    size = terminal.size
 
     blk.add(
-        rect(
-            [x,y],
-            [size,size],
-            'terminal'
-            ),
         circ(
             [x,y],
-            size,
+            size.terminal_diam,
             'term'
             )
     )
@@ -382,6 +444,7 @@ var mk_terminal = function(coor){
     return blk
 }
 
+//#array
 var mk_array = function(coor){
     var coor = { x:coor.x, y:coor.y }
     var blk = Object.create(Blk)
@@ -389,46 +452,55 @@ var mk_array = function(coor){
 
 
     var coor_array = { x:coor.x, y:coor.y }
-    coor.x -= module_size.frame.h*3
-    coor.y -= string.h/2
+    coor.x -= size.module_frame.h*3
+    coor.y -= size.string_h/2
 
     pv_array = {}
     pv_array.upper = coor.y
-    pv_array.lower = pv_array.upper + string.h
-    pv_array.right = coor_array.x - module_size.frame.h*2
+    pv_array.lower = pv_array.upper + size.string_h
+    pv_array.right = coor_array.x - size.module_frame.h*2
+    pv_array.left = pv_array.right - ( size.string_w * system.DC.string_num ) - ( size.module_w * 1.25 ) 
+
     pv_array.center = coor_array.y
+
     for( i in _.range(system.DC.string_num)) {
-        var offset = i * wire.offset_base
+        var offset = i * size.wire_offset_base
 
         blk.add(mk_pv_string(coor))
         // positive home run
         blk.add(line([
             [ coor.x , pv_array.upper ],
-            [ coor.x , pv_array.upper-module_size.w-offset ],
-            [ pv_array.right+offset , pv_array.upper-module_size.w-offset ],
-            [ pv_array.right+offset , pv_array.center-module_size.w-offset],
-            [ coor_array.x , pv_array.center-module_size.w-offset],
-            //[  ,  ],
+            [ coor.x , pv_array.upper-size.module_w-offset ],
+            [ pv_array.right+offset , pv_array.upper-size.module_w-offset ],
+            [ pv_array.right+offset , pv_array.center-size.module_w-offset],
+            [ coor_array.x , pv_array.center-size.module_w-offset],
         ], 'DC_pos'))
 
         // negative home run
         blk.add(line([
             [ coor.x , pv_array.lower ],
-            [ coor.x , pv_array.lower+module_size.w+offset ],
-            [ pv_array.right+offset , pv_array.lower+module_size.w+offset ],
-            [ pv_array.right+offset , pv_array.center+module_size.w+offset],
-            [ coor_array.x , pv_array.center+module_size.w+offset],
-            //[  ,  ],
+            [ coor.x , pv_array.lower+size.module_w+offset ],
+            [ pv_array.right+offset , pv_array.lower+size.module_w+offset ],
+            [ pv_array.right+offset , pv_array.center+size.module_w+offset],
+            [ coor_array.x , pv_array.center+size.module_w+offset],
         ], 'DC_neg'))
 
-        coor.x -= string.w
+        coor.x -= size.string_w
     }
+
+    blk.add(line([
+        [ pv_array.left , pv_array.lower + size.module_w + size.wire_offset_ground ],
+        [ pv_array.right+size.wire_offset_ground , pv_array.lower + size.module_w + size.wire_offset_ground ],
+        [ pv_array.right+size.wire_offset_ground , pv_array.center + size.module_w + size.wire_offset_ground],
+        [ coor_array.x , pv_array.center+size.module_w+size.wire_offset_ground],
+    ], 'DC_ground'))
+
     return blk
 
 }
 
 
-
+//#string
 var mk_pv_string = function(coor){
     var coor = { x:coor.x, y:coor.y }
     var blk = Object.create(Blk)
@@ -438,20 +510,30 @@ var mk_pv_string = function(coor){
     coor_string.x = coor.x
     coor_string.y = coor.y
 
-
+    //TODO: add loop to jump over negative return wires 
+    blk.add(
+        line(
+            [
+                [coor_string.x-size.module_frame.w*3/4, coor_string.y+size.module_frame.h/2+size.module_lead],
+                [coor_string.x-size.module_frame.w*3/4, pv_array.lower + size.wire_offset_ground + size.module_lead*1.5 ],
+            ],
+            'DC_ground'
+        )
+    )
     var module1 = mk_module(coor_string)
-    coor_string.y += module_size.frame.h + module_size.lead*2 + string.gap_missing
+    coor_string.y += size.module_frame.h + size.module_lead*2 + size.string_gap_missing
     var module2 = mk_module(coor_string)
-    coor_string.y += module_size.frame.h + module_size.lead*2 + string.gap
+    coor_string.y += size.module_frame.h + size.module_lead*2 + size.string_gap
     var module3 = mk_module(coor_string)
-    coor_string.y += module_size.frame.h + module_size.lead*2 + string.gap
+    coor_string.y += size.module_frame.h + size.module_lead*2 + size.string_gap
     var module4 = mk_module(coor_string)
     blk.add(module1,module2,module3,module4)
+
 
     return blk
 }
 
-
+//#module
 var mk_module = function(coor) {
     var coor = { x:coor.x, y:coor.y }
     var blk = Object.create(Blk)
@@ -460,9 +542,9 @@ var mk_module = function(coor) {
     x = coor.x
     y = coor.y
 
-    lead = module_size.lead
-    w = module_size.frame.w
-    h = module_size.frame.h
+    lead = size.module_lead
+    w = size.module_frame.w
+    h = size.module_frame.h
 
 
     blk.add(
@@ -503,7 +585,12 @@ var mk_module = function(coor) {
             '-',
             'signs',
             'text'
-        )
+        ),
+        // ground
+        line([
+            [-w/2, h/2],
+            [-w/2-w/4, h/2],
+        ], 'DC_ground')
     )
 
     blk.move(x,y)
@@ -519,16 +606,21 @@ var mk_module = function(coor) {
 ///////////////////
 // Display
 
-
+//#svg
 var display_svg = function(container_id){
     log('displaying svg')
-    document.getElementById(container_id).innerHTML = ''
+    var container = document.getElementById(container_id)
+    container.innerHTML = ''
     //container.empty()
 
-    //var drawing = $("<div>").attr('id', 'drawing')
-    //container.append(drawing)
-    var svg = SVG(container_id).size(1000,1000)
-    //var start_circle = svg.circle(5).move(400,400)
+    //var svg_elem = document.getElementById('SvgjsSvg1000')
+    var svg_elem = document.createElementNS("http://www.w3.org/2000/svg", 'svg')
+    svg_elem.setAttribute('id','svg_drawing')
+    svg_elem.setAttribute('width', 1000)
+    svg_elem.setAttribute('height', 1000)
+    container.appendChild(svg_elem)
+    var svg = SVG(svg_elem).size(1000,1000)
+
 
     for( var layer_name in layers){
         var layer = layers[layer_name]
@@ -542,7 +634,30 @@ var display_svg = function(container_id){
                 var t = svg.text( elem.string ).move( elem.points[0][0], elem.points[0][1] ).attr( l_attr[layer_name] )
                 t.font(fonts[elem.font])
             } else if( elem.type == 'circ') {
-                svg.circle( elem.r ).move( elem.points[0][0]-elem.d/2, elem.points[0][1]-elem.d/2 ).attr( l_attr[layer_name] )
+                var c = document.createElementNS("http://www.w3.org/2000/svg", 'ellipse')
+                c.setAttribute('rx', elem.d/2)
+                c.setAttribute('ry', elem.d/2)
+                c.setAttribute('cx', elem.points[0][0])
+                c.setAttribute('cy', elem.points[0][1])
+                var attr = l_attr[layer_name]
+                for( var i2 in attr ){
+                    c.setAttribute(i2, attr[i2])
+                }
+                svg_elem.appendChild(c)
+                /*
+                c.attributes( l_attr[layer_name] )
+                c.attributes({
+                    rx: 5,
+                    --------------------------
+                    ry: 5,
+                    cx: elem.points[0][0]-elem.d/2,
+                    cy: elem.points[0][1]-elem.d/2
+                })
+                var c2 = svg.ellipse( elem.r, elem.r )
+                c2.move( elem.points[0][0]-elem.d/2, elem.points[0][1]-elem.d/2 )
+                c2.attr({rx:5, ry:5})
+                c2.attr( l_attr[layer_name] )
+                */
             }
         }
 
@@ -552,6 +667,8 @@ var display_svg = function(container_id){
 
 //////////////////////////////////////////
 // after page loads functions
+
+//#update drawing
 var update_drawing = function(){
     log('updating drawing')
     //log($('#string_select option:selected'))
