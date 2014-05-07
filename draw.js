@@ -61,6 +61,105 @@ function normRand(mu, sigma) {
 
 
 
+var Value = {
+    value:42, 
+    expanded: false,
+    click: function(){
+        log('click', this.expanded) 
+        this.expanded = !this.expanded
+        if(this.expanded){
+            this.elem.innerHTML = "Forty Two"
+        } else {
+            this.elem.innerHTML = this.value
+        }
+    },
+    add_option: function(input){
+        if(typeof input == 'object'){
+            for( var i in input ){
+                var addition = input[i]
+                this.options.push(addition)
+            }
+        } else {
+            this.options.push(input)
+        }
+    },
+    link_list: function(){
+        for( var i in this.options ){
+            var option = this.options[i]    
+            var a = document.createElement('a')
+            a.addEventListener('click', function(){
+                this.value = this.option[i] 
+            }, false)
+            this.menu.appendChild(a)
+        } 
+    },
+
+}
+
+var val = function(){
+    var v = Object.create(Value)
+    v.elem = document.createElement('span')
+    //v.elem.href = '#'
+    v.elem.innerHTML = v.value
+    v.elem.addEventListener('click', function(){
+        v.click()
+    }, false)
+    v.options = []
+    v.menu = document.createElement('span')
+    return v
+}
+
+
+
+
+
+///////////////
+//#system parameters
+
+var components = {}
+components.inverters = {}
+components.inverters['SMA3000'] = {
+    make:'SMA',
+    model:'3000',
+
+    DC_voltageWindow_low: 150,
+    DC_voltageWindow_high: 350,
+    
+    AC_options: ['240','277'],
+
+}
+
+components.modules = {}
+components.modules['Sunsucker250'] = {
+    make:'Sunsucker',
+    model:'250',
+   
+    Pmax: 245,
+    Isc: 10,
+    Voc: 60,
+    Imp: 8,
+    Vmp: 50,
+
+}
+
+
+
+var addInverter = function(){
+        
+
+}
+
+
+
+var system = {}
+system.DC = {}
+system.DC.string_num = 6
+system.DC.string_module = 6
+system.DC.module = components.modules['Sunsucker250']
+system.inverter = components.inverters['SMA3000']
+
+
+
 
 
 
@@ -104,16 +203,14 @@ l_attr.terminal = Object.create(l_attr.base)
 
 fonts = {}
 fonts.signs = {
-    family:   'Helvetica',
-    size:     5,
-    anchor:   'middle',
-    leading:  '1.5em',
+    'font-family': 'monospace',
+    'font-size':     5,
+    'text-anchor':   'middle',
 }
 fonts.label = {
-    family:   'Helvetica',
-    size:     2,
-    anchor:   'middle',
-    leading:  '1.5em',
+    'font-family': 'monospace',
+    'font-size':     12,
+    'text-anchor':   'middle',
 }
 
 
@@ -214,9 +311,12 @@ var circ = function(loc, diameter, layer){
     return cir
 }
 
-var text = function(loc, string, font, layer){
+var text = function(loc, strings, font, layer){
     var txt = add('text', [loc], layer)
-    txt.string = string
+    if( typeof strings == 'string'){
+        strings = [strings]
+    }
+    txt.strings = strings
     txt.font = font
     return txt
 }
@@ -225,9 +325,6 @@ var text = function(loc, string, font, layer){
 
 
 log('layers', layers)
-//k.obj_log(layers, 'layers', 3)
-//log('groups', groups)
-//k.obj_log(groups, 'groups', 9)
 log('blocks', blocks)
 
 var mk_SVG = function(){
@@ -237,12 +334,6 @@ var mk_SVG = function(){
 
 }
 
-///////////////
-//#system parameters
-
-var system = {}
-system.DC = {}
-system.DC.string_num = 6
 
 
 
@@ -273,13 +364,21 @@ size.jb_box_w = 50
 
 size.terminal_diam = 5
 
+size.inverter_w = 200
+size.inverter_h = 150
+size.inverter_text_gap = 15
+size.inverter_symbol_w = 50
+size.inverter_symbol_h = 25
+
 var loc = {}
 
 loc.array = { x:200, y:600 }
 loc.DC = loc.array
-loc.inverter = { x:loc.array+300, y:loc.array-350 }
-loc.inverter.bottom = loc.inverter.y + size.inverter_h
+loc.inverter = { x:loc.array.x+300, y:loc.array.y-350 }
+loc.inverter.bottom = loc.inverter.y + size.inverter_h/2
+loc.inverter.top = loc.inverter.y - size.inverter_h/2
 
+log('loc', loc)
 
 ///////////////
 // build drawing
@@ -292,7 +391,7 @@ var mk_drawing = function(){
     var coor = { x:200, y:600 }
     blocks.push( mk_array(loc.array) )
     blocks.push( mk_DC(loc.DC))
-    //blocks.push( mk_inverter(loc.inverter) )
+    blocks.push( mk_inverter(loc.inverter) )
 }
 
 //#inverter
@@ -303,28 +402,77 @@ var mk_inverter = function(coor){
     var blk = Object.create(Blk)
     blk.type = 'Inverter'
 
-    inverter_w = 200
-    inverter_h = 150
 
     blk.add(
+        //frame
         rect(
             [coor.x,coor.y],
-            [inverter_w, inverter_h],
+            [size.inverter_w, size.inverter_h],
             'box'
         ),
-        circ(
-            [coor.x,coor.y],
-            5,
-            'DC_neg'
-        
+        // Label at top (Inverter, make, model, ...)
+        text(
+            [loc.inverter.x, loc.inverter.top + size.inverter_text_gap ],
+            [ 'Inverter', system.inverter.make + " " + system.inverter.model ],
+            'label',
+            'text'
+            
         ),
-        text()
-    
-    
+
+        mk_inverter_symbol(coor)
+
     )
+    log('blk', blk)
     return blk
 }
 
+//#inverter
+var mk_inverter_symbol = function(coor){
+    log('makeing inverter')
+
+    var coor = { x:coor.x, y:coor.y }
+    var blk = Object.create(Blk)
+    blk.type = 'Inverter_symbol'
+    
+    var w = size.inverter_symbol_w
+    var h = size.inverter_symbol_h
+
+    blk.add(
+        // Inverter symbol
+        rect(
+            [coor.x,coor.y],
+            [w, h],
+            'box'
+        ),
+        line([
+            [coor.x-w/2, coor.y+h/2],
+            [coor.x+w/2, coor.y-h/2],
+        
+        ], 'box'),
+        line([
+            [coor.x - w/2 + w*1/10, 
+                coor.y - h/2 + w*1/10],
+            [coor.x - w/2 + w*5/10, 
+                coor.y - h/2 + w*1/10],
+        ], 'box'),
+        line([
+            [coor.x - w/2 + w*1/10, 
+                coor.y - h/2 + w*2/10],
+            [coor.x - w/2 + w*2/10, 
+                coor.y - h/2 + w*2/10],
+        ], 'box'),
+        line([
+            [coor.x - w/2 + w*3/10, 
+                coor.y - h/2 + w*2/10],
+            [coor.x - w/2 + w*4/10, 
+                coor.y - h/2 + w*2/10],
+        ], 'box')
+    )
+
+
+    log('blk', blk)
+    return blk
+}
 //#AC
 
 
@@ -631,8 +779,26 @@ var display_svg = function(container_id){
             } else if( elem.type == 'line') {
                 svg.polyline( elem.points ).attr( l_attr[layer_name] )
             } else if( elem.type == 'text') {
-                var t = svg.text( elem.string ).move( elem.points[0][0], elem.points[0][1] ).attr( l_attr[layer_name] )
-                t.font(fonts[elem.font])
+                //var t = svg.text( elem.strings ).move( elem.points[0][0], elem.points[0][1] ).attr( l_attr[layer_name] )
+                var font = fonts[elem.font]
+                
+                var t = document.createElementNS("http://www.w3.org/2000/svg", 'text')
+                t.setAttribute('x', elem.points[0][0])
+                t.setAttribute('y', elem.points[0][1] + font['font-size']/2 )
+                for( var i2 in l_attr[layer_name] ){
+                    t.setAttribute( i2, l_attr[layer_name][i2] )
+                }
+                for( var i2 in font ){
+                    t.setAttribute( i2, font[i2] )
+                }
+                for( var i2 in elem.strings ){
+                    var tspan = document.createElementNS("http://www.w3.org/2000/svg", 'tspan')
+                    tspan.setAttribute('dy', font['font-size']*1.5*i2 )
+                    tspan.setAttribute('x', elem.points[0][0])
+                    tspan.innerHTML = elem.strings[i2]
+                    t.appendChild(tspan)
+                }
+                svg_elem.appendChild(t)
             } else if( elem.type == 'circ') {
                 var c = document.createElementNS("http://www.w3.org/2000/svg", 'ellipse')
                 c.setAttribute('rx', elem.d/2)
@@ -702,27 +868,33 @@ $(document).ready( function() {
 
 
 
-    var dump = $('#text_dump')
-    dump.text('this is a test')
+    var dump = document.getElementById('text_dump')
+    dump.innerHTML = 'this is a test'
 
-    var string_select = $('<select>').attr('id','string_select')
+    //var string_select = $('<select>').attr('id','string_select')
+    var string_select = document.createElement('select')
+    string_select.setAttribute('id', 'string_select')
     for( i in _.range(10)) {
         if( i != 0 ){
             var op = new Option()
             op.value = i
             op.text = String(i) + ' string'
             if( i === 4) { op.selected = 'selected' }
-            string_select.append(op)
+            string_select.appendChild(op)
         }
     }
-    $('#drawing_page').append(string_select)
+    //$('#drawing_page').append(string_select)
+    var draw_page = document.getElementById('drawing_page') 
+    draw_page.appendChild(string_select)
     document.getElementById('string_select').selectedIndex = 4-1
 
-    
     // When number of strings change, update model, display
-    string_select.change(function(){
+    string_select.addEventListener('change', function(){
         update_drawing()
-    })
+    }, false)
+
+    var lnk = val()
+    //draw_page.appendChild(lnk.elem)
 
     //document.getElementById('drawing_page').appendChild('<a href="#" onclick="clear(\'svg_container\')">clear</a>')
 
