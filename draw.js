@@ -125,7 +125,7 @@ components.inverters['SMA3000'] = {
     DC_voltageWindow_low: 150,
     DC_voltageWindow_high: 350,
     
-    AC_options: ['240','277'],
+    AC_options: ['240','208'],
 
 }
 
@@ -158,11 +158,20 @@ system.DC.string_module = 6
 system.DC.module = components.modules['Sunsucker250']
 system.inverter = components.inverters['SMA3000']
 
+system.AC_type = '208'
 
 
-
-
-
+switch(system.AC_type){
+    case '208':
+        system.AC_conductors = 5;
+        break;
+    case '120':
+        system.AC_conductors = 3;
+        break;
+    default:
+        log('Error, unknown AC type')
+}
+log('wires', system.AC_conductors)
 
 
 
@@ -200,6 +209,13 @@ l_attr.box = Object.create(l_attr.base)
 l_attr.text = Object.create(l_attr.base)
 l_attr.text.stroke = '#0000ff'
 l_attr.terminal = Object.create(l_attr.base)
+l_attr.AC_ground = Object.create(l_attr.base)
+l_attr.AC_ground.stroke = '#006600'
+l_attr.AC_neutral = Object.create(l_attr.base)
+l_attr.AC_neutral.stroke = '#666666'
+
+///////////////
+// fonts
 
 fonts = {}
 fonts.signs = {
@@ -215,25 +231,17 @@ fonts.label = {
 
 
 ///////
-// setup drawing container
+// setup drawing containers
+
+// LAYERS
+
 
 var layers = {}
 for( l in l_attr) {
     layers[l] = []
 }
 
-var blocks = []
-
-var clear_drawing = function() {
-    blocks.length = 0
-    for( var l in l_attr) {
-        layers[l] = []
-    }
-
-}
-
-//////
-// build protoype objects
+// BLOCKS
 
 var Blk = {
     object: 'Blk',
@@ -252,6 +260,70 @@ Blk.add = function(){
     return this
 }
 
+var blocks = []
+
+// Create default layer,block container and functions
+
+var drawStat = {};
+drawStat.layer = false;
+drawStat.block = false;
+
+var layer = function(name){ // set current layer
+    if( typeof name === 'undefined' ){ // if no layer name given, reset to default 
+        drawStat.layer = layers.base;
+    } else if( ! (name in layers) ) {  // if layer name is not in list, warn and reset to default
+        log("error, layer '"+name+"' does not exist, using base");
+        name = 'base' ;
+    } else { // finaly activate requested layer
+        drawStat.layer = layers[name];
+    }
+}
+layer() // set current layer to base
+
+/*
+var block = function(name) {// set current block
+    // if current block has been used, save it before creating a new one.
+    if( drawStat.block.length > 0 ) { blocks.push(drawStat.block); }
+    if( typeof name !== 'undefined' ){ // if name argument is submitted, create new block
+        var blk = Object.create(Blk);
+        blk.name = name; // block name
+        drawStat.block = blk;
+    } else { // else use default block
+        drawStat.block = blocks[0];
+    }
+}
+block('default'); // set current block to default
+*/
+
+var block = function(name) {// set current block
+    if( typeof name !== 'undefined' ){ // if name argument is submitted, create new block
+        var blk = Object.create(Blk);
+        blk.name = name; // block name
+        drawStat.block = blk;
+    } else { // else use default block
+        var output = drawStat.block;
+        drawStat.block = false;
+        return output;
+
+    }
+}
+
+
+// clear drawing 
+var clear_drawing = function() {
+    blocks.length = 0
+    for( var l in l_attr) {
+        layers[l] = [];
+    }
+
+}
+
+
+//////
+// build protoype element
+
+
+
 var SvgElem = {
     object: 'SvgElem'
 }
@@ -268,33 +340,44 @@ SvgElem.move = function(x, y){
 ///////
 // functions for adding elements
 
-var add = function(type, points, layer) {
-    if( typeof layer == 'undefined' || ! (layer in layers) ) {
-        layer =  'base'
+var add = function(type, points, layer_name) {
+    /*
+    if( typeof layer_name !== 'undefined' && (layer_name in layers) ) {
+        var layer_selected = layers[layer_name]
+    } else {
+        if( ! (layer_name in layers) ){ log("error, layer does not exist, using current");}
+        var layer_selected =  drawStat.layer
     }
+    */
+    if( typeof layer_name !== 'undefined' ) { layer(layer_name); }
+
     if( typeof points == 'string') {
-        var points = points.split(' ')
+        var points = points.split(' ');
         for( i in points ) {
-            points[i] = points[i].split(',')
+            points[i] = points[i].split(',');
             for( var c in points[i] ) {
-                points[i][c] = Number(points[i][c])
+                points[i][c] = Number(points[i][c]);
             }
         }
     }
 
-    var elem = Object.create(SvgElem)
-    elem.type = type
-    elem.points = points
+    var elem = Object.create(SvgElem);
+    elem.type = type;
+    elem.points = points;
 
-    layers[layer].push(elem)
+    drawStat.layer.push(elem);
+    
+    if(drawStat.block){ 
+        drawStat.block.add(elem);
+    }
 
-    return elem
+    return elem;
 }
 
-var line = function(points, layer){
+var line = function(points, layer){ // (points, [layer])
     //return add('line', points, layer)
-    var line =  add('line', points, layer)
-    return line
+    var line =  add('line', points, layer);
+    return line;
 }
 
 var rect = function(loc, size, layer){
@@ -312,13 +395,22 @@ var circ = function(loc, diameter, layer){
 }
 
 var text = function(loc, strings, font, layer){
-    var txt = add('text', [loc], layer)
+    var txt = add('text', [loc], layer);
     if( typeof strings == 'string'){
-        strings = [strings]
+        strings = [strings];
     }
-    txt.strings = strings
-    txt.font = font
-    return txt
+    txt.strings = strings;
+    txt.font = font;
+    return txt;
+}
+
+var subBlock = function(blk){
+    if(drawStat.block){ 
+        drawStat.block.add(elem);
+    } else {
+        log("Error, no active block to add to")
+    }
+
 }
 
 /////////////////////////////////
@@ -340,138 +432,207 @@ var mk_SVG = function(){
 //////////////
 //#drawing parameters
 
-var size = {}
+var size = {};
 
-size.module_frame = {}
-size.module_frame.w = 10
-size.module_frame.h = 30
-size.module_lead = size.module_frame.w*2/3
-size.module_h = size.module_frame.h + size.module_lead*2
-size.module_w = size.module_frame.w
+size.module_frame = {};
+size.module_frame.w = 10;
+size.module_frame.h = 30;
+size.module_lead = size.module_frame.w*2/3;
+size.module_h = size.module_frame.h + size.module_lead*2;
+size.module_w = size.module_frame.w;
 
-size.wire_offset_base = 5
-size.wire_offset_gap = size.module_w
-size.wire_offset_max = system.DC.string_num * size.wire_offset_base
-size.wire_offset_ground = size.wire_offset_max + size.wire_offset_base*2
+size.wire_offset_base = 5;
+size.wire_offset_gap = size.module_w;
+size.wire_offset_max = system.DC.string_num * size.wire_offset_base;
+size.wire_offset_ground = size.wire_offset_max + size.wire_offset_base*2;
 
-size.string_gap = size.module_frame.w/42
-size.string_gap_missing = size.string_gap + size.module_frame.w
-size.string_h = (size.module_h * 4) + (size.string_gap * 2) + size.string_gap_missing
-size.string_w = size.module_frame.w * 2.5
+size.string_gap = size.module_frame.w/42;
+size.string_gap_missing = size.string_gap + size.module_frame.w;
+size.string_h = (size.module_h * 4) + (size.string_gap * 2) + size.string_gap_missing;
+size.string_w = size.module_frame.w * 2.5;
 
-size.jb_box_h = 100
-size.jb_box_w = 50
+size.jb_box_h = 100;
+size.jb_box_w = 50;
 
-size.terminal_diam = 5
+size.terminal_diam = 5;
 
-size.inverter_w = 200
-size.inverter_h = 150
-size.inverter_text_gap = 15
-size.inverter_symbol_w = 50
-size.inverter_symbol_h = 25
+size.inverter_w = 200;
+size.inverter_h = 150;
+size.inverter_text_gap = 15;
+size.inverter_symbol_w = 50;
+size.inverter_symbol_h = 25;
 
-var loc = {}
+size.AC_disc_w = 100;
+size.AC_disc_h = 100;
 
-loc.array = { x:200, y:600 }
-loc.DC = loc.array
-loc.inverter = { x:loc.array.x+300, y:loc.array.y-350 }
-loc.inverter.bottom = loc.inverter.y + size.inverter_h/2
-loc.inverter.top = loc.inverter.y - size.inverter_h/2
+    
+var loc = {};
 
-log('loc', loc)
+loc.array = { x:200, y:600 };
+loc.DC = loc.array;
+loc.inverter = { x:loc.array.x+300, y:loc.array.y-350 };
+loc.inverter.bottom = loc.inverter.y + size.inverter_h/2;
+loc.inverter.top = loc.inverter.y - size.inverter_h/2;
+loc.inverter.bottom_right = {
+    x: loc.inverter.x + size.inverter_w/2,
+    y: loc.inverter.y + size.inverter_h/2,
+};
+loc.AC_disc = { x: loc.array.x+550, y: loc.array.y-100 };
+loc.AC_disc.bottom = loc.AC_disc.y + size.AC_disc_h/2;
+loc.AC_disc.left = loc.AC_disc.x - size.AC_disc_w/2;
+
+log('loc', loc);
+
 
 ///////////////
 // build drawing
 
 //#start drawing
 var mk_drawing = function(){
-    log('making drawing')
+    log('making drawing');
 
     // PV array
-    var coor = { x:200, y:600 }
-    blocks.push( mk_array(loc.array) )
-    blocks.push( mk_DC(loc.DC))
-    blocks.push( mk_inverter(loc.inverter) )
+    var coor = { x:200, y:600 };
+    blocks.push( mk_array(loc.array) );
+    blocks.push( mk_DC(loc.DC));
+    blocks.push( mk_inverter(loc.inverter) );
+    blocks.push( mk_ac_disc(loc.AC_disc) );
 }
 
+//#AC_discconect
+var mk_ac_disc = function(coor){
+    log('making AC disconect');
+    var coor = { x:coor.x, y:coor.y };
+
+    block('AC disc.');
+    layer('box');
+    rect(
+        [coor.x, coor.y],
+        [size.AC_disc_w, size.AC_disc_h]
+    );
+    layer();
+
+    return block();
+}
 //#inverter
 var mk_inverter = function(coor){
-    log('makeing inverter')
-
-    var coor = { x:coor.x, y:coor.y }
-    var blk = Object.create(Blk)
-    blk.type = 'Inverter'
+    log('making inverter');
+    var coor = { x:coor.x, y:coor.y };
 
 
-    blk.add(
-        //frame
-        rect(
-            [coor.x,coor.y],
-            [size.inverter_w, size.inverter_h],
-            'box'
-        ),
-        // Label at top (Inverter, make, model, ...)
-        text(
-            [loc.inverter.x, loc.inverter.top + size.inverter_text_gap ],
-            [ 'Inverter', system.inverter.make + " " + system.inverter.model ],
-            'label',
-            'text'
-            
-        ),
+    block('Inverter');
+    //frame
+    layer('box')
+    rect(
+        [coor.x,coor.y],
+        [size.inverter_w, size.inverter_h]
+    );
+    // Label at top (Inverter, make, model, ...)
+    layer('text')
+    text(
+        [loc.inverter.x, loc.inverter.top + size.inverter_text_gap ],
+        [ 'Inverter', system.inverter.make + " " + system.inverter.model ],
+        'label'
+    );
+    layer()
 
-        mk_inverter_symbol(coor)
+    var blk = block();
+    blk.add( mk_inverter_symbol(coor) );
+    
+    var point = loc.inverter.bottom_right;
+    point.x -= size.terminal_diam * (system.AC_conductors+3);
+    point.y -= size.terminal_diam;
+    var AC_layer_names = ['AC_ground', 'AC_neutral', 'AC_L1', 'AC_L2', 'AC_L2']
+    for( var i=0; i < system.AC_conductors; i++ ){
+        blk.add( mk_terminal(point) );
+        layer(AC_layer_names[i]);
+        blk.add( line([
+            [point.x, point.y],
+            [point.x, loc.AC_disc.bottom - size.terminal_diam * (i+1) ],
+            [loc.AC_disc.left, loc.AC_disc.bottom - size.terminal_diam * (i+1) ],
+        ]));
+        point.x += size.terminal_diam;
+    }
+    layer()
 
-    )
-    log('blk', blk)
-    return blk
+    log('blk', blk);
+    return blk;
 }
 
 //#inverter
 var mk_inverter_symbol = function(coor){
-    log('makeing inverter')
+    log('makeng inverter symbol');
 
     var coor = { x:coor.x, y:coor.y }
-    var blk = Object.create(Blk)
-    blk.type = 'Inverter_symbol'
     
-    var w = size.inverter_symbol_w
-    var h = size.inverter_symbol_h
+    var w = size.inverter_symbol_w;
+    var h = size.inverter_symbol_h;
 
-    blk.add(
-        // Inverter symbol
-        rect(
-            [coor.x,coor.y],
-            [w, h],
-            'box'
-        ),
-        line([
-            [coor.x-w/2, coor.y+h/2],
-            [coor.x+w/2, coor.y-h/2],
+    var space = w*1/12;
+
+    block('Inverter symbol');
+    // Inverter symbol
+    layer('box');
+
+    // box
+    rect(
+        [coor.x,coor.y],
+        [w, h]
+    );
+    // diaganal
+    line([
+        [coor.x-w/2, coor.y+h/2],
+        [coor.x+w/2, coor.y-h/2],
+    
+    ]);
+    // DC
+    line([
+        [coor.x - w/2 + space, 
+            coor.y - h/2 + space],
+        [coor.x - w/2 + space*6, 
+            coor.y - h/2 + space],
+    ]);
+    line([
+        [coor.x - w/2 + space, 
+            coor.y - h/2 + space*2],
+        [coor.x - w/2 + space*2, 
+            coor.y - h/2 + space*2],
+    ]);
+    line([
+        [coor.x - w/2 + space*3, 
+            coor.y - h/2 + space*2],
+        [coor.x - w/2 + space*4, 
+            coor.y - h/2 + space*2],
+    ]);
+    line([
+        [coor.x - w/2 + space*5, 
+            coor.y - h/2 + space*2],
+        [coor.x - w/2 + space*6, 
+            coor.y - h/2 + space*2],
+    ]);
+
+    // AC
+    line([
+        [coor.x + w/2 - space, 
+            coor.y + h/2 - space*1.5],
+        [coor.x + w/2 - space*2, 
+            coor.y + h/2 - space*1.5],
+    ]);
+    line([
+        [coor.x + w/2 - space*3, 
+            coor.y + h/2 - space*1.5],
+        [coor.x + w/2 - space*4, 
+            coor.y + h/2 - space*1.5],
+    ]);
+    line([
+        [coor.x + w/2 - space*5, 
+            coor.y + h/2 - space*1.5],
+        [coor.x + w/2 - space*6, 
+            coor.y + h/2 - space*1.5],
+    ]);
+    layer();
         
-        ], 'box'),
-        line([
-            [coor.x - w/2 + w*1/10, 
-                coor.y - h/2 + w*1/10],
-            [coor.x - w/2 + w*5/10, 
-                coor.y - h/2 + w*1/10],
-        ], 'box'),
-        line([
-            [coor.x - w/2 + w*1/10, 
-                coor.y - h/2 + w*2/10],
-            [coor.x - w/2 + w*2/10, 
-                coor.y - h/2 + w*2/10],
-        ], 'box'),
-        line([
-            [coor.x - w/2 + w*3/10, 
-                coor.y - h/2 + w*2/10],
-            [coor.x - w/2 + w*4/10, 
-                coor.y - h/2 + w*2/10],
-        ], 'box')
-    )
-
-
-    log('blk', blk)
-    return blk
+    return block();
 }
 //#AC
 
@@ -517,7 +678,7 @@ var mk_DC = function( coor ){
                 [ x+jBox_w+to_disconnect_x-offset , y+to_disconnect_y-size.terminal_diam],
                 [ x+jBox_w+to_disconnect_x-offset , y+to_disconnect_y-size.terminal_diam-size.terminal_diam*3],
             ], 'DC_pos'),
-            mk_terminal( { x: x+jBox_w+to_disconnect_x-offset, y: y+to_disconnect_y-size.terminal_diam/2 } )
+            mk_terminal( { x: x+jBox_w+to_disconnect_x-offset, y: y+to_disconnect_y-size.terminal_diam } )
         ])
 
         blk.add([
@@ -531,7 +692,7 @@ var mk_DC = function( coor ){
                 [ x+jBox_w+to_disconnect_x+offset , y+to_disconnect_y-size.terminal_diam],
                 [ x+jBox_w+to_disconnect_x+offset , y+to_disconnect_y-size.terminal_diam-size.terminal_diam*3],
             ], 'DC_neg'),
-            mk_terminal( { x: x+jBox_w+to_disconnect_x+offset, y: y+to_disconnect_y-size.terminal_diam/2 } )
+            mk_terminal( { x: x+jBox_w+to_disconnect_x+offset, y: y+to_disconnect_y-size.terminal_diam } )
         ])
     }
 
@@ -585,7 +746,7 @@ var mk_terminal = function(coor){
         circ(
             [x,y],
             size.terminal_diam,
-            'term'
+            'terminal'
             )
     )
     
@@ -684,9 +845,6 @@ var mk_pv_string = function(coor){
 //#module
 var mk_module = function(coor) {
     var coor = { x:coor.x, y:coor.y }
-    var blk = Object.create(Blk)
-    blk.type = 'module'
-
     x = coor.x
     y = coor.y
 
@@ -694,53 +852,51 @@ var mk_module = function(coor) {
     w = size.module_frame.w
     h = size.module_frame.h
 
+    block('module');
+    // frame
+    layer('module')
+    rect( [0,h/2], [w,h]);
+    // frame triangle?
+    line([
+        [-w/2,0],
+        [0,w/2],
+    ]);
+    line([
+        [0,w/2],
+        [w/2,0],
+    ]);
+    // leads
+    layer('DC_pos');
+    line([
+        [0, 0],
+        [0, -lead]
+    ]);
+    layer('DC_neg');
+    line([
+        [0, h],
+        [0, h+(lead)]
+    ]);
+    // pos sign
+    layer('text');
+    text(
+        [lead/2, -lead/2],
+        '+',
+        'signs'
+    );
+    // neg sign
+    text(
+        [lead/2, h+lead/2],
+        '-',
+        'signs'
+    );
+    // ground
+    layer('DC_ground');
+    line([
+        [-w/2, h/2],
+        [-w/2-w/4, h/2],
+    ]);
 
-    blk.add(
-        // frame
-        rect(
-            [0,h/2],
-            [w,h],
-            'module'
-        ),
-        // frame triangle?
-        line([
-            [-w/2,0],
-            [0,w/2],
-        ], 'module'),
-        line([
-            [0,w/2],
-            [w/2,0],
-        ], 'module'),
-        // leads
-        line([
-            [0, 0],
-            [0, -lead]
-        ], 'DC_pos' ),
-        line([
-            [0, h],
-            [0, h+(lead)]
-        ], 'DC_neg' ),
-        // pos sign
-        text(
-             [lead/2, -lead/2],
-            '+',
-            'signs',
-            'text'
-        ),
-        // neg sign
-        text(
-             [lead/2, h+lead/2],
-            '-',
-            'signs',
-            'text'
-        ),
-        // ground
-        line([
-            [-w/2, h/2],
-            [-w/2-w/4, h/2],
-        ], 'DC_ground')
-    )
-
+    var blk = block()
     blk.move(x,y)
     blk.move(0,lead)
     return blk
@@ -837,7 +993,7 @@ var display_svg = function(container_id){
 //#update drawing
 var update_drawing = function(){
     log('updating drawing')
-    //log($('#string_select option:selected'))
+    //('#string_select option:selected'))
     var svg_container_id = 'svg_container'
     if( document.getElementById(svg_container_id) == null ){
         var svg_container = document.createElement('div')
@@ -857,49 +1013,57 @@ var update_drawing = function(){
 }
 
 $(document).ready( function() {
-    var title = 'PV drawing test'
+    var title = 'PV drawing test';
     var sections = {
         'drawing_page':'Drawing',
         'test':'test',
         'text_dump':'text_dump'
     }
 
-    k.setup_body(title, sections)
+    k.setup_body(title, sections);
 
+    var draw_page = document.createElement('div');
+    draw_page.id = 'drawing_page';
+    document.body.appendChild(draw_page);
 
-
+    /*
     var dump = document.getElementById('text_dump')
     dump.innerHTML = 'this is a test'
 
+    */
     //var string_select = $('<select>').attr('id','string_select')
-    var string_select = document.createElement('select')
-    string_select.setAttribute('id', 'string_select')
+    var string_select = document.createElement('select');
+    string_select.setAttribute('id', 'string_select');
     for( i in _.range(10)) {
         if( i != 0 ){
-            var op = new Option()
-            op.value = i
-            op.text = String(i) + ' string'
+            var op = new Option();
+            op.value = i;
+            op.text = String(i) + ' string';
             if( i === 4) { op.selected = 'selected' }
-            string_select.appendChild(op)
+            string_select.appendChild(op);
         }
     }
-    //$('#drawing_page').append(string_select)
-    var draw_page = document.getElementById('drawing_page') 
-    draw_page.appendChild(string_select)
-    document.getElementById('string_select').selectedIndex = 4-1
-
+    draw_page.appendChild(string_select);
+    document.getElementById('string_select').selectedIndex = 4-1;
     // When number of strings change, update model, display
     string_select.addEventListener('change', function(){
-        update_drawing()
+        update_drawing();
     }, false)
+    
 
-    var lnk = val()
+
+
+    //var draw_page = document.getElementById('drawing_page') 
+
+
+
+    var lnk = val();
     //draw_page.appendChild(lnk.elem)
 
     //document.getElementById('drawing_page').appendChild('<a href="#" onclick="clear(\'svg_container\')">clear</a>')
 
     // Start PV system drawing process
-    update_drawing()
+    update_drawing();
 
 
 
@@ -909,7 +1073,7 @@ $(document).ready( function() {
 
 $(window).ready( function() {
     var boot_time = moment()
-    var status_id = "#status"
+    var status_id = "status"
     setInterval(function(){ k.update_status_page(status_id, boot_time) },1000)
 
 
