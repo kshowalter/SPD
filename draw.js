@@ -3,19 +3,19 @@
 
 
 var appendElement = function(parentElement,name,attrs,text){
-  var doc = parentElement.ownerDocument
-  var svg = parentElement
-  while (svg.tagName!='svg') svg = svg.parentNode
-  var el = doc.createElementNS(svg.namespaceURI,name)
+  var doc = parentElement.ownerDocument;
+  var svg = parentElement;
+  while (svg.tagName!='svg') svg = svg.parentNode;
+  var el = doc.createElementNS(svg.namespaceURI,name);
   for (var a in attrs){
-    if (!attrs.hasOwnProperty(a)) continue
-    var p = a.split(':')
-    if (p[1]) el.setAttributeNS(svg.getAttribute('xmlns:'+p[0]),p[1],attrs[a])
-    else el.setAttribute(a,attrs[a])
+    if (!attrs.hasOwnProperty(a)) continue;
+    var p = a.split(':');
+    if (p[1]) el.setAttributeNS(svg.getAttribute('xmlns:'+p[0]),p[1],attrs[a]);
+    else el.setAttribute(a,attrs[a]);
   }
-  if (text) el.appendChild(doc.createTextNode(text))
-  return parentElement.appendChild(el)
-}
+  if (text) el.appendChild(doc.createTextNode(text));
+  return parentElement.appendChild(el);
+};
 
 
 ///////////////////
@@ -23,40 +23,40 @@ var appendElement = function(parentElement,name,attrs,text){
 
 function get_JSON(URL, name) {
     $.getJSON( URL, function( json ) {
-        build_comps(json)
+        build_comps(json);
     }).fail(function(jqxhr, textStatus, error) {
-        console.log( "error", textStatus, error  )
-    })
+        console.log( "error", textStatus, error  );
+    });
 }
 
 function format_floats( elem, index, array ) {
-    array[index] = parseFloat(elem).toFixed(2)
+    array[index] = parseFloat(elem).toFixed(2);
 }
 
 function format_float( str ) {
-    return parseFloat(str).toFixed(2)
+    return parseFloat(str).toFixed(2);
 }
 
 var clear = function(div_id){
-    document.getElementById(div_id).innerHTML = ''
-}
+    document.getElementById(div_id).innerHTML = '';
+};
 
 /*
  *  normRand: returns normally distributed random numbers
  *  http://memory.psych.mun.ca/tech/snippets/random_normal/
  */
 function normRand(mu, sigma) {
-    var x1, x2, rad
+    var x1, x2, rad;
 
     do {
-        x1 = 2 * Math.random() - 1
-        x2 = 2 * Math.random() - 1
-        rad = x1 * x1 + x2 * x2
-    } while(rad >= 1 || rad === 0)
+        x1 = 2 * Math.random() - 1;
+        x2 = 2 * Math.random() - 1;
+        rad = x1 * x1 + x2 * x2;
+    } while(rad >= 1 || rad === 0);
 
-    var c = Math.sqrt(-2 * Math.log(rad) / rad)
-    var n = x1 * c
-    return (n * mu) + sigma
+    var c = Math.sqrt(-2 * Math.log(rad) / rad);
+    var n = x1 * c;
+    return (n * mu) + sigma;
 }
 
 
@@ -65,49 +65,49 @@ var Value = {
     value:42, 
     expanded: false,
     click: function(){
-        log('click', this.expanded) 
-        this.expanded = !this.expanded
+        log('click', this.expanded) ;
+        this.expanded = !this.expanded;
         if(this.expanded){
-            this.elem.innerHTML = "Forty Two"
+            this.elem.innerHTML = "Forty Two";
         } else {
-            this.elem.innerHTML = this.value
+            this.elem.innerHTML = this.value;
         }
     },
     add_option: function(input){
         if(typeof input == 'object'){
             for( var i in input ){
-                var addition = input[i]
-                this.options.push(addition)
+                var addition = input[i];
+                this.options.push(addition);
             }
         } else {
-            this.options.push(input)
+            this.options.push(input);
         }
     },
     link_list: function(){
         for( var i in this.options ){
-            var option = this.options[i]    
-            var a = document.createElement('a')
+            var option = this.options[i];
+            var a = document.createElement('a');
             a.addEventListener('click', function(){
-                this.value = this.option[i] 
-            }, false)
-            this.menu.appendChild(a)
+                this.value = this.option[i];
+            }, false);
+            this.menu.appendChild(a);
         } 
     },
 
-}
+};
 
 var val = function(){
-    var v = Object.create(Value)
-    v.elem = document.createElement('span')
+    var v = Object.create(Value);
+    v.elem = document.createElement('span');
     //v.elem.href = '#'
-    v.elem.innerHTML = v.value
+    v.elem.innerHTML = v.value;
     v.elem.addEventListener('click', function(){
-        v.click()
-    }, false)
-    v.options = []
-    v.menu = document.createElement('span')
-    return v
-}
+        v.click();
+    }, false);
+    v.options = [];
+    v.menu = document.createElement('span');
+    return v;
+};
 
 
 
@@ -116,8 +116,8 @@ var val = function(){
 ///////////////
 //#system parameters
 
-var components = {}
-components.inverters = {}
+var components = {};
+components.inverters = {};
 components.inverters['SMA3000'] = {
     make:'SMA',
     model:'3000',
@@ -127,9 +127,9 @@ components.inverters['SMA3000'] = {
     
     AC_options: ['240','208'],
 
-}
+};
 
-components.modules = {}
+components.modules = {};
 components.modules['Sunsucker250'] = {
     make:'Sunsucker',
     model:'250',
@@ -140,25 +140,25 @@ components.modules['Sunsucker250'] = {
     Imp: 8,
     Vmp: 50,
 
-}
+};
 
 
 
 var addInverter = function(){
         
 
-}
+};
 
 
 
-var system = {}
-system.DC = {}
-system.DC.string_num = 6
-system.DC.string_module = 6
-system.DC.module = components.modules['Sunsucker250']
-system.inverter = components.inverters['SMA3000']
+var system = {};
+system.DC = {};
+system.DC.string_num = 6;
+system.DC.string_module = 6;
+system.DC.module = components.modules['Sunsucker250'];
+system.inverter = components.inverters['SMA3000'];
 
-system.AC_type = '208'
+system.AC_type = '208';
 
 
 switch(system.AC_type){
@@ -169,9 +169,9 @@ switch(system.AC_type){
         system.AC_conductors = 3;
         break;
     default:
-        log('Error, unknown AC type')
+        log('Error, unknown AC type');
 }
-log('wires', system.AC_conductors)
+log('wires', system.AC_conductors);
 
 
 
@@ -187,7 +187,7 @@ log('wires', system.AC_conductors)
 ////////////
 // layers
 
-var l_attr = {}
+var l_attr = {};
 
 l_attr.base = {
     'fill': 'none',
@@ -197,37 +197,37 @@ l_attr.base = {
     'stroke-linejoin':'miter',
     'stroke-opacity':1,
 
-}
-l_attr.DC_pos = Object.create(l_attr.base)
-l_attr.DC_pos.stroke = '#ff0000'
-l_attr.DC_neg = Object.create(l_attr.base)
-l_attr.DC_neg.stroke = '#000000'
-l_attr.DC_ground = Object.create(l_attr.base)
-l_attr.DC_ground.stroke = '#006600'
-l_attr.module = Object.create(l_attr.base)
-l_attr.box = Object.create(l_attr.base)
-l_attr.text = Object.create(l_attr.base)
-l_attr.text.stroke = '#0000ff'
-l_attr.terminal = Object.create(l_attr.base)
-l_attr.AC_ground = Object.create(l_attr.base)
-l_attr.AC_ground.stroke = '#006600'
-l_attr.AC_neutral = Object.create(l_attr.base)
-l_attr.AC_neutral.stroke = '#666666'
+};
+l_attr.DC_pos = Object.create(l_attr.base);
+l_attr.DC_pos.stroke = '#ff0000';
+l_attr.DC_neg = Object.create(l_attr.base);
+l_attr.DC_neg.stroke = '#000000';
+l_attr.DC_ground = Object.create(l_attr.base);
+l_attr.DC_ground.stroke = '#006600';
+l_attr.module = Object.create(l_attr.base);
+l_attr.box = Object.create(l_attr.base);
+l_attr.text = Object.create(l_attr.base);
+l_attr.text.stroke = '#0000ff';
+l_attr.terminal = Object.create(l_attr.base);
+l_attr.AC_ground = Object.create(l_attr.base);
+l_attr.AC_ground.stroke = '#006600';
+l_attr.AC_neutral = Object.create(l_attr.base);
+l_attr.AC_neutral.stroke = '#666666';
 
 ///////////////
 // fonts
 
-fonts = {}
+fonts = {};
 fonts.signs = {
     'font-family': 'monospace',
     'font-size':     5,
     'text-anchor':   'middle',
-}
+};
 fonts.label = {
     'font-family': 'monospace',
     'font-size':     12,
     'text-anchor':   'middle',
-}
+};
 
 
 ///////
@@ -236,31 +236,31 @@ fonts.label = {
 // LAYERS
 
 
-var layers = {}
-for( l in l_attr) {
-    layers[l] = []
+var layers = {};
+for( var l in l_attr) {
+    layers[l] = [];
 }
 
 // BLOCKS
 
 var Blk = {
     object: 'Blk',
-}
+};
 Blk.move = function(x, y){
     for( var i in this.array ){
-        this.array[i].move(x,y)
+        this.array[i].move(x,y);
     }
-    return this
-}
+    return this;
+};
 Blk.add = function(){
-    if( typeof this.array == 'undefined'){ this.array = []}
+    if( typeof this.array == 'undefined'){ this.array = [];}
     for( var i in arguments){
-        this.array.push(arguments[i])
+        this.array.push(arguments[i]);
     }
-    return this
-}
+    return this;
+};
 
-var blocks = []
+var blocks = [];
 
 // Create default layer,block container and functions
 
@@ -277,8 +277,8 @@ var layer = function(name){ // set current layer
     } else { // finaly activate requested layer
         drawStat.layer = layers[name];
     }
-}
-layer() // set current layer to base
+};
+layer(); // set current layer to base
 
 /*
 var block = function(name) {// set current block
@@ -306,17 +306,17 @@ var block = function(name) {// set current block
         return output;
 
     }
-}
+};
 
 
 // clear drawing 
 var clear_drawing = function() {
-    blocks.length = 0
+    blocks.length = 0;
     for( var l in l_attr) {
         layers[l] = [];
     }
 
-}
+};
 
 
 //////
@@ -326,16 +326,16 @@ var clear_drawing = function() {
 
 var SvgElem = {
     object: 'SvgElem'
-}
+};
 SvgElem.move = function(x, y){
     if( typeof this.points != 'undefined' ) {
         for( var i in this.points ) {
-            this.points[i][0] += x
-            this.points[i][1] += y
+            this.points[i][0] += x;
+            this.points[i][1] += y;
         }
     }
-    return this
-}
+    return this;
+};
 
 ///////
 // functions for adding elements
@@ -353,7 +353,7 @@ var add = function(type, points, layer_name) {
 
     if( typeof points == 'string') {
         var points = points.split(' ');
-        for( i in points ) {
+        for( var i in points ) {
             points[i] = points[i].split(',');
             for( var c in points[i] ) {
                 points[i][c] = Number(points[i][c]);
@@ -372,27 +372,27 @@ var add = function(type, points, layer_name) {
     }
 
     return elem;
-}
+};
 
 var line = function(points, layer){ // (points, [layer])
     //return add('line', points, layer)
     var line =  add('line', points, layer);
     return line;
-}
+};
 
 var rect = function(loc, size, layer){
-    var rec = add('rect', [loc], layer)
-    rec.w = size[0]
-    rec.h = size[1]
-    return rec
-}
+    var rec = add('rect', [loc], layer);
+    rec.w = size[0];
+    rec.h = size[1];
+    return rec;
+};
 
 var circ = function(loc, diameter, layer){
     //log('circle', loc, diameter, layer)
-    var cir = add('circ', [loc], layer)
-    cir.d = diameter
-    return cir
-}
+    var cir = add('circ', [loc], layer);
+    cir.d = diameter;
+    return cir;
+};
 
 var text = function(loc, strings, font, layer){
     var txt = add('text', [loc], layer);
@@ -402,29 +402,29 @@ var text = function(loc, strings, font, layer){
     txt.strings = strings;
     txt.font = font;
     return txt;
-}
+};
 
 var subBlock = function(blk){
     if(drawStat.block){ 
         drawStat.block.add(elem);
     } else {
-        log("Error, no active block to add to")
+        log("Error, no active block to add to");
     }
 
-}
+};
 
 /////////////////////////////////
 
 
-log('layers', layers)
-log('blocks', blocks)
+log('layers', layers);
+log('blocks', blocks);
 
 var mk_SVG = function(){
-    for( layer_name in layers ){
-        var attr = l_attr[layer_name]
+    for( var layer_name in layers ){
+        var attr = l_attr[layer_name];
     }
 
-}
+};
 
 
 
@@ -497,7 +497,7 @@ var mk_drawing = function(){
     blocks.push( mk_DC(loc.DC));
     blocks.push( mk_inverter(loc.inverter) );
     blocks.push( mk_ac_disc(loc.AC_disc) );
-}
+};
 
 //#AC_discconect
 var mk_ac_disc = function(coor){
@@ -513,7 +513,7 @@ var mk_ac_disc = function(coor){
     layer();
 
     return block();
-}
+};
 //#inverter
 var mk_inverter = function(coor){
     log('making inverter');
@@ -522,19 +522,19 @@ var mk_inverter = function(coor){
 
     block('Inverter');
     //frame
-    layer('box')
+    layer('box');
     rect(
         [coor.x,coor.y],
         [size.inverter_w, size.inverter_h]
     );
     // Label at top (Inverter, make, model, ...)
-    layer('text')
+    layer('text');
     text(
         [loc.inverter.x, loc.inverter.top + size.inverter_text_gap ],
         [ 'Inverter', system.inverter.make + " " + system.inverter.model ],
         'label'
     );
-    layer()
+    layer();
 
     var blk = block();
     blk.add( mk_inverter_symbol(coor) );
@@ -542,7 +542,7 @@ var mk_inverter = function(coor){
     var point = loc.inverter.bottom_right;
     point.x -= size.terminal_diam * (system.AC_conductors+3);
     point.y -= size.terminal_diam;
-    var AC_layer_names = ['AC_ground', 'AC_neutral', 'AC_L1', 'AC_L2', 'AC_L2']
+    var AC_layer_names = ['AC_ground', 'AC_neutral', 'AC_L1', 'AC_L2', 'AC_L2'];
     for( var i=0; i < system.AC_conductors; i++ ){
         blk.add( mk_terminal(point) );
         layer(AC_layer_names[i]);
@@ -553,17 +553,17 @@ var mk_inverter = function(coor){
         ]));
         point.x += size.terminal_diam;
     }
-    layer()
+    layer();
 
     log('blk', blk);
     return blk;
-}
+};
 
 //#inverter
 var mk_inverter_symbol = function(coor){
     log('makeng inverter symbol');
 
-    var coor = { x:coor.x, y:coor.y }
+    var coor = { x:coor.x, y:coor.y };
     
     var w = size.inverter_symbol_w;
     var h = size.inverter_symbol_h;
@@ -633,27 +633,27 @@ var mk_inverter_symbol = function(coor){
     layer();
         
     return block();
-}
+};
 //#AC
 
 
 //#DC
 var mk_DC = function( coor ){
-    var coor = { x:coor.x, y:coor.y }
-    var blk = Object.create(Blk)
-    blk.type = 'DV Junction Box'
+    var coor = { x:coor.x, y:coor.y };
+    var blk = Object.create(Blk);
+    blk.type = 'DV Junction Box';
 
-    var x = coor.x
-    var y = coor.y
-    var jBox_w = 80
-    var jBox_h = 140 + size.wire_offset_base*2 * system.DC.string_num 
+    var x = coor.x;
+    var y = coor.y;
+    var jBox_w = 80;
+    var jBox_h = 140 + size.wire_offset_base*2 * system.DC.string_num ;
 
-    var fuse_width = size.wire_offset_gap
-    var to_disconnect_x = 150
-    var to_disconnect_y = -100
+    var fuse_width = size.wire_offset_gap;
+    var to_disconnect_x = 150;
+    var to_disconnect_y = -100;
 
-    var discBox_w = 80 + size.wire_offset_base*2 * system.DC.string_num 
-    var discBox_h = 140
+    var discBox_w = 80 + size.wire_offset_base*2 * system.DC.string_num ;
+    var discBox_h = 140;
 
     // combiner box
     
@@ -661,11 +661,11 @@ var mk_DC = function( coor ){
         [x+jBox_w/2,y-jBox_h/10],
         [jBox_w,jBox_h],
         'box'
-    ))
+    ));
 
 
-    for( i in _.range(system.DC.string_num)) {
-        var offset = size.wire_offset_gap + ( i * size.wire_offset_base )
+    for( var i in _.range(system.DC.string_num)) {
+        var offset = size.wire_offset_gap + ( i * size.wire_offset_base );
 
         blk.add([
             line([
@@ -679,7 +679,7 @@ var mk_DC = function( coor ){
                 [ x+jBox_w+to_disconnect_x-offset , y+to_disconnect_y-size.terminal_diam-size.terminal_diam*3],
             ], 'DC_pos'),
             mk_terminal( { x: x+jBox_w+to_disconnect_x-offset, y: y+to_disconnect_y-size.terminal_diam } )
-        ])
+        ]);
 
         blk.add([
             line([
@@ -693,26 +693,26 @@ var mk_DC = function( coor ){
                 [ x+jBox_w+to_disconnect_x+offset , y+to_disconnect_y-size.terminal_diam-size.terminal_diam*3],
             ], 'DC_neg'),
             mk_terminal( { x: x+jBox_w+to_disconnect_x+offset, y: y+to_disconnect_y-size.terminal_diam } )
-        ])
+        ]);
     }
 
-    x += jBox_w
+    x += jBox_w;
 
-    x += to_disconnect_x
-    y += to_disconnect_y
+    x += to_disconnect_x;
+    y += to_disconnect_y;
 
     // DC disconect combiner lines
     if( system.DC.string_num > 1){
-        offset_min = size.wire_offset_gap
-        offset_max = size.wire_offset_gap + ( (system.DC.string_num-1) * size.wire_offset_base )
+        offset_min = size.wire_offset_gap;
+        offset_max = size.wire_offset_gap + ( (system.DC.string_num-1) * size.wire_offset_base );
         line([
             [ x-offset_min, y-size.terminal_diam-size.terminal_diam*3],
             [ x-offset_max , y-size.terminal_diam-size.terminal_diam*3],
-        ], 'DC_pos')
+        ], 'DC_pos');
         line([
             [ x+offset_min, y-size.terminal_diam-size.terminal_diam*3],
             [ x+offset_max, y-size.terminal_diam-size.terminal_diam*3],
-        ], 'DC_neg')
+        ], 'DC_neg');
     }
     
     // Inverter conection
@@ -721,7 +721,7 @@ var mk_DC = function( coor ){
             [ x-offset_min, y-size.terminal_diam-size.terminal_diam*3],
             [ x-offset_min, y-size.terminal_diam-size.terminal_diam*3],
         ],'DC_pos')
-    )
+    );
 
 
 
@@ -730,17 +730,17 @@ var mk_DC = function( coor ){
         [x, y-discBox_h/2],
         [discBox_w,discBox_h],
         'box'
-    ))
-    return blk
-}
+    ));
+    return blk;
+};
 
 var mk_terminal = function(coor){
-    var coor = { x:coor.x, y:coor.y }
-    var blk = Object.create(Blk)
-    blk.type = 'terminal'
+    var coor = { x:coor.x, y:coor.y };
+    var blk = Object.create(Blk);
+    blk.type = 'terminal';
 
-    x = coor.x
-    y = coor.y
+    x = coor.x;
+    y = coor.y;
 
     blk.add(
         circ(
@@ -748,34 +748,34 @@ var mk_terminal = function(coor){
             size.terminal_diam,
             'terminal'
             )
-    )
+    );
     
-    return blk
-}
+    return blk;
+};
 
 //#array
 var mk_array = function(coor){
-    var coor = { x:coor.x, y:coor.y }
-    var blk = Object.create(Blk)
-    blk.type = 'array'
+    var coor = { x:coor.x, y:coor.y };
+    var blk = Object.create(Blk);
+    blk.type = 'array';
 
 
-    var coor_array = { x:coor.x, y:coor.y }
-    coor.x -= size.module_frame.h*3
-    coor.y -= size.string_h/2
+    var coor_array = { x:coor.x, y:coor.y };
+    coor.x -= size.module_frame.h*3;
+    coor.y -= size.string_h/2;
 
-    pv_array = {}
-    pv_array.upper = coor.y
-    pv_array.lower = pv_array.upper + size.string_h
-    pv_array.right = coor_array.x - size.module_frame.h*2
-    pv_array.left = pv_array.right - ( size.string_w * system.DC.string_num ) - ( size.module_w * 1.25 ) 
+    pv_array = {};
+    pv_array.upper = coor.y;
+    pv_array.lower = pv_array.upper + size.string_h;
+    pv_array.right = coor_array.x - size.module_frame.h*2;
+    pv_array.left = pv_array.right - ( size.string_w * system.DC.string_num ) - ( size.module_w * 1.25 ) ;
 
-    pv_array.center = coor_array.y
+    pv_array.center = coor_array.y;
 
-    for( i in _.range(system.DC.string_num)) {
-        var offset = i * size.wire_offset_base
+    for( var i in _.range(system.DC.string_num)) {
+        var offset = i * size.wire_offset_base;
 
-        blk.add(mk_pv_string(coor))
+        blk.add(mk_pv_string(coor));
         // positive home run
         blk.add(line([
             [ coor.x , pv_array.upper ],
@@ -783,7 +783,7 @@ var mk_array = function(coor){
             [ pv_array.right+offset , pv_array.upper-size.module_w-offset ],
             [ pv_array.right+offset , pv_array.center-size.module_w-offset],
             [ coor_array.x , pv_array.center-size.module_w-offset],
-        ], 'DC_pos'))
+        ], 'DC_pos'));
 
         // negative home run
         blk.add(line([
@@ -792,9 +792,9 @@ var mk_array = function(coor){
             [ pv_array.right+offset , pv_array.lower+size.module_w+offset ],
             [ pv_array.right+offset , pv_array.center+size.module_w+offset],
             [ coor_array.x , pv_array.center+size.module_w+offset],
-        ], 'DC_neg'))
+        ], 'DC_neg'));
 
-        coor.x -= size.string_w
+        coor.x -= size.string_w;
     }
 
     blk.add(line([
@@ -802,22 +802,22 @@ var mk_array = function(coor){
         [ pv_array.right+size.wire_offset_ground , pv_array.lower + size.module_w + size.wire_offset_ground ],
         [ pv_array.right+size.wire_offset_ground , pv_array.center + size.module_w + size.wire_offset_ground],
         [ coor_array.x , pv_array.center+size.module_w+size.wire_offset_ground],
-    ], 'DC_ground'))
+    ], 'DC_ground'));
 
-    return blk
+    return blk;
 
-}
+};
 
 
 //#string
 var mk_pv_string = function(coor){
-    var coor = { x:coor.x, y:coor.y }
-    var blk = Object.create(Blk)
-    blk.type = 'string'
+    var coor = { x:coor.x, y:coor.y };
+    var blk = Object.create(Blk);
+    blk.type = 'string';
 
-    var coor_string = {}
-    coor_string.x = coor.x
-    coor_string.y = coor.y
+    var coor_string = {};
+    coor_string.x = coor.x;
+    coor_string.y = coor.y;
 
     //TODO: add loop to jump over negative return wires 
     blk.add(
@@ -828,33 +828,33 @@ var mk_pv_string = function(coor){
             ],
             'DC_ground'
         )
-    )
-    var module1 = mk_module(coor_string)
-    coor_string.y += size.module_frame.h + size.module_lead*2 + size.string_gap_missing
-    var module2 = mk_module(coor_string)
-    coor_string.y += size.module_frame.h + size.module_lead*2 + size.string_gap
-    var module3 = mk_module(coor_string)
-    coor_string.y += size.module_frame.h + size.module_lead*2 + size.string_gap
-    var module4 = mk_module(coor_string)
-    blk.add(module1,module2,module3,module4)
+    );
+    var module1 = mk_module(coor_string);
+    coor_string.y += size.module_frame.h + size.module_lead*2 + size.string_gap_missing;
+    var module2 = mk_module(coor_string);
+    coor_string.y += size.module_frame.h + size.module_lead*2 + size.string_gap;
+    var module3 = mk_module(coor_string);
+    coor_string.y += size.module_frame.h + size.module_lead*2 + size.string_gap;
+    var module4 = mk_module(coor_string);
+    blk.add(module1,module2,module3,module4);
 
 
-    return blk
-}
+    return blk;
+};
 
 //#module
 var mk_module = function(coor) {
     var coor = { x:coor.x, y:coor.y }
-    x = coor.x
-    y = coor.y
+    x = coor.x;
+    y = coor.y;
 
-    lead = size.module_lead
-    w = size.module_frame.w
-    h = size.module_frame.h
+    lead = size.module_lead;
+    w = size.module_frame.w;
+    h = size.module_frame.h;
 
     block('module');
     // frame
-    layer('module')
+    layer('module');
     rect( [0,h/2], [w,h]);
     // frame triangle?
     line([
@@ -896,11 +896,11 @@ var mk_module = function(coor) {
         [-w/2-w/4, h/2],
     ]);
 
-    var blk = block()
-    blk.move(x,y)
-    blk.move(0,lead)
-    return blk
-}
+    var blk = block();
+    blk.move(x,y);
+    blk.move(0,lead);
+    return blk;
+};
 
 
 
@@ -912,60 +912,60 @@ var mk_module = function(coor) {
 
 //#svg
 var display_svg = function(container_id){
-    log('displaying svg')
-    var container = document.getElementById(container_id)
-    container.innerHTML = ''
+    log('displaying svg');
+    var container = document.getElementById(container_id);
+    container.innerHTML = '';
     //container.empty()
 
     //var svg_elem = document.getElementById('SvgjsSvg1000')
-    var svg_elem = document.createElementNS("http://www.w3.org/2000/svg", 'svg')
-    svg_elem.setAttribute('id','svg_drawing')
-    svg_elem.setAttribute('width', 1000)
-    svg_elem.setAttribute('height', 1000)
-    container.appendChild(svg_elem)
-    var svg = SVG(svg_elem).size(1000,1000)
+    var svg_elem = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
+    svg_elem.setAttribute('id','svg_drawing');
+    svg_elem.setAttribute('width', 1000);
+    svg_elem.setAttribute('height', 1000);
+    container.appendChild(svg_elem);
+    var svg = SVG(svg_elem).size(1000,1000);
 
 
     for( var layer_name in layers){
-        var layer = layers[layer_name]
+        var layer = layers[layer_name];
         for( var i in layer){
-            var elem = layer[i]
+            var elem = layer[i];
             if( elem.type == 'rect') {
-                svg.rect( elem.w, elem.h ).move( elem.points[0][0]-elem.w/2, elem.points[0][1]-elem.h/2 ).attr( l_attr[layer_name] )
+                svg.rect( elem.w, elem.h ).move( elem.points[0][0]-elem.w/2, elem.points[0][1]-elem.h/2 ).attr( l_attr[layer_name] );
             } else if( elem.type == 'line') {
-                svg.polyline( elem.points ).attr( l_attr[layer_name] )
+                svg.polyline( elem.points ).attr( l_attr[layer_name] );
             } else if( elem.type == 'text') {
                 //var t = svg.text( elem.strings ).move( elem.points[0][0], elem.points[0][1] ).attr( l_attr[layer_name] )
-                var font = fonts[elem.font]
+                var font = fonts[elem.font];
                 
-                var t = document.createElementNS("http://www.w3.org/2000/svg", 'text')
-                t.setAttribute('x', elem.points[0][0])
-                t.setAttribute('y', elem.points[0][1] + font['font-size']/2 )
+                var t = document.createElementNS("http://www.w3.org/2000/svg", 'text');
+                t.setAttribute('x', elem.points[0][0]);
+                t.setAttribute('y', elem.points[0][1] + font['font-size']/2 );
                 for( var i2 in l_attr[layer_name] ){
-                    t.setAttribute( i2, l_attr[layer_name][i2] )
+                    t.setAttribute( i2, l_attr[layer_name][i2] );
                 }
                 for( var i2 in font ){
-                    t.setAttribute( i2, font[i2] )
+                    t.setAttribute( i2, font[i2] );
                 }
                 for( var i2 in elem.strings ){
-                    var tspan = document.createElementNS("http://www.w3.org/2000/svg", 'tspan')
-                    tspan.setAttribute('dy', font['font-size']*1.5*i2 )
-                    tspan.setAttribute('x', elem.points[0][0])
-                    tspan.innerHTML = elem.strings[i2]
-                    t.appendChild(tspan)
+                    var tspan = document.createElementNS("http://www.w3.org/2000/svg", 'tspan');
+                    tspan.setAttribute('dy', font['font-size']*1.5*i2 );
+                    tspan.setAttribute('x', elem.points[0][0]);
+                    tspan.innerHTML = elem.strings[i2];
+                    t.appendChild(tspan);
                 }
-                svg_elem.appendChild(t)
+                svg_elem.appendChild(t);
             } else if( elem.type == 'circ') {
-                var c = document.createElementNS("http://www.w3.org/2000/svg", 'ellipse')
-                c.setAttribute('rx', elem.d/2)
-                c.setAttribute('ry', elem.d/2)
-                c.setAttribute('cx', elem.points[0][0])
-                c.setAttribute('cy', elem.points[0][1])
-                var attr = l_attr[layer_name]
+                var c = document.createElementNS("http://www.w3.org/2000/svg", 'ellipse');
+                c.setAttribute('rx', elem.d/2);
+                c.setAttribute('ry', elem.d/2);
+                c.setAttribute('cx', elem.points[0][0]);
+                c.setAttribute('cy', elem.points[0][1]);
+                var attr = l_attr[layer_name];
                 for( var i2 in attr ){
-                    c.setAttribute(i2, attr[i2])
+                    c.setAttribute(i2, attr[i2]);
                 }
-                svg_elem.appendChild(c)
+                svg_elem.appendChild(c);
                 /*
                 c.attributes( l_attr[layer_name] )
                 c.attributes({
@@ -985,32 +985,32 @@ var display_svg = function(container_id){
 
     }
 
-}
+};
 
 //////////////////////////////////////////
 // after page loads functions
 
 //#update drawing
 var update_drawing = function(){
-    log('updating drawing')
+    log('updating drawing');
     //('#string_select option:selected'))
-    var svg_container_id = 'svg_container'
-    if( document.getElementById(svg_container_id) == null ){
-        var svg_container = document.createElement('div')
-        svg_container.id = svg_container_id
-        document.getElementById('drawing_page').appendChild(svg_container)
+    var svg_container_id = 'svg_container';
+    if( document.getElementById(svg_container_id) === null ){
+        var svg_container = document.createElement('div');
+        svg_container.id = svg_container_id;
+        document.getElementById('drawing_page').appendChild(svg_container);
     } else {
-        var svg_container = document.getElementById(svg_container_id)
+        var svg_container = document.getElementById(svg_container_id);
     }
-    var select_string = document.getElementById('string_select')
-    system.DC.string_num = Number( select_string[select_string.selectedIndex].value )
+    var select_string = document.getElementById('string_select');
+    system.DC.string_num = Number( select_string[select_string.selectedIndex].value );
 
-    clear_drawing()
+    clear_drawing();
 
-    mk_drawing()
-    display_svg('svg_container')
+    mk_drawing();
+    display_svg('svg_container');
 
-}
+};
 
 $(document).ready( function() {
     var title = 'PV drawing test';
@@ -1018,7 +1018,7 @@ $(document).ready( function() {
         'drawing_page':'Drawing',
         'test':'test',
         'text_dump':'text_dump'
-    }
+    };
 
     k.setup_body(title, sections);
 
@@ -1034,12 +1034,12 @@ $(document).ready( function() {
     //var string_select = $('<select>').attr('id','string_select')
     var string_select = document.createElement('select');
     string_select.setAttribute('id', 'string_select');
-    for( i in _.range(10)) {
-        if( i != 0 ){
+    for( var i in _.range(10)) {
+        if( i !== 0 ){
             var op = new Option();
             op.value = i;
             op.text = String(i) + ' string';
-            if( i === 4) { op.selected = 'selected' }
+            if( i === 4) { op.selected = 'selected';}
             string_select.appendChild(op);
         }
     }
@@ -1048,7 +1048,7 @@ $(document).ready( function() {
     // When number of strings change, update model, display
     string_select.addEventListener('change', function(){
         update_drawing();
-    }, false)
+    }, false);
     
 
 
@@ -1067,20 +1067,20 @@ $(document).ready( function() {
 
 
 
-})
+});
 
 
 
 $(window).ready( function() {
-    var boot_time = moment()
-    var status_id = "status"
-    setInterval(function(){ k.update_status_page(status_id, boot_time) },1000)
+    var boot_time = moment();
+    var status_id = "status";
+    setInterval(function(){ k.update_status_page(status_id, boot_time);},1000);
 
 
 
 
 
 
-})
+});
 
 
