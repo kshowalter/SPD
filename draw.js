@@ -493,153 +493,61 @@ var mk_drawing = function(){
 
     // PV array
     var coor = { x:200, y:600 };
-    blocks.push( mk_array(loc.array) );
-    blocks.push( mk_DC(loc.DC));
-    blocks.push( mk_inverter(loc.inverter) );
-    blocks.push( mk_ac_disc(loc.AC_disc) );
-};
 
-//#AC_discconect
-var mk_ac_disc = function(coor){
-    log('making AC disconect');
-    var coor = { x:coor.x, y:coor.y };
-
-    block('AC disc.');
-    layer('box');
-    rect(
-        [coor.x, coor.y],
-        [size.AC_disc_w, size.AC_disc_h]
-    );
-    layer();
-
-    return block();
-};
-//#inverter
-var mk_inverter = function(coor){
-    log('making inverter');
-    var coor = { x:coor.x, y:coor.y };
+//#array
+    var coor = loc.array;
+    var blk = Object.create(Blk);
+    blk.type = 'array';
 
 
-    block('Inverter');
-    //frame
-    layer('box');
-    rect(
-        [coor.x,coor.y],
-        [size.inverter_w, size.inverter_h]
-    );
-    // Label at top (Inverter, make, model, ...)
-    layer('text');
-    text(
-        [loc.inverter.x, loc.inverter.top + size.inverter_text_gap ],
-        [ 'Inverter', system.inverter.make + " " + system.inverter.model ],
-        'label'
-    );
-    layer();
+    var coor_array = { x:coor.x, y:coor.y };
+    coor.x -= size.module_frame.h*3;
+    coor.y -= size.string_h/2;
 
-    var blk = block();
-    blk.add( mk_inverter_symbol(coor) );
-    
-    var point = loc.inverter.bottom_right;
-    point.x -= size.terminal_diam * (system.AC_conductors+3);
-    point.y -= size.terminal_diam;
-    var AC_layer_names = ['AC_ground', 'AC_neutral', 'AC_L1', 'AC_L2', 'AC_L2'];
-    for( var i=0; i < system.AC_conductors; i++ ){
-        blk.add( mk_terminal(point) );
-        layer(AC_layer_names[i]);
-        blk.add( line([
-            [point.x, point.y],
-            [point.x, loc.AC_disc.bottom - size.terminal_diam * (i+1) ],
-            [loc.AC_disc.left, loc.AC_disc.bottom - size.terminal_diam * (i+1) ],
-        ]));
-        point.x += size.terminal_diam;
+    pv_array = {};
+    pv_array.upper = coor.y;
+    pv_array.lower = pv_array.upper + size.string_h;
+    pv_array.right = coor_array.x - size.module_frame.h*2;
+    pv_array.left = pv_array.right - ( size.string_w * system.DC.string_num ) - ( size.module_w * 1.25 ) ;
+
+    pv_array.center = coor_array.y;
+
+    for( var i in _.range(system.DC.string_num)) {
+        var offset = i * size.wire_offset_base;
+
+        blk.add(mk_pv_string(coor));
+        // positive home run
+        blk.add(line([
+            [ coor.x , pv_array.upper ],
+            [ coor.x , pv_array.upper-size.module_w-offset ],
+            [ pv_array.right+offset , pv_array.upper-size.module_w-offset ],
+            [ pv_array.right+offset , pv_array.center-size.module_w-offset],
+            [ coor_array.x , pv_array.center-size.module_w-offset],
+        ], 'DC_pos'));
+
+        // negative home run
+        blk.add(line([
+            [ coor.x , pv_array.lower ],
+            [ coor.x , pv_array.lower+size.module_w+offset ],
+            [ pv_array.right+offset , pv_array.lower+size.module_w+offset ],
+            [ pv_array.right+offset , pv_array.center+size.module_w+offset],
+            [ coor_array.x , pv_array.center+size.module_w+offset],
+        ], 'DC_neg'));
+
+        coor.x -= size.string_w;
     }
-    layer();
 
-    log('blk', blk);
-    return blk;
-};
+    blk.add(line([
+        [ pv_array.left , pv_array.lower + size.module_w + size.wire_offset_ground ],
+        [ pv_array.right+size.wire_offset_ground , pv_array.lower + size.module_w + size.wire_offset_ground ],
+        [ pv_array.right+size.wire_offset_ground , pv_array.center + size.module_w + size.wire_offset_ground],
+        [ coor_array.x , pv_array.center+size.module_w+size.wire_offset_ground],
+    ], 'DC_ground'));
 
-//#inverter
-var mk_inverter_symbol = function(coor){
-    log('makeng inverter symbol');
-
-    var coor = { x:coor.x, y:coor.y };
-    
-    var w = size.inverter_symbol_w;
-    var h = size.inverter_symbol_h;
-
-    var space = w*1/12;
-
-    block('Inverter symbol');
-    // Inverter symbol
-    layer('box');
-
-    // box
-    rect(
-        [coor.x,coor.y],
-        [w, h]
-    );
-    // diaganal
-    line([
-        [coor.x-w/2, coor.y+h/2],
-        [coor.x+w/2, coor.y-h/2],
-    
-    ]);
-    // DC
-    line([
-        [coor.x - w/2 + space, 
-            coor.y - h/2 + space],
-        [coor.x - w/2 + space*6, 
-            coor.y - h/2 + space],
-    ]);
-    line([
-        [coor.x - w/2 + space, 
-            coor.y - h/2 + space*2],
-        [coor.x - w/2 + space*2, 
-            coor.y - h/2 + space*2],
-    ]);
-    line([
-        [coor.x - w/2 + space*3, 
-            coor.y - h/2 + space*2],
-        [coor.x - w/2 + space*4, 
-            coor.y - h/2 + space*2],
-    ]);
-    line([
-        [coor.x - w/2 + space*5, 
-            coor.y - h/2 + space*2],
-        [coor.x - w/2 + space*6, 
-            coor.y - h/2 + space*2],
-    ]);
-
-    // AC
-    line([
-        [coor.x + w/2 - space, 
-            coor.y + h/2 - space*1.5],
-        [coor.x + w/2 - space*2, 
-            coor.y + h/2 - space*1.5],
-    ]);
-    line([
-        [coor.x + w/2 - space*3, 
-            coor.y + h/2 - space*1.5],
-        [coor.x + w/2 - space*4, 
-            coor.y + h/2 - space*1.5],
-    ]);
-    line([
-        [coor.x + w/2 - space*5, 
-            coor.y + h/2 - space*1.5],
-        [coor.x + w/2 - space*6, 
-            coor.y + h/2 - space*1.5],
-    ]);
-    layer();
-        
-    return block();
-};
-//#AC
 
 
 //#DC
-var mk_DC = function( coor ){
-    var coor = { x:coor.x, y:coor.y };
+    var coor = loc.DC;
     var blk = Object.create(Blk);
     blk.type = 'DV Junction Box';
 
@@ -731,8 +639,146 @@ var mk_DC = function( coor ){
         [discBox_w,discBox_h],
         'box'
     ));
+
+
+//#inverter
+    log('making inverter');
+    coor = loc.inverter;
+
+
+    block('Inverter');
+    //frame
+    layer('box');
+    rect(
+        [coor.x,coor.y],
+        [size.inverter_w, size.inverter_h]
+    );
+    // Label at top (Inverter, make, model, ...)
+    layer('text');
+    text(
+        [loc.inverter.x, loc.inverter.top + size.inverter_text_gap ],
+        [ 'Inverter', system.inverter.make + " " + system.inverter.model ],
+        'label'
+    );
+    layer();
+
+    var blk = block();
+    blk.add( mk_inverter_symbol(coor) );
+    
+    var point = loc.inverter.bottom_right;
+    point.x -= size.terminal_diam * (system.AC_conductors+3);
+    point.y -= size.terminal_diam;
+    var AC_layer_names = ['AC_ground', 'AC_neutral', 'AC_L1', 'AC_L2', 'AC_L2'];
+    for( var i=0; i < system.AC_conductors; i++ ){
+        blk.add( mk_terminal(point) );
+        layer(AC_layer_names[i]);
+        blk.add( line([
+            [point.x, point.y],
+            [point.x, loc.AC_disc.bottom - size.terminal_diam * (i+1) ],
+            [loc.AC_disc.left, loc.AC_disc.bottom - size.terminal_diam * (i+1) ],
+        ]));
+        point.x += size.terminal_diam;
+    }
+    layer();
+
+    log('blk', blk);
     return blk;
 };
+
+//#AC_discconect
+var mk_ac_disc = function(coor){
+    log('making AC disconect');
+    var coor = { x:coor.x, y:coor.y };
+    blocks.push( mk_ac_disc(loc.AC_disc) );
+
+    block('AC disc.');
+    layer('box');
+    rect(
+        [coor.x, coor.y],
+        [size.AC_disc_w, size.AC_disc_h]
+    );
+    layer();
+
+    return block();
+};
+//#inverter
+var mk_inverter_symbol = function(coor){
+    log('makeng inverter symbol');
+
+    var coor = { x:coor.x, y:coor.y };
+    
+    var w = size.inverter_symbol_w;
+    var h = size.inverter_symbol_h;
+
+    var space = w*1/12;
+
+    block('Inverter symbol');
+    // Inverter symbol
+    layer('box');
+
+    // box
+    rect(
+        [coor.x,coor.y],
+        [w, h]
+    );
+    // diaganal
+    line([
+        [coor.x-w/2, coor.y+h/2],
+        [coor.x+w/2, coor.y-h/2],
+    
+    ]);
+    // DC
+    line([
+        [coor.x - w/2 + space, 
+            coor.y - h/2 + space],
+        [coor.x - w/2 + space*6, 
+            coor.y - h/2 + space],
+    ]);
+    line([
+        [coor.x - w/2 + space, 
+            coor.y - h/2 + space*2],
+        [coor.x - w/2 + space*2, 
+            coor.y - h/2 + space*2],
+    ]);
+    line([
+        [coor.x - w/2 + space*3, 
+            coor.y - h/2 + space*2],
+        [coor.x - w/2 + space*4, 
+            coor.y - h/2 + space*2],
+    ]);
+    line([
+        [coor.x - w/2 + space*5, 
+            coor.y - h/2 + space*2],
+        [coor.x - w/2 + space*6, 
+            coor.y - h/2 + space*2],
+    ]);
+
+    // AC
+    line([
+        [coor.x + w/2 - space, 
+            coor.y + h/2 - space*1.5],
+        [coor.x + w/2 - space*2, 
+            coor.y + h/2 - space*1.5],
+    ]);
+    line([
+        [coor.x + w/2 - space*3, 
+            coor.y + h/2 - space*1.5],
+        [coor.x + w/2 - space*4, 
+            coor.y + h/2 - space*1.5],
+    ]);
+    line([
+        [coor.x + w/2 - space*5, 
+            coor.y + h/2 - space*1.5],
+        [coor.x + w/2 - space*6, 
+            coor.y + h/2 - space*1.5],
+    ]);
+    layer();
+        
+    return block();
+};
+//#AC
+
+
 
 var mk_terminal = function(coor){
     var coor = { x:coor.x, y:coor.y };
@@ -751,61 +797,6 @@ var mk_terminal = function(coor){
     );
     
     return blk;
-};
-
-//#array
-var mk_array = function(coor){
-    var coor = { x:coor.x, y:coor.y };
-    var blk = Object.create(Blk);
-    blk.type = 'array';
-
-
-    var coor_array = { x:coor.x, y:coor.y };
-    coor.x -= size.module_frame.h*3;
-    coor.y -= size.string_h/2;
-
-    pv_array = {};
-    pv_array.upper = coor.y;
-    pv_array.lower = pv_array.upper + size.string_h;
-    pv_array.right = coor_array.x - size.module_frame.h*2;
-    pv_array.left = pv_array.right - ( size.string_w * system.DC.string_num ) - ( size.module_w * 1.25 ) ;
-
-    pv_array.center = coor_array.y;
-
-    for( var i in _.range(system.DC.string_num)) {
-        var offset = i * size.wire_offset_base;
-
-        blk.add(mk_pv_string(coor));
-        // positive home run
-        blk.add(line([
-            [ coor.x , pv_array.upper ],
-            [ coor.x , pv_array.upper-size.module_w-offset ],
-            [ pv_array.right+offset , pv_array.upper-size.module_w-offset ],
-            [ pv_array.right+offset , pv_array.center-size.module_w-offset],
-            [ coor_array.x , pv_array.center-size.module_w-offset],
-        ], 'DC_pos'));
-
-        // negative home run
-        blk.add(line([
-            [ coor.x , pv_array.lower ],
-            [ coor.x , pv_array.lower+size.module_w+offset ],
-            [ pv_array.right+offset , pv_array.lower+size.module_w+offset ],
-            [ pv_array.right+offset , pv_array.center+size.module_w+offset],
-            [ coor_array.x , pv_array.center+size.module_w+offset],
-        ], 'DC_neg'));
-
-        coor.x -= size.string_w;
-    }
-
-    blk.add(line([
-        [ pv_array.left , pv_array.lower + size.module_w + size.wire_offset_ground ],
-        [ pv_array.right+size.wire_offset_ground , pv_array.lower + size.module_w + size.wire_offset_ground ],
-        [ pv_array.right+size.wire_offset_ground , pv_array.center + size.module_w + size.wire_offset_ground],
-        [ coor_array.x , pv_array.center+size.module_w+size.wire_offset_ground],
-    ], 'DC_ground'));
-
-    return blk;
-
 };
 
 
