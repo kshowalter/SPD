@@ -1,3 +1,4 @@
+'use strict';
 // PV Systems drawing generator
 
 
@@ -217,7 +218,7 @@ l_attr.AC_neutral.stroke = '#666666';
 ///////////////
 // fonts
 
-fonts = {};
+var fonts = {};
 fonts.signs = {
     'font-family': 'monospace',
     'font-size':     5,
@@ -260,13 +261,12 @@ Blk.add = function(){
     return this;
 };
 
-var blocks = [];
-
+var blocks = {};
+var block_active = null;
 // Create default layer,block container and functions
 
 var drawStat = {};
 drawStat.layer = false;
-drawStat.block = false;
 
 var layer = function(name){ // set current layer
     if( typeof name === 'undefined' ){ // if no layer name given, reset to default 
@@ -283,28 +283,43 @@ layer(); // set current layer to base
 /*
 var block = function(name) {// set current block
     // if current block has been used, save it before creating a new one.
-    if( drawStat.block.length > 0 ) { blocks.push(drawStat.block); }
+    if( blocks[block_active].length > 0 ) { blocks.push(blocks[block_active]); }
     if( typeof name !== 'undefined' ){ // if name argument is submitted, create new block
         var blk = Object.create(Blk);
         blk.name = name; // block name
-        drawStat.block = blk;
+        blocks[block_active] = blk;
     } else { // else use default block
-        drawStat.block = blocks[0];
+        blocks[block_active] = blocks[0];
     }
 }
 block('default'); // set current block to default
 */
 
 var block = function(name) {// set current block
-    if( typeof name !== 'undefined' ){ // if name argument is submitted, create new block
-        var blk = Object.create(Blk);
-        blk.name = name; // block name
-        drawStat.block = blk;
-    } else { // else use default block
-        var output = drawStat.block;
-        drawStat.block = false;
-        return output;
+    if( arguments.length === 2 ){ // if coor is passed
+        var x = arguments[1].x;
+        var y = arguments[1].y;
+    } else if( arguments.length === 3 ){ // if x,y is passed
+        var x = arguments[1];
+        var y = arguments[2];
+    }
 
+    if( typeof name !== 'undefined' ){ // if name argument is submitted
+        if( x && y ){ // if coordinates are submitted, create instance of saved block
+            // TODO: what if block does not exist? print list of blocks?
+            var blk = Object.create(blocks[name]);
+            blk.x = x;
+            blk.y = y;
+            return blk
+        } else { // define new block
+            // TODO: What if the same name is submitted twice? throw error or fix?
+            var blk = Object.create(Blk);
+            blk.name = name; // block name
+            blocks[block_active] = blk;
+            return blk;
+        }
+    } else { // if nothing is submitted, set active block to null
+        block_active = false;
     }
 };
 
@@ -367,8 +382,8 @@ var add = function(type, points, layer_name) {
 
     drawStat.layer.push(elem);
     
-    if(drawStat.block){ 
-        drawStat.block.add(elem);
+    if(block_active){ 
+        blocks[block_active].add(elem);
     }
 
     return elem;
@@ -405,8 +420,8 @@ var text = function(loc, strings, font, layer){
 };
 
 var subBlock = function(blk){
-    if(drawStat.block){ 
-        drawStat.block.add(elem);
+    if(blocks[block_active]){ 
+        blocks[block_active].add(elem);
     } else {
         log("Error, no active block to add to");
     }
@@ -504,7 +519,7 @@ var mk_drawing = function(){
     coor.x -= size.module_frame.h*3;
     coor.y -= size.string_h/2;
 
-    pv_array = {};
+    var pv_array = {};
     pv_array.upper = coor.y;
     pv_array.lower = pv_array.upper + size.string_h;
     pv_array.right = coor_array.x - size.module_frame.h*2;
@@ -682,28 +697,11 @@ var mk_drawing = function(){
     layer();
 
     log('blk', blk);
-    return blk;
-};
 
-//#AC_discconect
-var mk_ac_disc = function(coor){
-    log('making AC disconect');
-    var coor = { x:coor.x, y:coor.y };
-    blocks.push( mk_ac_disc(loc.AC_disc) );
 
-    block('AC disc.');
-    layer('box');
-    rect(
-        [coor.x, coor.y],
-        [size.AC_disc_w, size.AC_disc_h]
-    );
-    layer();
 
-    return block();
-};
-//#inverter
-var mk_inverter_symbol = function(coor){
-    log('makeng inverter symbol');
+//#inverter symbol
+    log('making inverter symbol');
 
     var coor = { x:coor.x, y:coor.y };
     
@@ -774,11 +772,20 @@ var mk_inverter_symbol = function(coor){
     ]);
     layer();
         
-    return block();
+
+//#AC_discconect
+    log('making AC disconect');
+    var coor = loc.AC_disc;
+
+    block('AC disc.');
+    layer('box');
+    rect(
+        [coor.x, coor.y],
+        [size.AC_disc_w, size.AC_disc_h]
+    );
+    layer();
+
 };
-//#AC
-
-
 
 var mk_terminal = function(coor){
     var coor = { x:coor.x, y:coor.y };
