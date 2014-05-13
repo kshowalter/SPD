@@ -909,11 +909,16 @@ var display_svg = function(container_id){
     container.appendChild(svg_elem);
     var svg = SVG(svg_elem).size(1000,1000);
 
-
-    for( var layer_name in layers){
-        var layer = layers[layer_name];
-        for( var i in layer){
-            var elem = layer[i];
+    for( var id in layers) {
+        var layer_array = layers[id]; 
+        show_elem_array(layer_array);
+    };
+    // var show_elem_array = function(array){
+    function show_elem_array(array){
+        //for( var layer_name in layers)
+        array.forEach( function( elem, id ) {
+        
+        
             if( elem.type == 'rect') {
                 svg.rect( elem.w, elem.h ).move( elem.points[0][0]-elem.w/2, elem.points[0][1]-elem.h/2 ).attr( l_attr[layer_name] );
             } else if( elem.type == 'line') {
@@ -965,11 +970,9 @@ var display_svg = function(container_id){
                 c2.attr( l_attr[layer_name] )
                 */
             }
-        }
-
+        });
     }
-
-};
+}
 
 //////////////////////////////////////////
 // after page loads functions
