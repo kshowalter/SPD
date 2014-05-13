@@ -22,14 +22,6 @@ var appendElement = function(parentElement,name,attrs,text){
 ///////////////////
 // misc functions
 
-function get_JSON(URL, name) {
-    $.getJSON( URL, function( json ) {
-        build_comps(json);
-    }).fail(function(jqxhr, textStatus, error) {
-        console.log( "error", textStatus, error  );
-    });
-}
-
 function format_floats( elem, index, array ) {
     array[index] = parseFloat(elem).toFixed(2);
 }
@@ -378,7 +370,6 @@ var add = function(type, points, layer_name) {
     drawStat.layer.push(elem);
     
     if(block_active){ 
-        log('adding to block '+block_active);
         blocks[block_active].add(elem);
     }
 
@@ -1005,7 +996,7 @@ var update_drawing = function(){
 
 };
 
-$(document).ready( function() {
+window.onload = function() {
     var title = 'PV drawing test';
     var sections = {
         'drawing_page':'Drawing',
@@ -1024,7 +1015,6 @@ $(document).ready( function() {
     dump.innerHTML = 'this is a test'
 
     */
-    //var string_select = $('<select>').attr('id','string_select')
     var string_select = document.createElement('select');
     string_select.setAttribute('id', 'string_select');
     for( var i in _.range(10)) {
@@ -1060,11 +1050,9 @@ $(document).ready( function() {
 
 
 
-});
 
 
 
-$(window).ready( function() {
     var boot_time = moment();
     var status_id = "status";
     setInterval(function(){ k.update_status_page(status_id, boot_time);},1000);
@@ -1074,6 +1062,6 @@ $(window).ready( function() {
 
 
 
-});
+};
 
 
