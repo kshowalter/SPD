@@ -146,7 +146,7 @@ var addInverter = function(){
 
 var system = {};
 system.DC = {};
-system.DC.string_num = 6;
+system.DC.string_num = 4;
 system.DC.string_module = 6;
 system.DC.module = components.modules['Sunsucker250'];
 system.inverter = components.inverters['SMA3000'];
@@ -164,7 +164,7 @@ switch(system.AC_type){
     default:
         log('Error, unknown AC type');
 }
-log('wires', system.AC_conductors);
+log('system', system);
 
 
 
@@ -228,51 +228,44 @@ fonts.label = {
 ///////
 // setup drawing containers
 
-// LAYERS
+var elements = [];
 
 
-var layers = {};
-for( var l in l_attr) {
-    layers[l] = [];
-}
 
 // BLOCKS
 
 var Blk = {
-    object: 'Blk',
+    type: 'block',
 };
 Blk.move = function(x, y){
-    for( var i in this.array ){
-        this.array[i].move(x,y);
+    for( var i in this.elements ){
+        this.elements[i].move(x,y);
     }
     return this;
 };
 Blk.add = function(){
-    if( typeof this.array == 'undefined'){ this.array = [];}
+    if( typeof this.elements == 'undefined'){ this.elements = [];}
     for( var i in arguments){
-        this.array.push(arguments[i]);
+        this.elements.push(arguments[i]);
     }
     return this;
 };
 
 var blocks = {};
-var block_active = null;
+var block_active = false;
 // Create default layer,block container and functions
 
-var drawStat = {};
-drawStat.layer = false;
+// Layers
+
+var layer_active = false;
 
 var layer = function(name){ // set current layer
     if( typeof name === 'undefined' ){ // if no layer name given, reset to default 
-        drawStat.layer = layers.base;
-    } else if( ! (name in layers) ) {  // if layer name is not in list, warn and reset to default
-        log("error, layer '"+name+"' does not exist, using base");
-        name = 'base' ;
+        layer_active = false;
     } else { // finaly activate requested layer
-        drawStat.layer = layers[name];
+        layer_active = name;
     }
 };
-layer(); // set current layer to base
 
 /*
 var block = function(name) {// set current block
@@ -303,6 +296,14 @@ var block_start = function(name) {
     }
 };
 
+    /*
+    if( typeof layer_name !== 'undefined' && (layer_name in layers) ) {
+        var layer_selected = layers[layer_name]
+    } else {
+        if( ! (layer_name in layers) ){ log("error, layer does not exist, using current");}
+        var layer_selected =  layer_active
+    }
+    */
 var block_end = function() {
     var blk = blocks[block_active];
     block_active = false;
@@ -314,16 +315,21 @@ var block_end = function() {
 // clear drawing 
 var clear_drawing = function() {
     blocks.length = 0;
-    for( var l in l_attr) {
-        layers[l] = [];
-    }
-
+    elements.length = 0;
 };
 
 
 //////
 // build protoype element
 
+    /*
+    if( typeof layer_name !== 'undefined' && (layer_name in layers) ) {
+        var layer_selected = layers[layer_name]
+    } else {
+        if( ! (layer_name in layers) ){ log("error, layer does not exist, using current");}
+        var layer_selected =  layer_active
+    }
+    */
 
 
 var SvgElem = {
@@ -343,15 +349,8 @@ SvgElem.move = function(x, y){
 // functions for adding elements
 
 var add = function(type, points, layer_name) {
-    /*
-    if( typeof layer_name !== 'undefined' && (layer_name in layers) ) {
-        var layer_selected = layers[layer_name]
-    } else {
-        if( ! (layer_name in layers) ){ log("error, layer does not exist, using current");}
-        var layer_selected =  drawStat.layer
-    }
-    */
-    if( typeof layer_name !== 'undefined' ) { layer(layer_name); }
+
+    if( typeof layer_name === 'undefined' ) { layer_name = layer_active; } 
 
     if( typeof points == 'string') {
         var points = points.split(' ');
@@ -365,12 +364,22 @@ var add = function(type, points, layer_name) {
 
     var elem = Object.create(SvgElem);
     elem.type = type;
-    elem.points = points;
+    elem.layer_name = layer_name;
+    if( type === 'line' ) {
+        elem.points = points;
+    } else if( typeof points[0].x === 'undefined') {
+        elem.x = points[0][0]; 
+        elem.y = points[0][1]; 
+    } else {
+        elem.x = points[0].x
+        elem.y = points[0].y; 
+    }
 
-    drawStat.layer.push(elem);
     
-    if(block_active){ 
+    if(block_active) { 
         blocks[block_active].add(elem);
+    } else {
+        elements.push(elem);
     }
 
     return elem;
@@ -385,12 +394,19 @@ var line = function(points, layer){ // (points, [layer])
 var rect = function(loc, size, layer){
     var rec = add('rect', [loc], layer);
     rec.w = size[0];
+    /*
+    if( typeof layer_name !== 'undefined' && (layer_name in layers) ) {
+        var layer_selected = layers[layer_name]
+    } else {
+        if( ! (layer_name in layers) ){ log("error, layer does not exist, using current");}
+        var layer_selected =  layer_active
+    }
+    */
     rec.h = size[1];
     return rec;
 };
 
 var circ = function(loc, diameter, layer){
-    //log('circle', loc, diameter, layer)
     var cir = add('circ', [loc], layer);
     cir.d = diameter;
     return cir;
@@ -408,8 +424,13 @@ var text = function(loc, strings, font, layer){
 
 var block = function(name) {// set current block
     if( arguments.length === 2 ){ // if coor is passed
-        var x = arguments[1].x;
-        var y = arguments[1].y;
+        if( typeof arguments[1].x !== 'undefined' ){
+            var x = arguments[1].x;
+            var y = arguments[1].y;
+        } else {
+            var x = arguments[1][0];
+            var y = arguments[1][1];
+        }
     } else if( arguments.length === 3 ){ // if x,y is passed
         var x = arguments[1];
         var y = arguments[2];
@@ -420,9 +441,10 @@ var block = function(name) {// set current block
     blk.x = x;
     blk.y = y;
 
-    layers.block.push(blk);
     if(block_active){ 
         blocks[block_active].add(blk);
+    } else {
+        elements.push(blk);
     }
     return blk
 };
@@ -430,15 +452,8 @@ var block = function(name) {// set current block
 /////////////////////////////////
 
 
-log('layers', layers);
+log('elements', elements);
 log('blocks', blocks);
-
-var mk_SVG = function(){
-    for( var layer_name in layers ){
-        var attr = l_attr[layer_name];
-    }
-
-};
 
 
 
@@ -479,6 +494,7 @@ size.inverter_symbol_h = 25;
 size.AC_disc_w = 100;
 size.AC_disc_h = 100;
 
+log('size', size);
     
 var loc = {};
 
@@ -488,6 +504,8 @@ loc.array_upper = loc.array.y - size.string_h/2;
 loc.array_lower = loc.array_upper + size.string_h;
 loc.array_right = loc.array.x - size.module_frame.h*2;
 loc.array_left = loc.array_right - ( size.string_w * system.DC.string_num ) - ( size.module_w * 1.25 ) ;
+log( loc.array_right , ( size.string_w * system.DC.string_num ) , ( size.module_w * 1.25 )  )
+log( size.string_w , system.DC.string_num )
 
 loc.DC = loc.array;
 loc.inverter = { x:loc.array.x+300, y:loc.array.y-350 };
@@ -509,21 +527,19 @@ log('loc', loc);
 
 //#start drawing
 var mk_drawing = function(){
+    var x,y;
     log('making drawing');
 
-    // PV array
-    var coor = loc.array;
 
 // Define blocks
 // module block
-    var lead = size.module_lead;
-    w = size.module_frame.w;
-    h = size.module_frame.h;
+    var w = size.module_frame.w;
+    var h = size.module_frame.h;
 
     block_start('module');
     // frame
     layer('module');
-    rect( [0,h/2], [w,h]);
+    rect( [0,h/2], [w,h] );
     // frame triangle?
     line([
         [-w/2,0],
@@ -537,23 +553,23 @@ var mk_drawing = function(){
     layer('DC_pos');
     line([
         [0, 0],
-        [0, -lead]
+        [0, -size.module_lead]
     ]);
     layer('DC_neg');
     line([
         [0, h],
-        [0, h+(lead)]
+        [0, h+(size.module_lead)]
     ]);
     // pos sign
     layer('text');
     text(
-        [lead/2, -lead/2],
+        [size.module_lead/2, -size.module_lead/2],
         '+',
         'signs'
     );
     // neg sign
     text(
-        [lead/2, h+lead/2],
+        [size.module_lead/2, h+size.module_lead/2],
         '-',
         'signs'
     );
@@ -568,30 +584,29 @@ var mk_drawing = function(){
     block_end();
 
 //#string
-    var coor_string = {};
-    coor_string.x = 0;
-    coor_string.y = 0;
-
-    //TODO: add loop to jump over negative return wires 
     block_start('string');
+
     x = 0;
     y = 0;
 
+    y += size.module_lead; 
+
+    //TODO: add loop to jump over negative return wires 
     layer('DC_ground');
     line([
-        [coor_string.x-size.module_frame.w*3/4, coor_string.y+size.module_frame.h/2+size.module_lead],
-        [coor_string.x-size.module_frame.w*3/4, loc.array_lower + size.wire_offset_ground + size.module_lead*1.5 ],
+        [x-size.module_frame.w*3/4, y+size.module_frame.h/2],
+        [x-size.module_frame.w*3/4, y+size.string_h + size.wire_offset_ground + size.module_lead*0.5 ],
     ]);
-
-    block('module', coor_string);
-    coor_string.y += size.module_frame.h + size.module_lead*2 + size.string_gap_missing;
-    block('module', coor_string);
-    coor_string.y += size.module_frame.h + size.module_lead*2 + size.string_gap;
-    block('module', coor_string);
-    coor_string.y += size.module_frame.h + size.module_lead*2 + size.string_gap;
-    block('module', coor_string);
-
     layer();
+
+    block('module', [x,y]);
+    y += size.module_frame.h + size.module_lead*2 + size.string_gap_missing;
+    block('module', [x,y]);
+    y += size.module_frame.h + size.module_lead*2 + size.string_gap;
+    block('module', [x,y]);
+    y += size.module_frame.h + size.module_lead*2 + size.string_gap;
+    block('module', [x,y]);
+
     block_end();
 
 
@@ -611,41 +626,43 @@ var mk_drawing = function(){
 ////////////////////////////////////////
 
 //#array
-    var coor = loc.array;
-    var blk = Object.create(Blk);
-    blk.type = 'array';
+    // PV array
 
 
-    var coor_array = { x:coor.x, y:coor.y };
-    coor.x -= size.module_frame.h*3;
-    coor.y -= size.string_h/2;
+    x = loc.array.x;
+    y = loc.array.y;
 
+    circ([x,y], 5, 'base'); // MARKER
 
-    for( var i in _.range(system.DC.string_num)) {
+    x -= size.module_frame.h*3;
+    y -= size.string_h/2;
+
+    //for( var i in _.range(system.DC.string_num)) {
+    for( var i=0; i<system.DC.string_num; i++ ) {
         var offset = i * size.wire_offset_base;
-
-        block('string', coor);
+        
+        block('string', [x,y]);
         // positive home run
         layer('DC_pos');
         line([
-            [ coor.x , loc.array_upper ],
-            [ coor.x , loc.array_upper-size.module_w-offset ],
+            [ x , loc.array_upper ],
+            [ x , loc.array_upper-size.module_w-offset ],
             [ loc.array_right+offset , loc.array_upper-size.module_w-offset ],
             [ loc.array_right+offset , loc.array.y-size.module_w-offset],
-            [ coor_array.x , loc.array.y-size.module_w-offset],
+            [ loc.array.x , loc.array.y-size.module_w-offset],
         ]);
 
         // negative home run
         layer('DC_neg');
         line([
-            [ coor.x , loc.array_lower ],
-            [ coor.x , loc.array_lower+size.module_w+offset ],
+            [ x , loc.array_lower ],
+            [ x , loc.array_lower+size.module_w+offset ],
             [ loc.array_right+offset , loc.array_lower+size.module_w+offset ],
             [ loc.array_right+offset , loc.array.y+size.module_w+offset],
-            [ coor_array.x , loc.array.y+size.module_w+offset],
+            [ loc.array.x , loc.array.y+size.module_w+offset],
         ]);
 
-        coor.x -= size.string_w;
+        x -= size.string_w;
     }
 
     layer('DC_ground');
@@ -653,12 +670,13 @@ var mk_drawing = function(){
         [ loc.array_left , loc.array_lower + size.module_w + size.wire_offset_ground ],
         [ loc.array_right+size.wire_offset_ground , loc.array_lower + size.module_w + size.wire_offset_ground ],
         [ loc.array_right+size.wire_offset_ground , loc.array.y + size.module_w + size.wire_offset_ground],
-        [ coor_array.x , loc.array.y+size.module_w+size.wire_offset_ground],
+        [ loc.array.x , loc.array.y+size.module_w+size.wire_offset_ground],
     ]);
 
     layer();
 
 
+    /*
 //#DC
     var coor = loc.DC;
     var blk = Object.create(Blk);
@@ -703,6 +721,8 @@ var mk_drawing = function(){
             x: x+jBox_w+to_disconnect_x-offset,
             y: y+to_disconnect_y-size.terminal_diam
         });
+l_attr.AC_ground = Object.create(l_attr.base)
+l_attr.AC_ground.stroke = '#006600'
 
         layer('DC_neg');
         line([
@@ -821,7 +841,9 @@ var mk_drawing = function(){
         [coor.x - w/2 + space*4, 
             coor.y - h/2 + space*2],
     ]);
-    line([
+    line(l_attr.AC_ground = Object.create(l_attr.base)
+l_attr.AC_ground.stroke = '#006600'
+[
         [coor.x - w/2 + space*5, 
             coor.y - h/2 + space*2],
         [coor.x - w/2 + space*6, 
@@ -881,6 +903,7 @@ var mk_drawing = function(){
     );
     layer();
 
+    */
 };
 
 
@@ -909,68 +932,76 @@ var display_svg = function(container_id){
     container.appendChild(svg_elem);
     var svg = SVG(svg_elem).size(1000,1000);
 
-    for( var id in layers) {
-        var layer_array = layers[id]; 
-        show_elem_array(layer_array);
-    };
-    // var show_elem_array = function(array){
-    function show_elem_array(array){
-        //for( var layer_name in layers)
-        array.forEach( function( elem, id ) {
-        
-        
-            if( elem.type == 'rect') {
-                svg.rect( elem.w, elem.h ).move( elem.points[0][0]-elem.w/2, elem.points[0][1]-elem.h/2 ).attr( l_attr[layer_name] );
-            } else if( elem.type == 'line') {
-                svg.polyline( elem.points ).attr( l_attr[layer_name] );
-            } else if( elem.type == 'text') {
-                //var t = svg.text( elem.strings ).move( elem.points[0][0], elem.points[0][1] ).attr( l_attr[layer_name] )
-                var font = fonts[elem.font];
-                
-                var t = document.createElementNS("http://www.w3.org/2000/svg", 'text');
-                t.setAttribute('x', elem.points[0][0]);
-                t.setAttribute('y', elem.points[0][1] + font['font-size']/2 );
-                for( var i2 in l_attr[layer_name] ){
-                    t.setAttribute( i2, l_attr[layer_name][i2] );
-                }
-                for( var i2 in font ){
-                    t.setAttribute( i2, font[i2] );
-                }
-                for( var i2 in elem.strings ){
-                    var tspan = document.createElementNS("http://www.w3.org/2000/svg", 'tspan');
-                    tspan.setAttribute('dy', font['font-size']*1.5*i2 );
-                    tspan.setAttribute('x', elem.points[0][0]);
-                    tspan.innerHTML = elem.strings[i2];
-                    t.appendChild(tspan);
-                }
-                svg_elem.appendChild(t);
-            } else if( elem.type == 'circ') {
-                var c = document.createElementNS("http://www.w3.org/2000/svg", 'ellipse');
-                c.setAttribute('rx', elem.d/2);
-                c.setAttribute('ry', elem.d/2);
-                c.setAttribute('cx', elem.points[0][0]);
-                c.setAttribute('cy', elem.points[0][1]);
-                var attr = l_attr[layer_name];
-                for( var i2 in attr ){
-                    c.setAttribute(i2, attr[i2]);
-                }
-                svg_elem.appendChild(c);
-                /*
-                c.attributes( l_attr[layer_name] )
-                c.attributes({
-                    rx: 5,
-                    --------------------------
-                    ry: 5,
-                    cx: elem.points[0][0]-elem.d/2,
-                    cy: elem.points[0][1]-elem.d/2
-                })
-                var c2 = svg.ellipse( elem.r, elem.r )
-                c2.move( elem.points[0][0]-elem.d/2, elem.points[0][1]-elem.d/2 )
-                c2.attr({rx:5, ry:5})
-                c2.attr( l_attr[layer_name] )
-                */
+    // Loop through all the drawing contents, call the function below.
+    elements.forEach( function(elem,id) {
+        show_elem_array(elem);
+    })
+
+    function show_elem_array(elem, offset){
+        offset = offset || {x:0,y:0};
+        if( typeof elem.x !== 'undefined' ) { var x = elem.x + offset.x; } 
+        if( typeof elem.y !== 'undefined' ) { var y = elem.y + offset.y; } 
+
+        if( elem.type === 'rect') {
+            svg.rect( elem.w, elem.h ).move( x-elem.w/2, y-elem.h/2 ).attr( l_attr[elem.layer_name] );
+        } else if( elem.type === 'line') {
+            var points2 = [];
+            elem.points.forEach( function(point){
+                points2.push([ point[0]+offset.x, point[1]+offset.y ])
+            })  
+            svg.polyline( points2 ).attr( l_attr[elem.layer_name] );
+        } else if( elem.type === 'text') {
+            //var t = svg.text( elem.strings ).move( elem.points[0][0], elem.points[0][1] ).attr( l_attr[elem.layer_name] )
+            var font = fonts[elem.font];
+            
+            var t = document.createElementNS("http://www.w3.org/2000/svg", 'text');
+            t.setAttribute('x', x);
+            t.setAttribute('y', y + font['font-size']/2 );
+            for( var i2 in l_attr[elem.layer_name] ){
+                t.setAttribute( i2, l_attr[elem.layer_name][i2] );
             }
-        });
+            for( var i2 in font ){
+                t.setAttribute( i2, font[i2] );
+            }
+            for( var i2 in elem.strings ){
+                var tspan = document.createElementNS("http://www.w3.org/2000/svg", 'tspan');
+                tspan.setAttribute('dy', font['font-size']*1.5*i2 );
+                tspan.setAttribute('x', x);
+                tspan.innerHTML = elem.strings[i2];
+                t.appendChild(tspan);
+            }
+            svg_elem.appendChild(t);
+        } else if( elem.type === 'circ') {
+            var c = document.createElementNS("http://www.w3.org/2000/svg", 'ellipse');
+            c.setAttribute('rx', elem.d/2);
+            c.setAttribute('ry', elem.d/2);
+            c.setAttribute('cx', x);
+            c.setAttribute('cy', y);
+            var attr = l_attr[elem.layer_name];
+            for( var i2 in attr ){
+                c.setAttribute(i2, attr[i2]);
+            }
+            svg_elem.appendChild(c);
+            /*
+            c.attributes( l_attr[elem.layer_name] )
+            c.attributes({
+                rx: 5,
+                --------------------------
+                ry: 5,
+                cx: elem.points[0][0]-elem.d/2,
+                cy: elem.points[0][1]-elem.d/2
+            })
+            var c2 = svg.ellipse( elem.r, elem.r )
+            c2.move( elem.points[0][0]-elem.d/2, elem.points[0][1]-elem.d/2 )
+            c2.attr({rx:5, ry:5})
+            c2.attr( l_attr[elem.layer_name] )
+            */
+        } else if(elem.type === 'block') {
+            // if it is a block, run this function through each element.
+            elem.elements.forEach( function(block_elem,id){
+                show_elem_array(block_elem, {x:x, y:y}) 
+            })
+        }
     }
 }
 
@@ -1020,14 +1051,14 @@ window.onload = function() {
     */
     var string_select = document.createElement('select');
     string_select.setAttribute('id', 'string_select');
-    for( var i in _.range(10)) {
-        if( i !== 0 ){
-            var op = new Option();
-            op.value = i;
-            op.text = String(i) + ' string';
-            if( i === 4) { op.selected = 'selected';}
-            string_select.appendChild(op);
+    for( var i=1; i<=6; i++) {
+        var op = document.createElement('option');
+        op.setAttribute('value', i);
+        op.innerHTML = String(i) + ' string';
+        if( i === system.DC.string_num) { 
+            op.setAttribute( 'selected', 'selected');
         }
+        string_select.appendChild(op);
     }
     draw_page.appendChild(string_select);
     document.getElementById('string_select').selectedIndex = 4-1;
