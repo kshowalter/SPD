@@ -111,7 +111,7 @@ var val = function(){
 
 var components = {};
 components.inverters = {};
-components.inverters['SMA3000'] = {
+components.inverters['SI3000'] = {
     make:'SMA',
     model:'3000',
 
@@ -141,17 +141,21 @@ var addInverter = function(){
         
 
 };
-
-
+var input = {};
+input.string_num = 4;
+input.string_module = 6;
+input.module = 'Sunsucker250';
+input.inverter = 'SI3000';
+input.AC_type = '208';
 
 var system = {};
 system.DC = {};
-system.DC.string_num = 4;
-system.DC.string_module = 6;
-system.DC.module = components.modules['Sunsucker250'];
-system.inverter = components.inverters['SMA3000'];
+system.DC.string_num = input.string_num; 
+system.DC.string_module = input.string_module;
+system.DC.module = components.modules[input.module];
+system.inverter = components.inverters[input.inverter];
 
-system.AC_type = '208';
+system.AC_type = input.AC_type;
 
 
 switch(system.AC_type){
@@ -192,6 +196,8 @@ l_attr.base = {
 
 };
 l_attr.block = Object.create(l_attr.base);
+l_attr.frame = Object.create(l_attr.base);
+l_attr.frame.stroke = '#000042'
 
 l_attr.DC_pos = Object.create(l_attr.base);
 l_attr.DC_pos.stroke = '#ff0000';
@@ -213,15 +219,20 @@ l_attr.AC_neutral.stroke = '#666666';
 // fonts
 
 var fonts = {};
-fonts.signs = {
+fonts['signs'] = {
     'font-family': 'monospace',
     'font-size':     5,
     'text-anchor':   'middle',
 };
-fonts.label = {
+fonts['label'] = {
     'font-family': 'monospace',
     'font-size':     12,
     'text-anchor':   'middle',
+};
+fonts['title'] = {
+    'font-family': 'monospace',
+    'font-size':     14,
+    'text-anchor':   'left',
 };
 
 
@@ -249,6 +260,9 @@ Blk.add = function(){
         this.elements.push(arguments[i]);
     }
     return this;
+};
+Blk.rotate = function(deg){
+    this.rotate = deg;
 };
 
 var blocks = {};
@@ -350,6 +364,9 @@ SvgElem.move = function(x, y){
         }
     }
     return this;
+};
+SvgElem.rotate = function(deg){
+    this.rotate = deg;
 };
 
 ///////
@@ -476,6 +493,12 @@ var loc = {};
 var update_drawing_values = function(){
 
     // sizes
+    size.drawing_w = 1000;
+    size.drawing_h = 800;
+    size.drawing_frame_padding = 5;
+
+    size.drawing_titlebox = 50;
+
 
     size.module_frame = {};
     size.module_frame.w = 10;
@@ -543,16 +566,18 @@ log('loc', loc);
 
 //#start drawing
 var mk_drawing = function(){
-    var x,y;
     log('making drawing');
+
+    var x, y, h, w;
 
 
 // Define blocks
 // module block
-    var w = size.module_frame.w;
-    var h = size.module_frame.h;
+    w = size.module_frame.w;
+    h = size.module_frame.h;
 
     block_start('module');
+
     // frame
     layer('module');
     rect( [0,h/2], [w,h] );
@@ -640,7 +665,55 @@ var mk_drawing = function(){
     block_end();
 
 ////////////////////////////////////////
+// Frame
 
+    w = size.drawing_w;
+    h = size.drawing_h;
+    var padding = size.drawing_frame_padding; 
+
+    layer('frame');
+
+    //border
+    rect( [w/2 , h/2], [w - padding*2, h - padding*2 ] );
+    
+    x = w - padding * 3;
+    y = padding * 3;
+
+    w = size.drawing_titlebox;
+    h = size.drawing_titlebox;
+
+    // box top-right
+    rect( [x-w/2, y+h/2], [w,h] );
+    
+    y += h + padding; 
+
+    w = size.drawing_titlebox;
+    h = size.drawing_h - padding*8 - size.drawing_titlebox*2.5;
+    
+    //title box
+    rect( [x-w/2, y+h/2], [w,h] );
+
+    var title = {};
+    title.top = y;
+    title.bottom = y+h;
+    title.right = x;
+    title.left = x-w ;
+log('size:', [h,w])
+log('location:', [x,y])
+circ([title.left, title.bottom],5);
+    text([title.left+padding, title.bottom-padding], [
+        input.inverter + " Inverter (" + input.module + ")"
+        ], 'title', 'text').rotate(-90);
+
+
+    // box bottom-right
+    h = size.drawing_titlebox * 1.5;
+    y = title.bottom + padding; 
+    rect( [x-w/2, y+h/2], [w,h] );
+    
+
+
+////////////////////////////////////////
 //#array
     // PV array
 
@@ -692,7 +765,8 @@ var mk_drawing = function(){
     layer();
 
 
-//#DC
+///////////////////////////////
+// combiner box
     x = loc.array.x;
     y = loc.array.y;
 
@@ -700,7 +774,6 @@ var mk_drawing = function(){
     var to_disconnect_x = 150;
     var to_disconnect_y = -100;
 
-    // combiner box
     
     rect(
         [x+size.jb_box_w/2,y-size.jb_box_h/10],
@@ -750,6 +823,7 @@ var mk_drawing = function(){
     x += to_disconnect_x;
     y += to_disconnect_y;
 
+///////////////////////////////
     // DC disconect combiner lines
     if( system.DC.string_num > 1){
         var offset_min = size.wire_offset_gap;
@@ -779,7 +853,7 @@ var mk_drawing = function(){
         'box'
     );
 
-
+///////////////////////////////
 //#inverter
     x = loc.inverter.x;
     y = loc.inverter.y;
@@ -795,7 +869,7 @@ var mk_drawing = function(){
     layer('text');
     text(
         [loc.inverter.x, loc.inverter.top + size.inverter_text_gap ],
-        [ 'Inverter', system.inverter.make + " " + system.inverter.model ],
+        [ 'Inverter', components.inverters[input.inverter].make + " " + components.inverters[input.inverter].model ],
         'label'
     );
     layer();
@@ -928,10 +1002,10 @@ var display_svg = function(container_id){
     //var svg_elem = document.getElementById('SvgjsSvg1000')
     var svg_elem = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
     svg_elem.setAttribute('id','svg_drawing');
-    svg_elem.setAttribute('width', 1000);
-    svg_elem.setAttribute('height', 1000);
+    svg_elem.setAttribute('width', size.drawing_w);
+    svg_elem.setAttribute('height', size.drawing_h);
     container.appendChild(svg_elem);
-    var svg = SVG(svg_elem).size(1000,1000);
+    var svg = SVG(svg_elem).size(size.drawing_w, size.drawing_h);
 
     // Loop through all the drawing contents, call the function below.
     elements.forEach( function(elem,id) {
@@ -958,6 +1032,9 @@ var display_svg = function(container_id){
             var t = document.createElementNS("http://www.w3.org/2000/svg", 'text');
             t.setAttribute('x', x);
             t.setAttribute('y', y + font['font-size']/2 );
+            if(elem.rotate){
+                t.setAttribute('transform', "rotate(" + elem.rotate + " " + x + " " + y + ")" );
+            }
             for( var i2 in l_attr[elem.layer_name] ){
                 t.setAttribute( i2, l_attr[elem.layer_name][i2] );
             }
