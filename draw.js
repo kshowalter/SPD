@@ -262,6 +262,9 @@ var layer_active = false;
 var layer = function(name){ // set current layer
     if( typeof name === 'undefined' ){ // if no layer name given, reset to default 
         layer_active = false;
+    } else if ( ! (name in l_attr) ) {
+        log('Error: unknown layer, using base')
+        layer_active = 'base' 
     } else { // finaly activate requested layer
         layer_active = name;
     }
@@ -314,7 +317,11 @@ var block_end = function() {
 
 // clear drawing 
 var clear_drawing = function() {
-    blocks.length = 0;
+    for( var id in blocks ){
+        if( blocks.hasOwnProperty(id)){
+            delete blocks[id]; 
+        }
+    }
     elements.length = 0;
 };
 
@@ -444,7 +451,9 @@ var block = function(name) {// set current block
     if(block_active){ 
         blocks[block_active].add(blk);
     } else {
-        elements.push(blk);
+        elements.push(blk);l_attr.AC_ground = Object.create(l_attr.base)
+l_attr.AC_ground.stroke = '#006600'
+
     }
     return blk
 };
@@ -462,63 +471,70 @@ log('blocks', blocks);
 //#drawing parameters
 
 var size = {};
+var loc = {};
 
-size.module_frame = {};
-size.module_frame.w = 10;
-size.module_frame.h = 30;
-size.module_lead = size.module_frame.w*2/3;
-size.module_h = size.module_frame.h + size.module_lead*2;
-size.module_w = size.module_frame.w;
+var update_drawing_values = function(){
 
-size.wire_offset_base = 5;
-size.wire_offset_gap = size.module_w;
-size.wire_offset_max = system.DC.string_num * size.wire_offset_base;
-size.wire_offset_ground = size.wire_offset_max + size.wire_offset_base*2;
+    // sizes
 
-size.string_gap = size.module_frame.w/42;
-size.string_gap_missing = size.string_gap + size.module_frame.w;
-size.string_h = (size.module_h * 4) + (size.string_gap * 2) + size.string_gap_missing;
-size.string_w = size.module_frame.w * 2.5;
+    size.module_frame = {};
+    size.module_frame.w = 10;
+    size.module_frame.h = 30;
+    size.module_lead = size.module_frame.w*2/3;
+    size.module_h = size.module_frame.h + size.module_lead*2;
+    size.module_w = size.module_frame.w;
 
-size.jb_box_h = 100;
-size.jb_box_w = 50;
+    size.wire_offset_base = 5;
+    size.wire_offset_gap = size.module_w;
+    size.wire_offset_max = system.DC.string_num * size.wire_offset_base;
+    size.wire_offset_ground = size.wire_offset_max + size.wire_offset_base*2;
 
-size.terminal_diam = 5;
+    size.string_gap = size.module_frame.w/42;
+    size.string_gap_missing = size.string_gap + size.module_frame.w;
+    size.string_h = (size.module_h * 4) + (size.string_gap * 2) + size.string_gap_missing;
+    size.string_w = size.module_frame.w * 2.5;
 
-size.inverter_w = 200;
-size.inverter_h = 150;
-size.inverter_text_gap = 15;
-size.inverter_symbol_w = 50;
-size.inverter_symbol_h = 25;
+    size.jb_box_h = 140 + size.wire_offset_base*2 * system.DC.string_num ;
+    size.jb_box_w = 80;
 
-size.AC_disc_w = 100;
-size.AC_disc_h = 100;
+    size.discBox_w = 80 + size.wire_offset_base*2 * system.DC.string_num ;
+    size.discBox_h = 140;
+
+    size.terminal_diam = 5;
+
+    size.inverter_w = 200;
+    size.inverter_h = 150;
+    size.inverter_text_gap = 15;
+    size.inverter_symbol_w = 50;
+    size.inverter_symbol_h = 25;
+
+    size.AC_disc_w = 100;
+    size.AC_disc_h = 100;
+
+    // location
+    loc.array = { x:200, y:600 };
+
+    loc.array_upper = loc.array.y - size.string_h/2;
+    loc.array_lower = loc.array_upper + size.string_h;
+    loc.array_right = loc.array.x - size.module_frame.h*2;
+    loc.array_left = loc.array_right - ( size.string_w * system.DC.string_num ) - ( size.module_w * 1.25 ) ;
+
+    loc.DC = loc.array;
+    loc.inverter = { x:loc.array.x+300, y:loc.array.y-350 };
+    loc.inverter.bottom = loc.inverter.y + size.inverter_h/2;
+    loc.inverter.top = loc.inverter.y - size.inverter_h/2;
+    loc.inverter.bottom_right = {
+        x: loc.inverter.x + size.inverter_w/2,
+        y: loc.inverter.y + size.inverter_h/2,
+    };
+    loc.AC_disc = { x: loc.array.x+550, y: loc.array.y-100 };
+    loc.AC_disc.bottom = loc.AC_disc.y + size.AC_disc_h/2;
+    loc.AC_disc.left = loc.AC_disc.x - size.AC_disc_w/2;
+
+}
 
 log('size', size);
     
-var loc = {};
-
-loc.array = { x:200, y:600 };
-
-loc.array_upper = loc.array.y - size.string_h/2;
-loc.array_lower = loc.array_upper + size.string_h;
-loc.array_right = loc.array.x - size.module_frame.h*2;
-loc.array_left = loc.array_right - ( size.string_w * system.DC.string_num ) - ( size.module_w * 1.25 ) ;
-log( loc.array_right , ( size.string_w * system.DC.string_num ) , ( size.module_w * 1.25 )  )
-log( size.string_w , system.DC.string_num )
-
-loc.DC = loc.array;
-loc.inverter = { x:loc.array.x+300, y:loc.array.y-350 };
-loc.inverter.bottom = loc.inverter.y + size.inverter_h/2;
-loc.inverter.top = loc.inverter.y - size.inverter_h/2;
-loc.inverter.bottom_right = {
-    x: loc.inverter.x + size.inverter_w/2,
-    y: loc.inverter.y + size.inverter_h/2,
-};
-loc.AC_disc = { x: loc.array.x+550, y: loc.array.y-100 };
-loc.AC_disc.bottom = loc.AC_disc.y + size.AC_disc_h/2;
-loc.AC_disc.left = loc.AC_disc.x - size.AC_disc_w/2;
-
 log('loc', loc);
 
 
@@ -676,31 +692,21 @@ var mk_drawing = function(){
     layer();
 
 
-    /*
 //#DC
-    var coor = loc.DC;
-    var blk = Object.create(Blk);
-    blk.type = 'DV Junction Box';
-
-    var x = coor.x;
-    var y = coor.y;
-    var jBox_w = 80;
-    var jBox_h = 140 + size.wire_offset_base*2 * system.DC.string_num ;
+    x = loc.array.x;
+    y = loc.array.y;
 
     var fuse_width = size.wire_offset_gap;
     var to_disconnect_x = 150;
     var to_disconnect_y = -100;
 
-    var discBox_w = 80 + size.wire_offset_base*2 * system.DC.string_num ;
-    var discBox_h = 140;
-
     // combiner box
     
-    blk.add(rect(
-        [x+jBox_w/2,y-jBox_h/10],
-        [jBox_w,jBox_h],
+    rect(
+        [x+size.jb_box_w/2,y-size.jb_box_h/10],
+        [size.jb_box_w,size.jb_box_h],
         'box'
-    ));
+    );
 
 
     for( var i in _.range(system.DC.string_num)) {
@@ -709,39 +715,37 @@ var mk_drawing = function(){
         layer('DC_pos');
         line([
             [ x , y-offset],
-            [ x+(jBox_w-fuse_width)/2 , y-offset],
+            [ x+(size.jb_box_w-fuse_width)/2 , y-offset],
         ]);
         line([
-            [ x+(jBox_w+fuse_width)/2 , y-offset],
-            [ x+jBox_w+to_disconnect_x-offset , y-offset],
-            [ x+jBox_w+to_disconnect_x-offset , y+to_disconnect_y-size.terminal_diam],
-            [ x+jBox_w+to_disconnect_x-offset , y+to_disconnect_y-size.terminal_diam-size.terminal_diam*3],
+            [ x+(size.jb_box_w+fuse_width)/2 , y-offset],
+            [ x+size.jb_box_w+to_disconnect_x-offset , y-offset],
+            [ x+size.jb_box_w+to_disconnect_x-offset , y+to_disconnect_y-size.terminal_diam],
+            [ x+size.jb_box_w+to_disconnect_x-offset , y+to_disconnect_y-size.terminal_diam-size.terminal_diam*3],
         ]);
         block( 'terminal', {
-            x: x+jBox_w+to_disconnect_x-offset,
+            x: x+size.jb_box_w+to_disconnect_x-offset,
             y: y+to_disconnect_y-size.terminal_diam
         });
-l_attr.AC_ground = Object.create(l_attr.base)
-l_attr.AC_ground.stroke = '#006600'
 
         layer('DC_neg');
         line([
             [ x , y+offset],
-            [ x+(jBox_w-fuse_width)/2 , y+offset],
+            [ x+(size.jb_box_w-fuse_width)/2 , y+offset],
         ]);
         line([
-            [ x+(jBox_w+fuse_width)/2 , y+offset],
-            [ x+jBox_w+to_disconnect_x+offset , y+offset],
-            [ x+jBox_w+to_disconnect_x+offset , y+to_disconnect_y-size.terminal_diam],
-            [ x+jBox_w+to_disconnect_x+offset , y+to_disconnect_y-size.terminal_diam-size.terminal_diam*3],
+            [ x+(size.jb_box_w+fuse_width)/2 , y+offset],
+            [ x+size.jb_box_w+to_disconnect_x+offset , y+offset],
+            [ x+size.jb_box_w+to_disconnect_x+offset , y+to_disconnect_y-size.terminal_diam],
+            [ x+size.jb_box_w+to_disconnect_x+offset , y+to_disconnect_y-size.terminal_diam-size.terminal_diam*3],
         ]);
         block( 'terminal', {
-            x: x+jBox_w+to_disconnect_x+offset,
+            x: x+size.jb_box_w+to_disconnect_x+offset,
             y: y+to_disconnect_y-size.terminal_diam
         });
     }
 
-    x += jBox_w;
+    x += size.jb_box_w;
 
     x += to_disconnect_x;
     y += to_disconnect_y;
@@ -761,32 +765,30 @@ l_attr.AC_ground.stroke = '#006600'
     }
     
     // Inverter conection
-    blk.add(
-        line([
-            [ x-offset_min, y-size.terminal_diam-size.terminal_diam*3],
-            [ x-offset_min, y-size.terminal_diam-size.terminal_diam*3],
-        ],'DC_pos')
-    );
+    line([
+        [ x-offset_min, y-size.terminal_diam-size.terminal_diam*3],
+        [ x-offset_min, y-size.terminal_diam-size.terminal_diam*3],
+    ],'DC_pos')
 
 
 
     // DC disconect
-    blk.add(rect(
-        [x, y-discBox_h/2],
-        [discBox_w,discBox_h],
+    rect(
+        [x, y-size.discBox_h/2],
+        [size.discBox_w,size.discBox_h],
         'box'
-    ));
+    );
 
 
 //#inverter
-    log('making inverter');
-    coor = loc.inverter;
+    x = loc.inverter.x;
+    y = loc.inverter.y;
 
 
     //frame
     layer('box');
     rect(
-        [coor.x,coor.y],
+        [x,y],
         [size.inverter_w, size.inverter_h]
     );
     // Label at top (Inverter, make, model, ...)
@@ -799,9 +801,9 @@ l_attr.AC_ground.stroke = '#006600'
     layer();
 
 //#inverter symbol
-    log('making inverter symbol');
 
-    var coor = { x:coor.x, y:coor.y };
+    x = loc.inverter.x;
+    y = loc.inverter.y;
     
     var w = size.inverter_symbol_w;
     var h = size.inverter_symbol_h;
@@ -813,78 +815,78 @@ l_attr.AC_ground.stroke = '#006600'
 
     // box
     rect(
-        [coor.x,coor.y],
+        [x,y],
         [w, h]
     );
     // diaganal
     line([
-        [coor.x-w/2, coor.y+h/2],
-        [coor.x+w/2, coor.y-h/2],
+        [x-w/2, y+h/2],
+        [x+w/2, y-h/2],
     
     ]);
     // DC
     line([
-        [coor.x - w/2 + space, 
-            coor.y - h/2 + space],
-        [coor.x - w/2 + space*6, 
-            coor.y - h/2 + space],
+        [x - w/2 + space, 
+            y - h/2 + space],
+        [x - w/2 + space*6, 
+            y - h/2 + space],
     ]);
     line([
-        [coor.x - w/2 + space, 
-            coor.y - h/2 + space*2],
-        [coor.x - w/2 + space*2, 
-            coor.y - h/2 + space*2],
+        [x - w/2 + space, 
+            y - h/2 + space*2],
+        [x - w/2 + space*2, 
+            y - h/2 + space*2],
     ]);
     line([
-        [coor.x - w/2 + space*3, 
-            coor.y - h/2 + space*2],
-        [coor.x - w/2 + space*4, 
-            coor.y - h/2 + space*2],
+        [x - w/2 + space*3, 
+            y - h/2 + space*2],
+        [x - w/2 + space*4, 
+            y - h/2 + space*2],
     ]);
-    line(l_attr.AC_ground = Object.create(l_attr.base)
-l_attr.AC_ground.stroke = '#006600'
-[
-        [coor.x - w/2 + space*5, 
-            coor.y - h/2 + space*2],
-        [coor.x - w/2 + space*6, 
-            coor.y - h/2 + space*2],
+    line([
+        [x - w/2 + space*5, 
+            y - h/2 + space*2],
+        [x - w/2 + space*6, 
+            y - h/2 + space*2],
     ]);
 
     // AC
     line([
-        [coor.x + w/2 - space, 
-            coor.y + h/2 - space*1.5],
-        [coor.x + w/2 - space*2, 
-            coor.y + h/2 - space*1.5],
+        [x + w/2 - space, 
+            y + h/2 - space*1.5],
+        [x + w/2 - space*2, 
+            y + h/2 - space*1.5],
     ]);
     line([
-        [coor.x + w/2 - space*3, 
-            coor.y + h/2 - space*1.5],
-        [coor.x + w/2 - space*4, 
-            coor.y + h/2 - space*1.5],
+        [x + w/2 - space*3, 
+            y + h/2 - space*1.5],
+        [x + w/2 - space*4, 
+            y + h/2 - space*1.5],
     ]);
     line([
-        [coor.x + w/2 - space*5, 
-            coor.y + h/2 - space*1.5],
-        [coor.x + w/2 - space*6, 
-            coor.y + h/2 - space*1.5],
+        [x + w/2 - space*5, 
+            y + h/2 - space*1.5],
+        [x + w/2 - space*6, 
+            y + h/2 - space*1.5],
     ]);
     layer();
         
-    
-    var point = loc.inverter.bottom_right;
-    point.x -= size.terminal_diam * (system.AC_conductors+3);
-    point.y -= size.terminal_diam;
+    // AC terminals
+    x = loc.inverter.bottom_right.x;
+    y = loc.inverter.bottom_right.y;
+    x -= size.terminal_diam * (system.AC_conductors+3);
+    y -= size.terminal_diam;
+
     var AC_layer_names = ['AC_ground', 'AC_neutral', 'AC_L1', 'AC_L2', 'AC_L2'];
     for( var i=0; i < system.AC_conductors; i++ ){
-        block('terminal', point );
+        block('terminal', [x,y] );
         layer(AC_layer_names[i]);
         line([
-            [point.x, point.y],
-            [point.x, loc.AC_disc.bottom - size.terminal_diam * (i+1) ],
+            [x, y],
+            [x, loc.AC_disc.bottom - size.terminal_diam * (i+1) ],
             [loc.AC_disc.left, loc.AC_disc.bottom - size.terminal_diam * (i+1) ],
         ]);
-        point.x += size.terminal_diam;
+        x += size.terminal_diam;
     }
     layer();
 
@@ -893,17 +895,16 @@ l_attr.AC_ground.stroke = '#006600'
 
 
 //#AC_discconect
-    log('making AC disconect');
-    var coor = loc.AC_disc;
+    x = loc.AC_disc.x;
+    y = loc.AC_disc.y;
 
     layer('box');
     rect(
-        [coor.x, coor.y],
+        [x, y],
         [size.AC_disc_w, size.AC_disc_h]
     );
     layer();
 
-    */
 };
 
 
@@ -1020,12 +1021,17 @@ var update_drawing = function(){
     } else {
         var svg_container = document.getElementById(svg_container_id);
     }
+    
     var select_string = document.getElementById('string_select');
     system.DC.string_num = Number( select_string[select_string.selectedIndex].value );
+    log('DC string num', system.DC.string_num)
 
     clear_drawing();
 
+    update_drawing_values();
+
     mk_drawing();
+
     display_svg('svg_container');
 
 };
@@ -1061,7 +1067,7 @@ window.onload = function() {
         string_select.appendChild(op);
     }
     draw_page.appendChild(string_select);
-    document.getElementById('string_select').selectedIndex = 4-1;
+    //document.getElementById('string_select').selectedIndex = 4-1;
     // When number of strings change, update model, display
     string_select.addEventListener('change', function(){
         update_drawing();
