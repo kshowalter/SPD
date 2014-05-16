@@ -567,11 +567,17 @@ var update_drawing_values = function(){
     loc.AC_disc.bottom = loc.AC_disc.y + size.AC_disc_h/2;
     loc.AC_disc.top = loc.AC_disc.y - size.AC_disc_h/2;
     loc.AC_disc.left = loc.AC_disc.x - size.AC_disc_w/2;
+    loc.AC_disc_switch_top = loc.AC_disc.top + 15;
+    loc.AC_disc_switch_bottom = loc.AC_disc_switch_top + 30;
+    
+
 
     loc.AC_load_center_wire_bundle_bottom = loc.AC_disc.top - 20;
 
     loc.AC_load_center = { x: loc.AC_disc.x+150, y: loc.AC_disc.y-100 };
     loc.AC_load_center.left = loc.AC_load_center.x - size.AC_load_center_w/2;
+    
+    loc.AC_load_center_breakers = loc.AC_load_center.left + 30
 
 }
 
@@ -1029,28 +1035,45 @@ var mk_drawing = function(){
 
 log('size:', [h,w])
 log('location:', [x,y])
-circ([x,y],5);
+//circ([x,y],5);
 
     var bottom = loc.AC_load_center_wire_bundle_bottom;    
 
-
+    layer('AC_ground');
     line([
         [x,y],
         [ x+size.AC_disc_w+padding*3, y ],
         [ x+size.AC_disc_w+padding*3, bottom ],
         [ loc.AC_load_center.left-padding*3, bottom ],
         [ loc.AC_load_center.left-padding*3, y ],
-    ], 'AC_ground')
+        [ loc.AC_load_center.left+padding*3, y ],
+    ])
 
     y -= padding;
-
+    layer('AC_neutral');
     line([
         [x,y],
         [ x+size.AC_disc_w-padding*1, y ],
         [ x+size.AC_disc_w-padding*1, bottom-padding*1 ],
         [ loc.AC_load_center.left+padding*3, bottom-padding*1 ],
-    ], 'AC_neutral')
-
+    ])
+    
+    for( var i=2; i < system.AC_conductors; i++ ){
+        y -= padding;
+        layer(AC_layer_names[i]);
+        line([
+            [x,y],
+            [ x+padding*(15-i*3), y ],
+            [ x+padding*(15-i*3), loc.AC_disc_switch_bottom ],
+        ]);
+        block('terminal', [ x+padding*(15-i*3), loc.AC_disc_switch_bottom ] )
+        block('terminal', [ x+padding*(15-i*3), loc.AC_disc_switch_top ] )
+        line([
+            [ x+padding*(15-i*3), loc.AC_disc_switch_top ],
+            [ x+padding*(15-i*3), bottom-padding*i ],
+            [ loc.AC_load_center_breakers, bottom-padding*i ],
+        ]);
+    }
 
 
 //#AC load center
