@@ -54,16 +54,41 @@ function normRand(mu, sigma) {
 
 
 
-var Value = {
-    value:42, 
-    expanded: false,
-    click: function(){
-        log('click', this.expanded) ;
+var value = {
+    change: function(new_value){
+        log('click', 'this', this)
+        if( typeof new_value !== 'undefined' ) { this.value = new_value; }
+        log('value', this.value)
         this.expanded = !this.expanded;
         if(this.expanded){
-            this.elem.innerHTML = "Forty Two";
+            log("expanding")
+            this.elem.onclick =  undefined;
+            this.elem.innerHTML = "choose: ";
+            for( var i in this.options){
+                log('making option ' + i )
+                var v = this.options[i];
+                log('v', v)
+                var o = document.createElement('span');
+                //v.o.href = '#'
+                o.innerHTML = v;
+                o.addEventListener('click', function(){
+                    log('v',v)
+                    this.change(v);
+                }, false);
+                o.onclick = function(){
+                    log('test click');
+                };
+                log('onclick', o.onclick)
+                o.setAttribute('id', 'option ' + i )
+                log('o', o)
+                this.elem.appendChild(o)
+                this.elem.innerHTML += " | "
+            }
         } else {
             this.elem.innerHTML = this.value;
+            this.elem.onclick = function(){
+                v.change();
+            }
         }
     },
     add_option: function(input){
@@ -89,16 +114,24 @@ var Value = {
 
 };
 
-var val = function(){
-    var v = Object.create(Value);
+var Val = function(){
+    var v = Object.create(value);
+    v.options = [0,23,42,100];
+    v.value = v.options[0];
+    v.expanded = false;
     v.elem = document.createElement('span');
+    v.elem.setAttribute('id','42');
     //v.elem.href = '#'
     v.elem.innerHTML = v.value;
+    /*
     v.elem.addEventListener('click', function(){
-        v.click();
+        v.change();
     }, false);
-    v.options = [];
-    v.menu = document.createElement('span');
+    */
+    v.elem.onclick = function(){
+                v.change();
+            }
+    //v.menu = document.createElement('span');
     return v;
 };
 
@@ -1033,8 +1066,8 @@ var mk_drawing = function(){
 
     y -= padding;
 
-log('size:', [h,w])
-log('location:', [x,y])
+//log('size:', [h,w])
+//log('location:', [x,y])
 //circ([x,y],5);
 
     var bottom = loc.AC_load_center_wire_bundle_bottom;    
@@ -1270,8 +1303,9 @@ window.onload = function() {
 
 
 
-    var lnk = val();
-    //draw_page.appendChild(lnk.elem)
+    var sel = Val();
+    log('selector', sel)
+    draw_page.appendChild(sel.elem)
 
     //document.getElementById('drawing_page').appendChild('<a href="#" onclick="clear(\'svg_container\')">clear</a>')
 
