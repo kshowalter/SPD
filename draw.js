@@ -229,9 +229,19 @@ fonts['label'] = {
     'font-size':     12,
     'text-anchor':   'middle',
 };
-fonts['title'] = {
+fonts['title1'] = {
     'font-family': 'monospace',
     'font-size':     14,
+    'text-anchor':   'left',
+};
+fonts['title2'] = {
+    'font-family': 'monospace',
+    'font-size':     12,
+    'text-anchor':   'left',
+};
+fonts['page'] = {
+    'font-family': 'monospace',
+    'font-size':     20,
     'text-anchor':   'left',
 };
 
@@ -366,7 +376,7 @@ SvgElem.move = function(x, y){
     return this;
 };
 SvgElem.rotate = function(deg){
-    this.rotate = deg;
+    this.rotated = deg;
 };
 
 ///////
@@ -531,8 +541,11 @@ var update_drawing_values = function(){
     size.inverter_symbol_w = 50;
     size.inverter_symbol_h = 25;
 
-    size.AC_disc_w = 100;
+    size.AC_disc_w = 75;
     size.AC_disc_h = 100;
+
+    size.AC_load_center_w = 100; 
+    size.AC_load_center_h = 300; 
 
     // location
     loc.array = { x:200, y:600 };
@@ -550,9 +563,15 @@ var update_drawing_values = function(){
         x: loc.inverter.x + size.inverter_w/2,
         y: loc.inverter.y + size.inverter_h/2,
     };
-    loc.AC_disc = { x: loc.array.x+550, y: loc.array.y-100 };
+    loc.AC_disc = { x: loc.array.x+475, y: loc.array.y-100 };
     loc.AC_disc.bottom = loc.AC_disc.y + size.AC_disc_h/2;
+    loc.AC_disc.top = loc.AC_disc.y - size.AC_disc_h/2;
     loc.AC_disc.left = loc.AC_disc.x - size.AC_disc_w/2;
+
+    loc.AC_load_center_wire_bundle_bottom = loc.AC_disc.top - 20;
+
+    loc.AC_load_center = { x: loc.AC_disc.x+150, y: loc.AC_disc.y-100 };
+    loc.AC_load_center.left = loc.AC_load_center.x - size.AC_load_center_w/2;
 
 }
 
@@ -698,12 +717,6 @@ var mk_drawing = function(){
     title.bottom = y+h;
     title.right = x;
     title.left = x-w ;
-log('size:', [h,w])
-log('location:', [x,y])
-circ([title.left, title.bottom],5);
-    text([title.left+padding, title.bottom-padding], [
-        input.inverter + " Inverter (" + input.module + ")"
-        ], 'title', 'text').rotate(-90);
 
 
     // box bottom-right
@@ -711,7 +724,35 @@ circ([title.left, title.bottom],5);
     y = title.bottom + padding; 
     rect( [x-w/2, y+h/2], [w,h] );
     
+    var page = {};
+    page.right = title.right;
+    page.left = title.left;
+    page.top = title.bottom + padding;
+    page.bottom = page.top + size.drawing_titlebox*1.5;
+    // Text
 
+    x = title.left + padding;
+    y = title.bottom - padding;
+
+    x += 10;
+    text([x,y], 
+         [ system.inverter.make + " " + system.inverter.model + " Inverter System" ],
+        'title1', 'text').rotate(-90);
+
+    x += 14;
+    text([x,y], [
+        system.DC.module.make + " " + system.DC.module.model + 
+            " (" + system.DC.string_num  + " strings of " + system.DC.string_module + " modules )"
+    ], 'title2', 'text').rotate(-90);
+        
+    x = page.left + padding;
+    y = page.top + padding;
+    y += size.drawing_titlebox * 1.5 * 3/4;
+
+
+    text([x,y],
+        ['PV1'],
+        'page', 'text');
 
 ////////////////////////////////////////
 //#array
@@ -952,6 +993,7 @@ circ([title.left, title.bottom],5);
     y -= size.terminal_diam;
 
     var AC_layer_names = ['AC_ground', 'AC_neutral', 'AC_L1', 'AC_L2', 'AC_L2'];
+
     for( var i=0; i < system.AC_conductors; i++ ){
         block('terminal', [x,y] );
         layer(AC_layer_names[i]);
@@ -971,6 +1013,7 @@ circ([title.left, title.bottom],5);
 //#AC_discconect
     x = loc.AC_disc.x;
     y = loc.AC_disc.y;
+    padding = size.terminal_diam;
 
     layer('box');
     rect(
@@ -978,6 +1021,51 @@ circ([title.left, title.bottom],5);
         [size.AC_disc_w, size.AC_disc_h]
     );
     layer();
+
+    x -= size.AC_disc_w/2
+    y += size.AC_disc_h/2
+
+    y -= padding;
+
+log('size:', [h,w])
+log('location:', [x,y])
+circ([x,y],5);
+
+    var bottom = loc.AC_load_center_wire_bundle_bottom;    
+
+
+    line([
+        [x,y],
+        [ x+size.AC_disc_w+padding*3, y ],
+        [ x+size.AC_disc_w+padding*3, bottom ],
+        [ loc.AC_load_center.left-padding*3, bottom ],
+        [ loc.AC_load_center.left-padding*3, y ],
+    ], 'AC_ground')
+
+    y -= padding;
+
+    line([
+        [x,y],
+        [ x+size.AC_disc_w-padding*1, y ],
+        [ x+size.AC_disc_w-padding*1, bottom-padding*1 ],
+        [ loc.AC_load_center.left+padding*3, bottom-padding*1 ],
+    ], 'AC_neutral')
+
+
+
+//#AC load center
+
+    x = loc.AC_load_center.x;
+    y = loc.AC_load_center.y;
+    w = size.AC_load_center_w;
+    h = size.AC_load_center_h;
+
+    rect([x,y],
+        [w,h],
+        'box'
+    );
+
+
 
 };
 
@@ -1031,9 +1119,11 @@ var display_svg = function(container_id){
             
             var t = document.createElementNS("http://www.w3.org/2000/svg", 'text');
             t.setAttribute('x', x);
-            t.setAttribute('y', y + font['font-size']/2 );
-            if(elem.rotate){
-                t.setAttribute('transform', "rotate(" + elem.rotate + " " + x + " " + y + ")" );
+            //t.setAttribute('y', y + font['font-size']/2 );
+            t.setAttribute('y', y );
+            if(elem.rotated){
+                //t.setAttribute('transform', "rotate(" + elem.rotated + " " + x + " " + y + ")" );
+                t.setAttribute('transform', "rotate(" + elem.rotated + " " + x + " " + y + ")" );
             }
             for( var i2 in l_attr[elem.layer_name] ){
                 t.setAttribute( i2, l_attr[elem.layer_name][i2] );
