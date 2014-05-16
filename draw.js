@@ -111,7 +111,7 @@ var val = function(){
 
 var components = {};
 components.inverters = {};
-components.inverters['SMA3000'] = {
+components.inverters['SI3000'] = {
     make:'SMA',
     model:'3000',
 
@@ -141,17 +141,21 @@ var addInverter = function(){
         
 
 };
-
-
+var input = {};
+input.string_num = 4;
+input.string_module = 6;
+input.module = 'Sunsucker250';
+input.inverter = 'SI3000';
+input.AC_type = '208';
 
 var system = {};
 system.DC = {};
-system.DC.string_num = 4;
-system.DC.string_module = 6;
-system.DC.module = components.modules['Sunsucker250'];
-system.inverter = components.inverters['SMA3000'];
+system.DC.string_num = input.string_num; 
+system.DC.string_module = input.string_module;
+system.DC.module = components.modules[input.module];
+system.inverter = components.inverters[input.inverter];
 
-system.AC_type = '208';
+system.AC_type = input.AC_type;
 
 
 switch(system.AC_type){
@@ -192,6 +196,8 @@ l_attr.base = {
 
 };
 l_attr.block = Object.create(l_attr.base);
+l_attr.frame = Object.create(l_attr.base);
+l_attr.frame.stroke = '#000042'
 
 l_attr.DC_pos = Object.create(l_attr.base);
 l_attr.DC_pos.stroke = '#ff0000';
@@ -213,15 +219,30 @@ l_attr.AC_neutral.stroke = '#666666';
 // fonts
 
 var fonts = {};
-fonts.signs = {
+fonts['signs'] = {
     'font-family': 'monospace',
     'font-size':     5,
     'text-anchor':   'middle',
 };
-fonts.label = {
+fonts['label'] = {
     'font-family': 'monospace',
     'font-size':     12,
     'text-anchor':   'middle',
+};
+fonts['title1'] = {
+    'font-family': 'monospace',
+    'font-size':     14,
+    'text-anchor':   'left',
+};
+fonts['title2'] = {
+    'font-family': 'monospace',
+    'font-size':     12,
+    'text-anchor':   'left',
+};
+fonts['page'] = {
+    'font-family': 'monospace',
+    'font-size':     20,
+    'text-anchor':   'left',
 };
 
 
@@ -249,6 +270,9 @@ Blk.add = function(){
         this.elements.push(arguments[i]);
     }
     return this;
+};
+Blk.rotate = function(deg){
+    this.rotate = deg;
 };
 
 var blocks = {};
@@ -350,6 +374,9 @@ SvgElem.move = function(x, y){
         }
     }
     return this;
+};
+SvgElem.rotate = function(deg){
+    this.rotated = deg;
 };
 
 ///////
@@ -476,6 +503,12 @@ var loc = {};
 var update_drawing_values = function(){
 
     // sizes
+    size.drawing_w = 1000;
+    size.drawing_h = 800;
+    size.drawing_frame_padding = 5;
+
+    size.drawing_titlebox = 50;
+
 
     size.module_frame = {};
     size.module_frame.w = 10;
@@ -508,8 +541,11 @@ var update_drawing_values = function(){
     size.inverter_symbol_w = 50;
     size.inverter_symbol_h = 25;
 
-    size.AC_disc_w = 100;
+    size.AC_disc_w = 75;
     size.AC_disc_h = 100;
+
+    size.AC_load_center_w = 100; 
+    size.AC_load_center_h = 300; 
 
     // location
     loc.array = { x:200, y:600 };
@@ -527,9 +563,21 @@ var update_drawing_values = function(){
         x: loc.inverter.x + size.inverter_w/2,
         y: loc.inverter.y + size.inverter_h/2,
     };
-    loc.AC_disc = { x: loc.array.x+550, y: loc.array.y-100 };
+    loc.AC_disc = { x: loc.array.x+475, y: loc.array.y-100 };
     loc.AC_disc.bottom = loc.AC_disc.y + size.AC_disc_h/2;
+    loc.AC_disc.top = loc.AC_disc.y - size.AC_disc_h/2;
     loc.AC_disc.left = loc.AC_disc.x - size.AC_disc_w/2;
+    loc.AC_disc_switch_top = loc.AC_disc.top + 15;
+    loc.AC_disc_switch_bottom = loc.AC_disc_switch_top + 30;
+    
+
+
+    loc.AC_load_center_wire_bundle_bottom = loc.AC_disc.top - 20;
+
+    loc.AC_load_center = { x: loc.AC_disc.x+150, y: loc.AC_disc.y-100 };
+    loc.AC_load_center.left = loc.AC_load_center.x - size.AC_load_center_w/2;
+    
+    loc.AC_load_center_breakers = loc.AC_load_center.left + 30
 
 }
 
@@ -543,16 +591,18 @@ log('loc', loc);
 
 //#start drawing
 var mk_drawing = function(){
-    var x,y;
     log('making drawing');
+
+    var x, y, h, w;
 
 
 // Define blocks
 // module block
-    var w = size.module_frame.w;
-    var h = size.module_frame.h;
+    w = size.module_frame.w;
+    h = size.module_frame.h;
 
     block_start('module');
+
     // frame
     layer('module');
     rect( [0,h/2], [w,h] );
@@ -640,7 +690,77 @@ var mk_drawing = function(){
     block_end();
 
 ////////////////////////////////////////
+// Frame
 
+    w = size.drawing_w;
+    h = size.drawing_h;
+    var padding = size.drawing_frame_padding; 
+
+    layer('frame');
+
+    //border
+    rect( [w/2 , h/2], [w - padding*2, h - padding*2 ] );
+    
+    x = w - padding * 3;
+    y = padding * 3;
+
+    w = size.drawing_titlebox;
+    h = size.drawing_titlebox;
+
+    // box top-right
+    rect( [x-w/2, y+h/2], [w,h] );
+    
+    y += h + padding; 
+
+    w = size.drawing_titlebox;
+    h = size.drawing_h - padding*8 - size.drawing_titlebox*2.5;
+    
+    //title box
+    rect( [x-w/2, y+h/2], [w,h] );
+
+    var title = {};
+    title.top = y;
+    title.bottom = y+h;
+    title.right = x;
+    title.left = x-w ;
+
+
+    // box bottom-right
+    h = size.drawing_titlebox * 1.5;
+    y = title.bottom + padding; 
+    rect( [x-w/2, y+h/2], [w,h] );
+    
+    var page = {};
+    page.right = title.right;
+    page.left = title.left;
+    page.top = title.bottom + padding;
+    page.bottom = page.top + size.drawing_titlebox*1.5;
+    // Text
+
+    x = title.left + padding;
+    y = title.bottom - padding;
+
+    x += 10;
+    text([x,y], 
+         [ system.inverter.make + " " + system.inverter.model + " Inverter System" ],
+        'title1', 'text').rotate(-90);
+
+    x += 14;
+    text([x,y], [
+        system.DC.module.make + " " + system.DC.module.model + 
+            " (" + system.DC.string_num  + " strings of " + system.DC.string_module + " modules )"
+    ], 'title2', 'text').rotate(-90);
+        
+    x = page.left + padding;
+    y = page.top + padding;
+    y += size.drawing_titlebox * 1.5 * 3/4;
+
+
+    text([x,y],
+        ['PV1'],
+        'page', 'text');
+
+////////////////////////////////////////
 //#array
     // PV array
 
@@ -692,7 +812,8 @@ var mk_drawing = function(){
     layer();
 
 
-//#DC
+///////////////////////////////
+// combiner box
     x = loc.array.x;
     y = loc.array.y;
 
@@ -700,7 +821,6 @@ var mk_drawing = function(){
     var to_disconnect_x = 150;
     var to_disconnect_y = -100;
 
-    // combiner box
     
     rect(
         [x+size.jb_box_w/2,y-size.jb_box_h/10],
@@ -750,6 +870,7 @@ var mk_drawing = function(){
     x += to_disconnect_x;
     y += to_disconnect_y;
 
+///////////////////////////////
     // DC disconect combiner lines
     if( system.DC.string_num > 1){
         var offset_min = size.wire_offset_gap;
@@ -779,7 +900,7 @@ var mk_drawing = function(){
         'box'
     );
 
-
+///////////////////////////////
 //#inverter
     x = loc.inverter.x;
     y = loc.inverter.y;
@@ -795,7 +916,7 @@ var mk_drawing = function(){
     layer('text');
     text(
         [loc.inverter.x, loc.inverter.top + size.inverter_text_gap ],
-        [ 'Inverter', system.inverter.make + " " + system.inverter.model ],
+        [ 'Inverter', components.inverters[input.inverter].make + " " + components.inverters[input.inverter].model ],
         'label'
     );
     layer();
@@ -878,6 +999,7 @@ var mk_drawing = function(){
     y -= size.terminal_diam;
 
     var AC_layer_names = ['AC_ground', 'AC_neutral', 'AC_L1', 'AC_L2', 'AC_L2'];
+
     for( var i=0; i < system.AC_conductors; i++ ){
         block('terminal', [x,y] );
         layer(AC_layer_names[i]);
@@ -897,6 +1019,7 @@ var mk_drawing = function(){
 //#AC_discconect
     x = loc.AC_disc.x;
     y = loc.AC_disc.y;
+    padding = size.terminal_diam;
 
     layer('box');
     rect(
@@ -904,6 +1027,68 @@ var mk_drawing = function(){
         [size.AC_disc_w, size.AC_disc_h]
     );
     layer();
+
+    x -= size.AC_disc_w/2
+    y += size.AC_disc_h/2
+
+    y -= padding;
+
+log('size:', [h,w])
+log('location:', [x,y])
+//circ([x,y],5);
+
+    var bottom = loc.AC_load_center_wire_bundle_bottom;    
+
+    layer('AC_ground');
+    line([
+        [x,y],
+        [ x+size.AC_disc_w+padding*3, y ],
+        [ x+size.AC_disc_w+padding*3, bottom ],
+        [ loc.AC_load_center.left-padding*3, bottom ],
+        [ loc.AC_load_center.left-padding*3, y ],
+        [ loc.AC_load_center.left+padding*3, y ],
+    ])
+
+    y -= padding;
+    layer('AC_neutral');
+    line([
+        [x,y],
+        [ x+size.AC_disc_w-padding*1, y ],
+        [ x+size.AC_disc_w-padding*1, bottom-padding*1 ],
+        [ loc.AC_load_center.left+padding*3, bottom-padding*1 ],
+    ])
+    
+    for( var i=2; i < system.AC_conductors; i++ ){
+        y -= padding;
+        layer(AC_layer_names[i]);
+        line([
+            [x,y],
+            [ x+padding*(15-i*3), y ],
+            [ x+padding*(15-i*3), loc.AC_disc_switch_bottom ],
+        ]);
+        block('terminal', [ x+padding*(15-i*3), loc.AC_disc_switch_bottom ] )
+        block('terminal', [ x+padding*(15-i*3), loc.AC_disc_switch_top ] )
+        line([
+            [ x+padding*(15-i*3), loc.AC_disc_switch_top ],
+            [ x+padding*(15-i*3), bottom-padding*i ],
+            [ loc.AC_load_center_breakers, bottom-padding*i ],
+        ]);
+    }
+
+
+//#AC load center
+
+    x = loc.AC_load_center.x;
+    y = loc.AC_load_center.y;
+    w = size.AC_load_center_w;
+    h = size.AC_load_center_h;
+
+    rect([x,y],
+        [w,h],
+        'box'
+    );
+
+
 
 };
 
@@ -928,10 +1113,10 @@ var display_svg = function(container_id){
     //var svg_elem = document.getElementById('SvgjsSvg1000')
     var svg_elem = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
     svg_elem.setAttribute('id','svg_drawing');
-    svg_elem.setAttribute('width', 1000);
-    svg_elem.setAttribute('height', 1000);
+    svg_elem.setAttribute('width', size.drawing_w);
+    svg_elem.setAttribute('height', size.drawing_h);
     container.appendChild(svg_elem);
-    var svg = SVG(svg_elem).size(1000,1000);
+    var svg = SVG(svg_elem).size(size.drawing_w, size.drawing_h);
 
     // Loop through all the drawing contents, call the function below.
     elements.forEach( function(elem,id) {
@@ -957,7 +1142,12 @@ var display_svg = function(container_id){
             
             var t = document.createElementNS("http://www.w3.org/2000/svg", 'text');
             t.setAttribute('x', x);
-            t.setAttribute('y', y + font['font-size']/2 );
+            //t.setAttribute('y', y + font['font-size']/2 );
+            t.setAttribute('y', y );
+            if(elem.rotated){
+                //t.setAttribute('transform', "rotate(" + elem.rotated + " " + x + " " + y + ")" );
+                t.setAttribute('transform', "rotate(" + elem.rotated + " " + x + " " + y + ")" );
+            }
             for( var i2 in l_attr[elem.layer_name] ){
                 t.setAttribute( i2, l_attr[elem.layer_name][i2] );
             }
