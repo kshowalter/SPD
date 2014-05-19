@@ -54,43 +54,55 @@ function normRand(mu, sigma) {
 
 
 
-var value = {
+var value_prototype = {
     change: function(new_value){
         log('click', 'this', this)
-        if( typeof new_value !== 'undefined' ) { this.value = new_value; }
+        if( typeof new_value !== 'undefined' ) { this.set_value(new_value); }
         log('value', this.value)
         this.expanded = !this.expanded;
         if(this.expanded){
             log("expanding")
-            this.elem.onclick =  undefined;
-            this.elem.innerHTML = "choose: ";
-            for( var i in this.options){
-                log('making option ' + i )
-                var v = this.options[i];
-                log('v', v)
-                var o = document.createElement('span');
-                //v.o.href = '#'
-                o.innerHTML = v;
-                o.addEventListener('click', function(){
-                    log('v',v)
-                    this.change(v);
-                }, false);
-                o.onclick = function(){
-                    log('test click');
-                };
-                log('onclick', o.onclick)
-                o.setAttribute('id', 'option ' + i )
-                log('o', o)
-                this.elem.appendChild(o)
-                this.elem.innerHTML += " | "
-            }
+            this.elem.innerHTML = "";
+            this.elem.appendChild(this.elem_options);
         } else {
-            this.elem.innerHTML = this.value;
-            this.elem.onclick = function(){
-                v.change();
-            }
+            this.elem.innerHTML = "";
+            this.elem.appendChild(this.elem_value);
         }
     },
+    update_options: function(){
+        this.elem_options = document.createElement('span');
+        this.options.forEach(function(value,id){
+            var o = document.createElement('a')
+            o.href = '#';
+            o.setAttribute('class', 'selector_option');
+            o.innerHTML = value;
+            var that = this;
+            o.addEventListener('click', function(){
+                log('set to: ',value)
+                that.change(value);
+            }, false);
+            this.elem_options.appendChild(o);
+
+        }, this);
+    },
+    set_value: function(new_value){
+        this.value = new_value;
+        eval(this.reference + " = " + new_value)
+        this.elem.setAttribute('id','42');
+        this.elem_value = document.createElement('a');
+        this.elem_value.href = '#';
+        this.elem_value.setAttribute('class', 'selector');
+        this.elem_value.innerHTML = this.value;
+        var that = this;
+        this.elem_value.addEventListener('click', function(){
+            that.change();
+        }, false);
+        this.elem.appendChild(this.elem_value);
+        update();
+    
+    },
+
+
     add_option: function(input){
         if(typeof input == 'object'){
             for( var i in input ){
@@ -114,28 +126,22 @@ var value = {
 
 };
 
-var Val = function(){
-    var v = Object.create(value);
-    v.options = [0,23,42,100];
-    v.value = v.options[0];
+var Val = function(reference, options, start_value){
+    var v = Object.create(value_prototype);
+    v.options = options;
     v.expanded = false;
+    v.reference = reference;
     v.elem = document.createElement('span');
-    v.elem.setAttribute('id','42');
-    //v.elem.href = '#'
-    v.elem.innerHTML = v.value;
-    /*
-    v.elem.addEventListener('click', function(){
-        v.change();
-    }, false);
-    */
-    v.elem.onclick = function(){
-                v.change();
-            }
-    //v.menu = document.createElement('span');
+    v.elem.setAttribute('class', 'selector_menu');
+
+    v.update_options();
+
+    start_value = start_value || v.options[0];
+    v.set_value(start_value);
+    
+    //log(v);
     return v;
 };
-
-
 
 
 
@@ -176,7 +182,7 @@ var addInverter = function(){
 };
 var input = {};
 input.string_num = 4;
-input.string_module = 6;
+input.string_modules = 6;
 input.module = 'Sunsucker250';
 input.inverter = 'SI3000';
 input.AC_type = '208';
@@ -184,7 +190,7 @@ input.AC_type = '208';
 var system = {};
 system.DC = {};
 system.DC.string_num = input.string_num; 
-system.DC.string_module = input.string_module;
+system.DC.string_modules = input.string_modules;
 system.DC.module = components.modules[input.module];
 system.inverter = components.inverters[input.inverter];
 
@@ -533,7 +539,7 @@ log('blocks', blocks);
 var size = {};
 var loc = {};
 
-var update_drawing_values = function(){
+var update_values = function(){
 
     // sizes
     size.drawing_w = 1000;
@@ -781,7 +787,7 @@ var mk_drawing = function(){
     x += 14;
     text([x,y], [
         system.DC.module.make + " " + system.DC.module.model + 
-            " (" + system.DC.string_num  + " strings of " + system.DC.string_module + " modules )"
+            " (" + system.DC.string_num  + " strings of " + system.DC.string_modules + " modules )"
     ], 'title2', 'text').rotate(-90);
         
     x = page.left + padding;
@@ -1137,9 +1143,9 @@ var mk_drawing = function(){
 // Display
 
 //#svg
-var display_svg = function(container_id){
+var display_svg = function(){
     log('displaying svg');
-    var container = document.getElementById(container_id);
+    var container = document.getElementById(svg_container_id);
     container.innerHTML = '';
     //container.empty()
 
@@ -1233,31 +1239,24 @@ var display_svg = function(container_id){
 // after page loads functions
 
 //#update drawing
-var update_drawing = function(){
+var update = function(){
     log('updating drawing');
-    //('#string_select option:selected'))
-    var svg_container_id = 'svg_container';
-    if( document.getElementById(svg_container_id) === null ){
-        var svg_container = document.createElement('div');
-        svg_container.id = svg_container_id;
-        document.getElementById('drawing_page').appendChild(svg_container);
-    } else {
-        var svg_container = document.getElementById(svg_container_id);
-    }
-    
-    var select_string = document.getElementById('string_select');
-    system.DC.string_num = Number( select_string[select_string.selectedIndex].value );
-    log('DC string num', system.DC.string_num)
 
     clear_drawing();
 
-    update_drawing_values();
+    update_values();
 
     mk_drawing();
 
-    display_svg('svg_container');
+    display_svg();
 
 };
+
+
+
+var svg_container_id = 'svg_container';
+
+
 
 window.onload = function() {
     var title = 'PV drawing test';
@@ -1277,7 +1276,6 @@ window.onload = function() {
     var dump = document.getElementById('text_dump')
     dump.innerHTML = 'this is a test'
 
-    */
     var string_select = document.createElement('select');
     string_select.setAttribute('id', 'string_select');
     for( var i=1; i<=6; i++) {
@@ -1293,29 +1291,40 @@ window.onload = function() {
     //document.getElementById('string_select').selectedIndex = 4-1;
     // When number of strings change, update model, display
     string_select.addEventListener('change', function(){
-        update_drawing();
+        update();
     }, false);
     
-
-
+    */                                      
+    
+    
+    var svg_container = document.createElement('div');
+    svg_container.setAttribute('id', svg_container_id);
+    draw_page.appendChild(svg_container);
 
     //var draw_page = document.getElementById('drawing_page') 
 
+    var t = document.createElement('span');
+    t.innerHTML = 'Number of strings';
+    draw_page.appendChild(t);
 
+    var num_strings = Val('system.DC.string_num', [1,2,3,4,5,6], 4);
+    draw_page.appendChild(num_strings.elem)
 
-    var sel = Val();
-    log('selector', sel)
-    draw_page.appendChild(sel.elem)
+    var t = document.createElement('span');
+    t.innerHTML = '. Number of modules per string.';
+    draw_page.appendChild(t);
 
+    var num_modules = Val('system.DC.string_modules', [1,2,3,4,5,6,7,8,9,10,11,12], 4);
+    draw_page.appendChild(num_modules.elem);
     //document.getElementById('drawing_page').appendChild('<a href="#" onclick="clear(\'svg_container\')">clear</a>')
 
     // Start PV system drawing process
-    update_drawing();
 
 
 
 
 
+    //update();
 
     var boot_time = moment();
     var status_id = "status";
