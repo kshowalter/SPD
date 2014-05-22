@@ -1,6 +1,58 @@
 'use strict';
-// PV Systems drawing generator
+//var MINI = require('minified');
+//var _=MINI._, $=MINI.$, $$=MINI.$$, EE=MINI.EE, HTML=MINI.HTML;
 
+
+// PV Systems drawing generator
+var Elem = function(element){
+    element.html = function(html){
+       this.innerHTML = html;
+       return this;
+    }
+    element.add = function(sub_element){
+        this.appendChild(sub_element); 
+        return this;
+    }
+    element.appendTo = function(parent_element){
+        parent_element.appendChild(this); 
+        return this;
+    }
+    element.setId = function(id_name){
+        this.id = id_name; 
+        return this;
+    }
+    return element;
+
+}
+
+var $ = function(input){
+    if( typeof input === 'undefined' ) {
+        log('input needed');
+        return false;
+    }
+    if( input.substr(0,1) === '#' ) {
+        var e = document.getElementById(input.substr(1));
+        var E = Elem(e);
+            var E = Elem(e);
+            return E;
+        return E
+    } else if( input.substr(0,1) === '.' ) {
+    
+    } else {
+        if( input === 'value' ) {
+            var e = Value(); 
+            var E = Elem(e);
+            return E;
+        } else {
+            var e = document.createElement(input);
+            var E = Elem(e);
+            return E;
+        }
+    }
+    
+
+
+}
 
 
 var appendElement = function(parentElement,name,attrs,text){
@@ -32,7 +84,17 @@ function format_float( str ) {
 
 var clear = function(div_id){
     document.getElementById(div_id).innerHTML = '';
-};
+}
+
+function obj_id_array( object ) {
+    var a = [];
+    for( var id in object ) {
+        if( object.hasOwnProperty(id) )  {
+            a.push(id);
+        }
+    }
+    return a;
+}
 
 /*
  *  normRand: returns normally distributed random numbers
@@ -52,19 +114,16 @@ function normRand(mu, sigma) {
     return (n * mu) + sigma;
 }
 
+var update_registry = [];
 
 
-var value_prototype = {
+
+var selector_prototype = {
     change: function(new_value){
+        log('change')
         if( typeof new_value !== 'undefined' ) { this.set_value(new_value); }
         this.expanded = !this.expanded;
-        if(this.expanded){
-            this.elem.innerHTML = "";
-            this.elem.appendChild(this.elem_options);
-        } else {
-            this.elem.innerHTML = "";
-            this.elem.appendChild(this.elem_value);
-        }
+        this.update();
     },
     update_options: function(){
         this.elem_options = document.createElement('span');
@@ -83,8 +142,9 @@ var value_prototype = {
     },
     set_value: function(new_value){
         this.value = new_value;
-        eval(this.reference + " = " + new_value)
-        this.elem.setAttribute('id','42');
+        settings[this.setting] = new_value;
+
+        //this.elem.setAttribute('id','42');
         this.elem_value = document.createElement('a');
         this.elem_value.href = '#';
         this.elem_value.setAttribute('class', 'selector');
@@ -98,47 +158,69 @@ var value_prototype = {
     
     },
 
-
-    add_option: function(input){
-        if(typeof input == 'object'){
-            for( var i in input ){
-                var addition = input[i];
-                this.options.push(addition);
-            }
+    update: function(){
+        if(this.expanded){
+            this.elem.innerHTML = "";
+            this.elem.appendChild(this.elem_options);
         } else {
-            this.options.push(input);
+            this.elem.innerHTML = "";
+            this.elem.appendChild(this.elem_value);
         }
-    },
-    link_list: function(){
-        for( var i in this.options ){
-            var option = this.options[i];
-            var a = document.createElement('a');
-            a.addEventListener('click', function(){
-                this.value = this.option[i];
-            }, false);
-            this.menu.appendChild(a);
-        } 
-    },
-
+    }
 };
 
-var Val = function(reference, options, start_value){
-    var v = Object.create(value_prototype);
-    v.options = options;
-    v.expanded = false;
-    v.reference = reference;
-    v.elem = document.createElement('span');
-    v.elem.setAttribute('class', 'selector_menu');
+var Selector = function(setting, options, start_value){
+    var s = Object.create(selector_prototype);
+    s.options = options;
+    s.expanded = false;
+    s.setting = setting;
+    s.elem = document.createElement('span');
+    s.elem.setAttribute('class', 'selector_menu');
 
-    v.update_options();
+    s.update_options();
 
-    start_value = start_value || v.options[0];
-    v.set_value(start_value);
+    start_value = start_value || s.options[0];
+    s.set_value(start_value);
     
-    return v;
+    update_registry.push(s);
+    return s;
 };
 
 
+function Value(value) {
+    value = value || false;
+    //var v = Object.create(value_prototype);
+    var v = document.createElement('span');
+
+    v.value = value;
+    v.innerHTML = v.value;
+    v.reference = false;
+
+    v.update = function(){
+        if( this.reference ){
+            eval( 'this.value = ' + this.reference + ';' );
+        }    
+        this.innerHTML = this.value;
+        return this;
+    }
+    v.set = function(new_value) {
+        if( typeof new_value !== 'undefined' ){
+            this.value = new_value;
+        }
+        return this;
+    }
+    v.setRef = function(reference){
+        if( typeof reference !== 'undefined' ){
+            this.reference = reference;
+        }
+        return this;
+    }
+
+    v.update();
+
+    update_registry.push(v);
+    return v;
+}
 
 ///////////////
 //#system parameters
@@ -160,15 +242,21 @@ components.modules = {};
 components.modules['Sunsucker250'] = {
     make:'Sunsucker',
     model:'250',
-   
     Pmax: 245,
     Isc: 10,
     Voc: 60,
     Imp: 8,
     Vmp: 50,
-
 };
-
+components.modules['Sunsucker200'] = {
+    make:'Sunsucker',
+    model:'200',
+    Pmax: 195,
+    Isc: 9,
+    Voc: 50,
+    Imp: 7,
+    Vmp: 40,
+};
 
 
 var addInverter = function(){
@@ -176,6 +264,14 @@ var addInverter = function(){
 
 };
 
+var AC_types = {
+    '120V'      : ['ground', 'neutral', 'L1' ],
+    '240V'      : ['ground', 'neutral', 'L1', 'L2' ],
+    '208V'      : ['ground', 'neutral', 'L1', 'L2' ],
+    '277V'      : ['ground', 'neutral', 'L1' ],
+    '480V Wye'  : ['ground', 'neutral', 'L1', 'L2', 'L3' ],
+    '480V Delta': ['ground', 'L1', 'L2', 'L3' ],
+}
 
 
 var input = {};
@@ -183,31 +279,43 @@ input.string_num = 4;
 input.string_modules = 6;
 input.module = 'Sunsucker250';
 input.inverter = 'SI3000';
-input.AC_type = '208';
+input.AC_type = '480V Delta';
+
+var settings = {};
+
+for( var id in input ) {
+    if( input.hasOwnProperty(id) ) {
+        settings[id] = input[id];
+    }
+}
+
+log('settings', settings);
+
+var values = {};
 
 var system = {};
-system.DC = {};
-system.DC.string_num = input.string_num; 
-system.DC.string_modules = input.string_modules;
-system.DC.module = components.modules[input.module];
-system.inverter = components.inverters[input.inverter];
 
-system.AC_type = input.AC_type;
+function update_system() {
+    system.DC = {};
+    system.DC.string_num = settings.string_num; 
+    system.DC.string_modules = settings.string_modules;
+    system.DC.module = components.modules[settings.module];
+    system.inverter = components.inverters[settings.inverter];
 
+    system.AC_loadcenter_type = '480/277V';
 
-switch(system.AC_type){
-    case '208':
-        system.AC_conductors = 5;
-        break;
-    case '120':
-        system.AC_conductors = 3;
-        break;
-    default:
-        log('Error, unknown AC type');
+    system.AC_type = settings.AC_type;
+
+    system.AC_conductors = AC_types[system.AC_type];
+
+    system.module = components.modules[settings.module];
+
+    system.DC.current = system.DC.module.Isc * system.DC.string_num;
+    system.DC.voltage = system.DC.module.Voc * system.DC.string_modules;
+    
 }
-log('system', system);
-
-system.AC_loadcenter_type = '480/277V';
+update_system();
+log('system', system)
 
 /////////////////////////////////////////////
 // DRAWING
@@ -247,10 +355,17 @@ l_attr.box = Object.create(l_attr.base);
 l_attr.text = Object.create(l_attr.base);
 l_attr.text.stroke = '#0000ff';
 l_attr.terminal = Object.create(l_attr.base);
+
 l_attr.AC_ground = Object.create(l_attr.base);
-l_attr.AC_ground.stroke = '#006600';
+l_attr.AC_ground.stroke = 'Green';
 l_attr.AC_neutral = Object.create(l_attr.base);
-l_attr.AC_neutral.stroke = '#666666';
+l_attr.AC_neutral.stroke = 'Gray';
+l_attr.AC_L1 = Object.create(l_attr.base);
+l_attr.AC_L1.stroke = 'Black';
+l_attr.AC_L2 = Object.create(l_attr.base);
+l_attr.AC_L2.stroke = 'Red';
+l_attr.AC_L3 = Object.create(l_attr.base);
+l_attr.AC_L3.stroke = 'Blue';
 
 ///////////////
 // fonts
@@ -542,7 +657,7 @@ var update_values = function(){
     // sizes
     size.drawing = {
         w: 1000,
-        h: 800,
+        h: 780,
         frame_padding: 5,
         titlebox: 50,
     }
@@ -654,7 +769,6 @@ log('loc', loc);
 
 //#start drawing
 var mk_drawing = function(){
-    log('making drawing');
 
     var x, y, h, w;
 
@@ -1055,25 +1169,6 @@ var mk_drawing = function(){
     ]);
     layer();
         
-    // AC terminals
-    x = loc.inverter.bottom_right.x;
-    y = loc.inverter.bottom_right.y;
-    x -= size.terminal_diam * (system.AC_conductors+3);
-    y -= size.terminal_diam;
-
-    var AC_layer_names = ['AC_ground', 'AC_neutral', 'AC_L1', 'AC_L2', 'AC_L2'];
-
-    for( var i=0; i < system.AC_conductors; i++ ){
-        block('terminal', [x,y] );
-        layer(AC_layer_names[i]);
-        line([
-            [x, y],
-            [x, loc.AC_disc.bottom - size.terminal_diam * (i+1) ],
-            [loc.AC_disc.left, loc.AC_disc.bottom - size.terminal_diam * (i+1) ],
-        ]);
-        x += size.terminal_diam;
-    }
-    layer();
 
 
 
@@ -1091,59 +1186,16 @@ var mk_drawing = function(){
     );
     layer();
 
-    x -= size.AC_disc.w/2
-    y += size.AC_disc.h/2
-
-    y -= padding;
 
 //log('size:', [h,w])
 //log('location:', [x,y])
 //circ([x,y],5);
 
-    var bottom = loc.AC_loadcenter.wire_bundle_bottom;    
-    var breaker_spacing = loc.AC_loadcenter.breakers.spacing;
-
-    layer('AC_ground');
-    line([
-        [x,y],
-        [ x+size.AC_disc.w+padding*3, y ],
-        [ x+size.AC_disc.w+padding*3, bottom ],
-        [ loc.AC_loadcenter.left+padding*2, bottom ],
-        [ loc.AC_loadcenter.left+padding*2, y ],
-        [ loc.AC_loadcenter.groundbar.x-padding, y ],
-        [ loc.AC_loadcenter.groundbar.x-padding, loc.AC_loadcenter.groundbar.y+size.AC_loadcenter.groundbar.h/2 ],
-    ])
-
-    y -= padding;
-    layer('AC_neutral');
-    line([
-        [x,y],
-        [ x+size.AC_disc.w-padding*1, y ],
-        [ x+size.AC_disc.w-padding*1, bottom-breaker_spacing*1 ],
-        [ loc.AC_loadcenter.neutralbar.x, bottom-breaker_spacing*1 ],
-        [ loc.AC_loadcenter.neutralbar.x, 
-            loc.AC_loadcenter.neutralbar.y-size.AC_loadcenter.neutralbar.h/2 ],
-    ])
-    
-    for( var i=2; i < system.AC_conductors; i++ ){
-        y -= padding;
-        layer(AC_layer_names[i]);
-        line([
-            [x,y],
-            [ x+padding*(15-i*3), y ],
-            [ x+padding*(15-i*3), loc.AC_disc.switch_bottom ],
-        ]);
-        block('terminal', [ x+padding*(15-i*3), loc.AC_disc.switch_bottom ] )
-        block('terminal', [ x+padding*(15-i*3), loc.AC_disc.switch_top ] )
-        line([
-            [ x+padding*(15-i*3), loc.AC_disc.switch_top ],
-            [ x+padding*(15-i*3), bottom-breaker_spacing*i ],
-            [ loc.AC_loadcenter.breakers.left, bottom-breaker_spacing*i ],
-        ]);
-    }
 
 
 //#AC load center
+    var bottom = loc.AC_loadcenter.wire_bundle_bottom;    
+    var breaker_spacing = loc.AC_loadcenter.breakers.spacing;
 
     x = loc.AC_loadcenter.x;
     y = loc.AC_loadcenter.y;
@@ -1185,6 +1237,89 @@ var mk_drawing = function(){
     s = size.AC_loadcenter.groundbar;
     rect([l.x,l.y], [s.w,s.h], 'AC_ground' )
 
+    
+
+
+
+// AC lines
+
+    x = loc.inverter.bottom_right.x;
+    y = loc.inverter.bottom_right.y;
+    x -= size.terminal_diam * (system.AC_conductors.length+3);
+    y -= size.terminal_diam;
+
+    //var AC_layer_names = ['AC_ground', 'AC_neutral', 'AC_L1', 'AC_L2', 'AC_L2'];
+
+    //log(system.AC_conductors.length)
+
+    for( var i=0; i < system.AC_conductors.length; i++ ){
+        block('terminal', [x,y] );
+        layer('AC_'+system.AC_conductors[i]);
+        line([
+            [x, y],
+            [x, loc.AC_disc.bottom - size.terminal_diam * (i+1) ],
+            [loc.AC_disc.left, loc.AC_disc.bottom - size.terminal_diam * (i+1) ],
+        ]);
+        x += size.terminal_diam;
+    }
+    layer();
+
+    x = loc.AC_disc.x;
+    y = loc.AC_disc.y;
+    padding = size.terminal_diam;
+
+    x -= size.AC_disc.w/2
+    y += size.AC_disc.h/2
+
+    y -= padding;
+
+    if( system.AC_conductors.indexOf('ground')+1 ) {
+        layer('AC_ground');
+        line([
+            [x,y],
+            [ x+size.AC_disc.w+padding*3, y ],
+            [ x+size.AC_disc.w+padding*3, bottom ],
+            [ loc.AC_loadcenter.left+padding*2, bottom ],
+            [ loc.AC_loadcenter.left+padding*2, y ],
+            [ loc.AC_loadcenter.groundbar.x-padding, y ],
+            [ loc.AC_loadcenter.groundbar.x-padding, loc.AC_loadcenter.groundbar.y+size.AC_loadcenter.groundbar.h/2 ],
+        ])
+    }
+
+    if( system.AC_conductors.indexOf('neutral')+1 ) {
+        y -= padding;
+        layer('AC_neutral');
+        line([
+            [x,y],
+            [ x+size.AC_disc.w-padding*1, y ],
+            [ x+size.AC_disc.w-padding*1, bottom-breaker_spacing*1 ],
+            [ loc.AC_loadcenter.neutralbar.x, bottom-breaker_spacing*1 ],
+            [ loc.AC_loadcenter.neutralbar.x, 
+                loc.AC_loadcenter.neutralbar.y-size.AC_loadcenter.neutralbar.h/2 ],
+        ])
+    }
+        
+     
+    for( var i=1; i <= 3; i++ ) {
+        if( system.AC_conductors.indexOf('L'+i)+1 ) {
+            y -= padding;
+            layer('AC_L'+i);
+            line([
+                [x,y],
+                [ x+padding*(15-i*3), y ],
+                [ x+padding*(15-i*3), loc.AC_disc.switch_bottom ],
+            ]);
+            block('terminal', [ x+padding*(15-i*3), loc.AC_disc.switch_bottom ] )
+            block('terminal', [ x+padding*(15-i*3), loc.AC_disc.switch_top ] )
+            line([
+                [ x+padding*(15-i*3), loc.AC_disc.switch_top ],
+                [ x+padding*(15-i*3), bottom-breaker_spacing*(i+2) ],
+                [ loc.AC_loadcenter.breakers.left, bottom-breaker_spacing*(i+2) ],
+            ]);
+
+        }
+
+    }
 };
 
 
@@ -1300,8 +1435,14 @@ var update = function(){
 
     clear_drawing();
 
+    update_system();
+
     update_values();
 
+    update_registry.forEach(function(item){
+        item.update(); 
+    })
+    
     mk_drawing();
 
     display_svg();
@@ -1311,6 +1452,7 @@ var update = function(){
 
 
 var svg_container_id = 'svg_container';
+var system_container_id = 'system_container';
 
 
 
@@ -1328,56 +1470,74 @@ window.onload = function() {
     draw_page.id = 'drawing_page';
     document.body.appendChild(draw_page);
 
-    /*
-    var dump = document.getElementById('text_dump')
-    dump.innerHTML = 'this is a test'
-
-    var string_select = document.createElement('select');
-    string_select.setAttribute('id', 'string_select');
-    for( var i=1; i<=6; i++) {
-        var op = document.createElement('option');
-        op.setAttribute('value', i);
-        op.innerHTML = String(i) + ' string';
-        if( i === system.DC.string_num) { 
-            op.setAttribute( 'selected', 'selected');
-        }
-        string_select.appendChild(op);
-    }
-    draw_page.appendChild(string_select);
-    //document.getElementById('string_select').selectedIndex = 4-1;
-    // When number of strings change, update model, display
-    string_select.addEventListener('change', function(){
-        update();
-    }, false);
-    
-    */                                      
-    
+    var system_container = document.createElement('div');
+    system_container.setAttribute('id', system_container_id);
+    draw_page.appendChild(system_container);
     
     var svg_container = document.createElement('div');
     svg_container.setAttribute('id', svg_container_id);
     draw_page.appendChild(svg_container);
 
+//System options
+    var t = document.createElement('span');
+    t.innerHTML = 'Module: ';
+    system_container.appendChild(t);
+
+    system_container.appendChild(
+        Selector('module', obj_id_array(components.modules) ).elem
+    )
+
+    var t = document.createElement('span');
+    t.innerHTML = ' | ';
+    system_container.appendChild(t);
+
+
     //var draw_page = document.getElementById('drawing_page') 
+    var t = document.createElement('span');
+    t.innerHTML = 'Number of strings: ';
+    system_container.appendChild(t);
+
+
+
+    var num_strings = Selector('string_num', [1,2,3,4,5,6], 4);
+    system_container.appendChild(num_strings.elem)
+    
+    var t = document.createElement('span');
+    t.innerHTML = ' | ';
+    system_container.appendChild(t);
 
     var t = document.createElement('span');
-    t.innerHTML = 'Number of strings';
-    draw_page.appendChild(t);
+    t.innerHTML = 'Number of modules per string: ';
+    system_container.appendChild(t);
 
-    var num_strings = Val('system.DC.string_num', [1,2,3,4,5,6], 4);
-    draw_page.appendChild(num_strings.elem)
-
-    var t = document.createElement('span');
-    t.innerHTML = '. Number of modules per string.';
-    draw_page.appendChild(t);
-
-    var num_modules = Val('system.DC.string_modules', [1,2,3,4,5,6,7,8,9,10,11,12], 4);
-    draw_page.appendChild(num_modules.elem);
+    var num_modules = Selector('string_modules', [1,2,3,4,5,6,7,8,9,10,11,12], 4);
+    system_container.appendChild(num_modules.elem);
     //document.getElementById('drawing_page').appendChild('<a href="#" onclick="clear(\'svg_container\')">clear</a>')
 
     // Start PV system drawing process
 
+    $('br').appendTo(system_container);
+    
+    $('span').html('Array voltage: ').appendTo(system_container);
+    $('value').setRef('system.DC.voltage').appendTo(system_container);
+
+    $('span').html(' | ').appendTo(system_container);
+
+    $('span').html('Array current: ').appendTo(system_container);
+    $('value').setRef('system.DC.current').appendTo(system_container);
+
+    $('br').appendTo(system_container);
+
+    var t = document.createElement('span');
+    t.innerHTML = 'AC type:';
+    system_container.appendChild(t);
+
+    var AC_type = Selector('AC_type', 
+                          ['120V', '240V', '208V', '277V', '480V Wye', '480V Delta'], '480V Delta');
+    system_container.appendChild(AC_type.elem);
 
 
+    system_container.appendChild(document.createElement('br'));
 
 
     //update();
