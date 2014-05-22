@@ -9,7 +9,7 @@ var Elem = function(element){
        this.innerHTML = html;
        return this;
     }
-    element.add = function(sub_element){
+    element.append = function(sub_element){
         this.appendChild(sub_element); 
         return this;
     }
@@ -151,6 +151,7 @@ var selector_prototype = {
         this.elem_value.innerHTML = this.value;
         var that = this;
         this.elem_value.addEventListener('click', function(){
+            that.location = this.getBoundingClientRect();
             that.change();
         }, false);
         this.elem.appendChild(this.elem_value);
@@ -162,6 +163,13 @@ var selector_prototype = {
         if(this.expanded){
             this.elem.innerHTML = "";
             this.elem.appendChild(this.elem_options);
+            /*
+            var menu = $('span').append(this.elem_options);
+            menu.style.position = 'absolute';
+            menu.style.top = this.location.top;
+            menu.style.left = this.location.left;
+            menu.appendTo(this.elem);
+            */
         } else {
             this.elem.innerHTML = "";
             this.elem.appendChild(this.elem_value);
@@ -1487,9 +1495,27 @@ window.onload = function() {
         Selector('module', obj_id_array(components.modules) ).elem
     )
 
-    var t = document.createElement('span');
-    t.innerHTML = ' | ';
-    system_container.appendChild(t);
+    $('span').html(' | ').appendTo(system_container);
+    $('span').html('Pmax: ').appendTo(system_container);
+    $('value').setRef('system.DC.module.Pmax').appendTo(system_container);
+
+    $('span').html(' | ').appendTo(system_container);
+    $('span').html('Isc: ').appendTo(system_container);
+    $('value').setRef('system.DC.module.Isc').appendTo(system_container);
+
+    $('span').html(' | ').appendTo(system_container);
+    $('span').html('Voc: ').appendTo(system_container);
+    $('value').setRef('system.DC.module.Voc').appendTo(system_container);
+
+    $('span').html(' | ').appendTo(system_container);
+    $('span').html('Imp: ').appendTo(system_container);
+    $('value').setRef('system.DC.module.Imp').appendTo(system_container);
+    
+    $('span').html(' | ').appendTo(system_container);
+    $('span').html('Vmp: ').appendTo(system_container);
+    $('value').setRef('system.DC.module.Vmp').appendTo(system_container);
+
+    $('br').appendTo(system_container);
 
 
     //var draw_page = document.getElementById('drawing_page') 
@@ -1502,9 +1528,7 @@ window.onload = function() {
     var num_strings = Selector('string_num', [1,2,3,4,5,6], 4);
     system_container.appendChild(num_strings.elem)
     
-    var t = document.createElement('span');
-    t.innerHTML = ' | ';
-    system_container.appendChild(t);
+    $('span').html(' | ').appendTo(system_container);
 
     var t = document.createElement('span');
     t.innerHTML = 'Number of modules per string: ';
