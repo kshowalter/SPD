@@ -4,24 +4,35 @@
 
 
 // PV Systems drawing generator
-var Elem = function(element){
-    element.html = function(html){
-       this.innerHTML = html;
+var elem_prototype = {
+
+    html: function(html){
+       this.elem.innerHTML = html;
        return this;
-    }
-    element.append = function(sub_element){
-        this.appendChild(sub_element); 
+    },
+    append: function(sub_element){
+        this.elem.appendChild(sub_element.elem); 
         return this;
-    }
-    element.appendTo = function(parent_element){
-        parent_element.appendChild(this); 
+    },
+    appendTo: function(parent_element){
+        parent_element.append(this); 
         return this;
-    }
-    element.setId = function(id_name){
-        this.id = id_name; 
+    },
+    attr: function(attributeName, value ){
+        this.elem[attributeName] = value; 
         return this;
-    }
-    return element;
+    },
+
+
+
+}
+
+var Elem = function(element){
+    var E = Object.create(elem_prototype);
+
+    E.elem = element;
+
+    return E;
 
 }
 
@@ -31,22 +42,20 @@ var $ = function(input){
         return false;
     }
     if( input.substr(0,1) === '#' ) {
-        var e = document.getElementById(input.substr(1));
-        var E = Elem(e);
-            var E = Elem(e);
-            return E;
-        return E
+        var element = document.getElementById(input.substr(1));
+        return Elem(element);
     } else if( input.substr(0,1) === '.' ) {
     
     } else {
         if( input === 'value' ) {
-            var e = Value(); 
-            var E = Elem(e);
-            return E;
+            var element = Value(); 
+            return element;
+        } else if( input === 'selector' ) {
+            var element = Selector(); 
+            return element;
         } else {
-            var e = document.createElement(input);
-            var E = Elem(e);
-            return E;
+            var element = document.createElement(input);
+            return Elem(element);
         }
     }
     
@@ -54,6 +63,142 @@ var $ = function(input){
 
 }
 
+
+var selector_prototype = {
+    change: function(new_value){
+        log('change')
+        if( typeof new_value !== 'undefined' ) { this.set_value(new_value); }
+        this.expanded = !this.expanded;
+        this.update();
+    },
+    update_options: function(){
+        this.elem_options = document.createElement('span');
+        this.options.forEach(function(value,id){
+            var o = document.createElement('a')
+            o.href = '#';
+            o.setAttribute('class', 'selector_option');
+            o.innerHTML = value;
+            var that = this;
+            o.addEventListener('click', function(){
+                that.change(value);
+            }, false);
+            this.elem_options.appendChild(o);
+
+        }, this);
+    },
+    set_value: function(new_value){
+        this.value = new_value;
+        settings[this.setting] = new_value;
+
+        //this.elem.setAttribute('id','42');
+        this.elem_value = document.createElement('a');
+        this.elem_value.href = '#';
+        this.elem_value.setAttribute('class', 'selector');
+        this.elem_value.innerHTML = this.value;
+        var that = this;
+        this.elem_value.addEventListener('click', function(){
+            that.location = this.getBoundingClientRect();
+            that.change();
+        }, false);
+        this.elem.appendChild(this.elem_value);
+        update();
+    
+    },
+    set_options: function(new_options) {
+        this.options = new_options; 
+        if( !( this.value in this.options ) ) {
+            this.set_value(this.options[0]);
+        }
+        this.update_options();
+        return this;
+    },
+    set_setting: function(new_setting){
+        this.setting = new_setting;
+        return this;
+    },
+
+    update: function(){
+        if(this.expanded){
+            this.elem.innerHTML = "";
+            this.elem.appendChild(this.elem_options);
+            /*
+            var menu = $('span').append(this.elem_options);
+            menu.style.position = 'absolute';
+            menu.style.top = this.location.top;
+            menu.style.left = this.location.left;
+            menu.appendTo(this.elem);
+            */
+        } else {
+            this.elem.innerHTML = "";
+            this.elem.appendChild(this.elem_value);
+        }
+    },
+}
+for( var id in elem_prototype ) {
+    if( elem_prototype.hasOwnProperty(id) ) {
+        selector_prototype[id] = elem_prototype[id]; 
+    }
+}
+
+var Selector = function(){
+    var s = Object.create(selector_prototype);
+    s.options = ['none'];
+    s.expanded = false;
+    //s.setting = setting;
+    s.elem = document.createElement('span');
+    s.elem.setAttribute('class', 'selector_menu');
+
+    s.update_options();
+
+    s.set_value(s.options[0]);
+    
+    update_registry.push(s);
+    return s;
+};
+
+var value_prototype = {
+    update: function(){
+        if( this.reference ){
+            eval( 'this.value = ' + this.reference + ';' );
+        }    
+        this.elem.innerHTML = this.value;
+        return this;
+    },
+    set: function(new_value) {
+        if( typeof new_value !== 'undefined' ){
+            this.value = new_value;
+        }
+        return this;
+    },
+    setRef: function(reference){
+        if( typeof reference !== 'undefined' ){
+            this.reference = reference;
+        }
+        return this;
+    },
+}
+for( var id in elem_prototype ) {
+    if( elem_prototype.hasOwnProperty(id) ) {
+        selector_prototype[id] = elem_prototype[id]; 
+    }
+}
+
+function Value(value) {
+    value = value || false;
+    //var v = Object.create(value_prototype);
+    var v = Object.create(value_prototype);
+    value.elem = document.createElement('span');
+
+    v.value = value;
+    v.innerHTML = v.value;
+    v.reference = false;
+
+
+    v.update();
+
+    update_registry.push(v);
+    return v;
+}
 
 var appendElement = function(parentElement,name,attrs,text){
   var doc = parentElement.ownerDocument;
@@ -69,6 +214,18 @@ var appendElement = function(parentElement,name,attrs,text){
   if (text) el.appendChild(doc.createTextNode(text));
   return parentElement.appendChild(el);
 };
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ///////////////////
@@ -118,118 +275,6 @@ var update_registry = [];
 
 
 
-var selector_prototype = {
-    change: function(new_value){
-        log('change')
-        if( typeof new_value !== 'undefined' ) { this.set_value(new_value); }
-        this.expanded = !this.expanded;
-        this.update();
-    },
-    update_options: function(){
-        this.elem_options = document.createElement('span');
-        this.options.forEach(function(value,id){
-            var o = document.createElement('a')
-            o.href = '#';
-            o.setAttribute('class', 'selector_option');
-            o.innerHTML = value;
-            var that = this;
-            o.addEventListener('click', function(){
-                that.change(value);
-            }, false);
-            this.elem_options.appendChild(o);
-
-        }, this);
-    },
-    set_value: function(new_value){
-        this.value = new_value;
-        settings[this.setting] = new_value;
-
-        //this.elem.setAttribute('id','42');
-        this.elem_value = document.createElement('a');
-        this.elem_value.href = '#';
-        this.elem_value.setAttribute('class', 'selector');
-        this.elem_value.innerHTML = this.value;
-        var that = this;
-        this.elem_value.addEventListener('click', function(){
-            that.location = this.getBoundingClientRect();
-            that.change();
-        }, false);
-        this.elem.appendChild(this.elem_value);
-        update();
-    
-    },
-
-    update: function(){
-        if(this.expanded){
-            this.elem.innerHTML = "";
-            this.elem.appendChild(this.elem_options);
-            /*
-            var menu = $('span').append(this.elem_options);
-            menu.style.position = 'absolute';
-            menu.style.top = this.location.top;
-            menu.style.left = this.location.left;
-            menu.appendTo(this.elem);
-            */
-        } else {
-            this.elem.innerHTML = "";
-            this.elem.appendChild(this.elem_value);
-        }
-    }
-};
-
-var Selector = function(setting, options, start_value){
-    var s = Object.create(selector_prototype);
-    s.options = options;
-    s.expanded = false;
-    s.setting = setting;
-    s.elem = document.createElement('span');
-    s.elem.setAttribute('class', 'selector_menu');
-
-    s.update_options();
-
-    start_value = start_value || s.options[0];
-    s.set_value(start_value);
-    
-    update_registry.push(s);
-    return s;
-};
-
-
-function Value(value) {
-    value = value || false;
-    //var v = Object.create(value_prototype);
-    var v = document.createElement('span');
-
-    v.value = value;
-    v.innerHTML = v.value;
-    v.reference = false;
-
-    v.update = function(){
-        if( this.reference ){
-            eval( 'this.value = ' + this.reference + ';' );
-        }    
-        this.innerHTML = this.value;
-        return this;
-    }
-    v.set = function(new_value) {
-        if( typeof new_value !== 'undefined' ){
-            this.value = new_value;
-        }
-        return this;
-    }
-    v.setRef = function(reference){
-        if( typeof reference !== 'undefined' ){
-            this.reference = reference;
-        }
-        return this;
-    }
-
-    v.update();
-
-    update_registry.push(v);
-    return v;
-}
-
 ///////////////
 //#system parameters
 
@@ -241,29 +286,59 @@ components.inverters['SI3000'] = {
 
     DC_voltageWindow_low: 150,
     DC_voltageWindow_high: 350,
-    
+    max_power: 3300,
+
     AC_options: ['240','208'],
 
 };
 
 components.modules = {};
-components.modules['Sunsucker250'] = {
-    make:'Sunsucker',
-    model:'250',
-    Pmax: 245,
-    Isc: 10,
-    Voc: 60,
-    Imp: 8,
-    Vmp: 50,
+components.modules['Suniva'] = {
+    '255-60-4-1B0': {
+        Pmax: 255,
+        Isc: 8.96,
+        Voc: 38.10,
+        Imp: 8.45,
+        Vmp: 30.20,
+    },
+    '260-60-4-1B0': {
+        Pmax: 260,
+        Isc: 9.01,
+        Voc: 38.30,
+        Imp: 8.52,
+        Vmp: 30.50,
+    },
+    '265-60-4-1B0': {
+        Pmax: 265,
+        Isc: 9.12,
+        Voc: 38.30,
+        Imp: 8.64,
+        Vmp: 30.70,
+    },
+    '270-60-4-1B0': {
+        Pmax: 270,
+        Isc: 9.18,
+        Voc: 38.40,
+        Imp: 8.70,
+        Vmp: 31.00,
+    },
+
 };
-components.modules['Sunsucker200'] = {
-    make:'Sunsucker',
-    model:'200',
-    Pmax: 195,
-    Isc: 9,
-    Voc: 50,
-    Imp: 7,
-    Vmp: 40,
+components.modules['Sunmodule'] = {
+    'Protect SW 265 mono': {
+        Pmax: 265,
+        Isc: 9.31,
+        Voc: 39.0,
+        Imp: 8.69,
+        Vmp: 30.8,
+    },
+    'Protect SW 270 mono': {
+        Pmax: 270,
+        Isc: 9.44,
+        Voc: 39.2,
+        Imp: 8.81,
+        Vmp: 30.9,
+    },
 };
 
 
@@ -285,7 +360,6 @@ var AC_types = {
 var input = {};
 input.string_num = 4;
 input.string_modules = 6;
-input.module = 'Sunsucker250';
 input.inverter = 'SI3000';
 input.AC_type = '480V Delta';
 
@@ -307,7 +381,10 @@ function update_system() {
     system.DC = {};
     system.DC.string_num = settings.string_num; 
     system.DC.string_modules = settings.string_modules;
-    system.DC.module = components.modules[settings.module];
+    system.DC.module = {}
+    system.DC.module.make = settings['pv_make'] || Object.keys( components.modules )[0];
+    system.DC.module.model= settings['pv_model'] || Object.keys( components.modules[system.DC.module.make] )[0];
+    system.DC.module.specs = components.modules[system.DC.module.make][system.DC.module.model];
     system.inverter = components.inverters[settings.inverter];
 
     system.AC_loadcenter_type = '480/277V';
@@ -318,8 +395,10 @@ function update_system() {
 
     system.module = components.modules[settings.module];
 
-    system.DC.current = system.DC.module.Isc * system.DC.string_num;
-    system.DC.voltage = system.DC.module.Voc * system.DC.string_modules;
+    system.DC.current = system.DC.module.specs.Isc * system.DC.string_num;
+    system.DC.voltage = system.DC.module.specs.Voc * system.DC.string_modules;
+
+    system.wire_config_num = 5;
     
 }
 update_system();
@@ -351,6 +430,8 @@ l_attr.base = {
 l_attr.block = Object.create(l_attr.base);
 l_attr.frame = Object.create(l_attr.base);
 l_attr.frame.stroke = '#000042'
+l_attr.table = Object.create(l_attr.base);
+l_attr.table.stroke = '#000042'
 
 l_attr.DC_pos = Object.create(l_attr.base);
 l_attr.DC_pos.stroke = '#ff0000';
@@ -403,6 +484,11 @@ fonts['page'] = {
     'font-family': 'monospace',
     'font-size':     20,
     'text-anchor':   'left',
+}
+fonts['table'] = {
+    'font-family': 'monospace',
+    'font-size':     6,
+    'text-anchor':   'middle',
 };
 
 
@@ -484,6 +570,8 @@ var block_start = function(name) {
 };
 
     /*
+    x = loc.wire_table.x - w/2;
+    y = loc.wire_table.y - h/2;
     if( typeof layer_name !== 'undefined' && (layer_name in layers) ) {
         var layer_selected = layers[layer_name]
     } else {
@@ -511,7 +599,7 @@ var clear_drawing = function() {
 
 
 //////
-// build protoype element
+// build prototype element
 
     /*
     if( typeof layer_name !== 'undefined' && (layer_name in layers) ) {
@@ -545,6 +633,10 @@ SvgElem.rotate = function(deg){
 var add = function(type, points, layer_name) {
 
     if( typeof layer_name === 'undefined' ) { layer_name = layer_active; } 
+    if( ! (layer_name in l_attr) ) { 
+        log('Layer name not found, using base');
+        layer_name = 'base'; 
+    }
 
     if( typeof points == 'string') {
         var points = points.split(' ');
@@ -717,6 +809,10 @@ var update_values = function(){
     size.AC_loadcenter.neutralbar = { w:5, h:40 }
     size.AC_loadcenter.groundbar = { w:40, h:5 }
 
+    size.wire_table = {}
+    size.wire_table.w = 200;
+    size.wire_table.row_h = 10;
+    size.wire_table.h = (system.wire_config_num+3) * size.wire_table.row_h;
 
 
     // location
@@ -762,6 +858,13 @@ var update_values = function(){
         x: loc.AC_loadcenter.x + 10, 
         y: loc.AC_loadcenter.y + size.AC_loadcenter.h*0.45
     };
+
+    loc.wire_table = {
+        x: size.drawing.w - size.drawing.titlebox - size.drawing.frame_padding*3 - size.wire_table.w/2 - 25,
+        y: size.drawing.frame_padding*3 + size.wire_table.h/2,
+    }
+    loc.wire_table.top = loc.wire_table.y - size.wire_table.h/2;
+    loc.wire_table.bottom = loc.wire_table.y + size.wire_table.h/2;
 
     //loc.AC_loadcenter.breakers = 
 
@@ -932,7 +1035,7 @@ var mk_drawing = function(){
 
     x += 14;
     text([x,y], [
-        system.DC.module.make + " " + system.DC.module.model + 
+        system.DC.module.specs.make + " " + system.DC.module.specs.model + 
             " (" + system.DC.string_num  + " strings of " + system.DC.string_modules + " modules )"
     ], 'title2', 'text').rotate(-90);
         
@@ -958,7 +1061,6 @@ var mk_drawing = function(){
     x -= size.module.frame.h*3;
     y -= size.string.h/2;
 
-    //for( var i in _.range(system.DC.string_num)) {
     for( var i=0; i<system.DC.string_num; i++ ) {
         var offset = i * size.wire_offset.base;
         
@@ -1328,7 +1430,85 @@ var mk_drawing = function(){
         }
 
     }
-};
+
+    x = loc.wire_table.x;
+    y = loc.wire_table.y;
+    w = size.wire_table.w;
+    h = size.wire_table.h;
+    var row_h = size.wire_table.row_h;
+    var top = loc.wire_table.top;
+    var bottom = loc.wire_table.bottom;
+    var column_width = {
+        number: 25,
+        wire_gauge: 25,
+        wire_type: 50,
+        conduit_gauge: 25,
+        conduit_type: 50,
+    }
+
+    layer('table')
+    rect( [x,y], [w,h] );
+
+    line([
+        [x-w/2+25 , y-h/2+(1*row_h)],
+        [x+w/2 , y-h/2+(1*row_h)],
+    ])
+
+    for( var r=2; r<system.wire_config_num+3; r++ ) {
+    
+        line([
+            [x-w/2 , y-h/2+(r*row_h)],
+            [x+w/2 , y-h/2+(r*row_h)],
+        ])
+    }
+    x = loc.wire_table.x - w/2;
+    y = loc.wire_table.y - h/2;
+    x += column_width.number;
+
+    var c_w = column_width.wire_gauge;
+    line([ [x,top], [x,bottom-row_h] ]);
+    text( [x+c_w,y+row_h*0.75], 'Wire', 'table', 'text');
+    text( [x+c_w/2,y+row_h*1.75], 'AWG', 'table', 'text');
+    x += c_w;
+
+    c_w = column_width.wire_type;
+    line([ [x,top+row_h], [x,bottom-row_h] ]);
+    text( [x+c_w/2,y+row_h*1.75], 'Type', 'table', 'text');
+    x += c_w;
+
+    c_w = column_width.conduit_gauge;
+    line([ [x,top], [x,bottom-row_h] ]);
+    text( [x+c_w,y+row_h*0.75], 'Conduit', 'table', 'text');
+    text( [x+c_w/2,y+row_h*1.75], 'Size', 'table', 'text');
+    x += c_w;
+
+    line([ [x,top+row_h], [x,bottom-row_h] ]);
+    text( [x+c_w/2,y+row_h*1.75], 'Type', 'table', 'text');
+
+    x = loc.wire_table.x - w/2;
+    y = loc.wire_table.y - h/2;
+
+    x += column_width.number/2;
+    y += row_h*2 + row_h*0.75;
+
+    for( var r=1; r<=system.wire_config_num; r++ ) {
+        text( [x,y], String(r), 'table', 'text');
+
+
+
+        y += row_h;
+    }
+
+}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1473,47 +1653,42 @@ window.onload = function() {
     };
 
     k.setup_body(title, sections);
+    var draw_page = $('div').attr('id', 'drawing_page');
+    document.body.appendChild(draw_page.elem);
 
-    var draw_page = document.createElement('div');
-    draw_page.id = 'drawing_page';
-    document.body.appendChild(draw_page);
-
-    var system_container = document.createElement('div');
-    system_container.setAttribute('id', system_container_id);
-    draw_page.appendChild(system_container);
+    var system_container = $('div').attr('id', system_container_id).appendTo(draw_page);
     
-    var svg_container = document.createElement('div');
-    svg_container.setAttribute('id', svg_container_id);
-    draw_page.appendChild(svg_container);
+    var svg_container_object = $('div').attr('id', svg_container_id).appendTo(draw_page);
+    var svg_container = svg_container_object.elem
 
 //System options
-    var t = document.createElement('span');
-    t.innerHTML = 'Module: ';
-    system_container.appendChild(t);
+    $('span').html('Module make: ').appendTo(system_container);
+    $('selector').set_options( obj_id_array(components.modules) ).set_setting('pv_make').appendTo(system_container);
+    
+    $('br').appendTo(system_container);
+    $('span').html('Module model: ').appendTo(system_container);
+    $('selector').set_options( obj_id_array(components.modules[system.DC.module.make]) ).set_setting('pv_make').appendTo(system_container);
 
-    system_container.appendChild(
-        Selector('module', obj_id_array(components.modules) ).elem
-    )
-
+/*
     $('span').html(' | ').appendTo(system_container);
     $('span').html('Pmax: ').appendTo(system_container);
-    $('value').setRef('system.DC.module.Pmax').appendTo(system_container);
+    $('value').setRef('system.DC.module.specs.Pmax').appendTo(system_container);
 
     $('span').html(' | ').appendTo(system_container);
     $('span').html('Isc: ').appendTo(system_container);
-    $('value').setRef('system.DC.module.Isc').appendTo(system_container);
+    $('value').setRef('system.DC.module.specs.Isc').appendTo(system_container);
 
     $('span').html(' | ').appendTo(system_container);
     $('span').html('Voc: ').appendTo(system_container);
-    $('value').setRef('system.DC.module.Voc').appendTo(system_container);
+    $('value').setRef('system.DC.module.specs.Voc').appendTo(system_container);
 
     $('span').html(' | ').appendTo(system_container);
     $('span').html('Imp: ').appendTo(system_container);
-    $('value').setRef('system.DC.module.Imp').appendTo(system_container);
+    $('value').setRef('system.DC.module.specs.Imp').appendTo(system_container);
     
     $('span').html(' | ').appendTo(system_container);
     $('span').html('Vmp: ').appendTo(system_container);
-    $('value').setRef('system.DC.module.Vmp').appendTo(system_container);
+    $('value').setRef('system.DC.module.specs.Vmp').appendTo(system_container);
 
     $('br').appendTo(system_container);
 
@@ -1563,6 +1738,7 @@ window.onload = function() {
 
     system_container.appendChild(document.createElement('br'));
 
+   */
 
     //update();
 
@@ -1573,8 +1749,7 @@ window.onload = function() {
 
 
 
+    log(window);
 
 
-};
-
-
+}
