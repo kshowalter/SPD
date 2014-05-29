@@ -329,6 +329,7 @@ components.inverters['SI3000'] = {
 
 components.modules = {};
 components.modules['Suniva'] = {
+    //series 'OPT 60 (black)'
     '255-60-4-1B0': {
         Pmax: 255,
         Isc: 8.96,
@@ -357,9 +358,61 @@ components.modules['Suniva'] = {
         Imp: 8.70,
         Vmp: 31.00,
     },
+    //series 'OPT 60'
+    '260-60-4-100': {
+        Pmax: 260,
+        Isc: 9.08,
+        Voc: 38.10,
+        Imp: 8.60,
+        Vmp: 30.20,
+    },
+    '265-60-4-100': {
+        Pmax: 265,
+        Isc: 9.12,
+        Voc: 38.30,
+        Imp: 8.64,
+        Vmp: 30.70,
+    },
+    '270-60-4-100': {
+        Pmax: 270,
+        Isc: 9.15,
+        Voc: 38.50,
+        Imp: 8.68,
+        Vmp: 31.10,
+    },
+    //series 'OPT 72'
+    '310-72-4-100': {
+        Pmax: 310,
+        Isc: 9.06,
+        Voc: 45.7,
+        Imp: 8.56,
+        Vmp: 36.2,
+    },
+    '315-72-4-100': {
+        Pmax: 315,
+        Isc: 9.10,
+        Voc: 45.9,
+        Imp: 8.62,
+        Vmp: 36.5,
+    },
+    '320-72-4-100': {
+        Pmax: 320,
+        Isc: 9.20,
+        Voc: 46.1,
+        Imp: 8.69,
+        Vmp: 36.8,
+    },
+    '325-72-4-100': {
+        Pmax: 325,
+        Isc: 9.27,
+        Voc: 46.3,
+        Imp: 8.77,
+        Vmp: 37.0,
+    },
 
 };
 components.modules['Sunmodule'] = {
+    //series 'Protect'
     'Protect SW 265 mono': {
         Pmax: 265,
         Isc: 9.31,
@@ -373,6 +426,13 @@ components.modules['Sunmodule'] = {
         Voc: 39.2,
         Imp: 8.81,
         Vmp: 30.9,
+    },
+    'Protect SW 275 mono': {
+        Pmax: 275,
+        Isc: 9.58,
+        Voc: 39.4,
+        Imp: 8.94,
+        Vmp: 31.0,
     },
 };
 
