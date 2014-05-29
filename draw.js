@@ -38,7 +38,7 @@ var Elem = function(element){
 
 var $ = function(input){
     if( typeof input === 'undefined' ) {
-        log('input needed');
+        //log('input needed');
         return false;
     }
     if( input.substr(0,1) === '#' ) {
@@ -71,73 +71,92 @@ var selector_prototype = {
             this.set_value(new_value);
         }
         this.expanded = !this.expanded;
-        this.update();
+        //this.update();
         update();
     },
     update_options: function(){
         //TODO: find way to do this other than eval
-        if( this.options_reference ) {
-            log(this.options_reference)
-            eval( 'this.options = ' + this.options_reference );
+        if( this.options_reference !== undefined ) {
+            //log("reference exists: "+ this.options_reference)
+            //log(settings.make)
+            //log(components.modules)
+            eval( 'this.options = ' + this.options_reference + ";" );
+            //log('this.options', this.options)
         }
-        this.elem_options = document.createElement('span');
-        this.options.forEach(function(value,id){
-            var o = document.createElement('a')
-            o.href = '#';
-            o.setAttribute('class', 'selector_option');
-            o.innerHTML = value;
-            var that = this;
-            o.addEventListener('click', function(){
-                that.change(value);
-            }, false);
-            this.elem_options.appendChild(o);
+        if( this.options !== undefined ) {
+            this.elem_options.innerHTML = '';
+            this.options.forEach(function(value,id){
+                var o = document.createElement('a')
+                o.href = '#';
+                o.setAttribute('class', 'selector_option');
+                o.innerHTML = value;
+                var that = this;
+                o.addEventListener('click', function(){
+                    that.change(value);
+                }, false);
+                this.elem_options.appendChild(o);
 
-        }, this);
-        if( ! (this.options.indexOf(this.value)+1) ){
-            this.set_value(this.options[0]);
+            }, this);
+            if( ! (this.options.indexOf(this.value)+1) ){
+                this.set_value(this.options[0]);
+            }
+            //this.update_elements();
         }
-        this.update_elements();
         return this;
     },
     set_value: function(new_value){
-        this.value = new_value;
-        settings[this.setting] = new_value;
-        this.elem_value = document.createElement('a');
-        this.elem_value.href = '#';
-        this.elem_value.setAttribute('class', 'selector');
-        this.elem_value.innerHTML = this.value;
-        var that = this;
-        this.elem_value.addEventListener('click', function(){
-            that.location = this.getBoundingClientRect();
-            that.change();
-        }, false);
-        //this.elem.appendChild(this.elem_value);
-        //this.update_elements();
-        this.update();
+        if( new_value !== undefined ) {
+            this.value = new_value;
+            this.elem_value = document.createElement('a');
+            this.elem_value.href = '#';
+            this.elem_value.setAttribute('class', 'selector');
+            this.elem_value.innerHTML = this.value;
+            var that = this;
+            this.elem_value.addEventListener('click', function(){
+                that.location = this.getBoundingClientRect();
+                that.change();
+            }, false);
+            //this.elem.appendChild(this.elem_value);
+            //this.update_elements();
+            //update();
+        }
+        settings[this.setting] = this.value;
+        log('settings', this.setting, settings[this.setting])
+        log('settings', settings[this.setting])
         return this;    
     },
     set_options: function(options_reference) {
         this.options_reference = options_reference;
         //TODO: find way to do this other than eval
         //eval( 'this.options = ' + this.options_reference );
-        this.update();
+        //this.update();
         return this;
     },
     set_setting: function(new_setting){
         this.setting = new_setting;
+        if( settings[this.setting] !== undefined ) {
+            this.set_value(settings[this.setting]);
+        } else {
+            this.set_value();
+        }
+        //this.update();
         return this;
     },
 
     update: function(){
         log('updating: ', this.setting)
+        log('model', settings.pv_model)
         this.update_options()
         this.update_elements();
+        return this;
     },
     update_elements: function() {
         if(this.expanded){
+            log('open')
             this.elem.innerHTML = "";
             this.elem.appendChild(this.elem_options);
         } else {
+            log('close')
             this.elem.innerHTML = "";
             this.elem.appendChild(this.elem_value);
         }
@@ -151,25 +170,33 @@ for( var id in elem_prototype ) {
 
 var Selector = function(){
     var s = Object.create(selector_prototype);
-    s.options = ['none'];
+    //s.options = ['none'];
     s.expanded = false;
     //s.setting = setting;
     s.elem = document.createElement('span');
     s.elem.setAttribute('class', 'selector_menu');
 
-    s.update_options();
-
+    s.elem_options = document.createElement('span');
+    s.elem_value = document.createElement('span');
+    s.elem_value.innerHTML = '-';
+    //s.update_options();
     
     settings_registry.push(s);
     return s;
 };
 
+
+
+
+
 var value_prototype = {
     update: function(){
+        update_system();
+        log('updating value: ' , this.reference , eval( this.reference))
         if( this.reference ){
             eval( 'this.value = ' + this.reference + ';' );
         }    
-        this.elem.innerHTML = this.value;
+        this.elem.innerHTML = Number(this.value).toFixed(3);
         return this;
     },
     set: function(new_value) {
@@ -187,17 +214,15 @@ var value_prototype = {
 }
 for( var id in elem_prototype ) {
     if( elem_prototype.hasOwnProperty(id) ) {
-        selector_prototype[id] = elem_prototype[id]; 
+        value_prototype[id] = elem_prototype[id]; 
     }
 }
 
-function Value(value) {
-    value = value || false;
-    //var v = Object.create(value_prototype);
+function Value() {
     var v = Object.create(value_prototype);
-    value.elem = document.createElement('span');
+    v.elem = document.createElement('span');
 
-    v.value = value;
+    v.value = '-';
     v.innerHTML = v.value;
     v.reference = false;
 
@@ -252,13 +277,15 @@ var clear = function(div_id){
 }
 
 function obj_id_array( object ) {
-    var a = [];
-    for( var id in object ) {
-        if( object.hasOwnProperty(id) )  {
-            a.push(id);
+    if( object !== undefined ) {
+        var a = [];
+        for( var id in object ) {
+            if( object.hasOwnProperty(id) )  {
+                a.push(id);
+            }
         }
+        return a;
     }
-    return a;
 }
 
 /*
@@ -375,7 +402,9 @@ settings.string_num = 4;
 settings.string_modules = 6;
 settings.inverter = 'SI3000';
 settings.AC_type = '480V Delta';
-
+settings.AC_type_options = ['120V', '240V', '208V', '277V', '480V Wye', '480V Delta'];
+settings.string_num_options = [1,2,3,4,5,6];
+settings.string_modules_options = [1,2,3,4,5,6,7,8,9,10,11,12];
 
 log('settings', settings);
 
@@ -388,7 +417,7 @@ function update_system() {
     system.DC.string_num = settings.string_num; 
     system.DC.string_modules = settings.string_modules;
     system.DC.module = {}
-log('module before', system.DC.module.model)
+//log('module before', system.DC.module.model)
     system.DC.module.make = settings['pv_make'] || Object.keys( components.modules )[0];
     system.DC.module.model= settings['pv_model'] || Object.keys( components.modules[system.DC.module.make] )[0];
     system.DC.module.specs = components.modules[system.DC.module.make][system.DC.module.model];
@@ -400,7 +429,7 @@ log('module before', system.DC.module.model)
 
     system.AC_conductors = AC_types[system.AC_type];
 
-log('module after', system.DC.module.model)
+//log('module after', system.DC.module.model)
     system.module = components.modules[settings.module];
     system.DC.current = system.DC.module.specs.Isc * system.DC.string_num;
     system.DC.voltage = system.DC.module.specs.Voc * system.DC.string_modules;
@@ -1634,6 +1663,7 @@ var update_settings_registry = function() {
 var update = function(){
     log('updating');
 
+
     // Make sure selectors and value displays are updated
     settings_registry.forEach(function(item){
         item.update(); 
@@ -1665,13 +1695,8 @@ var system_container_id = 'system_container';
 
 window.onload = function() {
     var title = 'PV drawing test';
-    var sections = {
-        'drawing_page':'Drawing',
-        'test':'test',
-        'text_dump':'text_dump'
-    };
 
-    k.setup_body(title, sections);
+    k.setup_body(title);
     var draw_page = $('div').attr('id', 'drawing_page');
     document.body.appendChild(draw_page.elem);
 
@@ -1682,15 +1707,16 @@ window.onload = function() {
 
 //System options
     $('span').html('Module make: ').appendTo(system_container);
-    $('selector').set_options( 'obj_id_array(components.modules)' ).set_setting('pv_make').appendTo(system_container);
+    $('selector').set_options( 'obj_id_array(components.modules)' ).set_setting('pv_make').update().appendTo(system_container);
     
+    log(settings.pv_make)
     $('br').appendTo(system_container);
     $('span').html('Module model: ').appendTo(system_container);
-    $('selector').set_options( 'obj_id_array(components.modules[settings.make])' ).set_setting('pv_model').appendTo(system_container);
+    $('selector').set_options( 'obj_id_array(components.modules[settings.pv_make])' ).set_setting('pv_model').update().appendTo(system_container);
 
-/*
-    $('span').html(' | ').appendTo(system_container);
+    $('br').appendTo(system_container);
     $('span').html('Pmax: ').appendTo(system_container);
+    log(system.DC.module.specs)
     $('value').setRef('system.DC.module.specs.Pmax').appendTo(system_container);
 
     $('span').html(' | ').appendTo(system_container);
@@ -1711,28 +1737,13 @@ window.onload = function() {
 
     $('br').appendTo(system_container);
 
-
-    //var draw_page = document.getElementById('drawing_page') 
-    var t = document.createElement('span');
-    t.innerHTML = 'Number of strings: ';
-    system_container.appendChild(t);
-
-
-
-    var num_strings = Selector('string_num', [1,2,3,4,5,6], 4);
-    system_container.appendChild(num_strings.elem)
+    $('span').html('Number of strings: ').appendTo(system_container);
+    $('selector').set_options( 'settings.string_num_options').set_setting('string_num').update().appendTo(system_container);
     
     $('span').html(' | ').appendTo(system_container);
 
-    var t = document.createElement('span');
-    t.innerHTML = 'Number of modules per string: ';
-    system_container.appendChild(t);
-
-    var num_modules = Selector('string_modules', [1,2,3,4,5,6,7,8,9,10,11,12], 4);
-    system_container.appendChild(num_modules.elem);
-    //document.getElementById('drawing_page').appendChild('<a href="#" onclick="clear(\'svg_container\')">clear</a>')
-
-    // Start PV system drawing process
+    $('span').html('Number of modules per string: ').appendTo(system_container);
+    $('selector').set_options( 'settings.string_modules_options').set_setting('string_modules').update().appendTo(system_container);
 
     $('br').appendTo(system_container);
     
@@ -1746,20 +1757,14 @@ window.onload = function() {
 
     $('br').appendTo(system_container);
 
-    var t = document.createElement('span');
-    t.innerHTML = 'AC type:';
-    system_container.appendChild(t);
+    $('span').html('AC type: ').appendTo(system_container);
 
-    var AC_type = Selector('AC_type', 
-                          ['120V', '240V', '208V', '277V', '480V Wye', '480V Delta'], '480V Delta');
-    system_container.appendChild(AC_type.elem);
+    $('selector').set_options( 'settings.AC_type_options').set_setting('AC_type').update().appendTo(system_container);
+
+    $('br').appendTo(system_container);
 
 
-    system_container.appendChild(document.createElement('br'));
-
-   */
-
-    //update();
+    update();
 
     var boot_time = moment();
     var status_id = "status";

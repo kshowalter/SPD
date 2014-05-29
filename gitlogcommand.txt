@@ -1,0 +1,1 @@
+git log --since=2014-05-19 --date=short --format=%cd %s --reverse
