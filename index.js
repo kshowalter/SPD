@@ -2,6 +2,43 @@
 //var MINI = require('minified');
 //var _=MINI._, $=MINI.$, $$=MINI.$$, EE=MINI.EE, HTML=MINI.HTML;
 
+var g_tables;
+
+function loadTables(string){
+    var tables = {};
+    var l = string.split('\n')
+    var title;
+    var fields;
+    var need_title = true;
+    var need_fields = true;
+    l.forEach( function(string, i){
+        var line = string.trim();
+        if( line.length === 0 ){
+            need_title = true;
+            need_fields = true;
+        } else if( need_title ) {
+            title = line;
+            tables[title] = [];
+            need_title = false; 
+            log('new table ', title)
+        } else if( need_fields ) {
+            fields = line.split(',')
+            need_fields = false;
+        } else {
+            var entry = {};
+            var line_array = line.split('\n');
+            fields.forEach( function(field, id){
+                entry[field] = line_array[id]; 
+            })
+            tables[title].push( entry );
+        }
+    })
+    log('tables', tables);
+    g_tables = tables;
+}
+
+k.ajax('tables.txt', loadTables);
+
 
 // PV Systems drawing generator
 var elem_prototype = {
