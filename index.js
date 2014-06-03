@@ -2,6 +2,12 @@
 //var MINI = require('minified');
 //var _=MINI._, $=MINI.$, $$=MINI.$$, EE=MINI.EE, HTML=MINI.HTML;
 
+if( navigator.geolocation ){
+    navigator.geolocation.getCurrentPosition(lookupLocation);
+} else {
+    log('no possition');
+}
+
 var g_tables;
 
 function loadTables(string){
@@ -20,15 +26,15 @@ function loadTables(string){
             title = line;
             tables[title] = [];
             need_title = false; 
-            log('new table ', title)
+            //log('new table ', title)
         } else if( need_fields ) {
             fields = line.split(',')
             need_fields = false;
         } else {
             var entry = {};
-            var line_array = line.split('\n');
+            var line_array = line.split(',');
             fields.forEach( function(field, id){
-                entry[field] = line_array[id]; 
+                entry[field.trim()] = line_array[id].trim(); 
             })
             tables[title].push( entry );
         }
@@ -158,8 +164,8 @@ var selector_prototype = {
             //update();
         }
         settings[this.setting] = this.value;
-        log('settings', this.setting, settings[this.setting])
-        log('settings', settings[this.setting])
+        //log('settings', this.setting, settings[this.setting])
+        //log('settings', settings[this.setting])
         return this;    
     },
     set_options: function(options_reference) {
@@ -181,19 +187,19 @@ var selector_prototype = {
     },
 
     update: function(){
-        log('updating: ', this.setting)
-        log('model', settings.pv_model)
+        //log('updating: ', this.setting)
+        //log('model', settings.pv_model)
         this.update_options()
         this.update_elements();
         return this;
     },
     update_elements: function() {
         if(this.expanded){
-            log('open')
+            //log('open')
             this.elem.innerHTML = "";
             this.elem.appendChild(this.elem_options);
         } else {
-            log('close')
+            //log('close')
             this.elem.innerHTML = "";
             this.elem.appendChild(this.elem_value);
         }
@@ -229,11 +235,15 @@ var Selector = function(){
 var value_prototype = {
     update: function(){
         update_system();
-        log('updating value: ' , this.reference , eval( this.reference))
+        //log('updating value: ' , this.reference , eval( this.reference))
         if( this.reference ){
             eval( 'this.value = ' + this.reference + ';' );
         }    
-        this.elem.innerHTML = Number(this.value).toFixed(3);
+        if( isNaN(Number(this.value)) ){
+            this.elem.innerHTML = this.value;
+        } else {
+            this.elem.innerHTML = Number(this.value).toFixed(3);
+        }
         return this;
     },
     set: function(new_value) {
@@ -537,6 +547,23 @@ function update_system() {
 update_system();
 log('system', system)
 
+function lookupLocation(position){
+    var url = 'http://maps.googleapis.com/maps/api/geocode/json?latlng='+position.coords.latitude+','+position.coords.longitude+'&sensor=true';
+    k.ajax(url, showLocation);
+}
+function showLocation(location_json){
+    var location = JSON.parse(location_json);
+    location.results[0].address_components.forEach( function(component){
+        if( component.types[0] === "locality" ) {
+            settings.city = component.long_name 
+            //log('city ', settings.city) 
+        } else if( component.types[0] === "administrative_area_level_2" ){
+            settings.county = component.long_name 
+            //log('county ', settings.county)
+        }
+    })
+    update();
+}
 /////////////////////////////////////////////
 // DRAWING
 
@@ -1803,6 +1830,16 @@ window.onload = function() {
     var svg_container = svg_container_object.elem
 
 //System options
+    ///*
+    $('span').html('IP location |').appendTo(system_container);
+    $('span').html('City: ').appendTo(system_container);
+    $('value').setRef('settings.city').appendTo(system_container);
+    $('span').html(' | ').appendTo(system_container);
+    $('span').html('County: ').appendTo(system_container);
+    $('value').setRef('settings.county').appendTo(system_container);
+    $('br').appendTo(system_container);
+    //*/
+
     $('span').html('Module make: ').appendTo(system_container);
     $('selector').set_options( 'obj_id_array(components.modules)' ).set_setting('pv_make').update().appendTo(system_container);
     
