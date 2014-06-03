@@ -518,16 +518,24 @@ log('settings', settings);
 var values = {};
 
 var system = {};
+system.DC = {};
 
 function update_system() {
-    system.DC = {};
     system.DC.string_num = settings.string_num; 
     system.DC.string_modules = settings.string_modules;
     system.DC.module = {}
 //log('module before', system.DC.module.model)
     system.DC.module.make = settings['pv_make'] || Object.keys( components.modules )[0];
-    system.DC.module.model= settings['pv_model'] || Object.keys( components.modules[system.DC.module.make] )[0];
+    system.DC.module.model = settings['pv_model'] || Object.keys( components.modules[system.DC.module.make] )[0];
     system.DC.module.specs = components.modules[system.DC.module.make][system.DC.module.model];
+
+    //system.module = components.modules[settings.module];
+
+    if( system.DC.module.specs ){
+        system.DC.current = system.DC.module.specs.Isc * system.DC.string_num;
+        system.DC.voltage = system.DC.module.specs.Voc * system.DC.string_modules;
+    }
+
     system.inverter = components.inverters[settings.inverter];
 
     system.AC_loadcenter_type = '480/277V';
@@ -536,10 +544,6 @@ function update_system() {
 
     system.AC_conductors = AC_types[system.AC_type];
 
-//log('module after', system.DC.module.model)
-    system.module = components.modules[settings.module];
-    system.DC.current = system.DC.module.specs.Isc * system.DC.string_num;
-    system.DC.voltage = system.DC.module.specs.Voc * system.DC.string_modules;
 
     system.wire_config_num = 5;
     
@@ -1873,12 +1877,9 @@ window.onload = function() {
 
     $('span').html('Number of strings: ').appendTo(system_container);
     $('selector').set_options( 'settings.string_num_options').set_setting('string_num').update().appendTo(system_container);
-    
     $('span').html(' | ').appendTo(system_container);
-
     $('span').html('Number of modules per string: ').appendTo(system_container);
     $('selector').set_options( 'settings.string_modules_options').set_setting('string_modules').update().appendTo(system_container);
-
     $('br').appendTo(system_container);
     
     $('span').html('Array voltage: ').appendTo(system_container);
