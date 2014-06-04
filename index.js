@@ -229,7 +229,7 @@ settings.inverter = 'SI3000';
 settings.AC_type = '480V Delta';
 settings.AC_type_options = ['120V', '240V', '208V', '277V', '480V Wye', '480V Delta'];
 settings.string_num_options = [1,2,3,4,5,6];
-settings.string_modules_options = [1,2,3,4,5,6,7,8,9,10,11,12];
+settings.string_modules_options = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
 
 log('settings', settings);
 
@@ -1601,7 +1601,7 @@ window.onload = function() {
     $('br').appendTo(system_container);
     
     $('span').html('Array voltage: ').appendTo(system_container);
-    $('value').setRef('system.DC.voltage').appendTo(system_container);
+    $('value').setRef('system.DC.voltage').setMax(600).attr('id', 'DC_volt').appendTo(system_container);
 
     $('span').html(' | ').appendTo(system_container);
 
