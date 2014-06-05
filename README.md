@@ -5,13 +5,11 @@
 To generate a selection of FSEC pre-approved PV system drawings that will cover a majority of Florida installations.
 
 ##Status
-The basic functions, data storage objects, and presets are in place.
-A portion of the drawing is coded in as a demonstration.
+A demo drawing is generated and shown, lacking some details, but shows what is possible. 
+The drawing changes as the system specs are updated with selectors at the top of the page.
 
 ##Current focus
-Rework the pattern used to generate the drawing elements (lines, shapes, text).
-Once that stabilizes, the rest of the sample drawing will be entered.
-After that, the drawing will be refined, and the more options will be integrated into it.
+Adding more basic features to the demo.
 
 ##Components
 
@@ -27,25 +25,28 @@ After that, the drawing will be refined, and the more options will be integrated
         * CAD file generator for use printing (used on site for installation)
     * Much of the basic drawing code can be reusable between electrical and structural.
 * Test script.
-    * A standard set of inputs (system specs) that will be tested with each version of the PV system program.
+    * A standard set of inputs (system specs) that will be tested with each version of the PV system application.
 
 ##Development stages, major milestones
 
+* Tech demo
+    * A sample of what the application can do. 
+    * This has a lot of the backbone of the final application, but lacks details.
 * Rough working model
     * At this stage a mostly complete drawing can be generated from a limited number of inputs. 
-* Basic program
+* Basic application
     * Basic entry form in place.
-    * More data encoded into program.
+    * More data encoded into application.
         * Common inverter and module specs.
         * NEC tables.
         * ...
     * Drawing handles more options.
-* Feature complete program
-    * The program does everything we want for the release, but needs testing and refinement.
-* Program complete (1.0 version)
-* Program released
+* Feature complete application
+    * The application does everything we want for the release, but needs testing and refinement.
+* Application complete (1.0 version)
+* Application released
 * Post launch bug fix
-    * There will be problems discovered when the program is release, they should be fixed as quickly as possible.
+    * There will be problems discovered when the application is release, they should be fixed as quickly as possible.
 * Feature addition
     * Addition of any new features that are requested post launch, or could not be implemented in the given time.
 * Maintenance
