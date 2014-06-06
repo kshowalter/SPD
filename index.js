@@ -43,7 +43,7 @@ function loadTables(string){
     g_tables = tables;
 }
 
-k.ajax('tables.txt', loadTables);
+k.AJAX('tables.txt', loadTables);
 
 
 
@@ -75,7 +75,7 @@ var settings_registry = [];
 var components = {};
 components.inverters = {};
 components.inverters['SI3000'] = {
-    make:'SMA',
+    Make:'SMA',
     model:'3000',
 
     DC_voltageWindow_low: 150,
@@ -87,117 +87,32 @@ components.inverters['SI3000'] = {
 };
 
 components.modules = {};
-components.modules['Suniva'] = {
-    //series 'OPT 60 (black)'
-    '255-60-4-1B0': {
-        Pmax: 255,
-        Isc: 8.96,
-        Voc: 38.10,
-        Imp: 8.45,
-        Vmp: 30.20,
-    },
-    '260-60-4-1B0': {
-        Pmax: 260,
-        Isc: 9.01,
-        Voc: 38.30,
-        Imp: 8.52,
-        Vmp: 30.50,
-    },
-    '265-60-4-1B0': {
-        Pmax: 265,
-        Isc: 9.12,
-        Voc: 38.30,
-        Imp: 8.64,
-        Vmp: 30.70,
-    },
-    '270-60-4-1B0': {
-        Pmax: 270,
-        Isc: 9.18,
-        Voc: 38.40,
-        Imp: 8.70,
-        Vmp: 31.00,
-    },
-    //series 'OPT 60'
-    '260-60-4-100': {
-        Pmax: 260,
-        Isc: 9.08,
-        Voc: 38.10,
-        Imp: 8.60,
-        Vmp: 30.20,
-    },
-    '265-60-4-100': {
-        Pmax: 265,
-        Isc: 9.12,
-        Voc: 38.30,
-        Imp: 8.64,
-        Vmp: 30.70,
-    },
-    '270-60-4-100': {
-        Pmax: 270,
-        Isc: 9.15,
-        Voc: 38.50,
-        Imp: 8.68,
-        Vmp: 31.10,
-    },
-    //series 'OPT 72'
-    '310-72-4-100': {
-        Pmax: 310,
-        Isc: 9.06,
-        Voc: 45.7,
-        Imp: 8.56,
-        Vmp: 36.2,
-    },
-    '315-72-4-100': {
-        Pmax: 315,
-        Isc: 9.10,
-        Voc: 45.9,
-        Imp: 8.62,
-        Vmp: 36.5,
-    },
-    '320-72-4-100': {
-        Pmax: 320,
-        Isc: 9.20,
-        Voc: 46.1,
-        Imp: 8.69,
-        Vmp: 36.8,
-    },
-    '325-72-4-100': {
-        Pmax: 325,
-        Isc: 9.27,
-        Voc: 46.3,
-        Imp: 8.77,
-        Vmp: 37.0,
-    },
 
-};
-components.modules['Sunmodule'] = {
-    //series 'Protect'
-    'Protect SW 265 mono': {
-        Pmax: 265,
-        Isc: 9.31,
-        Voc: 39.0,
-        Imp: 8.69,
-        Vmp: 30.8,
-    },
-    'Protect SW 270 mono': {
-        Pmax: 270,
-        Isc: 9.44,
-        Voc: 39.2,
-        Imp: 8.81,
-        Vmp: 30.9,
-    },
-    'Protect SW 275 mono': {
-        Pmax: 275,
-        Isc: 9.58,
-        Voc: 39.4,
-        Imp: 8.94,
-        Vmp: 31.0,
-    },
-};
+k.AJAX( 'modules.csv', loadModules );
 
+function loadModules(string){
+    var db = k.parseCSV(string);
+    log('db', db)
+    
+    for( var i in db ){
+        var module = db[i];
+        if( components.modules[module.Make] === undefined ){
+            components.modules[module.Make] = {};
+        }
+        if( components.modules[module.Make][module.Model] === undefined ){
+            components.modules[module.Make][module.Model] = {};
+        }
+        components.modules[module.Make][module.Model] = module;
+    }
+
+    update_system();
+    log('system', system)
+
+}
+
+log('components', components );
 
 var addInverter = function(){
-        
 
 };
 
@@ -242,8 +157,8 @@ function update_system() {
     system.DC.string_num = settings.string_num; 
     system.DC.string_modules = settings.string_modules;
     system.DC.module = {}
-//log('module before', system.DC.module.model)
     system.DC.module.make = settings['pv_make'] || Object.keys( components.modules )[0];
+
     system.DC.module.model = settings['pv_model'] || Object.keys( components.modules[system.DC.module.make] )[0];
     system.DC.module.specs = components.modules[system.DC.module.make][system.DC.module.model];
 
@@ -266,12 +181,10 @@ function update_system() {
     system.wire_config_num = 5;
     
 }
-update_system();
-log('system', system)
 
 function lookupLocation(position){
     var url = 'http://maps.googleapis.com/maps/api/geocode/json?latlng='+position.coords.latitude+','+position.coords.longitude+'&sensor=true';
-    k.ajax(url, showLocation);
+    k.AJAX(url, showLocation);
 }
 function showLocation(location_json){
     var location = JSON.parse(location_json);
@@ -912,12 +825,12 @@ var mk_drawing = function(){
 
     x += 10;
     text([x,y], 
-         [ system.inverter.make + " " + system.inverter.model + " Inverter System" ],
+         [ system.inverter.Make + " " + system.inverter.model + " Inverter System" ],
         'title1', 'text').rotate(-90);
 
     x += 14;
     text([x,y], [
-        system.DC.module.specs.make + " " + system.DC.module.specs.model + 
+        system.DC.module.specs.Make + " " + system.DC.module.specs.model + 
             " (" + system.DC.string_num  + " strings of " + system.DC.string_modules + " modules )"
     ], 'title2', 'text').rotate(-90);
         
@@ -1085,7 +998,7 @@ var mk_drawing = function(){
     layer('text');
     text(
         [loc.inverter.x, loc.inverter.top + size.inverter.text_gap ],
-        [ 'Inverter', components.inverters[settings.inverter].make + " " + components.inverters[settings.inverter].model ],
+        [ 'Inverter', components.inverters[settings.inverter].Make + " " + components.inverters[settings.inverter].model ],
         'label'
     );
     layer();
@@ -1506,9 +1419,8 @@ var update_settings_registry = function() {
 
 
 //#update drawing
-var update = function(){
+function update(){
     log('updating');
-
 
     // Make sure selectors and value displays are updated
     settings_registry.forEach(function(item){
@@ -1564,11 +1476,11 @@ window.onload = function() {
         //*/
 
         $('span').html('Module make: '),
-        $('selector').set_options( 'k.obj_id_array(components.modules)' ).set_setting('pv_make').update(),
+        $('selector').set_options( 'k.obj_id_array(components.modules)' ).set_setting('pv_make'),
         
         $('br'),
         $('span').html('Module model: '),
-        $('selector').set_options( 'k.obj_id_array(components.modules[settings.pv_make])' ).set_setting('pv_model').update(),
+        $('selector').set_options( 'k.obj_id_array(components.modules[settings.pv_make])' ).set_setting('pv_model'),
 
         $('br'),
         $('span').html('Pmax: '),
@@ -1593,10 +1505,10 @@ window.onload = function() {
         $('br'),
 
         $('span').html('Number of strings: '),
-        $('selector').set_options( 'settings.string_num_options').set_setting('string_num').update(),
+        $('selector').set_options( 'settings.string_num_options').set_setting('string_num'),
         $('span').html(' | '),
         $('span').html('Number of modules per string: '),
-        $('selector').set_options( 'settings.string_modules_options').set_setting('string_modules').update(),
+        $('selector').set_options( 'settings.string_modules_options').set_setting('string_modules'),
         $('br'),
         
         $('span').html('Array voltage: '),
@@ -1612,7 +1524,7 @@ window.onload = function() {
 
         $('span').html('AC type: '),
 
-        $('selector').set_options( 'settings.AC_type_options').set_setting('AC_type').update(),
+        $('selector').set_options( 'settings.AC_type_options').set_setting('AC_type'),
 
         $('br'),
 
