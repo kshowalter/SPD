@@ -1,0 +1,8 @@
+#!/bin/bash
+echo "Removing old k"
+trash-put javascripts/k
+echo "Getting new k"
+cp -r ../k javascripts/k
+rm -rf javascripts/k/.git
+cd ..
+echo "Done"
