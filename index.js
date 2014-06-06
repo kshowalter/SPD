@@ -1600,8 +1600,8 @@ window.onload = function() {
         $('br'),
         
         $('span').html('Array voltage: '),
-        //$('value').setRef('system.DC.voltage').setMax(600).attr('id', 'DC_volt'),
-        $('value').setRef('system.DC.voltage'),
+        $('value').setRef('system.DC.voltage').setMax(600).attr('id', 'DC_volt'),
+        //$('value').setRef('system.DC.voltage'),
 
         $('span').html(' | '),
 
