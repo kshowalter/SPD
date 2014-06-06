@@ -1553,69 +1553,78 @@ window.onload = function() {
 
 //System options
     ///*
-    $('span').html('IP location |').appendTo(system_container);
-    $('span').html('City: ').appendTo(system_container);
-    $('value').setRef('settings.city').appendTo(system_container);
-    $('span').html(' | ').appendTo(system_container);
-    $('span').html('County: ').appendTo(system_container);
-    $('value').setRef('settings.county').appendTo(system_container);
-    $('br').appendTo(system_container);
-    //*/
+    var system_container_array = [
+        $('span').html('IP location |'),
+        $('span').html('City: '),
+        $('value').setRef('settings.city'),
+        $('span').html(' | '),
+        $('span').html('County: '),
+        $('value').setRef('settings.county'),
+        $('br'),
+        //*/
 
-    $('span').html('Module make: ').appendTo(system_container);
-    $('selector').set_options( 'k.obj_id_array(components.modules)' ).set_setting('pv_make').update().appendTo(system_container);
-    
-    log(settings.pv_make)
-    $('br').appendTo(system_container);
-    $('span').html('Module model: ').appendTo(system_container);
-    $('selector').set_options( 'k.obj_id_array(components.modules[settings.pv_make])' ).set_setting('pv_model').update().appendTo(system_container);
+        $('span').html('Module make: '),
+        $('selector').set_options( 'k.obj_id_array(components.modules)' ).set_setting('pv_make').update(),
+        
+        $('br'),
+        $('span').html('Module model: '),
+        $('selector').set_options( 'k.obj_id_array(components.modules[settings.pv_make])' ).set_setting('pv_model').update(),
 
-    $('br').appendTo(system_container);
-    $('span').html('Pmax: ').appendTo(system_container);
-    log(system.DC.module.specs)
-    $('value').setRef('system.DC.module.specs.Pmax').appendTo(system_container);
+        $('br'),
+        $('span').html('Pmax: '),
+        $('value').setRef('system.DC.module.specs.Pmax'),
 
-    $('span').html(' | ').appendTo(system_container);
-    $('span').html('Isc: ').appendTo(system_container);
-    $('value').setRef('system.DC.module.specs.Isc').appendTo(system_container);
+        $('span').html(' | '),
+        $('span').html('Isc: '),
+        $('value').setRef('system.DC.module.specs.Isc'),
 
-    $('span').html(' | ').appendTo(system_container);
-    $('span').html('Voc: ').appendTo(system_container);
-    $('value').setRef('system.DC.module.specs.Voc').appendTo(system_container);
+        $('span').html(' | '),
+        $('span').html('Voc: '),
+        $('value').setRef('system.DC.module.specs.Voc'),
 
-    $('span').html(' | ').appendTo(system_container);
-    $('span').html('Imp: ').appendTo(system_container);
-    $('value').setRef('system.DC.module.specs.Imp').appendTo(system_container);
-    
-    $('span').html(' | ').appendTo(system_container);
-    $('span').html('Vmp: ').appendTo(system_container);
-    $('value').setRef('system.DC.module.specs.Vmp').appendTo(system_container);
+        $('span').html(' | '),
+        $('span').html('Imp: '),
+        $('value').setRef('system.DC.module.specs.Imp'),
+        
+        $('span').html(' | '),
+        $('span').html('Vmp: '),
+        $('value').setRef('system.DC.module.specs.Vmp'),
 
-    $('br').appendTo(system_container);
+        $('br'),
 
-    $('span').html('Number of strings: ').appendTo(system_container);
-    $('selector').set_options( 'settings.string_num_options').set_setting('string_num').update().appendTo(system_container);
-    $('span').html(' | ').appendTo(system_container);
-    $('span').html('Number of modules per string: ').appendTo(system_container);
-    $('selector').set_options( 'settings.string_modules_options').set_setting('string_modules').update().appendTo(system_container);
-    $('br').appendTo(system_container);
-    
-    $('span').html('Array voltage: ').appendTo(system_container);
-    $('value').setRef('system.DC.voltage').setMax(600).attr('id', 'DC_volt').appendTo(system_container);
+        $('span').html('Number of strings: '),
+        $('selector').set_options( 'settings.string_num_options').set_setting('string_num').update(),
+        $('span').html(' | '),
+        $('span').html('Number of modules per string: '),
+        $('selector').set_options( 'settings.string_modules_options').set_setting('string_modules').update(),
+        $('br'),
+        
+        $('span').html('Array voltage: '),
+        //$('value').setRef('system.DC.voltage').setMax(600).attr('id', 'DC_volt'),
+        $('value').setRef('system.DC.voltage'),
 
-    $('span').html(' | ').appendTo(system_container);
+        $('span').html(' | '),
 
-    $('span').html('Array current: ').appendTo(system_container);
-    $('value').setRef('system.DC.current').appendTo(system_container);
+        $('span').html('Array current: '),
+        $('value').setRef('system.DC.current'),
 
-    $('br').appendTo(system_container);
+        $('br'),
 
-    $('span').html('AC type: ').appendTo(system_container);
+        $('span').html('AC type: '),
 
-    $('selector').set_options( 'settings.AC_type_options').set_setting('AC_type').update().appendTo(system_container);
+        $('selector').set_options( 'settings.AC_type_options').set_setting('AC_type').update(),
 
-    $('br').appendTo(system_container);
+        $('br'),
 
+    ].forEach( function(elem){
+        elem.appendTo(system_container);
+        if( elem.type === 'selector' ){
+            elem.setUpdate(update);
+            elem.update(); 
+        } else if( elem.type === 'value' ){
+            elem.setUpdate(update_system);
+        }
+    });
 
     update();
 
