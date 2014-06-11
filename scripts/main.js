@@ -1,4 +1,13 @@
 'use strict';
+
+requirejs.config({
+    baseUrl: 'lib',
+    paths: {
+            app: '../app'
+        }
+});
+
+
 //var MINI = require('minified');
 //var _=MINI._, $=MINI.$, $$=MINI.$$, EE=MINI.EE, HTML=MINI.HTML;
 
