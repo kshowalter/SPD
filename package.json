@@ -1,0 +1,4 @@
+{
+    "build": "browserify main.js -o index.js",
+    "watch": "watchify main.js -o index.js --debug --verbose"
+}
