@@ -1,8 +1,0 @@
-#!/bin/bash
-echo "Removing old media"
-trash-put media
-echo "Getting new media"
-git clone --depth=1 https://github.com/kshowalter/media.git
-rm -rf ./media/.git
-cd ..
-echo "Done"
