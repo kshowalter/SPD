@@ -1,12 +1,5 @@
 'use strict';
 
-requirejs.config({
-    baseUrl: 'lib',
-    paths: {
-            app: '../app'
-        }
-});
-
 
 //var MINI = require('minified');
 //var _=MINI._, $=MINI.$, $$=MINI.$$, EE=MINI.EE, HTML=MINI.HTML;
@@ -52,7 +45,9 @@ function loadTables(string){
     g_tables = tables;
 }
 
-k.AJAX('tables.txt', loadTables);
+require(['k'], function(k){
+    k.AJAX('tables.txt', loadTables);
+});
 
 
 
@@ -97,7 +92,9 @@ components.inverters['SI3000'] = {
 
 components.modules = {};
 
-k.AJAX( 'modules.csv', loadModules );
+require(['k'], function(k){
+    k.AJAX( 'modules.csv', loadModules );
+});
 
 function loadModules(string){
     var db = k.parseCSV(string);
