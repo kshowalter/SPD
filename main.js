@@ -1,13 +1,16 @@
 'use strict';
+var log = console.log.bind(console);
 
 var _ = require('underscore');
-var SVG = require('./lib/svg.js');
+//var SVG = require('./lib/svg.js');
 var moment = require('moment');
 
 var k = require('./lib/k/k.js');
 var k_data = require('./lib/k/k_data.js');
-var $ = require('./lib/k/k_DOM.js');
-var $_extra = require('./lib/k/k_DOM_extra.js');
+var $ = require('./lib/k/k_DOM.js').$;
+//var $ = require('./lib/k/k_DOM_extra.js');
+var settings_registry = require('./lib/k/k_DOM_extra.js').settings_registry;
+var settings= require('./lib/k/k_DOM_extra.js').settings;
 
 
 //var MINI = require('minified');
@@ -54,7 +57,7 @@ function loadTables(string){
     g_tables = tables;
 }
 
-k.AJAX('tables.txt', loadTables);
+k.AJAX('data/tables.txt', loadTables);
 
 
 
@@ -81,7 +84,6 @@ k.AJAX('tables.txt', loadTables);
 ///////////////
 //#system parameters
 
-var settings_registry = [];
 
 var components = {};
 components.inverters = {};
@@ -99,7 +101,7 @@ components.inverters['SI3000'] = {
 
 components.modules = {};
 
-k.AJAX( 'modules.csv', loadModules );
+k.AJAX( 'data/modules.csv', loadModules );
 
 function loadModules(string){
     var db = k.parseCSV(string);
@@ -148,7 +150,6 @@ function getSetting(reference){
 
 
 
-var settings = {};
 settings.string_num = 4;
 settings.string_modules = 6;
 settings.inverter = 'SI3000';
@@ -1340,7 +1341,7 @@ var display_svg = function(){
     svg_elem.setAttribute('width', size.drawing.w);
     svg_elem.setAttribute('height', size.drawing.h);
     container.appendChild(svg_elem);
-    var svg = SVG(svg_elem).size(size.drawing.w, size.drawing.h);
+    //var svg = SVG(svg_elem).size(size.drawing.w, size.drawing.h);
 
     // Loop through all the drawing contents, call the function below.
     elements.forEach( function(elem,id) {
@@ -1476,6 +1477,10 @@ window.onload = function() {
 
 //System options
     ///*
+    log("-------")
+    log('Value', $('value').setRef('system.DC.voltage').setMax(600))
+    log('---', $('value').setRef('system.DC.voltage').setMax(600).attr('id', 'DC_volt') )
+
     var system_container_array = [
         $('span').html('IP location |'),
         $('span').html('City: '),
@@ -1524,7 +1529,6 @@ window.onload = function() {
         
         $('span').html('Array voltage: '),
         $('value').setRef('system.DC.voltage').setMax(600).attr('id', 'DC_volt'),
-        //$('value').setRef('system.DC.voltage'),
 
         $('span').html(' | '),
 
