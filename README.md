@@ -26,7 +26,7 @@ Adding basic features, and reorganization of code.
 * Test script.
     * A standard set of inputs (system specs) that will be tested with each version of the PV system program.
 
-##Development stages, major milestones
+##Major milestones
 
 * Rough working model
     * At this stage a mostly complete drawing can be generated from a limited number of inputs. 
@@ -48,6 +48,21 @@ Adding basic features, and reorganization of code.
 * Maintenance
     * Bug fixes
     * Updating product information (new inverter models, NEC rules)
+
+##Development Phases
+
+###Feature phase
+Maintain a list of features, issue fixes, and improvements that will be added to the program up to the end of the phase. Features that do not make it in by the end of the phase, are put aside for future development.
+
+###Cleanup phase
+Continue to fix issues, improve existing features, and prepare for release.
+
+###Testing phase
+Expand the user test group, and concentrate on fixing issues. Features that are suggested by test users are either added, or stored for later, based on there value, the time needed to add to the application, and the time left until launch.
+
+###Post launch development
+Fix issues as quickly as possible, and continue development as time and funding allows.
+
 
 
 ##Features
