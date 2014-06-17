@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+	<meta charset="UTF-8">
+    <title></title>
+	
+<!-- Fonts -->
+<!--
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+	<link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+-->
+	
+<!-- Style -->
+<!--
+	<link rel="stylesheet" href="style/normalize.css">
+	<link rel="stylesheet" href="style/style.css">
+	<link rel="stylesheet" href="style/local.css">
+-->
+
+</head>
+
+<body>
+    
+
+
+
+
+<!-- scripts -->
+<script type="text/javascript">
+    
+function urlParams() {
+    var params = window.location.search.split("?")[1].split("&");
+    params.forEach( function(elem,i){
+        var name = elem.split("=")[0];
+        var value = elem.split("=")[1];
+
+        params[i] = { 
+            //elem.split("=")[0]: elem.split("=")[1],
+            name: value,
+        };
+        console.log(elem);
+            
+            
+    });
+
+    return params;
+}    
+    
+console.log(urlParams());
+
+function urlString() {
+    var string = window.location.search.split("?")[1];
+    return string;
+}
+
+function readCodeString(codeString){
+    console.log( 'codeString', codeString )
+    var module = {}
+    module.make = codeString.substring(0,3);
+    module.num = codeString.substring(3,5);
+
+    
+    return module;
+}
+
+console.log( urlString()  );
+console.log( readCodeString( urlString() ) );
+</script>
+
+</body>
+</html>

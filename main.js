@@ -1,4 +1,7 @@
 'use strict';
+console.log( 'LUE', require('./lib/k/test.js').number )
+console.log( 'k.test', require('k/k.js').test() )
+
 var log = console.log.bind(console);
 
 var _ = require('underscore');
@@ -6,11 +9,13 @@ var _ = require('underscore');
 var moment = require('moment');
 
 var k = require('./lib/k/k.js');
+log( 'k', k)
 var k_data = require('./lib/k/k_data.js');
 var $ = require('./lib/k/k_DOM.js').$;
-//var $ = require('./lib/k/k_DOM_extra.js');
-var settings_registry = require('./lib/k/k_DOM_extra.js').settings_registry;
-var settings= require('./lib/k/k_DOM_extra.js').settings;
+//var $ = require('./lib/k/k_DOM.js').$;
+
+var settings_registry = require('./lib/k/k_DOM.js').settings_registry;
+var settings = require('./lib/k/k_DOM.js').settings;
 
 
 //var MINI = require('minified');
