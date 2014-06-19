@@ -1,6 +1,9 @@
-'use strict';
-console.log( 'LUE', require('./lib/k/test.js').number )
-console.log( 'k.test', require('k/k.js').test() )
+"use strict";
+var test_add = require('./lib/k/test');
+console.log('test', test_add(1))
+
+console.log( 'LUE', require('./lib/k/test.js').number );
+console.log( 'k.test', require('k/k.js').test() );
 
 var log = console.log.bind(console);
 
@@ -9,14 +12,25 @@ var _ = require('underscore');
 var moment = require('moment');
 
 var k = require('./lib/k/k.js');
-log( 'k', k)
+log( 'k', k);
 var k_data = require('./lib/k/k_data.js');
 var $ = require('./lib/k/k_DOM.js').$;
 //var $ = require('./lib/k/k_DOM.js').$;
 
 var settings_registry = require('./lib/k/k_DOM.js').settings_registry;
-var settings = require('./lib/k/k_DOM.js').settings;
+//var settings = require('./lib/k/k_DOM.js').settings;
+var settings = require('./lib/k/kontainer.js');
 
+var test = settings('test', '42');
+log('test var: ', test)
+
+log(settings('test'))
+
+
+
+log(settings())
+
+log('-----end test-----')
 
 //var MINI = require('minified');
 //var _=MINI._, $=MINI.$, $$=MINI.$$, EE=MINI.EE, HTML=MINI.HTML;
@@ -31,7 +45,7 @@ var g_tables;
 
 function loadTables(string){
     var tables = {};
-    var l = string.split('\n')
+    var l = string.split('\n');
     var title;
     var fields;
     var need_title = true;
@@ -47,17 +61,17 @@ function loadTables(string){
             need_title = false; 
             //log('new table ', title)
         } else if( need_fields ) {
-            fields = line.split(',')
+            fields = line.split(',');
             need_fields = false;
         } else {
             var entry = {};
             var line_array = line.split(',');
             fields.forEach( function(field, id){
                 entry[field.trim()] = line_array[id].trim(); 
-            })
+            });
             tables[title].push( entry );
         }
-    })
+    });
     log('tables', tables);
     g_tables = tables;
 }
@@ -110,7 +124,7 @@ k.AJAX( 'data/modules.csv', loadModules );
 
 function loadModules(string){
     var db = k.parseCSV(string);
-    log('db', db)
+    log('db', db);
     
     for( var i in db ){
         var module = db[i];
@@ -124,7 +138,7 @@ function loadModules(string){
     }
 
     update_system();
-    log('system', system)
+    log('system', system);
 
 }
 
@@ -141,62 +155,61 @@ var AC_types = {
     '277V'      : ['ground', 'neutral', 'L1' ],
     '480V Wye'  : ['ground', 'neutral', 'L1', 'L2', 'L3' ],
     '480V Delta': ['ground', 'L1', 'L2', 'L3' ],
-}
+};
 
 
 
-function getSetting(reference){
-    var chain = reference.split('.');
-    var output = settings;
-    chain.forEach( function(name){
-        output = output[name]
-    })
-}
 
 
+settings('misc', {});
+var misc = settings('misc');
 
-settings.string_num = 4;
-settings.string_modules = 6;
-settings.inverter = 'SI3000';
-settings.AC_type = '480V Delta';
-settings.AC_type_options = ['120V', '240V', '208V', '277V', '480V Wye', '480V Delta'];
-settings.string_num_options = [1,2,3,4,5,6];
-settings.string_modules_options = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
+misc.string_num = 4;
+log(settings('misc'))
 
-log('settings', settings);
+misc.string_modules = 6;
+misc.inverter = 'SI3000';
+misc.AC_type = '480V Delta';
+misc.AC_type_options = ['120V', '240V', '208V', '277V', '480V Wye', '480V Delta'];
+misc.string_num_options = [1,2,3,4,5,6];
+misc.string_modules_options = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
+
+log('misc', misc);
 
 var values = {};
 
-var system = {};
+//var system = {};
+var system = settings('system', {});
 system.DC = {};
 
 function update_system() {
-    system.DC.string_num = settings.string_num; 
-    system.DC.string_modules = settings.string_modules;
-    system.DC.module = {}
-    system.DC.module.make = settings['pv_make'] || Object.keys( components.modules )[0];
+    system.DC.string_num = misc.string_num; 
+    system.DC.string_modules = misc.string_modules;
+    system.DC.module = {};
+    system.DC.module.make = misc['pv_make'] || Object.keys( components.modules )[0];
 
-    system.DC.module.model = settings['pv_model'] || Object.keys( components.modules[system.DC.module.make] )[0];
+    system.DC.module.model = misc['pv_model'] || Object.keys( components.modules[system.DC.module.make] )[0];
     system.DC.module.specs = components.modules[system.DC.module.make][system.DC.module.model];
 
-    //system.module = components.modules[settings.module];
+    //system.module = components.modules[misc.module];
 
     if( system.DC.module.specs ){
         system.DC.current = system.DC.module.specs.Isc * system.DC.string_num;
         system.DC.voltage = system.DC.module.specs.Voc * system.DC.string_modules;
     }
 
-    system.inverter = components.inverters[settings.inverter];
+    system.inverter = components.inverters[misc.inverter];
 
     system.AC_loadcenter_type = '480/277V';
 
-    system.AC_type = settings.AC_type;
+    system.AC_type = misc.AC_type;
 
     system.AC_conductors = AC_types[system.AC_type];
 
 
     system.wire_config_num = 5;
     
+    log(settings())
 }
 
 function lookupLocation(position){
@@ -207,13 +220,13 @@ function showLocation(location_json){
     var location = JSON.parse(location_json);
     location.results[0].address_components.forEach( function(component){
         if( component.types[0] === "locality" ) {
-            settings.city = component.long_name 
-            //log('city ', settings.city) 
+            misc.city = component.long_name ;
+            //log('city ', misc.city) 
         } else if( component.types[0] === "administrative_area_level_2" ){
-            settings.county = component.long_name 
-            //log('county ', settings.county)
+            misc.county = component.long_name ;
+            //log('county ', misc.county)
         }
-    })
+    });
     update();
 }
 /////////////////////////////////////////////
@@ -241,9 +254,9 @@ l_attr.base = {
 };
 l_attr.block = Object.create(l_attr.base);
 l_attr.frame = Object.create(l_attr.base);
-l_attr.frame.stroke = '#000042'
+l_attr.frame.stroke = '#000042';
 l_attr.table = Object.create(l_attr.base);
-l_attr.table.stroke = '#000042'
+l_attr.table.stroke = '#000042';
 
 l_attr.DC_pos = Object.create(l_attr.base);
 l_attr.DC_pos.stroke = '#ff0000';
@@ -345,8 +358,8 @@ var layer = function(name){ // set current layer
     if( typeof name === 'undefined' ){ // if no layer name given, reset to default 
         layer_active = false;
     } else if ( ! (name in l_attr) ) {
-        log('Error: unknown layer, using base')
-        layer_active = 'base' 
+        log('Error: unknown layer, using base');
+        layer_active = 'base' ;
     } else { // finaly activate requested layer
         layer_active = name;
     }
@@ -469,7 +482,7 @@ var add = function(type, points, layer_name) {
         elem.x = points[0][0]; 
         elem.y = points[0][1]; 
     } else {
-        elem.x = points[0].x
+        elem.x = points[0].x;
         elem.y = points[0].y; 
     }
 
@@ -542,11 +555,11 @@ var block = function(name) {// set current block
     if(block_active){ 
         blocks[block_active].add(blk);
     } else {
-        elements.push(blk);l_attr.AC_ground = Object.create(l_attr.base)
-l_attr.AC_ground.stroke = '#006600'
+        elements.push(blk);l_attr.AC_ground = Object.create(l_attr.base);
+        l_attr.AC_ground.stroke = '#006600';
 
     }
-    return blk
+    return blk;
 };
 
 /////////////////////////////////
@@ -572,13 +585,13 @@ var update_values = function(){
         h: 780,
         frame_padding: 5,
         titlebox: 50,
-    }
+    };
 
     size.module = {};
     size.module.frame = {
         w: 10,
         h: 30,
-    }
+    };
     size.module.lead = size.module.frame.w*2/3;
     size.module.h = size.module.frame.h + size.module.lead*2;
     size.module.w = size.module.frame.w;
@@ -586,7 +599,7 @@ var update_values = function(){
     size.wire_offset = {
         base: 5,
         gap: size.module.w,
-    }    
+    }    ;
     size.wire_offset.max = system.DC.string_num * size.wire_offset.base;
     size.wire_offset.ground = size.wire_offset.max + size.wire_offset.base*2;
 
@@ -599,12 +612,12 @@ var update_values = function(){
     size.jb_box = {
         h: 140 + size.wire_offset.base*2 * system.DC.string_num,
         w: 80,
-    }
+    };
 
     size.discbox = {
         w: 80 + size.wire_offset.base*2 * system.DC.string_num,
         h: 140,
-    }
+    };
 
     size.terminal_diam = 5;
 
@@ -618,10 +631,10 @@ var update_values = function(){
     size.AC_loadcenter = { w: 125, h: 300 }; 
     size.AC_loadcenter.breaker = { w: 20, h: 5, };
 
-    size.AC_loadcenter.neutralbar = { w:5, h:40 }
-    size.AC_loadcenter.groundbar = { w:40, h:5 }
+    size.AC_loadcenter.neutralbar = { w:5, h:40 };
+    size.AC_loadcenter.groundbar = { w:40, h:5 };
 
-    size.wire_table = {}
+    size.wire_table = {};
     size.wire_table.w = 200;
     size.wire_table.row_h = 10;
     size.wire_table.h = (system.wire_config_num+3) * size.wire_table.row_h;
@@ -674,13 +687,13 @@ var update_values = function(){
     loc.wire_table = {
         x: size.drawing.w - size.drawing.titlebox - size.drawing.frame_padding*3 - size.wire_table.w/2 - 25,
         y: size.drawing.frame_padding*3 + size.wire_table.h/2,
-    }
+    };
     loc.wire_table.top = loc.wire_table.y - size.wire_table.h/2;
     loc.wire_table.bottom = loc.wire_table.y + size.wire_table.h/2;
 
     //loc.AC_loadcenter.breakers = 
 
-}
+};
 
 log('size', size);
     
@@ -785,7 +798,7 @@ var mk_drawing = function(){
     circ(
         [x,y],
         size.terminal_diam
-    )
+    );
     layer();
     block_end();
 
@@ -988,7 +1001,7 @@ var mk_drawing = function(){
     line([
         [ x-offset_min, y-size.terminal_diam-size.terminal_diam*3],
         [ x-offset_min, y-size.terminal_diam-size.terminal_diam*3],
-    ],'DC_pos')
+    ],'DC_pos');
 
 
 
@@ -1133,7 +1146,7 @@ var mk_drawing = function(){
         [system.AC_loadcenter_type, 'Load Center'],
         'label',
         'text'
-    )
+    );
     w = size.AC_loadcenter.breaker.w;
     h = size.AC_loadcenter.breaker.h;
 
@@ -1153,11 +1166,11 @@ var mk_drawing = function(){
     
     l = loc.AC_loadcenter.neutralbar;
     s = size.AC_loadcenter.neutralbar;
-    rect([l.x,l.y], [s.w,s.h], 'AC_neutral' )
+    rect([l.x,l.y], [s.w,s.h], 'AC_neutral' );
 
     l = loc.AC_loadcenter.groundbar;
     s = size.AC_loadcenter.groundbar;
-    rect([l.x,l.y], [s.w,s.h], 'AC_ground' )
+    rect([l.x,l.y], [s.w,s.h], 'AC_ground' );
 
     
 
@@ -1190,8 +1203,8 @@ var mk_drawing = function(){
     y = loc.AC_disc.y;
     padding = size.terminal_diam;
 
-    x -= size.AC_disc.w/2
-    y += size.AC_disc.h/2
+    x -= size.AC_disc.w/2;
+    y += size.AC_disc.h/2;
 
     y -= padding;
 
@@ -1205,7 +1218,7 @@ var mk_drawing = function(){
             [ loc.AC_loadcenter.left+padding*2, y ],
             [ loc.AC_loadcenter.groundbar.x-padding, y ],
             [ loc.AC_loadcenter.groundbar.x-padding, loc.AC_loadcenter.groundbar.y+size.AC_loadcenter.groundbar.h/2 ],
-        ])
+        ]);
     }
 
     if( system.AC_conductors.indexOf('neutral')+1 ) {
@@ -1218,7 +1231,7 @@ var mk_drawing = function(){
             [ loc.AC_loadcenter.neutralbar.x, bottom-breaker_spacing*1 ],
             [ loc.AC_loadcenter.neutralbar.x, 
                 loc.AC_loadcenter.neutralbar.y-size.AC_loadcenter.neutralbar.h/2 ],
-        ])
+        ]);
     }
         
      
@@ -1231,8 +1244,8 @@ var mk_drawing = function(){
                 [ x+padding*(15-i*3), y ],
                 [ x+padding*(15-i*3), loc.AC_disc.switch_bottom ],
             ]);
-            block('terminal', [ x+padding*(15-i*3), loc.AC_disc.switch_bottom ] )
-            block('terminal', [ x+padding*(15-i*3), loc.AC_disc.switch_top ] )
+            block('terminal', [ x+padding*(15-i*3), loc.AC_disc.switch_bottom ] );
+            block('terminal', [ x+padding*(15-i*3), loc.AC_disc.switch_top ] );
             line([
                 [ x+padding*(15-i*3), loc.AC_disc.switch_top ],
                 [ x+padding*(15-i*3), bottom-breaker_spacing*(i+2) ],
@@ -1256,22 +1269,22 @@ var mk_drawing = function(){
         wire_type: 50,
         conduit_gauge: 25,
         conduit_type: 50,
-    }
+    };
 
-    layer('table')
+    layer('table');
     rect( [x,y], [w,h] );
 
     line([
         [x-w/2+25 , y-h/2+(1*row_h)],
         [x+w/2 , y-h/2+(1*row_h)],
-    ])
+    ]);
 
     for( var r=2; r<system.wire_config_num+3; r++ ) {
     
         line([
             [x-w/2 , y-h/2+(r*row_h)],
             [x+w/2 , y-h/2+(r*row_h)],
-        ])
+        ]);
     }
     x = loc.wire_table.x - w/2;
     y = loc.wire_table.y - h/2;
@@ -1311,7 +1324,7 @@ var mk_drawing = function(){
         y += row_h;
     }
 
-}
+};
 
 
 
@@ -1351,7 +1364,7 @@ var display_svg = function(){
     // Loop through all the drawing contents, call the function below.
     elements.forEach( function(elem,id) {
         show_elem_array(elem);
-    })
+    });
 
     function show_elem_array(elem, offset){
         offset = offset || {x:0,y:0};
@@ -1363,8 +1376,8 @@ var display_svg = function(){
         } else if( elem.type === 'line') {
             var points2 = [];
             elem.points.forEach( function(point){
-                points2.push([ point[0]+offset.x, point[1]+offset.y ])
-            })  
+                points2.push([ point[0]+offset.x, point[1]+offset.y ]);
+            });
             svg.polyline( points2 ).attr( l_attr[elem.layer_name] );
         } else if( elem.type === 'text') {
             //var t = svg.text( elem.strings ).move( elem.points[0][0], elem.points[0][1] ).attr( l_attr[elem.layer_name] )
@@ -1421,10 +1434,10 @@ var display_svg = function(){
             // if it is a block, run this function through each element.
             elem.elements.forEach( function(block_elem,id){
                 show_elem_array(block_elem, {x:x, y:y}) 
-            })
+            });
         }
     }
-}
+};
 
 
 //////////////////////////////////////////
@@ -1432,7 +1445,7 @@ var display_svg = function(){
 
 
 var update_settings_registry = function() {
-}
+};
 
 
 //#update drawing
@@ -1442,7 +1455,7 @@ function update(){
     // Make sure selectors and value displays are updated
     settings_registry.forEach(function(item){
         item.update(); 
-    })
+    });
 
     // delete all elements of drawing 
     clear_drawing();
@@ -1459,7 +1472,7 @@ function update(){
     // Add drawing elements to SVG on screen
     display_svg();
 
-};
+}
 
 
 
@@ -1478,13 +1491,13 @@ window.onload = function() {
     var system_container = $('div').attr('id', system_container_id).appendTo(draw_page);
     
     var svg_container_object = $('div').attr('id', svg_container_id).appendTo(draw_page);
-    var svg_container = svg_container_object.elem
+    var svg_container = svg_container_object.elem;
 
 //System options
     ///*
-    log("-------")
-    log('Value', $('value').setRef('system.DC.voltage').setMax(600))
-    log('---', $('value').setRef('system.DC.voltage').setMax(600).attr('id', 'DC_volt') )
+    log("-------");
+    log('Value', $('value').setRef('system.DC.voltage').setMax(600));
+    log('---', $('value').setRef('system.DC.voltage').setMax(600).attr('id', 'DC_volt') );
 
     var system_container_array = [
         $('span').html('IP location |'),
@@ -1570,4 +1583,4 @@ window.onload = function() {
     log(window);
 
 
-}
+};
