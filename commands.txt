@@ -1,0 +1,2 @@
+beefy main.js:index.js -d --live
+watchify main.js -o index.js -d -v
