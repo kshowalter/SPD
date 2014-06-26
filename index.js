@@ -2,7 +2,7 @@
 //var MINI = require('minified');
 //var _=MINI._, $=MINI.$, $$=MINI.$$, EE=MINI.EE, HTML=MINI.HTML;
 
-if( navigator.geolocation ){
+if( false && navigator.geolocation ){
     navigator.geolocation.getCurrentPosition(lookupLocation);
 } else {
     log('no possition');
