@@ -1554,6 +1554,7 @@ window.onload = function() {
 //System options
     ///*
     var system_container_array = [
+        /*
         $('span').html('IP location |'),
         $('span').html('City: '),
         $('value').setRef('settings.city'),
