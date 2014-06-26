@@ -1,0 +1,14 @@
+{
+    "name": "PV_system_drawing",
+    "version": "",
+    "author": "",
+    "description": "",
+
+    "dependencies": {
+        "underscore": "latest",
+        "moment": "latest"
+    },
+
+    "build": "browserify main.js -o index.js",
+    "watch": "watchify main.js -o index.js --debug --verbose"
+}
