@@ -1,36 +1,21 @@
 "use strict";
-var test_add = require('./lib/k/test');
-console.log('test', test_add(1))
-
-console.log( 'LUE', require('./lib/k/test.js').number );
-console.log( 'k.test', require('k/k.js').test() );
-
 var log = console.log.bind(console);
+
+
 
 var _ = require('underscore');
 //var SVG = require('./lib/svg.js');
 var moment = require('moment');
 
 var k = require('./lib/k/k.js');
-log( 'k', k);
 var k_data = require('./lib/k/k_data.js');
 var $ = require('./lib/k/k_DOM.js').$;
-//var $ = require('./lib/k/k_DOM.js').$;
 
-var settings_registry = require('./lib/k/k_DOM.js').settings_registry;
+//var settings_registry = require('./lib/k/k_DOM.js').settings_registry;
 //var settings = require('./lib/k/k_DOM.js').settings;
-var settings = require('./lib/k/kontainer.js');
-
-var test = settings('test', '42');
-log('test var: ', test)
-
-log(settings('test'))
+var kontainer = require('./lib/k/kontainer.js');
 
 
-
-log(settings())
-
-log('-----end test-----')
 
 //var MINI = require('minified');
 //var _=MINI._, $=MINI.$, $$=MINI.$$, EE=MINI.EE, HTML=MINI.HTML;
@@ -161,11 +146,11 @@ var AC_types = {
 
 
 
-settings('misc', {});
-var misc = settings('misc');
+kontainer('misc', {});
+var misc = kontainer('misc');
 
 misc.string_num = 4;
-log(settings('misc'))
+log(kontainer('misc'))
 
 misc.string_modules = 6;
 misc.inverter = 'SI3000';
@@ -179,7 +164,7 @@ log('misc', misc);
 var values = {};
 
 //var system = {};
-var system = settings('system', {});
+var system = kontainer('system', {});
 system.DC = {};
 
 function update_system() {
@@ -209,7 +194,7 @@ function update_system() {
 
     system.wire_config_num = 5;
     
-    log(settings())
+    log(kontainer())
 }
 
 function lookupLocation(position){
@@ -1510,11 +1495,11 @@ window.onload = function() {
         //*/
 
         $('span').html('Module make: '),
-        $('selector').set_options( 'k.obj_id_array(components.modules)' ).set_setting('pv_make'),
+        $('select').setOptions( 'k.obj_id_array(components.modules)' ).set_setting('pv_make'),
         
         $('br'),
         $('span').html('Module model: '),
-        $('selector').set_options( 'k.obj_id_array(components.modules[settings.pv_make])' ).set_setting('pv_model'),
+        $('select').setOptions( 'k.obj_id_array(components.modules[settings.pv_make])' ).set_setting('pv_model'),
 
         $('br'),
         $('span').html('Pmax: '),
@@ -1539,10 +1524,10 @@ window.onload = function() {
         $('br'),
 
         $('span').html('Number of strings: '),
-        $('selector').set_options( 'settings.string_num_options').set_setting('string_num'),
+        $('select').setOptions( 'settings.string_num_options').set_setting('string_num'),
         $('span').html(' | '),
         $('span').html('Number of modules per string: '),
-        $('selector').set_options( 'settings.string_modules_options').set_setting('string_modules'),
+        $('select').setOptions( 'settings.string_modules_options').set_setting('string_modules'),
         $('br'),
         
         $('span').html('Array voltage: '),
@@ -1557,7 +1542,7 @@ window.onload = function() {
 
         $('span').html('AC type: '),
 
-        $('selector').set_options( 'settings.AC_type_options').set_setting('AC_type'),
+        $('select').setOptions( 'settings.AC_type_options').set_setting('AC_type'),
 
         $('br'),
 
