@@ -2,3 +2,6 @@ gitlog.txt
 share_drive
 node_modules/*
 !node_modules/app
+
+reporting
+

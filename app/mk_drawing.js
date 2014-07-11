@@ -1,3 +1,248 @@
+// setup drawing containers
+
+var elements = [];
+
+
+
+// BLOCKS
+
+var Blk = {
+    type: 'block',
+};
+Blk.move = function(x, y){
+    for( var i in this.elements ){
+        this.elements[i].move(x,y);
+    }
+    return this;
+};
+Blk.add = function(){
+    if( typeof this.elements == 'undefined'){ this.elements = [];}
+    for( var i in arguments){
+        this.elements.push(arguments[i]);
+    }
+    return this;
+};
+Blk.rotate = function(deg){
+    this.rotate = deg;
+};
+
+var blocks = {};
+var block_active = false;
+// Create default layer,block container and functions
+
+// Layers
+
+var layer_active = false;
+
+var layer = function(name){ // set current layer
+    if( typeof name === 'undefined' ){ // if no layer name given, reset to default 
+        layer_active = false;
+    } else if ( ! (name in l_attr) ) {
+        log('Error: unknown layer, using base');
+        layer_active = 'base' ;
+    } else { // finaly activate requested layer
+        layer_active = name;
+    }
+};
+
+/*
+var block = function(name) {// set current block
+    // if current block has been used, save it before creating a new one.
+    if( blocks[block_active].length > 0 ) { blocks.push(blocks[block_active]); }
+    if( typeof name !== 'undefined' ){ // if name argument is submitted, create new block
+        var blk = Object.create(Blk);
+        blk.name = name; // block name
+        blocks[block_active] = blk;
+    } else { // else use default block
+        blocks[block_active] = blocks[0];
+    }
+}
+block('default'); // set current block to default
+*/
+var block_start = function(name) {
+    if( typeof name === 'undefined' ){ // if name argument is submitted
+        log('Error: name required');
+    } else {
+        // TODO: What if the same name is submitted twice? throw error or fix?
+        block_active = name;
+        if( typeof blocks[block_active] !== 'object'){
+            var blk = Object.create(Blk);
+            //blk.name = name; // block name
+            blocks[block_active] = blk;
+        }
+        return blk;
+    }
+};
+
+    /*
+    x = loc.wire_table.x - w/2;
+    y = loc.wire_table.y - h/2;
+    if( typeof layer_name !== 'undefined' && (layer_name in layers) ) {
+        var layer_selected = layers[layer_name]
+    } else {
+        if( ! (layer_name in layers) ){ log("error, layer does not exist, using current");}
+        var layer_selected =  layer_active
+    }
+    */
+var block_end = function() {
+    var blk = blocks[block_active];
+    block_active = false;
+    return blk;
+};
+
+
+
+// clear drawing 
+var clear_drawing = function() {
+    for( var id in blocks ){
+        if( blocks.hasOwnProperty(id)){
+            delete blocks[id]; 
+        }
+    }
+    elements.length = 0;
+};
+
+
+//////
+// build prototype element
+
+    /*
+    if( typeof layer_name !== 'undefined' && (layer_name in layers) ) {
+        var layer_selected = layers[layer_name]
+    } else {
+        if( ! (layer_name in layers) ){ log("error, layer does not exist, using current");}
+        var layer_selected =  layer_active
+    }
+    */
+
+
+var SvgElem = {
+    object: 'SvgElem'
+};
+SvgElem.move = function(x, y){
+    if( typeof this.points != 'undefined' ) {
+        for( var i in this.points ) {
+            this.points[i][0] += x;
+            this.points[i][1] += y;
+        }
+    }
+    return this;
+};
+SvgElem.rotate = function(deg){
+    this.rotated = deg;
+};
+
+///////
+// functions for adding elements
+
+var add = function(type, points, layer_name) {
+
+    if( typeof layer_name === 'undefined' ) { layer_name = layer_active; } 
+    if( ! (layer_name in l_attr) ) { 
+        log('Layer name not found, using base');
+        layer_name = 'base'; 
+    }
+
+    if( typeof points == 'string') {
+        var points = points.split(' ');
+        for( var i in points ) {
+            points[i] = points[i].split(',');
+            for( var c in points[i] ) {
+                points[i][c] = Number(points[i][c]);
+            }
+        }
+    }
+
+    var elem = Object.create(SvgElem);
+    elem.type = type;
+    elem.layer_name = layer_name;
+    if( type === 'line' ) {
+        elem.points = points;
+    } else if( typeof points[0].x === 'undefined') {
+        elem.x = points[0][0]; 
+        elem.y = points[0][1]; 
+    } else {
+        elem.x = points[0].x;
+        elem.y = points[0].y; 
+    }
+
+    
+    if(block_active) { 
+        blocks[block_active].add(elem);
+    } else {
+        elements.push(elem);
+    }
+
+    return elem;
+};
+
+var line = function(points, layer){ // (points, [layer])
+    //return add('line', points, layer)
+    var line =  add('line', points, layer);
+    return line;
+};
+
+var rect = function(loc, size, layer){
+    var rec = add('rect', [loc], layer);
+    rec.w = size[0];
+    /*
+    if( typeof layer_name !== 'undefined' && (layer_name in layers) ) {
+        var layer_selected = layers[layer_name]
+    } else {
+        if( ! (layer_name in layers) ){ log("error, layer does not exist, using current");}
+        var layer_selected =  layer_active
+    }
+    */
+    rec.h = size[1];
+    return rec;
+};
+
+var circ = function(loc, diameter, layer){
+    var cir = add('circ', [loc], layer);
+    cir.d = diameter;
+    return cir;
+};
+
+var text = function(loc, strings, font, layer){
+    var txt = add('text', [loc], layer);
+    if( typeof strings == 'string'){
+        strings = [strings];
+    }
+    txt.strings = strings;
+    txt.font = font;
+    return txt;
+};
+
+var block = function(name) {// set current block
+    if( arguments.length === 2 ){ // if coor is passed
+        if( typeof arguments[1].x !== 'undefined' ){
+            var x = arguments[1].x;
+            var y = arguments[1].y;
+        } else {
+            var x = arguments[1][0];
+            var y = arguments[1][1];
+        }
+    } else if( arguments.length === 3 ){ // if x,y is passed
+        var x = arguments[1];
+        var y = arguments[2];
+    }
+
+    // TODO: what if block does not exist? print list of blocks?
+    var blk = Object.create(blocks[name]);
+    blk.x = x;
+    blk.y = y;
+
+    if(block_active){ 
+        blocks[block_active].add(blk);
+    } else {
+        elements.push(blk);l_attr.AC_ground = Object.create(l_attr.base);
+        l_attr.AC_ground.stroke = '#006600';
+
+    }
+    return blk;
+};
+
+/////////////////////////////////
 
 var mk_drawing = function(){
 
