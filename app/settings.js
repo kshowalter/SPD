@@ -5,9 +5,9 @@ var settings = {};
 
 settings.system = {};
 system = settings.system;
+system.DC = {};
 
 settings.NEC_tables = {};
-
 
 function loadTables(string){
     var tables = {};

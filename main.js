@@ -1,6 +1,11 @@
 "use strict";
 var log = console.log.bind(console);
 
+log( 'k_DOM', require('./lib/k/k_DOM.js'));
+console.log( 'k.test', require('./lib/k/test.js').wrapper_prototype );
+
+
+
 var _ = require('underscore');
 //var SVG = require('./lib/svg.js');
 var moment = require('moment');
@@ -13,7 +18,7 @@ var $ = require('./lib/k/k_DOM.js').$;
 //var settings = require('./lib/k/k_DOM.js').settings;
 var kontainer = require('./lib/k/kontainer.js');
 
-var settings = require('./app/settings.js')
+var settings = require('./app/settings.js');
 
 // NEC tables
 var g_tables = settings.NEC_tables;
@@ -23,7 +28,7 @@ var components = settings.components;
 log('components', components );
 
 //var misc = kontainer('misc');
-var misc = settings.misc
+var misc = settings.misc;
 
 log('misc', misc);
 
@@ -31,37 +36,9 @@ log('misc', misc);
 //var system = kontainer('system', {});
 var system = settings.system;
 
-system.DC = {};
 
-function update_system() {
-    system.DC.string_num = misc.string_num; 
-    system.DC.string_modules = misc.string_modules;
-    system.DC.module = {};
-    system.DC.module.make = misc['pv_make'] || Object.keys( components.modules )[0];
+var update_system = require('./app/update_system.js');
 
-    system.DC.module.model = misc['pv_model'] || Object.keys( components.modules[system.DC.module.make] )[0];
-    system.DC.module.specs = components.modules[system.DC.module.make][system.DC.module.model];
-
-    //system.module = components.modules[misc.module];
-
-    if( system.DC.module.specs ){
-        system.DC.current = system.DC.module.specs.Isc * system.DC.string_num;
-        system.DC.voltage = system.DC.module.specs.Voc * system.DC.string_modules;
-    }
-
-    system.inverter = components.inverters[misc.inverter];
-
-    system.AC_loadcenter_type = '480/277V';
-
-    system.AC_type = misc.AC_type;
-
-    system.AC_conductors = settings.AC_types[system.AC_type];
-
-
-    system.wire_config_num = 5;
-    
-    log(kontainer())
-}
 
 function lookupLocation(position){
     var url = 'http://maps.googleapis.com/maps/api/geocode/json?latlng='+position.coords.latitude+','+position.coords.longitude+'&sensor=true';
@@ -87,13 +64,11 @@ function showLocation(location_json){
 var l_attr = settings.l_attr;
 var fonts = settings.fonts;
 
-log('elements', elements);
-log('blocks', blocks);
 
 //////////////
 //#drawing parameters
 var size = settings.size;
-var loc = settings.loc
+var loc = settings.loc;
 
 log('size', size);
 log('loc', loc);
@@ -179,6 +154,7 @@ var svg_container = svg_container_object.elem;
 //System options
 ///*
 log("-------");
+log('Value', $('value') );
 log('Value', $('value').setRef('system.DC.voltage').setMax(600));
 log('---', $('value').setRef('system.DC.voltage').setMax(600).attr('id', 'DC_volt') );
 
