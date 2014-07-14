@@ -155,16 +155,16 @@ var svg_container = svg_container_object.elem;
 ///*
 log("-------");
 log('Value', $('value') );
-log('Value', $('value').setRef('system.DC.voltage').setMax(600));
+log('Value', $('value').setRef( settings, 'system.DC.voltage').setMax(600));
 log('---', $('value').setRef('system.DC.voltage').setMax(600).attr('id', 'DC_volt') );
 
 var system_container_array = [
     $('span').html('IP location |'),
     $('span').html('City: '),
-    $('value').setRef('settings.city'),
+    $('value').setRef('misc.city'),
     $('span').html(' | '),
     $('span').html('County: '),
-    $('value').setRef('settings.county'),
+    $('value').setRef('misc.county'),
     $('br'),
     //*/
 
@@ -173,7 +173,7 @@ var system_container_array = [
     
     $('br'),
     $('span').html('Module model: '),
-    $('select').setOptions( 'k.obj_id_array(components.modules[settings.pv_make])' ).set_setting('pv_model'),
+    $('select').setOptions( 'k.obj_id_array(components.modules[misc.pv_make])' ).set_setting('pv_model'),
 
     $('br'),
     $('span').html('Pmax: '),
@@ -198,10 +198,10 @@ var system_container_array = [
     $('br'),
 
     $('span').html('Number of strings: '),
-    $('select').setOptions( 'settings.string_num_options').set_setting('string_num'),
+    $('select').setOptions( 'misc.string_num_options').set_setting('string_num'),
     $('span').html(' | '),
     $('span').html('Number of modules per string: '),
-    $('select').setOptions( 'settings.string_modules_options').set_setting('string_modules'),
+    $('select').setOptions( 'misc.string_modules_options').set_setting('string_modules'),
     $('br'),
     
     $('span').html('Array voltage: '),
@@ -216,17 +216,20 @@ var system_container_array = [
 
     $('span').html('AC type: '),
 
-    $('select').setOptions( 'settings.AC_type_options').set_setting('AC_type'),
+    $('select').setOptions( 'misc.AC_type_options').set_setting('AC_type'),
 
     $('br'),
 
 ].forEach( function(elem){
     elem.appendTo(system_container);
     if( elem.type === 'selector' ){
+        elem.setRefObj(settings);
         elem.setUpdate(update);
+        settings_registry.push(elem);
         elem.update(); 
     } else if( elem.type === 'value' ){
         elem.setUpdate(update_system);
+        settings_registry.push(elem);
     }
 });
 
