@@ -154,8 +154,8 @@ var svg_container = svg_container_object.elem;
 //System options
 ///*
 log("-------");
-log('Value', $('value') );
-log('Value', $('value').setRef( settings, 'system.DC.voltage').setMax(600));
+//log('Value', $('value') );
+//log('Value', $('value').setRef( settings, 'system.DC.voltage').setMax(600));
 log('---', $('value').setRef('system.DC.voltage').setMax(600).attr('id', 'DC_volt') );
 
 var system_container_array = [
@@ -169,11 +169,11 @@ var system_container_array = [
     //*/
 
     $('span').html('Module make: '),
-    $('select').setOptions( 'k.obj_id_array(components.modules)' ).set_setting('pv_make'),
+    $('select').setOptions( 'components.modules' ).setRef('pv_make'),
     
     $('br'),
     $('span').html('Module model: '),
-    $('select').setOptions( 'k.obj_id_array(components.modules[misc.pv_make])' ).set_setting('pv_model'),
+    $('select').setOptions( 'components.modules.'+settings.misc.pv_make ).setRef('pv_model'),
 
     $('br'),
     $('span').html('Pmax: '),
@@ -198,10 +198,10 @@ var system_container_array = [
     $('br'),
 
     $('span').html('Number of strings: '),
-    $('select').setOptions( 'misc.string_num_options').set_setting('string_num'),
+    $('select').setOptions( 'misc.string_num_options').setRef('string_num'),
     $('span').html(' | '),
     $('span').html('Number of modules per string: '),
-    $('select').setOptions( 'misc.string_modules_options').set_setting('string_modules'),
+    $('select').setOptions( 'misc.string_modules_options').setRef('string_modules'),
     $('br'),
     
     $('span').html('Array voltage: '),
@@ -216,7 +216,7 @@ var system_container_array = [
 
     $('span').html('AC type: '),
 
-    $('select').setOptions( 'misc.AC_type_options').set_setting('AC_type'),
+    $('select').setOptions( 'misc.AC_type_options').setRef('AC_type'),
 
     $('br'),
 
