@@ -1,11 +1,6 @@
 "use strict";
 var log = console.log.bind(console);
 
-log( 'k_DOM', require('./lib/k/k_DOM.js'));
-console.log( 'k.test', require('./lib/k/test.js').wrapper_prototype );
-
-
-
 var _ = require('underscore');
 //var SVG = require('./lib/svg.js');
 var moment = require('moment');
@@ -13,9 +8,10 @@ var moment = require('moment');
 var k = require('./lib/k/k.js');
 var k_data = require('./lib/k/k_data.js');
 var $ = require('./lib/k/k_DOM.js').$;
+var update_system = require('./app/update_system.js');
+var mk_drawing = require('./app/mk_drawing.js');
+var display_svg = require('./app/display_svg.js');
 
-//var settings_registry = require('./lib/k/k_DOM.js').settings_registry;
-//var settings = require('./lib/k/k_DOM.js').settings;
 var kontainer = require('./lib/k/kontainer.js');
 
 var settings = require('./app/settings.js');
@@ -23,21 +19,19 @@ var settings = require('./app/settings.js');
 // NEC tables
 var g_tables = settings.NEC_tables;
 
-// system components
 var components = settings.components;
-log('components', components );
-
-//var misc = kontainer('misc');
 var misc = settings.misc;
-
-log('misc', misc);
-
-//var system = {};
-//var system = kontainer('system', {});
 var system = settings.system;
 
+// layers and fonts
+var l_attr = settings.l_attr;
+var fonts = settings.fonts;
 
-var update_system = require('./app/update_system.js');
+var size = settings.size;
+var loc = settings.loc;
+
+
+
 
 
 function lookupLocation(position){
@@ -57,54 +51,6 @@ function showLocation(location_json){
     });
     update();
 }
-
-
-////////////
-// layers and fonts
-var l_attr = settings.l_attr;
-var fonts = settings.fonts;
-
-
-//////////////
-//#drawing parameters
-var size = settings.size;
-var loc = settings.loc;
-
-log('size', size);
-log('loc', loc);
-
-
-///////////////
-// build drawing
-
-//#start drawing
-
-var mk_drawing = require('./app/mk_drawing.js');
-
-
-
-
-
-
-
-
-
-
-
-
-///////////////////
-// Display
-
-var display_svg = require('./app/display_svg.js');
-
-
-//////////////////////////////////////////
-// after page loads functions
-
-
-var update_settings_registry = function() {
-};
-
 
 //#update drawing
 function update(){
@@ -137,7 +83,6 @@ function update(){
 var svg_container_id = 'svg_container';
 var svg_container = document.getElementById(svg_container_id);
 var system_container_id = 'system_container';
-
 
 
 var title = 'PV drawing test';
@@ -238,9 +183,6 @@ update();
 var boot_time = moment();
 var status_id = "status";
 setInterval(function(){ k.update_status_page(status_id, boot_time);},1000);
-
-
-
 
 log(window);
 
