@@ -10,6 +10,9 @@ function update_system(settings) {
     system.DC.module.model = settings.misc['pv_model'] || Object.keys( settings.components.modules[system.DC.module.make] )[0];
     system.DC.module.specs = settings.components.modules[system.DC.module.make][system.DC.module.model];
 
+    settings.components.moduleMakeArray = k.objIdArray(components.modules);
+    settings.components.moduleModelArray = k.objIdArray(components.modules[system.DC.module.make]);
+
     //system.module = settings.components.modules[settings.misc.module];
 
     if( system.DC.module.specs ){

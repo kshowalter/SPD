@@ -31,7 +31,7 @@ var size = settings.size;
 var loc = settings.loc;
 
 
-
+log('---settings---', settings);
 
 
 function lookupLocation(position){
@@ -101,7 +101,9 @@ var svg_container = svg_container_object.elem;
 log("-------");
 //log('Value', $('value') );
 //log('Value', $('value').setRef( settings, 'system.DC.voltage').setMax(600));
-log('---', $('value').setRef('system.DC.voltage').setMax(600).attr('id', 'DC_volt') );
+log( 'value', $('value') );
+log( 'select', $('select') );
+log("-------");
 
 var system_container_array = [
     $('span').html('IP location |'),
@@ -114,11 +116,13 @@ var system_container_array = [
     //*/
 
     $('span').html('Module make: '),
-    $('select').setOptions( 'components.modules' ).setRef('pv_make'),
+    $('select')
+        .setOptionsRef( 'components.moduleMakeArray' )
+        .setRef('misc.pv_make'),
     
     $('br'),
     $('span').html('Module model: '),
-    $('select').setOptions( 'components.modules.'+settings.misc.pv_make ).setRef('pv_model'),
+    $('select').setOptionsRef( 'components.moduleModelArray' ).setRef('misc.pv_model'),
 
     $('br'),
     $('span').html('Pmax: '),
@@ -143,10 +147,10 @@ var system_container_array = [
     $('br'),
 
     $('span').html('Number of strings: '),
-    $('select').setOptions( 'misc.string_num_options').setRef('string_num'),
+    $('select').setOptionsRef( 'misc.string_num_options').setRef('string_num'),
     $('span').html(' | '),
     $('span').html('Number of modules per string: '),
-    $('select').setOptions( 'misc.string_modules_options').setRef('string_modules'),
+    $('select').setOptionsRef( 'misc.string_modules_options').setRef('string_modules'),
     $('br'),
     
     $('span').html('Array voltage: '),
@@ -161,7 +165,7 @@ var system_container_array = [
 
     $('span').html('AC type: '),
 
-    $('select').setOptions( 'misc.AC_type_options').setRef('AC_type'),
+    $('select').setOptionsRef( 'misc.AC_type_options').setRef('AC_type'),
 
     $('br'),
 
