@@ -56,7 +56,6 @@ function showLocation(location_json){
 //#update drawing
 function update(){
     log('updating');
-    log('---settings---', settings);
 
     // Make sure selectors and value displays are updated
     settings_registry.forEach(function(item){
@@ -64,11 +63,10 @@ function update(){
     });
 
     // delete all elements of drawing 
-    clear_drawing();
+    //clear_drawing();
 
     // Recalculate system specs
-    //settings = update_system(settings);
-    settings = update_system(42);
+    settings = update_system(settings);
     
     // Recalculate drawing related variables
     update_values();

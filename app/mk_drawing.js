@@ -245,6 +245,7 @@ var block = function(name) {// set current block
 /////////////////////////////////
 
 var mk_drawing = function(){
+    clear_drawing();
 
     var x, y, h, w;
 
