@@ -30,6 +30,7 @@ var fonts = settings.fonts;
 var size = settings.size;
 var loc = settings.loc;
 
+var settings_registry = [];
 
 log('---settings---', settings);
 
@@ -55,6 +56,7 @@ function showLocation(location_json){
 //#update drawing
 function update(){
     log('updating');
+    log('---settings---', settings);
 
     // Make sure selectors and value displays are updated
     settings_registry.forEach(function(item){
@@ -65,7 +67,8 @@ function update(){
     clear_drawing();
 
     // Recalculate system specs
-    update_system();
+    //settings = update_system(settings);
+    settings = update_system(42);
     
     // Recalculate drawing related variables
     update_values();
@@ -102,7 +105,14 @@ log("-------");
 //log('Value', $('value') );
 //log('Value', $('value').setRef( settings, 'system.DC.voltage').setMax(600));
 log( 'value', $('value') );
-log( 'select', $('select') );
+log( 'selector', $('selector') );
+
+log('selector');
+var x = $('selector');
+log('setOptionsRef');
+x.setOptionsRef( 'components.moduleMakeArray' )
+log('setRef');
+x.setRef('misc.pv_make'),
 log("-------");
 
 var system_container_array = [
@@ -116,13 +126,13 @@ var system_container_array = [
     //*/
 
     $('span').html('Module make: '),
-    $('select')
+    $('selector')
         .setOptionsRef( 'components.moduleMakeArray' )
         .setRef('misc.pv_make'),
     
     $('br'),
     $('span').html('Module model: '),
-    $('select').setOptionsRef( 'components.moduleModelArray' ).setRef('misc.pv_model'),
+    $('selector').setOptionsRef( 'components.moduleModelArray' ).setRef('misc.pv_model'),
 
     $('br'),
     $('span').html('Pmax: '),
@@ -147,10 +157,10 @@ var system_container_array = [
     $('br'),
 
     $('span').html('Number of strings: '),
-    $('select').setOptionsRef( 'misc.string_num_options').setRef('string_num'),
+    $('selector').setOptionsRef( 'misc.string_num_options').setRef('string_num'),
     $('span').html(' | '),
     $('span').html('Number of modules per string: '),
-    $('select').setOptionsRef( 'misc.string_modules_options').setRef('string_modules'),
+    $('selector').setOptionsRef( 'misc.string_modules_options').setRef('string_modules'),
     $('br'),
     
     $('span').html('Array voltage: '),
@@ -165,7 +175,7 @@ var system_container_array = [
 
     $('span').html('AC type: '),
 
-    $('select').setOptionsRef( 'misc.AC_type_options').setRef('AC_type'),
+    $('selector').setOptionsRef( 'misc.AC_type_options').setRef('AC_type'),
 
     $('br'),
 

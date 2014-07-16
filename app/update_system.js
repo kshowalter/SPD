@@ -1,5 +1,8 @@
+'use strict';
+var log = console.log.bind(console);
 
 function update_system(settings) {
+    log('---settings---', settings);
     var system = settings.system;
 
     system.DC.string_num = settings.misc.string_num; 
