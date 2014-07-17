@@ -1,5 +1,7 @@
 var log = console.log.bind(console);
 var k = require('../lib/k/k.js')
+var loadTables = require('./settings_functions').loadTables;
+var loadModules = require('./settings_functions').loadModules;
 
 var settings = {};
 
@@ -7,48 +9,19 @@ settings.system = {};
 system = settings.system;
 system.DC = {};
 
-settings.NEC_tables = {};
+var config_options = settings.config_options = {};
 
-function loadTables(string){
-    var tables = {};
-    var l = string.split('\n');
-    var title;
-    var fields;
-    var need_title = true;
-    var need_fields = true;
-    l.forEach( function(string, i){
-        var line = string.trim();
-        if( line.length === 0 ){
-            need_title = true;
-            need_fields = true;
-        } else if( need_title ) {
-            title = line;
-            tables[title] = [];
-            need_title = false; 
-            //log('new table ', title)
-        } else if( need_fields ) {
-            fields = line.split(',');
-            need_fields = false;
-        } else {
-            var entry = {};
-            var line_array = line.split(',');
-            fields.forEach( function(field, id){
-                entry[field.trim()] = line_array[id].trim(); 
-            });
-            tables[title].push( entry );
-        }
-    });
-    log('tables', tables);
-    settings.NEC_tables = tables;
-}
-
+config_options.NEC_tables = {};
 k.AJAX('data/tables.txt', loadTables);
 
+config_options.modules = {};
+k.AJAX( 'data/modules.csv', loadModules );
 
 
-
-
-settings.AC_types = {
+config_options.AC_type_options = ['120V', '240V', '208V', '277V', '480V Wye', '480V Delta'];
+config_options.string_num_options = [1,2,3,4,5,6];
+config_options.string_modules_options = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
+config_options.AC_types = {
     '120V'      : ['ground', 'neutral', 'L1' ],
     '240V'      : ['ground', 'neutral', 'L1', 'L2' ],
     '208V'      : ['ground', 'neutral', 'L1', 'L2' ],
@@ -59,8 +32,7 @@ settings.AC_types = {
 
 
 
-settings.components = {};
-components = settings.components;
+var components = settings.components = {};
 
 components.inverters = {};
 components.inverters['SI3000'] = {
@@ -75,51 +47,24 @@ components.inverters['SI3000'] = {
 
 };
 
-components.modules = {};
-
-k.AJAX( 'data/modules.csv', loadModules );
-
-function loadModules(string){
-    var db = k.parseCSV(string);
-    log('db', db);
-    
-    for( var i in db ){
-        var module = db[i];
-        if( components.modules[module.Make] === undefined ){
-            components.modules[module.Make] = {};
-        }
-        if( components.modules[module.Make][module.Model] === undefined ){
-            components.modules[module.Make][module.Model] = {};
-        }
-        components.modules[module.Make][module.Model] = module;
-    }
-
-    update_system();
-    log('system', system);
-
-}
 
 
 
-settings.misc = {};
-var misc = settings.misc;
+var sys_config = settings.sys_config = {};
 
-misc.string_num = 4;
-//log(kontainer('misc'))
+sys_config.string_num = 4;
+//log(kontainer('sys_config'))
 
-misc.string_modules = 6;
-misc.inverter = 'SI3000';
-misc.AC_type = '480V Delta';
-misc.AC_type_options = ['120V', '240V', '208V', '277V', '480V Wye', '480V Delta'];
-misc.string_num_options = [1,2,3,4,5,6];
-misc.string_modules_options = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
+sys_config.string_modules = 6;
+sys_config.inverter = 'SI3000';
+sys_config.AC_type = '480V Delta';
 
 
 
+// Drawing specific
+settings.drawing = {};
 
-
-settings.l_attr = {};
-var l_attr = settings.l_attr;
+var l_attr = settings.drawing.l_attr = {};
 
 l_attr.base = {
     'fill': 'none',
@@ -162,8 +107,7 @@ l_attr.AC_L3.stroke = 'Blue';
 ///////////////
 // fonts
 
-settings.fonts = {};
-var fonts = settings.fonts;
+var fonts = settings.drawing.fonts = {};
 
 fonts['signs'] = {
     'font-family': 'monospace',
@@ -198,10 +142,8 @@ fonts['table'] = {
 
 
 
-settings.size = {}
-var size = settings.size;
-settings.loc = {}
-var loc = settings.loc
+var size = settings.drawing.size = {};
+var loc = settings.drawing.loc = {};
 
 
 // sizes

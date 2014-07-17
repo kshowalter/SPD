@@ -16,11 +16,8 @@ var kontainer = require('./lib/k/kontainer.js');
 
 var settings = require('./app/settings.js');
 
-// NEC tables
-var g_tables = settings.NEC_tables;
-
 var components = settings.components;
-var misc = settings.misc;
+var sys_config = settings.sys_config;
 var system = settings.system;
 
 // layers and fonts
@@ -43,11 +40,11 @@ function showLocation(location_json){
     var location = JSON.parse(location_json);
     location.results[0].address_components.forEach( function(component){
         if( component.types[0] === "locality" ) {
-            misc.city = component.long_name ;
-            //log('city ', misc.city) 
+            sys_config.city = component.long_name ;
+            //log('city ', sys_config.city) 
         } else if( component.types[0] === "administrative_area_level_2" ){
-            misc.county = component.long_name ;
-            //log('county ', misc.county)
+            sys_config.county = component.long_name ;
+            //log('county ', sys_config.county)
         }
     });
     update();
@@ -110,27 +107,27 @@ var x = $('selector');
 log('setOptionsRef');
 x.setOptionsRef( 'components.moduleMakeArray' )
 log('setRef');
-x.setRef('misc.pv_make'),
+x.setRef('sys_config.pv_make'),
 log("-------");
 
 var system_container_array = [
     $('span').html('IP location |'),
     $('span').html('City: '),
-    $('value').setRef('misc.city'),
+    $('value').setRef('sys_config.city'),
     $('span').html(' | '),
     $('span').html('County: '),
-    $('value').setRef('misc.county'),
+    $('value').setRef('sys_config.county'),
     $('br'),
     //*/
 
     $('span').html('Module make: '),
     $('selector')
         .setOptionsRef( 'components.moduleMakeArray' )
-        .setRef('misc.pv_make'),
+        .setRef('sys_config.pv_make'),
     
     $('br'),
     $('span').html('Module model: '),
-    $('selector').setOptionsRef( 'components.moduleModelArray' ).setRef('misc.pv_model'),
+    $('selector').setOptionsRef( 'components.moduleModelArray' ).setRef('sys_config.pv_model'),
 
     $('br'),
     $('span').html('Pmax: '),
@@ -155,10 +152,10 @@ var system_container_array = [
     $('br'),
 
     $('span').html('Number of strings: '),
-    $('selector').setOptionsRef( 'misc.string_num_options').setRef('string_num'),
+    $('selector').setOptionsRef( 'config_options.string_num_options').setRef('string_num'),
     $('span').html(' | '),
     $('span').html('Number of modules per string: '),
-    $('selector').setOptionsRef( 'misc.string_modules_options').setRef('string_modules'),
+    $('selector').setOptionsRef( 'config_options.string_modules_options').setRef('string_modules'),
     $('br'),
     
     $('span').html('Array voltage: '),
@@ -173,7 +170,7 @@ var system_container_array = [
 
     $('span').html('AC type: '),
 
-    $('selector').setOptionsRef( 'misc.AC_type_options').setRef('AC_type'),
+    $('selector').setOptionsRef( 'config_options.AC_type_options').setRef('AC_type'),
 
     $('br'),
 
