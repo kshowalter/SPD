@@ -24,8 +24,6 @@ var system = settings.system;
 var l_attr = settings.l_attr;
 var fonts = settings.fonts;
 
-var size = settings.size;
-var loc = settings.loc;
 
 var settings_registry = [];
 
@@ -66,10 +64,10 @@ function update(){
     settings = update_system(settings);
     
     // Recalculate drawing related variables
-    update_values();
+    //update_values();
 
     // Generate new drawing elements
-    mk_drawing();
+    mk_drawing(settings);
 
     // Add drawing elements to SVG on screen
     display_svg(svg_container, elements);

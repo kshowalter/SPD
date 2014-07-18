@@ -1,3 +1,6 @@
+'use strict';
+var log = console.log.bind(console);
+var k = require('../lib/k/k.js')
 // setup drawing containers
 
 var elements = [];
@@ -244,7 +247,16 @@ var block = function(name) {// set current block
 
 /////////////////////////////////
 
-var mk_drawing = function(){
+var mk_drawing = function(settings){
+    //var components = settings.components;
+    //var sys_config = settings.sys_config;
+    //var system = settings.system;
+    log('---settings---', settings);
+
+    var size = settings.drawing.size;
+    var loc = settings.drawing.loc;
+    var l_attr = settings.drawing.l_attr;
+
     clear_drawing();
 
     var x, y, h, w;
@@ -869,4 +881,4 @@ var mk_drawing = function(){
 
 
 
-
+module.exports = mk_drawing;

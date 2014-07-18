@@ -1,3 +1,5 @@
+var k = require('../lib/k/k.js')
+var log = console.log.bind(console);
 
 function loadTables(string){
     var tables = {};
@@ -33,23 +35,22 @@ function loadTables(string){
 }
 
 
-function loadModules(string){
+function loadModules(string, base){
+    base.config_options.modules = {};
     var db = k.parseCSV(string);
-    log('db', db);
     
     for( var i in db ){
         var module = db[i];
-        if( config_options.modules[module.Make] === undefined ){
-            config_options.modules[module.Make] = {};
+        if( base.config_options.modules[module.Make] === undefined ){
+            base.config_options.modules[module.Make] = {};
         }
-        if( config_options.modules[module.Make][module.Model] === undefined ){
-            config_options.modules[module.Make][module.Model] = {};
+        if( base.config_options.modules[module.Make][module.Model] === undefined ){
+            base.config_options.modules[module.Make][module.Model] = {};
         }
-        config_options.modules[module.Make][module.Model] = module;
+        base.config_options.modules[module.Make][module.Model] = module;
     }
 
     update_system();
-    log('system', system);
 
 }
 
@@ -57,5 +58,4 @@ function loadModules(string){
 
 module.exports.loadTables = loadTables;
 module.exports.loadModules = loadModules;
-
 

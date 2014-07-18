@@ -14,8 +14,8 @@ var config_options = settings.config_options = {};
 config_options.NEC_tables = {};
 k.AJAX('data/tables.txt', loadTables);
 
-config_options.modules = {};
-k.AJAX( 'data/modules.csv', loadModules );
+config_options.modules = false;
+k.AJAX( 'data/modules.csv', loadModules, settings );
 
 
 config_options.AC_type_options = ['120V', '240V', '208V', '277V', '480V Wye', '480V Delta'];
@@ -32,10 +32,10 @@ config_options.AC_types = {
 
 
 
-var components = settings.components = {};
+//var components = settings.components = {};
 
-components.inverters = {};
-components.inverters['SI3000'] = {
+config_options.inverters = {};
+config_options.inverters['SI3000'] = {
     Make:'SMA',
     model:'3000',
 
