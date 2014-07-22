@@ -1,19 +1,26 @@
 'use strict';
+var log = console.log.bind(console);
+var settings = require('./settings.js');
+//var snapsvg = require('snapsvg');
 
+var l_attr = settings.drawing.l_attr;
+var fonts = settings.drawing.fonts;
 
 
 var display_svg = function(container, elements){
     log('displaying svg');
+    //log('elements: ', elements);
     container.innerHTML = '';
     //container.empty()
 
     //var svg_elem = document.getElementById('SvgjsSvg1000')
     var svg_elem = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
     svg_elem.setAttribute('id','svg_drawing');
-    svg_elem.setAttribute('width', size.drawing.w);
-    svg_elem.setAttribute('height', size.drawing.h);
+    svg_elem.setAttribute('width', settings.drawing.size.drawing.w);
+    svg_elem.setAttribute('height', settings.drawing.size.drawing.h);
     container.appendChild(svg_elem);
-    //var svg = SVG(svg_elem).size(size.drawing.w, size.drawing.h);
+    //var svg = snapsvg(svg_elem).size(size.drawing.w, size.drawing.h);
+    //var svg = snapsvg('#svg_drawing');
 
     // Loop through all the drawing contents, call the function below.
     elements.forEach( function(elem,id) {
@@ -26,13 +33,44 @@ var display_svg = function(container, elements){
         if( typeof elem.y !== 'undefined' ) { var y = elem.y + offset.y; } 
 
         if( elem.type === 'rect') {
-            svg.rect( elem.w, elem.h ).move( x-elem.w/2, y-elem.h/2 ).attr( l_attr[elem.layer_name] );
+            //svg.rect( elem.w, elem.h ).move( x-elem.w/2, y-elem.h/2 ).attr( l_attr[elem.layer_name] );
+            //log('elem:', elem );
+            //if( isNaN(elem.w) ) {
+            //    log('error: elem not fully defined', elem)
+            //    elem.w = 10;
+            //}
+            //if( isNaN(elem.h) ) {
+            //    log('error: elem not fully defined', elem)
+            //    elem.h = 10;
+            //}
+            var r = document.createElementNS("http://www.w3.org/2000/svg", 'rect');
+            r.setAttribute('width', elem.w);
+            r.setAttribute('height', elem.h);
+            r.setAttribute('x', x-elem.w/2);
+            r.setAttribute('y', y-elem.h/2);
+            var attr = l_attr[elem.layer_name];
+            for( var i2 in attr ){
+                r.setAttribute(i2, attr[i2]);
+            }
+            svg_elem.appendChild(r);
         } else if( elem.type === 'line') {
             var points2 = [];
             elem.points.forEach( function(point){
-                points2.push([ point[0]+offset.x, point[1]+offset.y ]);
+                if( ! isNaN(point[0]) && ! isNaN(point[1]) ){
+                    points2.push([ point[0]+offset.x, point[1]+offset.y ]);
+                } else {
+                    log('error: elem not fully defined', elem)
+                }
             });
-            svg.polyline( points2 ).attr( l_attr[elem.layer_name] );
+            //svg.polyline( points2 ).attr( l_attr[elem.layer_name] );
+
+            var l = document.createElementNS("http://www.w3.org/2000/svg", 'polyline');
+            l.setAttribute( 'points', points2.join(' ') );
+            var attr = l_attr[elem.layer_name];
+            for( var i2 in attr ){
+                l.setAttribute(i2, attr[i2]);
+            }
+            svg_elem.appendChild(l);
         } else if( elem.type === 'text') {
             //var t = svg.text( elem.strings ).move( elem.points[0][0], elem.points[0][1] ).attr( l_attr[elem.layer_name] )
             var font = fonts[elem.font];

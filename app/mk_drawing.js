@@ -1,6 +1,10 @@
 'use strict';
 var log = console.log.bind(console);
-var k = require('../lib/k/k.js')
+var k = require('../lib/k/k.js');
+var settings = require('./settings.js');
+var l_attr = settings.drawing.l_attr;
+var _ = require('underscore');
+log(settings);
 // setup drawing containers
 
 var elements = [];
@@ -238,7 +242,8 @@ var block = function(name) {// set current block
     if(block_active){ 
         blocks[block_active].add(blk);
     } else {
-        elements.push(blk);l_attr.AC_ground = Object.create(l_attr.base);
+        elements.push(blk);
+        l_attr.AC_ground = Object.create(l_attr.base);
         l_attr.AC_ground.stroke = '#006600';
 
     }
@@ -250,12 +255,12 @@ var block = function(name) {// set current block
 var mk_drawing = function(settings){
     //var components = settings.components;
     //var sys_config = settings.sys_config;
-    //var system = settings.system;
+    var system = settings.system;
     log('---settings---', settings);
 
     var size = settings.drawing.size;
     var loc = settings.drawing.loc;
-    var l_attr = settings.drawing.l_attr;
+    var l_attr = l_attr;
 
     clear_drawing();
 
@@ -366,6 +371,7 @@ var mk_drawing = function(settings){
 
     //border
     rect( [w/2 , h/2], [w - padding*2, h - padding*2 ] );
+    log('border', [w/2 , h/2], [w - padding*2, h - padding*2 ] );
     
     x = w - padding * 3;
     y = padding * 3;
@@ -408,14 +414,16 @@ var mk_drawing = function(settings){
 
     x += 10;
     text([x,y], 
-         [ system.inverter.Make + " " + system.inverter.model + " Inverter System" ],
+         [ system.inverter.make + " " + system.inverter.model + " Inverter System" ],
         'title1', 'text').rotate(-90);
 
     x += 14;
-    text([x,y], [
-        system.DC.module.specs.Make + " " + system.DC.module.specs.model + 
-            " (" + system.DC.string_num  + " strings of " + system.DC.string_modules + " modules )"
-    ], 'title2', 'text').rotate(-90);
+    if( typeof system.DC.module.specs !== 'undefined' ){
+        text([x,y], [
+            system.DC.module.specs.Make + " " + system.DC.module.specs.Model + 
+                " (" + system.DC.string_num  + " strings of " + system.DC.string_modules + " modules )"
+        ], 'title2', 'text').rotate(-90);
+    }
         
     x = page.left + padding;
     y = page.top + padding;
@@ -581,7 +589,7 @@ var mk_drawing = function(settings){
     layer('text');
     text(
         [loc.inverter.x, loc.inverter.top + size.inverter.text_gap ],
-        [ 'Inverter', components.inverters[settings.inverter].Make + " " + components.inverters[settings.inverter].model ],
+        [ 'Inverter', settings.system.inverter.make + " " + settings.system.inverter.model ],
         'label'
     );
     layer();
@@ -876,7 +884,7 @@ var mk_drawing = function(settings){
 
         y += row_h;
     }
-
+    return elements;
 };
 
 

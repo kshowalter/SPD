@@ -34,7 +34,6 @@ function update_system(settings) {
     system.AC_conductors = settings.config_options.AC_types[system.AC_type];
 
 
-    system.wire_config_num = 5;
     
     return settings;
 }

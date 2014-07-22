@@ -1,7 +1,7 @@
 var k = require('../lib/k/k.js')
 var log = console.log.bind(console);
 
-function loadTables(string){
+function loadTables(string, base){
     var tables = {};
     var l = string.split('\n');
     var title;
@@ -30,8 +30,7 @@ function loadTables(string){
             tables[title].push( entry );
         }
     });
-    log('tables', tables);
-    settings.NEC_tables = tables;
+    base.NEC_tables = tables;
 }
 
 
@@ -50,7 +49,7 @@ function loadModules(string, base){
         base.config_options.modules[module.Make][module.Model] = module;
     }
 
-    update_system();
+    //update_system();
 
 }
 

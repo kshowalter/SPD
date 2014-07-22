@@ -1,3 +1,4 @@
+"use strict";
 var log = console.log.bind(console);
 var k = require('../lib/k/k.js')
 var loadTables = require('./settings_functions').loadTables;
@@ -5,14 +6,16 @@ var loadModules = require('./settings_functions').loadModules;
 
 var settings = {};
 
+
 settings.system = {};
-system = settings.system;
+var system = settings.system;
+system.wire_config_num = 5;
 system.DC = {};
 
 var config_options = settings.config_options = {};
 
 config_options.NEC_tables = {};
-k.AJAX('data/tables.txt', loadTables);
+k.AJAX('data/tables.txt', loadTables, settings);
 
 config_options.modules = false;
 k.AJAX( 'data/modules.csv', loadModules, settings );
@@ -36,7 +39,7 @@ config_options.AC_types = {
 
 config_options.inverters = {};
 config_options.inverters['SI3000'] = {
-    Make:'SMA',
+    make:'SMA',
     model:'3000',
 
     DC_voltageWindow_low: 150,
@@ -167,7 +170,7 @@ size.wire_offset = {
     base: 5,
     gap: size.module.w,
 }    ;
-size.wire_offset.max = system.DC.string_num * size.wire_offset.base;
+size.wire_offset.max = sys_config.string_num * size.wire_offset.base;
 size.wire_offset.ground = size.wire_offset.max + size.wire_offset.base*2;
 
 size.string = {};
@@ -177,12 +180,12 @@ size.string.h = (size.module.h * 4) + (size.string.gap * 2) + size.string.gap_mi
 size.string.w = size.module.frame.w * 2.5;
 
 size.jb_box = {
-    h: 140 + size.wire_offset.base*2 * system.DC.string_num,
+    h: 140 + size.wire_offset.base*2 * sys_config.string_num,
     w: 80,
 };
 
 size.discbox = {
-    w: 80 + size.wire_offset.base*2 * system.DC.string_num,
+    w: 80 + size.wire_offset.base*2 * sys_config.string_num,
     h: 140,
 };
 
@@ -212,7 +215,7 @@ loc.array = { x:200, y:600 };
 loc.array.upper = loc.array.y - size.string.h/2;
 loc.array.lower = loc.array.upper + size.string.h;
 loc.array.right = loc.array.x - size.module.frame.h*2;
-loc.array.left = loc.array.right - ( size.string.w * system.DC.string_num ) - ( size.module.w * 1.25 ) ;
+loc.array.left = loc.array.right - ( size.string.w * sys_config.string_num ) - ( size.module.w * 1.25 ) ;
 
 loc.DC = loc.array;
 

@@ -7,7 +7,7 @@ var moment = require('moment');
 
 var k = require('./lib/k/k.js');
 var k_data = require('./lib/k/k_data.js');
-var $ = require('./lib/k/k_DOM.js').$;
+var $ = require('./lib/k/k_DOM');
 var update_system = require('./app/update_system.js');
 var mk_drawing = require('./app/mk_drawing.js');
 var display_svg = require('./app/display_svg.js');
@@ -67,7 +67,7 @@ function update(){
     //update_values();
 
     // Generate new drawing elements
-    mk_drawing(settings);
+    var elements = mk_drawing(settings);
 
     // Add drawing elements to SVG on screen
     display_svg(svg_container, elements);
@@ -94,19 +94,19 @@ var svg_container = svg_container_object.elem;
 
 //System options
 ///*
-log("-------");
+//log("-------");
 //log('Value', $('value') );
 //log('Value', $('value').setRef( settings, 'system.DC.voltage').setMax(600));
 log( 'value', $('value') );
 log( 'selector', $('selector') );
 
-log('selector');
-var x = $('selector');
-log('setOptionsRef');
-x.setOptionsRef( 'components.moduleMakeArray' )
-log('setRef');
-x.setRef('sys_config.pv_make'),
-log("-------");
+//log('selector');
+//var x = $('selector');
+//log('setOptionsRef');
+//x.setOptionsRef( 'components.moduleMakeArray' )
+//log('setRef');
+//x.setRef('sys_config.pv_make'),
+//log("-------");
 
 var system_container_array = [
     $('span').html('IP location |'),

@@ -6,7 +6,8 @@
 
     "dependencies": {
         "underscore": "latest",
-        "moment": "latest"
+        "moment": "latest",
+        "snapsvg": "latest"
     },
 
     "build": "browserify main.js -o index.js",
