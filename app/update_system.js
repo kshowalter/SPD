@@ -3,7 +3,7 @@ var log = console.log.bind(console);
 var k = require('../lib/k/k.js')
 
 function update_system(settings) {
-    log('---settings---', settings);
+    //log('---settings---', settings);
     var system = settings.system;
 
     system.DC.string_num = settings.sys_config.string_num; 

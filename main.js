@@ -27,7 +27,6 @@ var fonts = settings.fonts;
 
 var settings_registry = [];
 
-log('---settings---', settings);
 
 
 function lookupLocation(position){
@@ -54,6 +53,7 @@ function update(){
 
     // Make sure selectors and value displays are updated
     settings_registry.forEach(function(item){
+        log('updating: ', item)
         item.update(); 
     });
 
@@ -97,8 +97,8 @@ var svg_container = svg_container_object.elem;
 //log("-------");
 //log('Value', $('value') );
 //log('Value', $('value').setRef( settings, 'system.DC.voltage').setMax(600));
-log( 'value', $('value') );
-log( 'selector', $('selector') );
+//log( 'value', $('value') );
+//log( 'selector', $('selector') );
 
 //log('selector');
 //var x = $('selector');
@@ -180,6 +180,7 @@ var system_container_array = [
         settings_registry.push(elem);
         elem.update(); 
     } else if( elem.type === 'value' ){
+        elem.setRefObj(settings);
         elem.setUpdate(update_system);
         settings_registry.push(elem);
     }
@@ -191,6 +192,6 @@ var boot_time = moment();
 var status_id = "status";
 setInterval(function(){ k.update_status_page(status_id, boot_time);},1000);
 
-log(window);
+log('window', window);
 
 

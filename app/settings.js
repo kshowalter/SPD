@@ -180,7 +180,7 @@ size.string.h = (size.module.h * 4) + (size.string.gap * 2) + size.string.gap_mi
 size.string.w = size.module.frame.w * 2.5;
 
 size.jb_box = {
-    h: 140 + size.wire_offset.base*2 * sys_config.string_num,
+    h: 200,
     w: 80,
 };
 
@@ -190,6 +190,10 @@ size.discbox = {
 };
 
 size.terminal_diam = 5;
+size.fuse = {};
+size.fuse.w = 15;
+size.fuse.h = 4;
+
 
 size.inverter = { w: 200, h: 150 };
 size.inverter.text_gap = 15;
@@ -204,10 +208,6 @@ size.AC_loadcenter.breaker = { w: 20, h: 5, };
 size.AC_loadcenter.neutralbar = { w:5, h:40 };
 size.AC_loadcenter.groundbar = { w:40, h:5 };
 
-size.wire_table = {};
-size.wire_table.w = 200;
-size.wire_table.row_h = 10;
-size.wire_table.h = (system.wire_config_num+3) * size.wire_table.row_h;
 
 
 // location
@@ -254,6 +254,11 @@ loc.AC_loadcenter.groundbar = {
     y: loc.AC_loadcenter.y + size.AC_loadcenter.h*0.45
 };
 
+// wire table
+size.wire_table = {};
+size.wire_table.w = 200;
+size.wire_table.row_h = 10;
+size.wire_table.h = (system.wire_config_num+3) * size.wire_table.row_h;
 loc.wire_table = {
     x: size.drawing.w - size.drawing.titlebox - size.drawing.frame_padding*3 - size.wire_table.w/2 - 25,
     y: size.drawing.frame_padding*3 + size.wire_table.h/2,
@@ -262,6 +267,23 @@ loc.wire_table.top = loc.wire_table.y - size.wire_table.h/2;
 loc.wire_table.bottom = loc.wire_table.y + size.wire_table.h/2;
 
 //loc.AC_loadcenter.breakers = 
+
+// voltage drop table
+size.volt_drop_table = {};
+size.volt_drop_table.w = 150;
+size.volt_drop_table.h = 100;
+loc.volt_drop_table = {};
+loc.volt_drop_table.x = size.drawing.w - size.volt_drop_table.w/2 - 90;
+loc.volt_drop_table.y = size.drawing.h - size.volt_drop_table.h/2 - 30;
+
+
+// voltage drop table
+size.general_notes = {};
+size.general_notes.w = 150;
+size.general_notes.h = 100;
+loc.general_notes = {};
+loc.general_notes.x = size.general_notes.w/2 + 30;
+loc.general_notes.y = size.general_notes.h/2 + 30;
 
 
 /////////////////////

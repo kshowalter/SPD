@@ -4,7 +4,7 @@ var k = require('../lib/k/k.js');
 var settings = require('./settings.js');
 var l_attr = settings.drawing.l_attr;
 var _ = require('underscore');
-log(settings);
+log('settings', settings);
 // setup drawing containers
 
 var elements = [];
@@ -360,6 +360,63 @@ var mk_drawing = function(settings){
     layer();
     block_end();
 
+// fuse
+
+    block_start('fuse');
+    x = 0;
+    y = 0;
+    w = 10;
+    h = 5;
+
+    layer('terminal');
+    rect(
+        [x,y],
+        [w,h]
+    );
+    line( [
+        [w/2,y],
+        [w/2+size.fuse.w, y]
+    ]);
+    block('terminal', [size.fuse.w, y] );
+
+    line( [
+        [-w/2,y],
+        [-w/2-size.fuse.w, y]
+    ]);
+    block('terminal', [-size.fuse.w, y] );
+
+    layer();
+    block_end();
+
+// ground symbol
+    block_start('ground');
+    x = 0;
+    y = 0;
+
+    layer('AC_ground')
+    line([
+        [x,y],
+        [x,y+40],
+    ])
+    y += 25;
+    line([
+        [x-7.5,y],
+        [x+7.5,y],
+    ])
+    y += 5;
+    line([
+        [x-5,y],
+        [x+5,y],
+    ])
+    y += 5;
+    line([
+        [x-2.5,y],
+        [x+2.5,y],
+    ])
+    layer();
+
+    block_end();
+
 ////////////////////////////////////////
 // Frame
 
@@ -371,7 +428,6 @@ var mk_drawing = function(settings){
 
     //border
     rect( [w/2 , h/2], [w - padding*2, h - padding*2 ] );
-    log('border', [w/2 , h/2], [w - padding*2, h - padding*2 ] );
     
     x = w - padding * 3;
     y = padding * 3;
@@ -490,7 +546,6 @@ var mk_drawing = function(settings){
     x = loc.array.x;
     y = loc.array.y;
 
-    var fuse_width = size.wire_offset.gap;
     var to_disconnect_x = 150;
     var to_disconnect_y = -100;
 
@@ -508,10 +563,14 @@ var mk_drawing = function(settings){
         layer('DC_pos');
         line([
             [ x , y-offset],
-            [ x+(size.jb_box.w-fuse_width)/2 , y-offset],
+            [ x+(size.jb_box.w)/2 , y-offset],
         ]);
+        block( 'terminal', {
+            x: x+(size.jb_box.w)/2,
+            y: y-offset,
+        });
         line([
-            [ x+(size.jb_box.w+fuse_width)/2 , y-offset],
+            [ x+(size.jb_box.w)/2 , y-offset],
             [ x+size.jb_box.w+to_disconnect_x-offset , y-offset],
             [ x+size.jb_box.w+to_disconnect_x-offset , y+to_disconnect_y-size.terminal_diam],
             [ x+size.jb_box.w+to_disconnect_x-offset , y+to_disconnect_y-size.terminal_diam-size.terminal_diam*3],
@@ -523,11 +582,15 @@ var mk_drawing = function(settings){
 
         layer('DC_neg');
         line([
-            [ x , y+offset],
-            [ x+(size.jb_box.w-fuse_width)/2 , y+offset],
+            [ x, y+offset],
+            [ x+size.jb_box.w/2-size.fuse.w/2 , y+offset],
         ]);
+        block( 'fuse', {
+            x: x+size.jb_box.w/2 ,
+            y: y+offset,
+        });
         line([
-            [ x+(size.jb_box.w+fuse_width)/2 , y+offset],
+            [ x+size.jb_box.w/2+size.fuse.w/2 , y+offset],
             [ x+size.jb_box.w+to_disconnect_x+offset , y+offset],
             [ x+size.jb_box.w+to_disconnect_x+offset , y+to_disconnect_y-size.terminal_diam],
             [ x+size.jb_box.w+to_disconnect_x+offset , y+to_disconnect_y-size.terminal_diam-size.terminal_diam*3],
@@ -536,7 +599,43 @@ var mk_drawing = function(settings){
             x: x+size.jb_box.w+to_disconnect_x+offset,
             y: y+to_disconnect_y-size.terminal_diam
         });
+        layer();
     }
+
+    //layer('DC_ground');
+    //line([
+    //    [ loc.array.left , loc.array.lower + size.module.w + size.wire_offset.ground ],
+    //    [ loc.array.right+size.wire_offset.ground , loc.array.lower + size.module.w + size.wire_offset.ground ],
+    //    [ loc.array.right+size.wire_offset.ground , loc.array.y + size.module.w + size.wire_offset.ground],
+    //    [ loc.array.x , loc.array.y+size.module.w+size.wire_offset.ground],
+    //]);
+
+    //layer();
+
+    // Ground
+    offset = size.wire_offset.gap + size.wire_offset.ground;
+
+    layer('DC_ground');
+    line([
+        [ x , y+offset],
+        [ x+(size.jb_box.w)/2 , y+offset],
+    ]);
+    block( 'terminal', {
+        x: x+(size.jb_box.w)/2,
+        y: y+offset,
+    });
+    line([
+        [ x+(size.jb_box.w)/2 , y+offset],
+        [ x+size.jb_box.w+to_disconnect_x+offset , y+offset],
+        [ x+size.jb_box.w+to_disconnect_x+offset , y+to_disconnect_y-size.terminal_diam],
+        [ x+size.jb_box.w+to_disconnect_x+offset , y+to_disconnect_y-size.terminal_diam-size.terminal_diam*3],
+    ]);
+    block( 'terminal', {
+        x: x+size.jb_box.w+to_disconnect_x+offset,
+        y: y+to_disconnect_y-size.terminal_diam
+    });
+    layer();
+
 
     x += size.jb_box.w;
 
@@ -564,7 +663,36 @@ var mk_drawing = function(settings){
         [ x-offset_min, y-size.terminal_diam-size.terminal_diam*3],
     ],'DC_pos');
 
+    // neg
+    line([
+        [ x+offset_min, y-size.terminal_diam-size.terminal_diam*3],
+        [ x+offset_min, loc.inverter.y+size.inverter.h/2-size.terminal_diam ],
+    ],'DC_neg')
+    block( 'terminal', {
+        x: x+offset_min,
+        y: loc.inverter.y+size.inverter.h/2-size.terminal_diam,
+    });
 
+    // pos
+    line([
+        [ x-offset_min, y-size.terminal_diam-size.terminal_diam*3],
+        [ x-offset_min, loc.inverter.y+size.inverter.h/2-size.terminal_diam ],
+    ],'DC_pos')
+    block( 'terminal', {
+        x: x-offset_min,
+        y: loc.inverter.y+size.inverter.h/2-size.terminal_diam,
+    });
+
+    // ground
+    offset = size.wire_offset.gap + size.wire_offset.ground;
+    line([
+        [ x+offset, y-size.terminal_diam-size.terminal_diam*3],
+        [ x+offset, loc.inverter.y+size.inverter.h/2-size.terminal_diam ],
+    ],'DC_ground')
+    block( 'terminal', {
+        x: x+offset,
+        y: loc.inverter.y+size.inverter.h/2-size.terminal_diam,
+    });
 
     // DC disconect
     rect(
@@ -711,11 +839,11 @@ var mk_drawing = function(settings){
     w = size.AC_loadcenter.breaker.w;
     h = size.AC_loadcenter.breaker.h;
 
-    y -= size.AC_loadcenter.h/4;
+    y -= size.AC_loadcenter.h/4 + size.AC_loadcenter.breaker.h;
 
     padding = loc.AC_loadcenter.x - loc.AC_loadcenter.breakers.left - size.AC_loadcenter.breaker.w;
 
-    for( var i=0; i<30; i++){
+    for( var i=0; i<20; i++){
         
         rect([x-padding-w/2,y],[w,h],'box');
         rect([x+padding+w/2,y],[w,h],'box');
@@ -733,7 +861,7 @@ var mk_drawing = function(settings){
     s = size.AC_loadcenter.groundbar;
     rect([l.x,l.y], [s.w,s.h], 'AC_ground' );
 
-    
+    block('ground', [l.x,l.y+s.h/2]);
 
 
 
@@ -884,6 +1012,43 @@ var mk_drawing = function(settings){
 
         y += row_h;
     }
+
+
+
+// voltage drop
+    x = loc.volt_drop_table.x;
+    y = loc.volt_drop_table.y;
+    w = size.volt_drop_table.w;
+    h = size.volt_drop_table.h;
+
+    layer('table');
+    rect( [x,y], [w,h] );
+    
+    y -= h/2;
+    y += 10
+
+    text( [x,y], 'Voltage Drop', 'table', 'text');
+
+
+// general notes
+    x = loc.general_notes.x;
+    y = loc.general_notes.y;
+    w = size.general_notes.w;
+    h = size.general_notes.h;
+
+    layer('table');
+    rect( [x,y], [w,h] );
+    
+    y -= h/2;
+    y += 10
+
+    text( [x,y], 'General Notes', 'table', 'text');
+
+
+
+
+
+
     return elements;
 };
 
