@@ -498,7 +498,6 @@ var mk_drawing = function(settings){
     x = loc.array.x;
     y = loc.array.y;
 
-    circ([x,y], 5, 'base'); // MARKER
 
     x -= size.module.frame.h*3;
     y -= size.string.h/2;

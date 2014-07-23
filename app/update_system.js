@@ -9,8 +9,12 @@ function update_system(settings) {
     system.DC.string_num = settings.sys_config.string_num; 
     system.DC.string_modules = settings.sys_config.string_modules;
     system.DC.module = {};
+    //if( settings.config_options.modules !== undefined ){
     if( settings.config_options.modules ){
+        log(settings.config_options.modules)
+        settings.config_options.modulesMakeArray = k.objIdArray(settings.config_options.modules);
         system.DC.module.make = settings.sys_config['pv_make'] || Object.keys( settings.config_options.modules )[0];
+        settings.config_options.modulesArray = k.objIdArray(settings.config_options.modules[system.DC.module.make]);
         system.DC.module.model = settings.sys_config['pv_model'] || Object.keys( settings.config_options.modules[system.DC.module.make] )[0];
         system.DC.module.specs = settings.config_options.modules[system.DC.module.make][system.DC.module.model];
     }

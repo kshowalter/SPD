@@ -53,7 +53,7 @@ function update(){
 
     // Make sure selectors and value displays are updated
     settings_registry.forEach(function(item){
-        log('updating: ', item)
+        //log('updating: ', item)
         item.update(); 
     });
 
@@ -119,14 +119,13 @@ var system_container_array = [
     //*/
 
     $('span').html('Module make: '),
-    $('selector')
-        .setOptionsRef( 'components.moduleMakeArray' )
-        .setRef('sys_config.pv_make'),
+    //$('selector') .setOptionsRef( 'components.moduleMakeArray' ) .setRef('sys_config.pv_make'),
+    $('selector') .setOptionsRef( 'settings.config_options.modulesMakeArray' ) .setRef('sys_config.pv_make'),
     
     $('br'),
     $('span').html('Module model: '),
+    //$('selector').setOptionsRef( 'components.moduleModelArray' ).setRef('sys_config.pv_model'),
     $('selector').setOptionsRef( 'components.moduleModelArray' ).setRef('sys_config.pv_model'),
-
     $('br'),
     $('span').html('Pmax: '),
     $('value').setRef('system.DC.module.specs.Pmax'),
@@ -172,17 +171,17 @@ var system_container_array = [
 
     $('br'),
 
-].forEach( function(elem){
-    elem.appendTo(system_container);
-    if( elem.type === 'selector' ){
-        elem.setRefObj(settings);
-        elem.setUpdate(update);
-        settings_registry.push(elem);
-        elem.update(); 
-    } else if( elem.type === 'value' ){
-        elem.setRefObj(settings);
-        elem.setUpdate(update_system);
-        settings_registry.push(elem);
+].forEach( function(kelem){
+    kelem.appendTo(system_container);
+    if( kelem.type === 'selector' ){
+        kelem.setRefObj(settings);
+        kelem.setUpdate(update);
+        settings_registry.push(kelem);
+        kelem.update(); 
+    } else if( kelem.type === 'value' ){
+        kelem.setRefObj(settings);
+        //kelem.setUpdate(update_system);
+        settings_registry.push(kelem);
     }
 });
 
