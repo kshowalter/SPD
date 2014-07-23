@@ -120,7 +120,7 @@ var system_container_array = [
 
     $('span').html('Module make: '),
     //$('selector') .setOptionsRef( 'components.moduleMakeArray' ) .setRef('sys_config.pv_make'),
-    $('selector') .setOptionsRef( 'settings.config_options.modulesMakeArray' ) .setRef('sys_config.pv_make'),
+    $('selector') .setOptionsRef( 'settings.config_options.moduleMakeArray' ) .setRef('sys_config.pv_make'),
     
     $('br'),
     $('span').html('Module model: '),

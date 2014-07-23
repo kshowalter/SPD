@@ -657,28 +657,31 @@ var mk_drawing = function(settings){
     }
     
     // Inverter conection
-    line([
-        [ x-offset_min, y-size.terminal_diam-size.terminal_diam*3],
-        [ x-offset_min, y-size.terminal_diam-size.terminal_diam*3],
-    ],'DC_pos');
+    //line([
+    //    [ x-offset_min, y-size.terminal_diam-size.terminal_diam*3],
+    //    [ x-offset_min, y-size.terminal_diam-size.terminal_diam*3],
+    //],'DC_pos');
+
+    offset = offset_max - offset_min + size.terminal_diam/2;
+    //offset = offset_max - offset_min;
 
     // neg
     line([
-        [ x+offset_min, y-size.terminal_diam-size.terminal_diam*3],
-        [ x+offset_min, loc.inverter.y+size.inverter.h/2-size.terminal_diam ],
+        [ x+offset, y-size.terminal_diam-size.terminal_diam*3],
+        [ x+offset, loc.inverter.y+size.inverter.h/2-size.terminal_diam ],
     ],'DC_neg')
     block( 'terminal', {
-        x: x+offset_min,
+        x: x+offset,
         y: loc.inverter.y+size.inverter.h/2-size.terminal_diam,
     });
 
     // pos
     line([
-        [ x-offset_min, y-size.terminal_diam-size.terminal_diam*3],
-        [ x-offset_min, loc.inverter.y+size.inverter.h/2-size.terminal_diam ],
+        [ x-offset, y-size.terminal_diam-size.terminal_diam*3],
+        [ x-offset, loc.inverter.y+size.inverter.h/2-size.terminal_diam ],
     ],'DC_pos')
     block( 'terminal', {
-        x: x-offset_min,
+        x: x-offset,
         y: loc.inverter.y+size.inverter.h/2-size.terminal_diam,
     });
 
