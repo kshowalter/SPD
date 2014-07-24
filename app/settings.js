@@ -3,6 +3,7 @@ var log = console.log.bind(console);
 var k = require('../lib/k/k.js')
 var loadTables = require('./settings_functions').loadTables;
 var loadModules = require('./settings_functions').loadModules;
+var update_system = require('./update_system')
 
 var settings = {};
 
@@ -53,14 +54,13 @@ config_options.inverters['SI3000'] = {
 
 
 
-var sys_config = settings.sys_config = {};
 
-sys_config.string_num = 4;
-//log(kontainer('sys_config'))
+system.string_num = 4;
+//log(kontainer('system'))
 
-sys_config.string_modules = 6;
-sys_config.inverter = 'SI3000';
-sys_config.AC_type = '480V Delta';
+system.string_modules = 6;
+system.inverter = 'SI3000';
+system.AC_type = '480V Delta';
 
 
 
@@ -144,6 +144,11 @@ fonts['table'] = {
 };
 
 
+function mk_settings(){
+
+}
+
+
 
 var size = settings.drawing.size = {};
 var loc = settings.drawing.loc = {};
@@ -170,7 +175,7 @@ size.wire_offset = {
     base: 5,
     gap: size.module.w,
 }    ;
-size.wire_offset.max = sys_config.string_num * size.wire_offset.base;
+size.wire_offset.max = system.string_num * size.wire_offset.base;
 size.wire_offset.ground = size.wire_offset.max + size.wire_offset.base*2;
 
 size.string = {};
@@ -185,7 +190,7 @@ size.jb_box = {
 };
 
 size.discbox = {
-    w: 80 + size.wire_offset.base*2 * sys_config.string_num,
+    w: 80 + size.wire_offset.base*2 * system.string_num,
     h: 140,
 };
 
@@ -215,7 +220,7 @@ loc.array = { x:200, y:600 };
 loc.array.upper = loc.array.y - size.string.h/2;
 loc.array.lower = loc.array.upper + size.string.h;
 loc.array.right = loc.array.x - size.module.frame.h*2;
-loc.array.left = loc.array.right - ( size.string.w * sys_config.string_num ) - ( size.module.w * 1.25 ) ;
+loc.array.left = loc.array.right - ( size.string.w * system.string_num ) - ( size.module.w * 1.25 ) ;
 
 loc.DC = loc.array;
 
@@ -287,4 +292,4 @@ loc.general_notes.y = size.general_notes.h/2 + 30;
 
 
 /////////////////////
-module.exports= settings;
+module.exports = settings;

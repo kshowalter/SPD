@@ -17,7 +17,6 @@ var kontainer = require('./lib/k/kontainer.js');
 var settings = require('./app/settings.js');
 
 var components = settings.components;
-var sys_config = settings.sys_config;
 var system = settings.system;
 
 // layers and fonts
@@ -37,11 +36,11 @@ function showLocation(location_json){
     var location = JSON.parse(location_json);
     location.results[0].address_components.forEach( function(component){
         if( component.types[0] === "locality" ) {
-            sys_config.city = component.long_name ;
-            //log('city ', sys_config.city) 
+            system.city = component.long_name ;
+            //log('city ', system.city) 
         } else if( component.types[0] === "administrative_area_level_2" ){
-            sys_config.county = component.long_name ;
-            //log('county ', sys_config.county)
+            system.county = component.long_name ;
+            //log('county ', system.county)
         }
     });
     update();
@@ -105,27 +104,27 @@ var svg_container = svg_container_object.elem;
 //log('setOptionsRef');
 //x.setOptionsRef( 'components.moduleMakeArray' )
 //log('setRef');
-//x.setRef('sys_config.pv_make'),
+//x.setRef('system.pv_make'),
 //log("-------");
 
 var system_container_array = [
     $('span').html('IP location |'),
     $('span').html('City: '),
-    $('value').setRef('sys_config.city'),
+    $('value').setRef('system.city'),
     $('span').html(' | '),
     $('span').html('County: '),
-    $('value').setRef('sys_config.county'),
+    $('value').setRef('system.county'),
     $('br'),
     //*/
 
     $('span').html('Module make: '),
-    //$('selector') .setOptionsRef( 'components.moduleMakeArray' ) .setRef('sys_config.pv_make'),
-    $('selector') .setOptionsRef( 'settings.config_options.moduleMakeArray' ) .setRef('sys_config.pv_make'),
+    //$('selector') .setOptionsRef( 'components.moduleMakeArray' ) .setRef('system.pv_make'),
+    $('selector') .setOptionsRef( 'settings.config_options.moduleMakeArray' ) .setRef('system.pv_make'),
     
     $('br'),
     $('span').html('Module model: '),
-    //$('selector').setOptionsRef( 'components.moduleModelArray' ).setRef('sys_config.pv_model'),
-    $('selector').setOptionsRef( 'components.moduleModelArray' ).setRef('sys_config.pv_model'),
+    //$('selector').setOptionsRef( 'components.moduleModelArray' ).setRef('system.pv_model'),
+    $('selector').setOptionsRef( 'components.moduleModelArray' ).setRef('system.pv_model'),
     $('br'),
     $('span').html('Pmax: '),
     $('value').setRef('system.DC.module.specs.Pmax'),

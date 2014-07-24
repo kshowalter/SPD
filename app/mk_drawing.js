@@ -254,7 +254,7 @@ var block = function(name) {// set current block
 
 var mk_drawing = function(settings){
     //var components = settings.components;
-    //var sys_config = settings.sys_config;
+    //var system = settings.system;
     var system = settings.system;
     log('---settings---', settings);
 

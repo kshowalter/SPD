@@ -1,5 +1,6 @@
 var k = require('../lib/k/k.js')
 var log = console.log.bind(console);
+var update_system = require('./update_system')
 
 function loadTables(string, base){
     var tables = {};
@@ -31,6 +32,7 @@ function loadTables(string, base){
         }
     });
     base.NEC_tables = tables;
+    update_system(base);
 }
 
 
@@ -49,7 +51,7 @@ function loadModules(string, base){
         base.config_options.modules[module.Make][module.Model] = module;
     }
 
-    //update_system();
+    update_system(base);
 
 }
 

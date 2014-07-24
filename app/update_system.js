@@ -6,16 +6,16 @@ function update_system(settings) {
     //log('---settings---', settings);
     var system = settings.system;
 
-    system.DC.string_num = settings.sys_config.string_num; 
-    system.DC.string_modules = settings.sys_config.string_modules;
+    system.DC.string_num = settings.system.string_num; 
+    system.DC.string_modules = settings.system.string_modules;
     system.DC.module = {};
     //if( settings.config_options.modules !== undefined ){
     if( settings.config_options.modules ){
         log(settings.config_options.modules)
         settings.config_options.moduleMakeArray = k.objIdArray(settings.config_options.modules);
-        system.DC.module.make = settings.sys_config['pv_make'] || Object.keys( settings.config_options.modules )[0];
+        system.DC.module.make = settings.system['pv_make'] || Object.keys( settings.config_options.modules )[0];
         settings.config_options.moduleModelArray = k.objIdArray(settings.config_options.modules[system.DC.module.make]);
-        system.DC.module.model = settings.sys_config['pv_model'] || Object.keys( settings.config_options.modules[system.DC.module.make] )[0];
+        system.DC.module.model = settings.system['pv_model'] || Object.keys( settings.config_options.modules[system.DC.module.make] )[0];
         system.DC.module.specs = settings.config_options.modules[system.DC.module.make][system.DC.module.model];
     }
 
@@ -29,11 +29,11 @@ function update_system(settings) {
         system.DC.voltage = system.DC.module.specs.Voc * system.DC.string_modules;
     }
 
-    system.inverter = settings.config_options.inverters[settings.sys_config.inverter];
+    system.inverter = settings.config_options.inverters[settings.system.inverter];
 
     system.AC_loadcenter_type = '480/277V';
 
-    system.AC_type = settings.sys_config.AC_type;
+    system.AC_type = settings.system.AC_type;
 
     system.AC_conductors = settings.config_options.AC_types[system.AC_type];
 
