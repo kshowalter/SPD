@@ -1,14 +1,16 @@
 'use strict';
 var log = console.log.bind(console);
-var settings = require('./settings.js');
+//var settings = require('./settings.js');
 //var snapsvg = require('snapsvg');
-
-var l_attr = settings.drawing.l_attr;
-var fonts = settings.drawing.fonts;
+//log(settings);
 
 
-var display_svg = function(container, elements){
+
+var display_svg = function(settings, container){
     log('displaying svg');
+    var l_attr = settings.drawing.l_attr;
+    var fonts = settings.drawing.fonts;
+    var elements = settings.elements;
     //log('elements: ', elements);
     container.innerHTML = '';
     //container.empty()

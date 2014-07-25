@@ -1,8 +1,7 @@
-"use strict";
+'use strict';
 var log = console.log.bind(console);
 var k = require('../lib/k/k.js');
-//var mk_drawing = require('./mk_drawing');
-//var display_svg = require('./display_svg');
+var update = require('./update');
 
 var update_system = function(settings) {
     //log('---settings---', settings);
@@ -46,10 +45,10 @@ var update_system = function(settings) {
 
     system.AC_conductors = settings.config_options.AC_types[system.AC_type];
 
+    update(settings);
     
     //return settings;
 };
-
 
 
 module.exports = update_system;

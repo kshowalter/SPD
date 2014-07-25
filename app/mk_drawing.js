@@ -1,11 +1,12 @@
 'use strict';
 var log = console.log.bind(console);
 var k = require('../lib/k/k.js');
-var settings = require('./settings.js');
-var l_attr = settings.drawing.l_attr;
+//var settings = require('./settings.js');
+//var l_attr = settings.drawing.l_attr;
 var _ = require('underscore');
-log('settings', settings);
+//log('settings', settings);
 // setup drawing containers
+var l_attr = require('./layers');
 
 var elements = [];
 
@@ -50,6 +51,7 @@ var layer = function(name){ // set current layer
     } else { // finaly activate requested layer
         layer_active = name;
     }
+    //*/
 };
 
 /*
@@ -253,14 +255,15 @@ var block = function(name) {// set current block
 /////////////////////////////////
 
 var mk_drawing = function(settings){
+    settings.drawing.l_attr = l_attr;
     //var components = settings.components;
     //var system = settings.system;
     var system = settings.system;
-    log('---settings---', settings);
+    //log('---settings---', settings);
 
     var size = settings.drawing.size;
     var loc = settings.drawing.loc;
-    var l_attr = l_attr;
+
 
     clear_drawing();
 

@@ -1,25 +1,18 @@
 "use strict";
 var log = console.log.bind(console);
 var k = require('../lib/k/k.js')
-var loadTables = require('./settings_functions').loadTables;
-var loadModules = require('./settings_functions').loadModules;
-var update_system = require('./update_system')
 
 var settings = {};
 
 
 settings.system = {};
+settings.registry = [];
+
 var system = settings.system;
 system.wire_config_num = 5;
 system.DC = {};
 
 var config_options = settings.config_options = {};
-
-config_options.NEC_tables = {};
-k.AJAX('data/tables.txt', loadTables, settings);
-
-config_options.modules = false;
-k.AJAX( 'data/modules.csv', loadModules, settings );
 
 
 config_options.AC_type_options = ['120V', '240V', '208V', '277V', '480V Wye', '480V Delta'];
@@ -39,7 +32,9 @@ config_options.AC_types = {
 //var components = settings.components = {};
 
 config_options.inverters = {};
-config_options.inverters['SI3000'] = {
+
+config_options.inverters['SMA'] = {};
+config_options.inverters['SMA']['SI3000'] = {
     make:'SMA',
     model:'3000',
 
@@ -51,15 +46,29 @@ config_options.inverters['SI3000'] = {
 
 };
 
+config_options.inverters['SMA']['SI2500'] = {
+    make:'SMA',
+    model:'2500',
+
+    DC_voltageWindow_low: 150,
+    DC_voltageWindow_high: 350,
+    max_power: 2900,
+
+    AC_options: ['240','208'],
+
+};
 
 
 
 
-system.string_num = 4;
+system.DC.string_num = 4;
 //log(kontainer('system'))
 
-system.string_modules = 6;
-system.inverter = 'SI3000';
+system.DC.string_modules = 6;
+
+system.inverter = {};
+system.inverter.model = 'SI3000'; 
+
 system.AC_type = '480V Delta';
 
 
@@ -67,6 +76,7 @@ system.AC_type = '480V Delta';
 // Drawing specific
 settings.drawing = {};
 
+/*
 var l_attr = settings.drawing.l_attr = {};
 
 l_attr.base = {
@@ -106,6 +116,7 @@ l_attr.AC_L2 = Object.create(l_attr.base);
 l_attr.AC_L2.stroke = 'Red';
 l_attr.AC_L3 = Object.create(l_attr.base);
 l_attr.AC_L3.stroke = 'Blue';
+*/
 
 ///////////////
 // fonts
@@ -175,7 +186,7 @@ size.wire_offset = {
     base: 5,
     gap: size.module.w,
 }    ;
-size.wire_offset.max = system.string_num * size.wire_offset.base;
+size.wire_offset.max = system.DC.string_num * size.wire_offset.base;
 size.wire_offset.ground = size.wire_offset.max + size.wire_offset.base*2;
 
 size.string = {};
@@ -190,7 +201,7 @@ size.jb_box = {
 };
 
 size.discbox = {
-    w: 80 + size.wire_offset.base*2 * system.string_num,
+    w: 80 + size.wire_offset.base*2 * system.DC.string_num,
     h: 140,
 };
 
@@ -220,7 +231,7 @@ loc.array = { x:200, y:600 };
 loc.array.upper = loc.array.y - size.string.h/2;
 loc.array.lower = loc.array.upper + size.string.h;
 loc.array.right = loc.array.x - size.module.frame.h*2;
-loc.array.left = loc.array.right - ( size.string.w * system.string_num ) - ( size.module.w * 1.25 ) ;
+loc.array.left = loc.array.right - ( size.string.w * system.DC.string_num ) - ( size.module.w * 1.25 ) ;
 
 loc.DC = loc.array;
 
@@ -292,4 +303,5 @@ loc.general_notes.y = size.general_notes.h/2 + 30;
 
 
 /////////////////////
+
 module.exports = settings;

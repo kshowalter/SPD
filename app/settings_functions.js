@@ -1,8 +1,8 @@
 var k = require('../lib/k/k.js')
 var log = console.log.bind(console);
-var update_system = require('./update_system')
+//var update_system = require('./update').update_system;
 
-function loadTables(string, base){
+function loadTables(string){
     var tables = {};
     var l = string.split('\n');
     var title;
@@ -31,28 +31,26 @@ function loadTables(string, base){
             tables[title].push( entry );
         }
     });
-    base.NEC_tables = tables;
-    update_system(base);
+
+    return tables;
 }
 
 
-function loadModules(string, base){
-    base.config_options.modules = {};
+function loadModules(string){
     var db = k.parseCSV(string);
-    
+    var modules = {}    
     for( var i in db ){
         var module = db[i];
-        if( base.config_options.modules[module.Make] === undefined ){
-            base.config_options.modules[module.Make] = {};
+        if( modules[module.Make] === undefined ){
+            modules[module.Make] = {};
         }
-        if( base.config_options.modules[module.Make][module.Model] === undefined ){
-            base.config_options.modules[module.Make][module.Model] = {};
+        if( modules[module.Make][module.Model] === undefined ){
+            modules[module.Make][module.Model] = {};
         }
-        base.config_options.modules[module.Make][module.Model] = module;
+        modules[module.Make][module.Model] = module;
     }
 
-    update_system(base);
-
+    return modules;
 }
 
 

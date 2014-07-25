@@ -2,29 +2,22 @@
 var log = console.log.bind(console);
 
 var _ = require('underscore');
-//var SVG = require('./lib/svg.js');
 var moment = require('moment');
-
 var k = require('./lib/k/k.js');
 var k_data = require('./lib/k/k_data.js');
 var $ = require('./lib/k/k_DOM');
-var update_system = require('./app/update_system.js');
+
+var settings = require('./app/settings.js');
+var loadTables = require('./app/settings_functions').loadTables;
+var loadModules = require('./app/settings_functions').loadModules;
 var mk_drawing = require('./app/mk_drawing.js');
 var display_svg = require('./app/display_svg.js');
-
-var kontainer = require('./lib/k/kontainer.js');
-
+var update_system = require('./app/update_system');
 var settings = require('./app/settings.js');
 
 var components = settings.components;
 var system = settings.system;
 
-// layers and fonts
-var l_attr = settings.l_attr;
-var fonts = settings.fonts;
-
-
-var settings_registry = [];
 
 
 
@@ -43,37 +36,64 @@ function showLocation(location_json){
             //log('county ', system.county)
         }
     });
-    update();
+    update_system(settings);
 }
 
-//#update drawing
-function update(){
+function update(settings){
     log('updating');
 
     // Make sure selectors and value displays are updated
-    settings_registry.forEach(function(item){
+    settings.registry.forEach(function(item){
         //log('updating: ', item)
         item.update(); 
     });
 
+    update_system(settings);
     // delete all elements of drawing 
     //clear_drawing();
 
     // Recalculate system specs
-    settings = update_system(settings);
+    //settings = update_system(settings);
     
     // Recalculate drawing related variables
     //update_values();
 
     // Generate new drawing elements
-    var elements = mk_drawing(settings);
+    settings.elements = mk_drawing(settings);
 
     // Add drawing elements to SVG on screen
-    display_svg(svg_container, elements);
+    display_svg(settings, svg_container);
 
 }
 
 
+//k.AJAX('data/tables.txt', loadTables, settings);
+k.AJAX('data/tables.txt', ready, {type:'loadTables'});
+
+//k.AJAX( 'data/modules.csv', loadModules, settings );
+k.AJAX( 'data/modules.csv', ready, {type:'loadModules'});
+
+
+
+var ready_count = 0;
+function ready(input, config){
+
+    if( config.type === 'loadTables'){
+        settings.config_options.NEC_tables = loadTables(input);
+        ready_count++;
+    }
+    if( config.type === 'loadModules'){
+        settings.config_options.modules = loadModules(input);
+        ready_count++;
+    }
+    if( ready_count === 2 ){
+        log('ready');
+        update(settings);
+    }
+}
+
+
+// # Page setup
 
 var svg_container_id = 'svg_container';
 var svg_container = document.getElementById(svg_container_id);
@@ -91,23 +111,11 @@ var system_container = $('div').attr('id', system_container_id).appendTo(draw_pa
 var svg_container_object = $('div').attr('id', svg_container_id).appendTo(draw_page);
 var svg_container = svg_container_object.elem;
 
-//System options
-///*
-//log("-------");
-//log('Value', $('value') );
-//log('Value', $('value').setRef( settings, 'system.DC.voltage').setMax(600));
-//log( 'value', $('value') );
-//log( 'selector', $('selector') );
 
-//log('selector');
-//var x = $('selector');
-//log('setOptionsRef');
-//x.setOptionsRef( 'components.moduleMakeArray' )
-//log('setRef');
-//x.setRef('system.pv_make'),
-//log("-------");
+
 
 var system_container_array = [
+    /*
     $('span').html('IP location |'),
     $('span').html('City: '),
     $('value').setRef('system.city'),
@@ -119,12 +127,12 @@ var system_container_array = [
 
     $('span').html('Module make: '),
     //$('selector') .setOptionsRef( 'components.moduleMakeArray' ) .setRef('system.pv_make'),
-    $('selector') .setOptionsRef( 'settings.config_options.moduleMakeArray' ) .setRef('system.pv_make'),
+    $('selector') .setOptionsRef( 'settings.config_options.moduleMakeArray' ) .setRef('system.DC.module.make'),
     
     $('br'),
     $('span').html('Module model: '),
     //$('selector').setOptionsRef( 'components.moduleModelArray' ).setRef('system.pv_model'),
-    $('selector').setOptionsRef( 'components.moduleModelArray' ).setRef('system.pv_model'),
+    $('selector').setOptionsRef( 'settings.config_options.moduleModelArray' ).setRef('system.DC.module.model'),
     $('br'),
     $('span').html('Pmax: '),
     $('value').setRef('system.DC.module.specs.Pmax'),
@@ -148,10 +156,10 @@ var system_container_array = [
     $('br'),
 
     $('span').html('Number of strings: '),
-    $('selector').setOptionsRef( 'config_options.string_num_options').setRef('string_num'),
+    $('selector').setOptionsRef( 'config_options.string_num_options').setRef('system.DC.string_num'),
     $('span').html(' | '),
     $('span').html('Number of modules per string: '),
-    $('selector').setOptionsRef( 'config_options.string_modules_options').setRef('string_modules'),
+    $('selector').setOptionsRef( 'config_options.string_modules_options').setRef('system.DC.string_modules'),
     $('br'),
     
     $('span').html('Array voltage: '),
@@ -174,22 +182,20 @@ var system_container_array = [
     kelem.appendTo(system_container);
     if( kelem.type === 'selector' ){
         kelem.setRefObj(settings);
-        kelem.setUpdate(update);
-        settings_registry.push(kelem);
+        kelem.setUpdate(update_system);
+        settings.registry.push(kelem);
         kelem.update(); 
     } else if( kelem.type === 'value' ){
         kelem.setRefObj(settings);
         //kelem.setUpdate(update_system);
-        settings_registry.push(kelem);
+        settings.registry.push(kelem);
     }
 });
 
-update();
 
 var boot_time = moment();
 var status_id = "status";
 setInterval(function(){ k.update_status_page(status_id, boot_time);},1000);
 
 log('window', window);
-
 
