@@ -244,7 +244,7 @@ loc.inverter.bottom_right = {
     x: loc.inverter.x + size.inverter.w/2,
     y: loc.inverter.y + size.inverter.h/2,
 };
-loc.AC_disc = { x: loc.array.x+475, y: loc.array.y-100 };
+loc.AC_disc = { x: loc.array.x+425, y: loc.array.y-100 };
 loc.AC_disc.bottom = loc.AC_disc.y + size.AC_disc.h/2;
 loc.AC_disc.top = loc.AC_disc.y - size.AC_disc.h/2;
 loc.AC_disc.left = loc.AC_disc.x - size.AC_disc.w/2;
