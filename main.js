@@ -174,7 +174,7 @@ var system_container_array = [
 
     $('span').html('AC type: '),
 
-    $('selector').setOptionsRef( 'config_options.AC_type_options').setRef('AC_type'),
+    $('selector').setOptionsRef( 'config_options.AC_type_options').setRef('system.AC_type'),
 
     $('br'),
 

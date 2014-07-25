@@ -229,7 +229,7 @@ size.AC_loadcenter.groundbar = { w:40, h:5 };
 
 
 // location
-loc.array = { x:200, y:600 };
+loc.array = { x:250, y:600 };
 loc.array.upper = loc.array.y - size.string.h/2;
 loc.array.lower = loc.array.upper + size.string.h;
 loc.array.right = loc.array.x - size.module.frame.h*2;
@@ -237,7 +237,7 @@ loc.array.left = loc.array.right - ( size.string.w * system.DC.string_num ) - ( 
 
 loc.DC = loc.array;
 
-loc.inverter = { x:loc.array.x+300, y:loc.array.y-350 };
+loc.inverter = { x:loc.array.x+250, y:loc.array.y-350 };
 loc.inverter.bottom = loc.inverter.y + size.inverter.h/2;
 loc.inverter.top = loc.inverter.y - size.inverter.h/2;
 loc.inverter.bottom_right = {
