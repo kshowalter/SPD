@@ -10,7 +10,6 @@ var update_system = function(settings) {
 
     //system.DC.string_num = settings.system.string_num; 
     //system.DC.string_modules = settings.system.string_modules;
-    system.DC.module = {};
     //if( settings.config_options.modules !== undefined ){
     if( settings.config_options.modules ){
         settings.config_options.moduleMakeArray = k.objIdArray(settings.config_options.modules);
@@ -22,7 +21,6 @@ var update_system = function(settings) {
     if( settings.config_options.inverters ){
         settings.config_options.moduleMakeArray = k.objIdArray(settings.config_options.inverters);
         system.inverter.make = system.inverter.make || Object.keys( settings.config_options.inverters )[0];
-        log(k.objIdArray(settings.config_options.inverters[system.DC.module.make]));
         settings.config_options.moduleModelArray = k.objIdArray(settings.config_options.inverters[system.DC.module.make]);
         system.inverter.model = system.inverter.model || Object.keys( settings.config_options.inverters[system.inverter.make] )[0];
         system.inverter.specs = settings.config_options.inverters[system.inverter.make][system.inverter.model];

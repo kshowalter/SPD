@@ -11,8 +11,10 @@ settings.registry = [];
 var system = settings.system;
 system.wire_config_num = 5;
 system.DC = {};
+system.DC.module = {};
 
 var config_options = settings.config_options = {};
+
 
 
 config_options.AC_type_options = ['120V', '240V', '208V', '277V', '480V Wye', '480V Delta'];
