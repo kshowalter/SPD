@@ -44,6 +44,10 @@ var update_system = function(settings) {
 
     system.AC_conductors = settings.config_options.AC_types[system.AC_type];
 
+    var size = settings.drawing.size;
+    
+    size.wire_offset.max = size.wire_offset.min + system.DC.string_num * size.wire_offset.base;
+    size.wire_offset.ground = size.wire_offset.max + size.wire_offset.base*2;
     
     //return settings;
 };

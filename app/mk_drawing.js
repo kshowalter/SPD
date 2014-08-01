@@ -497,16 +497,16 @@ var mk_drawing = function(settings){
 //#array
     // PV array
 
-
     x = loc.array.x;
     y = loc.array.y;
-
 
     x -= size.module.frame.h*3;
     y -= size.string.h/2;
 
-    for( var i=0; i<system.DC.string_num; i++ ) {
-        var offset = i * size.wire_offset.base;
+    //for( var i=0; i<system.DC.string_num; i++ ) {
+    for( var i in _.range(system.DC.string_num)) {
+        var offset = i * size.wire_offset.base
+        var offset_wire = size.wire_offset.min + ( size.wire_offset.base * i );
         
         block('string', [x,y]);
         // positive home run
@@ -515,8 +515,8 @@ var mk_drawing = function(settings){
             [ x , loc.array.upper ],
             [ x , loc.array.upper-size.module.w-offset ],
             [ loc.array.right+offset , loc.array.upper-size.module.w-offset ],
-            [ loc.array.right+offset , loc.array.y-size.module.w-offset],
-            [ loc.array.x , loc.array.y-size.module.w-offset],
+            [ loc.array.right+offset , loc.array.y-offset_wire],
+            [ loc.array.x , loc.array.y-offset_wire],
         ]);
 
         // negative home run
@@ -525,8 +525,8 @@ var mk_drawing = function(settings){
             [ x , loc.array.lower ],
             [ x , loc.array.lower+size.module.w+offset ],
             [ loc.array.right+offset , loc.array.lower+size.module.w+offset ],
-            [ loc.array.right+offset , loc.array.y+size.module.w+offset],
-            [ loc.array.x , loc.array.y+size.module.w+offset],
+            [ loc.array.right+offset , loc.array.y+offset_wire],
+            [ loc.array.x , loc.array.y+offset_wire],
         ]);
 
         x -= size.string.w;
@@ -534,10 +534,10 @@ var mk_drawing = function(settings){
 
     layer('DC_ground');
     line([
-        [ loc.array.left , loc.array.lower + size.module.w + size.wire_offset.ground ],
-        [ loc.array.right+size.wire_offset.ground , loc.array.lower + size.module.w + size.wire_offset.ground ],
-        [ loc.array.right+size.wire_offset.ground , loc.array.y + size.module.w + size.wire_offset.ground],
-        [ loc.array.x , loc.array.y+size.module.w+size.wire_offset.ground],
+        [ loc.array.left , loc.array.lower + size.wire_offset.ground ],
+        [ loc.array.right+size.wire_offset.ground , loc.array.lower + size.wire_offset.ground ],
+        [ loc.array.right+size.wire_offset.ground , loc.array.y + size.wire_offset.ground],
+        [ loc.array.x , loc.array.y+size.wire_offset.ground],
     ]);
 
     layer();
@@ -550,7 +550,6 @@ var mk_drawing = function(settings){
 
     var to_disconnect_x = 150;
     var to_disconnect_y = -100;
-
     
     rect(
         [x+size.jb_box.w/2,y-size.jb_box.h/10],
@@ -558,9 +557,8 @@ var mk_drawing = function(settings){
         'box'
     );
 
-
     for( var i in _.range(system.DC.string_num)) {
-        var offset = size.wire_offset.gap + ( i * size.wire_offset.base );
+        var offset = size.wire_offset.min + ( size.wire_offset.base * i );
 
         layer('DC_pos');
         line([
@@ -615,7 +613,8 @@ var mk_drawing = function(settings){
     //layer();
 
     // Ground
-    offset = size.wire_offset.gap + size.wire_offset.ground;
+    //offset = size.wire_offset.gap + size.wire_offset.ground;
+    offset = size.wire_offset.ground;
 
     layer('DC_ground');
     line([
@@ -647,8 +646,8 @@ var mk_drawing = function(settings){
 ///////////////////////////////
     // DC disconect combiner lines
     if( system.DC.string_num > 1){
-        var offset_min = size.wire_offset.gap;
-        var offset_max = size.wire_offset.gap + ( (system.DC.string_num-1) * size.wire_offset.base );
+        var offset_min = size.wire_offset.min;
+        var offset_max = size.wire_offset.min + ( (system.DC.string_num-1) * size.wire_offset.base );
         line([
             [ x-offset_min, y-size.terminal_diam-size.terminal_diam*3],
             [ x-offset_max , y-size.terminal_diam-size.terminal_diam*3],
@@ -665,8 +664,8 @@ var mk_drawing = function(settings){
     //    [ x-offset_min, y-size.terminal_diam-size.terminal_diam*3],
     //],'DC_pos');
 
-    offset = offset_max - offset_min + size.terminal_diam/2;
     //offset = offset_max - offset_min;
+    offset = size.wire_offset.min;
 
     // neg
     line([
@@ -689,7 +688,8 @@ var mk_drawing = function(settings){
     });
 
     // ground
-    offset = size.wire_offset.gap + size.wire_offset.ground;
+    //offset = size.wire_offset.gap + size.wire_offset.ground;
+    offset = size.wire_offset.ground;
     line([
         [ x+offset, y-size.terminal_diam-size.terminal_diam*3],
         [ x+offset, loc.inverter.y+size.inverter.h/2-size.terminal_diam ],

@@ -161,8 +161,6 @@ function mk_settings(){
 
 }
 
-
-
 var size = settings.drawing.size = {};
 var loc = settings.drawing.loc = {};
 
@@ -187,9 +185,8 @@ size.module.w = size.module.frame.w;
 size.wire_offset = {
     base: 5,
     gap: size.module.w,
-}    ;
-size.wire_offset.max = system.DC.string_num * size.wire_offset.base;
-size.wire_offset.ground = size.wire_offset.max + size.wire_offset.base*2;
+};
+size.wire_offset.min = size.wire_offset.base * 3;
 
 size.string = {};
 size.string.gap = size.module.frame.w/42;
@@ -203,7 +200,7 @@ size.jb_box = {
 };
 
 size.discbox = {
-    w: 80 + size.wire_offset.base*2 * system.DC.string_num,
+    w: 80 + size.wire_offset.base*2 * 6,
     h: 140,
 };
 
@@ -218,13 +215,6 @@ size.inverter.text_gap = 15;
 size.inverter.symbol_w = 50;
 size.inverter.symbol_h = 25;
 
-size.AC_disc = { w: 75, h: 100 };
-
-size.AC_loadcenter = { w: 125, h: 300 }; 
-size.AC_loadcenter.breaker = { w: 20, h: 5, };
-
-size.AC_loadcenter.neutralbar = { w:5, h:40 };
-size.AC_loadcenter.groundbar = { w:40, h:5 };
 
 
 
@@ -244,7 +234,13 @@ loc.inverter.bottom_right = {
     x: loc.inverter.x + size.inverter.w/2,
     y: loc.inverter.y + size.inverter.h/2,
 };
-loc.AC_disc = { x: loc.array.x+475, y: loc.array.y-100 };
+
+
+
+// AC diconect
+size.AC_disc = { w: 75, h: 100 };
+
+loc.AC_disc = { x: loc.array.x+435, y: loc.array.y-100 };
 loc.AC_disc.bottom = loc.AC_disc.y + size.AC_disc.h/2;
 loc.AC_disc.top = loc.AC_disc.y - size.AC_disc.h/2;
 loc.AC_disc.left = loc.AC_disc.x - size.AC_disc.w/2;
@@ -252,11 +248,19 @@ loc.AC_disc.switch_top = loc.AC_disc.top + 15;
 loc.AC_disc.switch_bottom = loc.AC_disc.switch_top + 30;
 
 
+// AC panel
+
+size.AC_loadcenter = { w: 125, h: 300 }; 
+size.AC_loadcenter.breaker = { w: 20, h: 5, };
+
+size.AC_loadcenter.neutralbar = { w:5, h:40 };
+size.AC_loadcenter.groundbar = { w:40, h:5 };
 
 loc.AC_loadcenter = {
     x: loc.AC_disc.x+150, 
     y: loc.AC_disc.y-100
 };
+
 loc.AC_loadcenter.wire_bundle_bottom = loc.AC_disc.top - 20;
 loc.AC_loadcenter.left = loc.AC_loadcenter.x - size.AC_loadcenter.w/2;
 loc.AC_loadcenter.breakers = {
@@ -272,6 +276,8 @@ loc.AC_loadcenter.groundbar = {
     y: loc.AC_loadcenter.y + size.AC_loadcenter.h*0.45
 };
 
+
+
 // wire table
 size.wire_table = {};
 size.wire_table.w = 200;
@@ -284,7 +290,6 @@ loc.wire_table = {
 loc.wire_table.top = loc.wire_table.y - size.wire_table.h/2;
 loc.wire_table.bottom = loc.wire_table.y + size.wire_table.h/2;
 
-//loc.AC_loadcenter.breakers = 
 
 // voltage drop table
 size.volt_drop_table = {};
