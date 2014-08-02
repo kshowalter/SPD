@@ -183,7 +183,7 @@ size.module.h = size.module.frame.h + size.module.lead*2;
 size.module.w = size.module.frame.w;
 
 size.wire_offset = {
-    base: 5,
+    base: 7,
     gap: size.module.w,
 };
 size.wire_offset.min = size.wire_offset.base * 3;
@@ -194,40 +194,50 @@ size.string.gap_missing = size.string.gap + size.module.frame.w;
 size.string.h = (size.module.h * 4) + (size.string.gap * 2) + size.string.gap_missing;
 size.string.w = size.module.frame.w * 2.5;
 
-size.jb_box = {
-    h: 200,
-    w: 80,
-};
-
-size.discbox = {
-    w: 80 + size.wire_offset.base*2 * 6,
-    h: 140,
-};
-
 size.terminal_diam = 5;
 size.fuse = {};
 size.fuse.w = 15;
 size.fuse.h = 4;
 
+// array
 
+loc.array = { x:250, y:600 };
+loc.array.upper = loc.array.y - size.string.h/2;
+loc.array.lower = loc.array.upper + size.string.h;
+loc.array.right = loc.array.x - size.module.frame.h*3;
+loc.array.left = loc.array.right - ( size.string.w * system.DC.string_num ) - ( size.module.w * 1.25 ) ;
+
+loc.DC = loc.array;
+
+// DC jb
+
+size.jb_box = {
+    h: 200,
+    w: 80,
+};
+
+loc.jb_box = {
+    x: loc.array.x + size.jb_box.w/2,
+    y: loc.array.y + size.jb_box.h/10,
+};
+
+
+
+// DC diconect
+
+size.discbox = {
+    w: 180,
+    h: 140,
+};
+
+
+// Inverter
 size.inverter = { w: 200, h: 150 };
 size.inverter.text_gap = 15;
 size.inverter.symbol_w = 50;
 size.inverter.symbol_h = 25;
 
-
-
-
-// location
-loc.array = { x:250, y:600 };
-loc.array.upper = loc.array.y - size.string.h/2;
-loc.array.lower = loc.array.upper + size.string.h;
-loc.array.right = loc.array.x - size.module.frame.h*2;
-loc.array.left = loc.array.right - ( size.string.w * system.DC.string_num ) - ( size.module.w * 1.25 ) ;
-
-loc.DC = loc.array;
-
-loc.inverter = { x:loc.array.x+250, y:loc.array.y-350 };
+loc.inverter = { x:loc.array.x+275, y:loc.array.y-350 };
 loc.inverter.bottom = loc.inverter.y + size.inverter.h/2;
 loc.inverter.top = loc.inverter.y - size.inverter.h/2;
 loc.inverter.bottom_right = {

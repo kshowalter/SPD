@@ -47,7 +47,7 @@ var update_system = function(settings) {
     var size = settings.drawing.size;
     
     size.wire_offset.max = size.wire_offset.min + system.DC.string_num * size.wire_offset.base;
-    size.wire_offset.ground = size.wire_offset.max + size.wire_offset.base*2;
+    size.wire_offset.ground = size.wire_offset.max + size.wire_offset.base*1;
     
     //return settings;
 };
