@@ -5,13 +5,10 @@
 To generate a selection of FSEC pre-approved PV system drawings that will cover a majority of Florida installations.
 
 ##Status
-The basic functions, data storage objects, and presets are in place.
-A portion of the drawing is coded in as a demonstration.
+A basic drawing is generated, and some aspects of the system can be configured.
 
 ##Current focus
-Rework the pattern used to generate the drawing elements (lines, shapes, text).
-Once that stabilizes, the rest of the sample drawing will be entered.
-After that, the drawing will be refined, and the more options will be integrated into it.
+Adding basic features, and reorganization of code.
 
 ##Components
 
@@ -29,7 +26,7 @@ After that, the drawing will be refined, and the more options will be integrated
 * Test script.
     * A standard set of inputs (system specs) that will be tested with each version of the PV system program.
 
-##Development stages, major milestones
+##Major milestones
 
 * Rough working model
     * At this stage a mostly complete drawing can be generated from a limited number of inputs. 
@@ -52,6 +49,29 @@ After that, the drawing will be refined, and the more options will be integrated
     * Bug fixes
     * Updating product information (new inverter models, NEC rules)
 
+##Development Phases
+
+###Feature phase
+Maintain a list of features, issue fixes, and improvements that will be added to the program up to the end of the phase. Features that do not make it in by the end of the phase, are put aside for future development.
+
+###Cleanup phase
+Continue to fix issues, improve existing features, and prepare for release.
+
+###Testing phase
+Expand the user test group, and concentrate on fixing issues. Features that are suggested by test users are either added, or stored for later, based on there value, the time needed to add to the application, and the time left until launch.
+
+###Post launch development
+Fix issues as quickly as possible, and continue development as time and funding allows.
 
 
 
+##Features
+The following a list of proposed features, it will be updated during development. 
+The features will be added to the application until the feature complete deadline.
+
+* ~~Functions to add basic elements to drawing container.~~
+* ~~Function to renter drawing elements to SVG on page.~~
+* ~~System to select system configuration.~~
+* Warning of range warning.
+* PDF file generation.
+* CAD file generation.
