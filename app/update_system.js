@@ -7,6 +7,8 @@ var k = require('../lib/k/k.js');
 var update_system = function(settings) {
     //log('---settings---', settings);
     var system = settings.system;
+    var loc = settings.drawing.loc;
+    var size = settings.drawing.size;
 
     //system.DC.string_num = settings.system.string_num; 
     //system.DC.string_modules = settings.system.string_modules;
@@ -48,7 +50,7 @@ var update_system = function(settings) {
     
     size.wire_offset.max = size.wire_offset.min + system.DC.string_num * size.wire_offset.base;
     size.wire_offset.ground = size.wire_offset.max + size.wire_offset.base*1;
-    
+    loc.array.left = loc.array.right - ( size.string.w * (system.DC.string_num-1) ) - ( size.module.frame.w*3/4 ) ;
     //return settings;
 };
 

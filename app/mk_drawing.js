@@ -335,17 +335,17 @@ var mk_drawing = function(settings){
     layer('DC_ground');
     line([
         [x-size.module.frame.w*3/4, y+size.module.frame.h/2],
-        //[x-size.module.frame.w*3/4, y+size.string.h + size.wire_offset.ground + size.module.lead*0.5 ],
-        [x-size.module.frame.w*3/4, y+size.string.h + size.wire_offset.ground ],
+        [x-size.module.frame.w*3/4, y+size.string.h + size.wire_offset.ground - size.module.lead],
+        //[x-size.module.frame.w*3/4, y+size.string.h + size.wire_offset.ground ],
     ]);
     layer();
 
     block('module', [x,y]);
-    y += size.module.frame.h + size.module.lead*2 + size.string.gap_missing;
+    y += size.module.h + size.string.gap_missing;
     block('module', [x,y]);
-    y += size.module.frame.h + size.module.lead*2 + size.string.gap;
+    y += size.module.h + size.string.gap;
     block('module', [x,y]);
-    y += size.module.frame.h + size.module.lead*2 + size.string.gap;
+    y += size.module.h + size.string.gap;
     block('module', [x,y]);
 
     block_end();
@@ -496,12 +496,9 @@ var mk_drawing = function(settings){
 
 ////////////////////////////////////////
 //#array
-    // PV array
 
-    x = loc.array.x;
+    x = loc.array.right;
     y = loc.array.y;
-
-    x -= size.module.frame.h*3;
     y -= size.string.h/2;
 
     //for( var i=0; i<system.DC.string_num; i++ ) {
@@ -514,9 +511,9 @@ var mk_drawing = function(settings){
         layer('DC_pos');
         line([
             [ x , loc.array.upper ],
-            [ x , loc.array.upper-size.module.w-offset ],
-            [ loc.array.right+offset , loc.array.upper-size.module.w-offset ],
-            [ loc.array.right+offset , loc.array.y-offset_wire],
+            [ x , loc.array.upper-offset_wire ],
+            [ loc.array.right+offset_wire , loc.array.upper-offset_wire ],
+            [ loc.array.right+offset_wire , loc.array.y-offset_wire],
             [ loc.array.x , loc.array.y-offset_wire],
         ]);
 
@@ -524,19 +521,22 @@ var mk_drawing = function(settings){
         layer('DC_neg');
         line([
             [ x , loc.array.lower ],
-            [ x , loc.array.lower+size.module.w+offset ],
-            [ loc.array.right+offset , loc.array.lower+size.module.w+offset ],
-            [ loc.array.right+offset , loc.array.y+offset_wire],
+            [ x , loc.array.lower+offset_wire ],
+            [ loc.array.right+offset_wire , loc.array.lower+offset_wire ],
+            [ loc.array.right+offset_wire , loc.array.y+offset_wire],
             [ loc.array.x , loc.array.y+offset_wire],
         ]);
 
         x -= size.string.w;
     }
 
+
+    
+    
     layer('DC_ground');
     line([
-        [ loc.array.left , loc.array.lower + size.wire_offset.ground ],
-        [ loc.array.right+size.wire_offset.ground , loc.array.lower + size.wire_offset.ground ],
+        [ loc.array.left , loc.array.lower+ size.wire_offset.ground ],
+        [ loc.array.right+size.wire_offset.ground , loc.array.lower+ size.wire_offset.ground ],
         [ loc.array.right+size.wire_offset.ground , loc.array.y + size.wire_offset.ground],
         [ loc.array.x , loc.array.y+size.wire_offset.ground],
     ]);
@@ -552,7 +552,6 @@ var mk_drawing = function(settings){
     var to_disconnect_x = 150;
     var to_disconnect_y = -100;
     
-    circ( [loc.array.x,loc.array.y], 10 )
     rect(
         [x,y],
         [size.jb_box.w,size.jb_box.h],
