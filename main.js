@@ -42,28 +42,23 @@ function showLocation(location_json){
 function update(){
     log('updating');
 
-    // Make sure selectors and value displays are updated
+    update_system(settings);
+
+    settings.select_registry.forEach(function(item){
+        item.update(); 
+    });
 
     update_system(settings);
-    // delete all elements of drawing 
-    //clear_drawing();
 
-    // Recalculate system specs
-    //settings = update_system(settings);
-    
-    // Recalculate drawing related variables
-    //update_values();
+    settings.value_registry.forEach(function(item){
+        item.update(); 
+    });
 
-    // Generate new drawing elements
+    // Make drawing
     settings.elements = mk_drawing(settings);
-
     // Add drawing elements to SVG on screen
     display_svg(settings, svg_container);
 
-    settings.registry.forEach(function(item){
-        //log('updating: ', item)
-        item.update(); 
-    });
 }
 
 
@@ -183,12 +178,12 @@ var system_container_array = [
     if( kelem.type === 'selector' ){
         kelem.setRefObj(settings);
         kelem.setUpdate(update);
-        settings.registry.push(kelem);
+        settings.select_registry.push(kelem);
         kelem.update(); 
     } else if( kelem.type === 'value' ){
         kelem.setRefObj(settings);
         //kelem.setUpdate(update_system);
-        settings.registry.push(kelem);
+        settings.value_registry.push(kelem);
     }
 });
 

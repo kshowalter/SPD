@@ -6,7 +6,8 @@ var settings = {};
 
 
 settings.system = {};
-settings.registry = [];
+settings.select_registry = [];
+settings.value_registry = [];
 
 var system = settings.system;
 system.wire_config_num = 5;
