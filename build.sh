@@ -1,1 +1,1 @@
-browserify main.js -o index.js -d -v
+browserify main.js -o index.js
