@@ -166,12 +166,12 @@ var system_container_array = [
 
     $('br'),
 
-    $('span').html('AC type: '),
-
-    $('selector').setOptionsRef( 'config_options.AC_type_options').setRef('system.AC_type'),
-
     $('span').html('AC loadcenter type: '),
     $('selector').setOptionsRef( 'config_options.AC_loadcenter_type_options').setRef('system.AC_loadcenter_type'),
+
+    $('span').html('AC type: '),
+    //$('selector').setOptionsRef( 'config_options.AC_type_options').setRef('system.AC_type'),
+    $('selector').setOptionsRef( 'system.AC_types_availible').setRef('system.AC_type'),
 
     $('br'),
 

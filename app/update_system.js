@@ -6,6 +6,7 @@ var k = require('../lib/k/k.js');
 
 var update_system = function(settings) {
     //console.log('---settings---', settings);
+    var config_options = settings.config_options;
     var system = settings.system;
     var loc = settings.drawing.loc;
     var size = settings.drawing.size;
@@ -42,6 +43,17 @@ var update_system = function(settings) {
 
 
     // AC
+
+    config_options.AC_loadcenter_type_options = k.objIdArray( config_options.AC_loadcenter_types );
+    config_options.AC_type_options = k.objIdArray( config_options.AC_types );
+    system.AC_loadcenter_type = system.AC_loadcenter_type || config_options.AC_loadcenter_type_options[0];
+    system.AC_types_availible = config_options.AC_loadcenter_types[system.AC_loadcenter_type];
+    config_options.AC_type_options.forEach( function( elem, id ){
+        if( ! elem in system.AC_types_availible ) {
+            config_options.AC_type_options.splice(id, 1);
+        }
+
+    })
 
     //system.AC_loadcenter_type = '480/277V';
 
