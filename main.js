@@ -152,15 +152,23 @@ var system_container_array = [
     $('span').html(' | '),
     $('span').html('DC home run length: '),
     $('selector').setOptionsRef('config_options.DC_homerun_legths').setRef('system.DC.homerun_length'),
+    $('span').html(' | '),
+    $('span').html('DC home run length: '),
+    $('selector').setOptionsRef('config_options.DC_homerun_AWG_options').setRef('config_options.DC_homerun_AWG'),
     $('br'),
-
+                                
     $('span').html('Array voltage: '),
     $('value').setRef('system.DC.voltage').setMax(600).attr('id', 'DC_volt'),
     $('span').html(' | '),
     $('span').html('Array current: '),
     $('value').setRef('system.DC.current'),
     $('br'),
-
+/*
+    $('span').html('DC voltage at inverter: '),
+    $('value').setRef('system.DC.voltage_inverter').setMax(600).attr('id', 'DC_volt'),
+    $('span').html(' | '),
+    $('br'),
+*/
     $('span').html('AC loadcenter type: '),
     $('selector').setOptionsRef( 'config_options.AC_loadcenter_type_options').setRef('system.AC_loadcenter_type'),
     $('span').html('AC type: '),

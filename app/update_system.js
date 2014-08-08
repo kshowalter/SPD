@@ -39,6 +39,9 @@ var update_system = function(settings) {
         system.DC.voltage = system.DC.module.specs.Voc * system.DC.string_modules;
     }
 
+    config_options.DC_homerun_AWG_options = k.objIdArray( config_options.NEC_tables["Ch 9 Table 8 Conductor Properties"] );
+    config_options.DC_homerun_AWG = config_options.DC_homerun_AWG || config_options.DC_homerun_AWG_options[config_options.DC_homerun_AWG_options.length-1];
+
     //system.inverter = settings.config_options.inverters[system.inverter.model];
 
 
