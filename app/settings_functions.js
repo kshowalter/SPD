@@ -21,14 +21,19 @@ function loadTables(string){
             //log('new table ', title)
         } else if( need_fields ) {
             fields = line.split(',');
+            tables[title+"_fields"] = fields;
             need_fields = false;
+        //} else {
+        //    var entry = {};
+        //    var line_array = line.split(',');
+        //    fields.forEach( function(field, id){
+        //        entry[field.trim()] = line_array[id].trim(); 
+        //    });
+        //    tables[title].push( entry );
+        //}
         } else {
-            var entry = {};
             var line_array = line.split(',');
-            fields.forEach( function(field, id){
-                entry[field.trim()] = line_array[id].trim(); 
-            });
-            tables[title].push( entry );
+            tables[title][line_array[0].trim()] = line_array[1].trim(); 
         }
     });
 
