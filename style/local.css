@@ -8,5 +8,10 @@
 
 #drawing_page {
     margin-left: 15px;
-    margin-top: 30px;
+    margin-top: 15px;
+}
+
+
+#status{
+    font-size: 0.7em;
 }
