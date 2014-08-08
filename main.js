@@ -122,31 +122,26 @@ var system_container_array = [
     $('span').html('Module make: '),
     //$('selector') .setOptionsRef( 'components.moduleMakeArray' ) .setRef('system.pv_make'),
     $('selector') .setOptionsRef( 'settings.config_options.moduleMakeArray' ) .setRef('system.DC.module.make'),
-    
-    $('br'),
+    $('span').html(' | '),
     $('span').html('Module model: '),
     //$('selector').setOptionsRef( 'components.moduleModelArray' ).setRef('system.pv_model'),
     $('selector').setOptionsRef( 'settings.config_options.moduleModelArray' ).setRef('system.DC.module.model'),
     $('br'),
+
     $('span').html('Pmax: '),
     $('value').setRef('system.DC.module.specs.Pmax'),
-
     $('span').html(' | '),
     $('span').html('Isc: '),
     $('value').setRef('system.DC.module.specs.Isc'),
-
     $('span').html(' | '),
     $('span').html('Voc: '),
     $('value').setRef('system.DC.module.specs.Voc'),
-
     $('span').html(' | '),
     $('span').html('Imp: '),
     $('value').setRef('system.DC.module.specs.Imp'),
-    
     $('span').html(' | '),
     $('span').html('Vmp: '),
     $('value').setRef('system.DC.module.specs.Vmp'),
-
     $('br'),
 
     $('span').html('Number of strings: '),
@@ -154,21 +149,20 @@ var system_container_array = [
     $('span').html(' | '),
     $('span').html('Number of modules per string: '),
     $('selector').setOptionsRef( 'config_options.string_modules_options').setRef('system.DC.string_modules'),
+    $('span').html(' | '),
+    $('span').html('DC home run length: '),
+    $('selector').setOptionsRef('config_options.DC_homerun_legths').setRef('system.DC.homerun_length'),
     $('br'),
-    
+
     $('span').html('Array voltage: '),
     $('value').setRef('system.DC.voltage').setMax(600).attr('id', 'DC_volt'),
-
     $('span').html(' | '),
-
     $('span').html('Array current: '),
     $('value').setRef('system.DC.current'),
-
     $('br'),
 
     $('span').html('AC loadcenter type: '),
     $('selector').setOptionsRef( 'config_options.AC_loadcenter_type_options').setRef('system.AC_loadcenter_type'),
-
     $('span').html('AC type: '),
     //$('selector').setOptionsRef( 'config_options.AC_type_options').setRef('system.AC_type'),
     $('selector').setOptionsRef( 'system.AC_types_availible').setRef('system.AC_type'),
