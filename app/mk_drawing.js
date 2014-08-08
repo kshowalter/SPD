@@ -1,10 +1,10 @@
 'use strict';
-var log = console.log.bind(console);
+
 var k = require('../lib/k/k.js');
 //var settings = require('./settings.js');
 //var l_attr = settings.drawing.l_attr;
 var _ = require('underscore');
-//log('settings', settings);
+//console.log('settings', settings);
 // setup drawing containers
 var l_attr = require('./layers');
 
@@ -46,7 +46,7 @@ var layer = function(name){ // set current layer
     if( typeof name === 'undefined' ){ // if no layer name given, reset to default 
         layer_active = false;
     } else if ( ! (name in l_attr) ) {
-        log('Error: unknown layer, using base');
+        console.log('Error: unknown layer, using base');
         layer_active = 'base' ;
     } else { // finaly activate requested layer
         layer_active = name;
@@ -70,7 +70,7 @@ block('default'); // set current block to default
 */
 var block_start = function(name) {
     if( typeof name === 'undefined' ){ // if name argument is submitted
-        log('Error: name required');
+        console.log('Error: name required');
     } else {
         // TODO: What if the same name is submitted twice? throw error or fix?
         block_active = name;
@@ -89,7 +89,7 @@ var block_start = function(name) {
     if( typeof layer_name !== 'undefined' && (layer_name in layers) ) {
         var layer_selected = layers[layer_name]
     } else {
-        if( ! (layer_name in layers) ){ log("error, layer does not exist, using current");}
+        if( ! (layer_name in layers) ){ console.log("error, layer does not exist, using current");}
         var layer_selected =  layer_active
     }
     */
@@ -119,7 +119,7 @@ var clear_drawing = function() {
     if( typeof layer_name !== 'undefined' && (layer_name in layers) ) {
         var layer_selected = layers[layer_name]
     } else {
-        if( ! (layer_name in layers) ){ log("error, layer does not exist, using current");}
+        if( ! (layer_name in layers) ){ console.log("error, layer does not exist, using current");}
         var layer_selected =  layer_active
     }
     */
@@ -148,7 +148,7 @@ var add = function(type, points, layer_name) {
 
     if( typeof layer_name === 'undefined' ) { layer_name = layer_active; } 
     if( ! (layer_name in l_attr) ) { 
-        log('Layer name not found, using base');
+        console.log('Layer name not found, using base');
         layer_name = 'base'; 
     }
 
@@ -198,7 +198,7 @@ var rect = function(loc, size, layer){
     if( typeof layer_name !== 'undefined' && (layer_name in layers) ) {
         var layer_selected = layers[layer_name]
     } else {
-        if( ! (layer_name in layers) ){ log("error, layer does not exist, using current");}
+        if( ! (layer_name in layers) ){ console.log("error, layer does not exist, using current");}
         var layer_selected =  layer_active
     }
     */
@@ -259,7 +259,7 @@ var mk_drawing = function(settings){
     //var components = settings.components;
     //var system = settings.system;
     var system = settings.system;
-    //log('---settings---', settings);
+    //console.log('---settings---', settings);
 
     var size = settings.drawing.size;
     var loc = settings.drawing.loc;
@@ -820,8 +820,8 @@ var mk_drawing = function(settings){
     layer();
 
 
-//log('size:', [h,w])
-//log('location:', [x,y])
+//console.log('size:', [h,w])
+//console.log('location:', [x,y])
 //circ([x,y],5);
 
 
@@ -883,7 +883,7 @@ var mk_drawing = function(settings){
 
     //var AC_layer_names = ['AC_ground', 'AC_neutral', 'AC_L1', 'AC_L2', 'AC_L2'];
 
-    //log(system.AC_conductors.length)
+    //console.log(system.AC_conductors.length)
 
     for( var i=0; i < system.AC_conductors.length; i++ ){
         block('terminal', [x,y] );

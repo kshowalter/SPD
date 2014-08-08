@@ -1,5 +1,4 @@
 "use strict";
-var log = console.log.bind(console);
 
 var _ = require('underscore');
 var moment = require('moment');
@@ -30,17 +29,17 @@ function showLocation(location_json){
     location.results[0].address_components.forEach( function(component){
         if( component.types[0] === "locality" ) {
             system.city = component.long_name ;
-            //log('city ', system.city) 
+            //console.log('city ', system.city) 
         } else if( component.types[0] === "administrative_area_level_2" ){
             system.county = component.long_name ;
-            //log('county ', system.county)
+            //console.log('county ', system.county)
         }
     });
     update_system(settings);
 }
 
 function update(){
-    log('updating');
+    console.log('updating');
 
     update_system(settings);
 
@@ -82,7 +81,7 @@ function ready(input, config){
         ready_count++;
     }
     if( ready_count === 2 ){
-        log('ready');
+        console.log('ready');
         update(settings);
     }
 }
@@ -171,6 +170,9 @@ var system_container_array = [
 
     $('selector').setOptionsRef( 'config_options.AC_type_options').setRef('system.AC_type'),
 
+    $('span').html('AC loadcenter type: '),
+    $('selector').setOptionsRef( 'config_options.AC_loadcenter_type_options').setRef('system.AC_loadcenter_type'),
+
     $('br'),
 
 ].forEach( function(kelem){
@@ -192,6 +194,6 @@ var boot_time = moment();
 var status_id = "status";
 setInterval(function(){ k.update_status_page(status_id, boot_time);},1000);
 
-log('settings', settings);
-log('window', window);
+console.log('settings', settings);
+console.log('window', window);
 

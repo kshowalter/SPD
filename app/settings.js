@@ -1,5 +1,5 @@
 "use strict";
-var log = console.log.bind(console);
+
 var k = require('../lib/k/k.js')
 
 var settings = {};
@@ -18,20 +18,23 @@ var config_options = settings.config_options = {};
 
 
 
-config_options.AC_type_options = ['120V', '240V', '208V', '277V', '480V Wye', '480V Delta'];
 config_options.string_num_options = [1,2,3,4,5,6];
 config_options.string_modules_options = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
 config_options.AC_types = {
     '120V'      : ['ground', 'neutral', 'L1' ],
-    '240V'      : ['ground', 'neutral', 'L1', 'L2' ],
+    '242V'      : ['ground', 'neutral', 'L1', 'L2' ],
     '208V'      : ['ground', 'neutral', 'L1', 'L2' ],
     '277V'      : ['ground', 'neutral', 'L1' ],
     '480V Wye'  : ['ground', 'neutral', 'L1', 'L2', 'L3' ],
     '480V Delta': ['ground', 'L1', 'L2', 'L3' ],
 };
+config_options.AC_type_options = k.objIdArray( config_options.AC_types );
 
-
-
+config_options.AC_loadcenter_types = {
+    '480/277V' : ['480V', '277'],
+    '240V' : ['240V', '120V'],
+};
+config_options.AC_loadcenter_types_options = k.objIdArray( config_options.AC_loadcenter_types );
 //var components = settings.components = {};
 
 config_options.inverters = {};
@@ -65,7 +68,7 @@ config_options.inverters['SMA']['SI2500'] = {
 
 
 system.DC.string_num = 4;
-//log(kontainer('system'))
+//console.log(kontainer('system'))
 
 system.DC.string_modules = 6;
 

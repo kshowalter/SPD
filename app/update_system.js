@@ -1,11 +1,11 @@
 "use strict";
-var log = console.log.bind(console);
+
 var k = require('../lib/k/k.js');
 //var mk_drawing = require('./mk_drawing');
 //var display_svg = require('./display_svg');
 
 var update_system = function(settings) {
-    //log('---settings---', settings);
+    //console.log('---settings---', settings);
     var system = settings.system;
     var loc = settings.drawing.loc;
     var size = settings.drawing.size;
@@ -40,14 +40,15 @@ var update_system = function(settings) {
 
     //system.inverter = settings.config_options.inverters[system.inverter.model];
 
-    system.AC_loadcenter_type = '480/277V';
+
+    // AC
+
+    //system.AC_loadcenter_type = '480/277V';
 
     system.AC_type = settings.system.AC_type;
 
     system.AC_conductors = settings.config_options.AC_types[system.AC_type];
 
-    var size = settings.drawing.size;
-    
     size.wire_offset.max = size.wire_offset.min + system.DC.string_num * size.wire_offset.base;
     size.wire_offset.ground = size.wire_offset.max + size.wire_offset.base*1;
     loc.array.left = loc.array.right - ( size.string.w * (system.DC.string_num-1) ) - ( size.module.frame.w*3/4 ) ;
