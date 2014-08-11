@@ -150,10 +150,10 @@ var system_container_array = [
     $('span').html('Number of modules per string: '),
     $('selector').setOptionsRef( 'config_options.string_modules_options').setRef('system.DC.string_modules'),
     $('span').html(' | '),
-    $('span').html('DC home run length: '),
+    $('span').html('DC home run length (ft): '),
     $('selector').setOptionsRef('config_options.DC_homerun_legths').setRef('system.DC.homerun_length'),
     $('span').html(' | '),
-    $('span').html('DC home run length: '),
+    $('span').html('DC home run AWG: '),
     $('selector').setOptionsRef('config_options.DC_homerun_AWG_options').setRef('config_options.DC_homerun_AWG'),
     $('br'),
                                 
