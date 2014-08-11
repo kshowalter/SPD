@@ -254,7 +254,7 @@ loc.inverter.bottom_right = {
 
 
 // AC diconect
-size.AC_disc = { w: 75, h: 100 };
+size.AC_disc = { w: 75, h: 125 };
 
 loc.AC_disc = { x: loc.array.x+435, y: loc.array.y-100 };
 loc.AC_disc.bottom = loc.AC_disc.y + size.AC_disc.h/2;

@@ -881,6 +881,7 @@ var mk_drawing = function(settings){
     x -= size.terminal_diam * (system.AC_conductors.length+3);
     y -= size.terminal_diam;
 
+    padding = size.terminal_diam;
     //var AC_layer_names = ['AC_ground', 'AC_neutral', 'AC_L1', 'AC_L2', 'AC_L2'];
 
     //console.log(system.AC_conductors.length)
@@ -890,21 +891,18 @@ var mk_drawing = function(settings){
         layer('AC_'+system.AC_conductors[i]);
         line([
             [x, y],
-            [x, loc.AC_disc.bottom - size.terminal_diam * (i+1) ],
-            [loc.AC_disc.left, loc.AC_disc.bottom - size.terminal_diam * (i+1) ],
+            [x, loc.AC_disc.bottom - padding*2 - padding*i  ],
+            [loc.AC_disc.left, loc.AC_disc.bottom - padding*2 - padding*i ],
         ]);
         x += size.terminal_diam;
     }
     layer();
 
-    x = loc.AC_disc.x;
-    y = loc.AC_disc.y;
-    padding = size.terminal_diam;
+    x = loc.AC_disc.x - size.AC_disc.w/2;
+    y = loc.AC_disc.y + size.AC_disc.h/2;
 
-    x -= size.AC_disc.w/2;
-    y += size.AC_disc.h/2;
 
-    y -= padding;
+    y -= padding*2;
 
     if( system.AC_conductors.indexOf('ground')+1 ) {
         layer('AC_ground');
@@ -933,20 +931,22 @@ var mk_drawing = function(settings){
     }
         
      
+    x = loc.AC_disc.x;
+
     for( var i=1; i <= 3; i++ ) {
         if( system.AC_conductors.indexOf('L'+i)+1 ) {
             y -= padding;
             layer('AC_L'+i);
             line([
-                [x,y],
-                [ x+padding*(15-i*3), y ],
-                [ x+padding*(15-i*3), loc.AC_disc.switch_bottom ],
+                [ x-size.AC_disc.h/2, y ],
+                [ x-padding*(i-2)*3, y ],
+                [ x-padding*(i-2)*3, loc.AC_disc.switch_bottom ],
             ]);
-            block('terminal', [ x+padding*(15-i*3), loc.AC_disc.switch_bottom ] );
-            block('terminal', [ x+padding*(15-i*3), loc.AC_disc.switch_top ] );
+            block('terminal', [ x-padding*(i-2)*3, loc.AC_disc.switch_bottom ] );
+            block('terminal', [ x-padding*(i-2)*3, loc.AC_disc.switch_top ] );
             line([
-                [ x+padding*(15-i*3), loc.AC_disc.switch_top ],
-                [ x+padding*(15-i*3), bottom-breaker_spacing*(i+2) ],
+                [ x-padding*(i-2)*3, loc.AC_disc.switch_top ],
+                [ x-padding*(i-2)*3, bottom-breaker_spacing*(i+2) ],
                 [ loc.AC_loadcenter.breakers.left, bottom-breaker_spacing*(i+2) ],
             ]);
 
