@@ -497,7 +497,7 @@ var mk_drawing = function(settings){
 ////////////////////////////////////////
 //#array
 
-    x = loc.array.right;
+    x = loc.array.right - size.string.w/2 - size.wire_offset.base;
     y = loc.array.y;
     y -= size.string.h/2;
 
@@ -535,8 +535,8 @@ var mk_drawing = function(settings){
     
     layer('DC_ground');
     line([
-        [ loc.array.left , loc.array.lower+ size.wire_offset.ground ],
-        [ loc.array.right+size.wire_offset.ground , loc.array.lower+ size.wire_offset.ground ],
+        [ loc.array.left , loc.array.lower + size.wire_offset.ground ],
+        [ loc.array.right+size.wire_offset.ground , loc.array.lower + size.wire_offset.ground ],
         [ loc.array.right+size.wire_offset.ground , loc.array.y + size.wire_offset.ground],
         [ loc.array.x , loc.array.y+size.wire_offset.ground],
     ]);
@@ -549,9 +549,6 @@ var mk_drawing = function(settings){
     x = loc.jb_box.x;
     y = loc.jb_box.y;
 
-    var to_disconnect_x = 150;
-    var to_disconnect_y = -100;
-    
     rect(
         [x,y],
         [size.jb_box.w,size.jb_box.h],
@@ -575,13 +572,13 @@ var mk_drawing = function(settings){
         });
         line([
             [ x+(size.jb_box.w)/2 , y-offset],
-            [ x+size.jb_box.w+to_disconnect_x-offset , y-offset],
-            [ x+size.jb_box.w+to_disconnect_x-offset , y+to_disconnect_y-size.terminal_diam],
-            [ x+size.jb_box.w+to_disconnect_x-offset , y+to_disconnect_y-size.terminal_diam-size.terminal_diam*3],
+            [ loc.discbox.x-offset , y-offset],
+            [ loc.discbox.x-offset , loc.discbox.y+size.discbox.h/2-size.terminal_diam],
+            [ loc.discbox.x-offset , loc.discbox.y+size.discbox.h/2-size.terminal_diam-size.terminal_diam*3],
         ]);
         block( 'terminal', {
-            x: x+size.jb_box.w+to_disconnect_x-offset,
-            y: y+to_disconnect_y-size.terminal_diam
+            x: loc.discbox.x-offset,
+            y: loc.discbox.y+size.discbox.h/2-size.terminal_diam
         });
 
         layer('DC_neg');
@@ -595,13 +592,13 @@ var mk_drawing = function(settings){
         });
         line([
             [ x+size.jb_box.w/2+size.fuse.w/2 , y+offset],
-            [ x+size.jb_box.w+to_disconnect_x+offset , y+offset],
-            [ x+size.jb_box.w+to_disconnect_x+offset , y+to_disconnect_y-size.terminal_diam],
-            [ x+size.jb_box.w+to_disconnect_x+offset , y+to_disconnect_y-size.terminal_diam-size.terminal_diam*3],
+            [ loc.discbox.x+offset , y+offset],
+            [ loc.discbox.x+offset , loc.discbox.y+size.discbox.h/2-size.terminal_diam],
+            [ loc.discbox.x+offset , loc.discbox.y+size.discbox.h/2-size.terminal_diam-size.terminal_diam*3],
         ]);
         block( 'terminal', {
-            x: x+size.jb_box.w+to_disconnect_x+offset,
-            y: y+to_disconnect_y-size.terminal_diam
+            x: loc.discbox.x+offset,
+            y: loc.discbox.y+size.discbox.h/2-size.terminal_diam
         });
         layer();
     }
@@ -631,30 +628,36 @@ var mk_drawing = function(settings){
     });
     line([
         [ x+(size.jb_box.w)/2 , y+offset],
-        [ x+size.jb_box.w+to_disconnect_x+offset , y+offset],
-        [ x+size.jb_box.w+to_disconnect_x+offset , y+to_disconnect_y-size.terminal_diam],
-        [ x+size.jb_box.w+to_disconnect_x+offset , y+to_disconnect_y-size.terminal_diam-size.terminal_diam*3],
+        [ loc.discbox.x+offset , y+offset],
+        [ loc.discbox.x+offset , loc.discbox.y+size.discbox.h/2-size.terminal_diam],
+        [ loc.discbox.x+offset , loc.discbox.y+size.discbox.h/2-size.terminal_diam-size.terminal_diam*3],
     ]);
     block( 'terminal', {
-        x: x+size.jb_box.w+to_disconnect_x+offset,
-        y: y+to_disconnect_y-size.terminal_diam
+        x: loc.discbox.x+offset,
+        y: loc.discbox.y+size.discbox.h/2-size.terminal_diam
     });
     layer();
 
 
-    x += size.jb_box.w;
-
-    x += to_disconnect_x;
-    y += to_disconnect_y;
-
 ///////////////////////////////
+    // DC disconect
+    rect(
+        [loc.discbox.x, loc.discbox.y],
+        [size.discbox.w,size.discbox.h],
+        'box'
+    );
+
     // DC disconect combiner lines
+
+    x = loc.discbox.x;
+    y = loc.discbox.y + size.discbox.h/2;
+
     if( system.DC.string_num > 1){
         var offset_min = size.wire_offset.min;
         var offset_max = size.wire_offset.min + ( (system.DC.string_num-1) * size.wire_offset.base );
         line([
             [ x-offset_min, y-size.terminal_diam-size.terminal_diam*3],
-            [ x-offset_max , y-size.terminal_diam-size.terminal_diam*3],
+            [ x-offset_max, y-size.terminal_diam-size.terminal_diam*3],
         ], 'DC_pos');
         line([
             [ x+offset_min, y-size.terminal_diam-size.terminal_diam*3],
@@ -702,13 +705,6 @@ var mk_drawing = function(settings){
         x: x+offset,
         y: loc.inverter.y+size.inverter.h/2-size.terminal_diam,
     });
-
-    // DC disconect
-    rect(
-        [x, y-size.discbox.h/2],
-        [size.discbox.w,size.discbox.h],
-        'box'
-    );
 
 ///////////////////////////////
 //#inverter
@@ -853,10 +849,8 @@ var mk_drawing = function(settings){
     padding = loc.AC_loadcenter.x - loc.AC_loadcenter.breakers.left - size.AC_loadcenter.breaker.w;
 
     for( var i=0; i<20; i++){
-        
         rect([x-padding-w/2,y],[w,h],'box');
         rect([x+padding+w/2,y],[w,h],'box');
-    
         y += breaker_spacing;
     }
 
@@ -878,7 +872,7 @@ var mk_drawing = function(settings){
 
     x = loc.inverter.bottom_right.x;
     y = loc.inverter.bottom_right.y;
-    x -= size.terminal_diam * (system.AC_conductors.length+3);
+    x -= size.terminal_diam * (system.AC_conductors.length+1);
     y -= size.terminal_diam;
 
     padding = size.terminal_diam;
@@ -898,18 +892,16 @@ var mk_drawing = function(settings){
     }
     layer();
 
-    x = loc.AC_disc.x - size.AC_disc.w/2;
+    x = loc.AC_disc.x;
     y = loc.AC_disc.y + size.AC_disc.h/2;
-
-
     y -= padding*2;
 
     if( system.AC_conductors.indexOf('ground')+1 ) {
         layer('AC_ground');
         line([
-            [x,y],
-            [ x+size.AC_disc.w+padding*3, y ],
-            [ x+size.AC_disc.w+padding*3, bottom ],
+            [ x-size.AC_disc.w/2, y ],
+            [ x+size.AC_disc.w/2+padding*2, y ],
+            [ x+size.AC_disc.w/2+padding*2, bottom ],
             [ loc.AC_loadcenter.left+padding*2, bottom ],
             [ loc.AC_loadcenter.left+padding*2, y ],
             [ loc.AC_loadcenter.groundbar.x-padding, y ],
@@ -921,9 +913,9 @@ var mk_drawing = function(settings){
         y -= padding;
         layer('AC_neutral');
         line([
-            [x,y],
-            [ x+size.AC_disc.w-padding*1, y ],
-            [ x+size.AC_disc.w-padding*1, bottom-breaker_spacing*1 ],
+            [ x-size.AC_disc.w/2, y ],
+            [ x+padding*3*2, y ],
+            [ x+padding*3*2, bottom-breaker_spacing*1 ],
             [ loc.AC_loadcenter.neutralbar.x, bottom-breaker_spacing*1 ],
             [ loc.AC_loadcenter.neutralbar.x, 
                 loc.AC_loadcenter.neutralbar.y-size.AC_loadcenter.neutralbar.h/2 ],
@@ -931,16 +923,15 @@ var mk_drawing = function(settings){
     }
         
      
-    x = loc.AC_disc.x;
 
     for( var i=1; i <= 3; i++ ) {
         if( system.AC_conductors.indexOf('L'+i)+1 ) {
             y -= padding;
             layer('AC_L'+i);
             line([
-                [ x-size.AC_disc.h/2, y ],
-                [ x-padding*(i-2)*3, y ],
-                [ x-padding*(i-2)*3, loc.AC_disc.switch_bottom ],
+                [ x-size.AC_disc.w/2, y ],
+                [ x+padding*3*(2-i), y ],
+                [ x+padding*3*(2-i), loc.AC_disc.switch_bottom ],
             ]);
             block('terminal', [ x-padding*(i-2)*3, loc.AC_disc.switch_bottom ] );
             block('terminal', [ x-padding*(i-2)*3, loc.AC_disc.switch_top ] );

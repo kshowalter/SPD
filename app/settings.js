@@ -192,7 +192,7 @@ size.wire_offset = {
     base: 7,
     gap: size.module.w,
 };
-size.wire_offset.min = size.wire_offset.base * 3;
+size.wire_offset.min = size.wire_offset.base * 1;
 
 size.string = {};
 size.string.gap = size.module.frame.w/42;
@@ -205,45 +205,21 @@ size.fuse = {};
 size.fuse.w = 15;
 size.fuse.h = 4;
 
-// array
-
-loc.array = { x:250, y:600 };
-loc.array.upper = loc.array.y - size.string.h/2;
-loc.array.lower = loc.array.upper + size.string.h;
-loc.array.right = loc.array.x - size.module.frame.h*3;
-loc.array.left = loc.array.right - ( size.string.w * (system.DC.string_num-1) ) - ( size.module.frame.w*3/4 ) ;
-
-loc.DC = loc.array;
-
-// DC jb
-
-size.jb_box = {
-    h: 200,
-    w: 80,
-};
-
-loc.jb_box = {
-    x: loc.array.x + size.jb_box.w/2,
-    y: loc.array.y + size.jb_box.h/10,
-};
 
 
 
-// DC diconect
-
-size.discbox = {
-    w: 180,
-    h: 140,
-};
 
 
 // Inverter
-size.inverter = { w: 200, h: 150 };
+size.inverter = { w: 250, h: 150 };
 size.inverter.text_gap = 15;
 size.inverter.symbol_w = 50;
 size.inverter.symbol_h = 25;
 
-loc.inverter = { x:loc.array.x+275, y:loc.array.y-350 };
+loc.inverter = { 
+    x: size.drawing.w/2,
+    y: size.drawing.h/3,
+};
 loc.inverter.bottom = loc.inverter.y + size.inverter.h/2;
 loc.inverter.top = loc.inverter.y - size.inverter.h/2;
 loc.inverter.bottom_right = {
@@ -251,10 +227,36 @@ loc.inverter.bottom_right = {
     y: loc.inverter.y + size.inverter.h/2,
 };
 
+// array
+loc.array = { x:250, y:600 };
+loc.array.upper = loc.array.y - size.string.h/2;
+loc.array.lower = loc.array.upper + size.string.h;
+loc.array.right = loc.array.x - size.module.frame.h*3;
+loc.array.left = loc.array.right - ( size.string.w * (system.DC.string_num+1) ) - ( size.module.frame.w*3/4 );
+loc.DC = loc.array;
 
+// DC jb
+size.jb_box = {
+    h: 150,
+    w: 80,
+};
+loc.jb_box = {
+    x: loc.array.x + size.jb_box.w/2,
+    y: loc.array.y + size.jb_box.h/10,
+};
+
+// DC diconect
+size.discbox = {
+    w: 140,
+    h: 50,
+};
+loc.discbox = {
+    x: loc.inverter.x - size.inverter.w/2 + size.discbox.w/2,
+    y: loc.inverter.y + size.inverter.h/2 + size.discbox.h/2 + 10,
+}
 
 // AC diconect
-size.AC_disc = { w: 75, h: 125 };
+size.AC_disc = { w: 80, h: 125 };
 
 loc.AC_disc = { x: loc.array.x+435, y: loc.array.y-100 };
 loc.AC_disc.bottom = loc.AC_disc.y + size.AC_disc.h/2;
