@@ -828,7 +828,7 @@ var mk_drawing = function(settings){
 
 
 //#AC load center
-    var bottom = loc.AC_loadcenter.wire_bundle_bottom;    
+    var bottom = loc.AC_conduit.y;    
     var breaker_spacing = loc.AC_loadcenter.breakers.spacing;
 
     x = loc.AC_loadcenter.x;
@@ -908,9 +908,11 @@ var mk_drawing = function(settings){
             [ x+size.AC_disc.w/2+padding*2, y ],
             [ x+size.AC_disc.w/2+padding*2, bottom ],
             [ loc.AC_loadcenter.left+padding*2, bottom ],
-            [ loc.AC_loadcenter.left+padding*2, y ],
-            [ loc.AC_loadcenter.groundbar.x-padding, y ],
-            [ loc.AC_loadcenter.groundbar.x-padding, loc.AC_loadcenter.groundbar.y+size.AC_loadcenter.groundbar.h/2 ],
+            //[ loc.AC_loadcenter.left+padding*2, y ],
+            //[ loc.AC_loadcenter.groundbar.x-padding, y ],
+            //[ loc.AC_loadcenter.groundbar.x-padding, loc.AC_loadcenter.groundbar.y+size.AC_loadcenter.groundbar.h/2 ],
+            [ loc.AC_loadcenter.left+padding*2, loc.AC_loadcenter.groundbar.y ],
+            [ loc.AC_loadcenter.groundbar.x-size.AC_loadcenter.groundbar.w/2, loc.AC_loadcenter.groundbar.y ],
         ]);
     }
 

@@ -263,7 +263,7 @@ size.AC_disc = { w: 80, h: 125 };
 
 loc.AC_disc = { 
     x: loc.inverter.x+200, 
-    y: loc.inverter.y+200
+    y: loc.inverter.y+250
 };
 loc.AC_disc.bottom = loc.AC_disc.y + size.AC_disc.h/2;
 loc.AC_disc.top = loc.AC_disc.y - size.AC_disc.h/2;
@@ -274,18 +274,17 @@ loc.AC_disc.switch_bottom = loc.AC_disc.switch_top + 30;
 
 // AC panel
 
+loc.AC_loadcenter = {
+    x: loc.inverter.x+350, 
+    y: loc.inverter.y+100
+};
+
 size.AC_loadcenter = { w: 125, h: 300 }; 
 size.AC_loadcenter.breaker = { w: 20, h: 5, };
 
 size.AC_loadcenter.neutralbar = { w:5, h:40 };
 size.AC_loadcenter.groundbar = { w:40, h:5 };
 
-loc.AC_loadcenter = {
-    x: loc.inverter.x+350, 
-    y: loc.inverter.y+100
-};
-
-loc.AC_loadcenter.wire_bundle_bottom = loc.AC_disc.top - 20;
 loc.AC_loadcenter.left = loc.AC_loadcenter.x - size.AC_loadcenter.w/2;
 loc.AC_loadcenter.breakers = {
     left: loc.AC_loadcenter.x - ( size.AC_loadcenter.breaker.w * 1.1 ),
@@ -300,6 +299,7 @@ loc.AC_loadcenter.groundbar = {
     y: loc.AC_loadcenter.y + size.AC_loadcenter.h*0.45
 };
 
+loc.AC_conduit = { y: loc.AC_loadcenter.y };
 
 
 // wire table
