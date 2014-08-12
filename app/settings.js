@@ -228,11 +228,14 @@ loc.inverter.bottom_right = {
 };
 
 // array
-loc.array = { x:250, y:600 };
+loc.array = { 
+    x: loc.inverter.x - 200,
+    y:600
+};
 loc.array.upper = loc.array.y - size.string.h/2;
 loc.array.lower = loc.array.upper + size.string.h;
 loc.array.right = loc.array.x - size.module.frame.h*3;
-loc.array.left = loc.array.right - ( size.string.w * (system.DC.string_num+1) ) - ( size.module.frame.w*3/4 );
+
 loc.DC = loc.array;
 
 // DC jb
@@ -258,7 +261,10 @@ loc.discbox = {
 // AC diconect
 size.AC_disc = { w: 80, h: 125 };
 
-loc.AC_disc = { x: loc.array.x+435, y: loc.array.y-100 };
+loc.AC_disc = { 
+    x: loc.inverter.x+200, 
+    y: loc.inverter.y+200
+};
 loc.AC_disc.bottom = loc.AC_disc.y + size.AC_disc.h/2;
 loc.AC_disc.top = loc.AC_disc.y - size.AC_disc.h/2;
 loc.AC_disc.left = loc.AC_disc.x - size.AC_disc.w/2;
@@ -275,8 +281,8 @@ size.AC_loadcenter.neutralbar = { w:5, h:40 };
 size.AC_loadcenter.groundbar = { w:40, h:5 };
 
 loc.AC_loadcenter = {
-    x: loc.AC_disc.x+150, 
-    y: loc.AC_disc.y-100
+    x: loc.inverter.x+350, 
+    y: loc.inverter.y+100
 };
 
 loc.AC_loadcenter.wire_bundle_bottom = loc.AC_disc.top - 20;

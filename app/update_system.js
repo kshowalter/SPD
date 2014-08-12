@@ -66,7 +66,9 @@ var update_system = function(settings) {
 
     size.wire_offset.max = size.wire_offset.min + system.DC.string_num * size.wire_offset.base;
     size.wire_offset.ground = size.wire_offset.max + size.wire_offset.base*1;
-    loc.array.left = loc.array.right - ( size.string.w * (system.DC.string_num-1) ) - ( size.module.frame.w*3/4 ) ;
+
+    loc.array.left = loc.array.right - ( size.string.w * system.DC.string_num ) - ( size.module.frame.w*3/4 ) ;
+
     //return settings;
 };
 

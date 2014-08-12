@@ -497,13 +497,13 @@ var mk_drawing = function(settings){
 ////////////////////////////////////////
 //#array
 
-    x = loc.array.right - size.string.w/2 - size.wire_offset.base;
+    x = loc.array.right - size.string.w;
     y = loc.array.y;
     y -= size.string.h/2;
 
     //for( var i=0; i<system.DC.string_num; i++ ) {
     for( var i in _.range(system.DC.string_num)) {
-        var offset = i * size.wire_offset.base
+        //var offset = i * size.wire_offset.base
         var offset_wire = size.wire_offset.min + ( size.wire_offset.base * i );
         
         block('string', [x,y]);
@@ -530,12 +530,16 @@ var mk_drawing = function(settings){
         x -= size.string.w;
     }
 
-
-    
+//    rect(
+//        [ (loc.array.right+loc.array.left)/2, (loc.array.lower+loc.array.upper)/2 ],
+//        [ loc.array.right-loc.array.left, loc.array.lower-loc.array.upper ],
+//        'DC_pos');
+//    
     
     layer('DC_ground');
     line([
-        [ loc.array.left , loc.array.lower + size.wire_offset.ground ],
+        //[ loc.array.left , loc.array.lower + size.wire_offset.ground ],
+        [ loc.array.left, loc.array.lower + size.wire_offset.ground ],
         [ loc.array.right+size.wire_offset.ground , loc.array.lower + size.wire_offset.ground ],
         [ loc.array.right+size.wire_offset.ground , loc.array.y + size.wire_offset.ground],
         [ loc.array.x , loc.array.y+size.wire_offset.ground],
@@ -543,6 +547,7 @@ var mk_drawing = function(settings){
 
     layer();
 
+    
 
 ///////////////////////////////
 // combiner box
