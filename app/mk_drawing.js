@@ -828,8 +828,7 @@ var mk_drawing = function(settings){
 
 
 //#AC load center
-    var bottom = loc.AC_conduit.y;    
-    var breaker_spacing = loc.AC_loadcenter.breakers.spacing;
+    var breaker_spacing = size.AC_loadcenter.breakers.spacing;
 
     x = loc.AC_loadcenter.x;
     y = loc.AC_loadcenter.y;
@@ -849,11 +848,11 @@ var mk_drawing = function(settings){
     w = size.AC_loadcenter.breaker.w;
     h = size.AC_loadcenter.breaker.h;
 
-    y -= size.AC_loadcenter.h/4 + size.AC_loadcenter.breaker.h;
-
     padding = loc.AC_loadcenter.x - loc.AC_loadcenter.breakers.left - size.AC_loadcenter.breaker.w;
 
-    for( var i=0; i<20; i++){
+    y = loc.AC_loadcenter.breakers.top;
+    y += size.AC_loadcenter.breakers.spacing/2;
+    for( var i=0; i<size.AC_loadcenter.breakers.num; i++){
         rect([x-padding-w/2,y],[w,h],'box');
         rect([x+padding+w/2,y],[w,h],'box');
         y += breaker_spacing;
@@ -880,6 +879,7 @@ var mk_drawing = function(settings){
     x -= size.terminal_diam * (system.AC_conductors.length+1);
     y -= size.terminal_diam;
 
+    var conduit_y = loc.AC_conduit.y;    
     padding = size.terminal_diam;
     //var AC_layer_names = ['AC_ground', 'AC_neutral', 'AC_L1', 'AC_L2', 'AC_L2'];
 
@@ -906,8 +906,8 @@ var mk_drawing = function(settings){
         line([
             [ x-size.AC_disc.w/2, y ],
             [ x+size.AC_disc.w/2+padding*2, y ],
-            [ x+size.AC_disc.w/2+padding*2, bottom ],
-            [ loc.AC_loadcenter.left+padding*2, bottom ],
+            [ x+size.AC_disc.w/2+padding*2, conduit_y + breaker_spacing*2 ],
+            [ loc.AC_loadcenter.left+padding*2, conduit_y + breaker_spacing*2 ],
             //[ loc.AC_loadcenter.left+padding*2, y ],
             //[ loc.AC_loadcenter.groundbar.x-padding, y ],
             //[ loc.AC_loadcenter.groundbar.x-padding, loc.AC_loadcenter.groundbar.y+size.AC_loadcenter.groundbar.h/2 ],
@@ -922,8 +922,8 @@ var mk_drawing = function(settings){
         line([
             [ x-size.AC_disc.w/2, y ],
             [ x+padding*3*2, y ],
-            [ x+padding*3*2, bottom-breaker_spacing*1 ],
-            [ loc.AC_loadcenter.neutralbar.x, bottom-breaker_spacing*1 ],
+            [ x+padding*3*2, conduit_y + breaker_spacing*1 ],
+            [ loc.AC_loadcenter.neutralbar.x, conduit_y + breaker_spacing*1 ],
             [ loc.AC_loadcenter.neutralbar.x, 
                 loc.AC_loadcenter.neutralbar.y-size.AC_loadcenter.neutralbar.h/2 ],
         ]);
@@ -944,13 +944,21 @@ var mk_drawing = function(settings){
             block('terminal', [ x-padding*(i-2)*3, loc.AC_disc.switch_top ] );
             line([
                 [ x-padding*(i-2)*3, loc.AC_disc.switch_top ],
-                [ x-padding*(i-2)*3, bottom-breaker_spacing*(i+2) ],
-                [ loc.AC_loadcenter.breakers.left, bottom-breaker_spacing*(i+2) ],
+                [ x-padding*(i-2)*3, conduit_y-breaker_spacing*(i-1) ],
+                [ loc.AC_loadcenter.breakers.left, conduit_y-breaker_spacing*(i-1) ],
             ]);
 
         }
 
     }
+
+
+
+
+
+
+
+// Wire table
 
     x = loc.wire_table.x;
     y = loc.wire_table.y;

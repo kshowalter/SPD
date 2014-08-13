@@ -278,28 +278,38 @@ loc.AC_loadcenter = {
     x: loc.inverter.x+350, 
     y: loc.inverter.y+100
 };
-
 size.AC_loadcenter = { w: 125, h: 300 }; 
-size.AC_loadcenter.breaker = { w: 20, h: 5, };
-
-size.AC_loadcenter.neutralbar = { w:5, h:40 };
-size.AC_loadcenter.groundbar = { w:40, h:5 };
-
 loc.AC_loadcenter.left = loc.AC_loadcenter.x - size.AC_loadcenter.w/2;
+loc.AC_loadcenter.top = loc.AC_loadcenter.y - size.AC_loadcenter.h/2;
+
+
+size.AC_loadcenter.breaker = { w: 20, h: size.terminal_diam, };
 loc.AC_loadcenter.breakers = {
     left: loc.AC_loadcenter.x - ( size.AC_loadcenter.breaker.w * 1.1 ),
-    spacing: size.terminal_diam,
 };
+size.AC_loadcenter.breakers = {
+    num: 20,
+    spacing: size.AC_loadcenter.breaker.h + 1,
+};
+loc.AC_loadcenter.breakers.top = loc.AC_loadcenter.top + size.AC_loadcenter.h/5;
+loc.AC_loadcenter.breakers.bottom = loc.AC_loadcenter.breakers.top + size.AC_loadcenter.breakers.spacing*size.AC_loadcenter.breakers.num;
+
+
+size.AC_loadcenter.neutralbar = { w:5, h:40 };
 loc.AC_loadcenter.neutralbar = {
     x: loc.AC_loadcenter.left + 20, 
-    y: loc.AC_loadcenter.y + size.AC_loadcenter.h*0.2 
+    y: loc.AC_loadcenter.y + size.AC_loadcenter.h*0.3 
 };
+
+size.AC_loadcenter.groundbar = { w:40, h:5 };
 loc.AC_loadcenter.groundbar = {
     x: loc.AC_loadcenter.x + 10, 
     y: loc.AC_loadcenter.y + size.AC_loadcenter.h*0.45
 };
 
-loc.AC_conduit = { y: loc.AC_loadcenter.y };
+loc.AC_conduit = { 
+    y: loc.AC_loadcenter.breakers.bottom - size.AC_loadcenter.breakers.spacing/2,
+};
 
 
 // wire table
