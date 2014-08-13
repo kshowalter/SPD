@@ -184,12 +184,12 @@ module.exports = l_attr;
 
 },{}],3:[function(require,module,exports){
 'use strict';
-var log = console.log.bind(console);
+
 var k = require('../lib/k/k.js');
 //var settings = require('./settings.js');
 //var l_attr = settings.drawing.l_attr;
 var _ = require('underscore');
-//log('settings', settings);
+//console.log('settings', settings);
 // setup drawing containers
 var l_attr = require('./layers');
 
@@ -231,7 +231,7 @@ var layer = function(name){ // set current layer
     if( typeof name === 'undefined' ){ // if no layer name given, reset to default 
         layer_active = false;
     } else if ( ! (name in l_attr) ) {
-        log('Error: unknown layer, using base');
+        console.log('Error: unknown layer, using base');
         layer_active = 'base' ;
     } else { // finaly activate requested layer
         layer_active = name;
@@ -255,7 +255,7 @@ block('default'); // set current block to default
 */
 var block_start = function(name) {
     if( typeof name === 'undefined' ){ // if name argument is submitted
-        log('Error: name required');
+        console.log('Error: name required');
     } else {
         // TODO: What if the same name is submitted twice? throw error or fix?
         block_active = name;
@@ -274,7 +274,7 @@ var block_start = function(name) {
     if( typeof layer_name !== 'undefined' && (layer_name in layers) ) {
         var layer_selected = layers[layer_name]
     } else {
-        if( ! (layer_name in layers) ){ log("error, layer does not exist, using current");}
+        if( ! (layer_name in layers) ){ console.log("error, layer does not exist, using current");}
         var layer_selected =  layer_active
     }
     */
@@ -304,7 +304,7 @@ var clear_drawing = function() {
     if( typeof layer_name !== 'undefined' && (layer_name in layers) ) {
         var layer_selected = layers[layer_name]
     } else {
-        if( ! (layer_name in layers) ){ log("error, layer does not exist, using current");}
+        if( ! (layer_name in layers) ){ console.log("error, layer does not exist, using current");}
         var layer_selected =  layer_active
     }
     */
@@ -333,7 +333,7 @@ var add = function(type, points, layer_name) {
 
     if( typeof layer_name === 'undefined' ) { layer_name = layer_active; } 
     if( ! (layer_name in l_attr) ) { 
-        log('Layer name not found, using base');
+        console.log('Layer name not found, using base');
         layer_name = 'base'; 
     }
 
@@ -383,7 +383,7 @@ var rect = function(loc, size, layer){
     if( typeof layer_name !== 'undefined' && (layer_name in layers) ) {
         var layer_selected = layers[layer_name]
     } else {
-        if( ! (layer_name in layers) ){ log("error, layer does not exist, using current");}
+        if( ! (layer_name in layers) ){ console.log("error, layer does not exist, using current");}
         var layer_selected =  layer_active
     }
     */
@@ -444,7 +444,7 @@ var mk_drawing = function(settings){
     //var components = settings.components;
     //var system = settings.system;
     var system = settings.system;
-    //log('---settings---', settings);
+    //console.log('---settings---', settings);
 
     var size = settings.drawing.size;
     var loc = settings.drawing.loc;
@@ -682,13 +682,13 @@ var mk_drawing = function(settings){
 ////////////////////////////////////////
 //#array
 
-    x = loc.array.right;
+    x = loc.array.right - size.string.w;
     y = loc.array.y;
     y -= size.string.h/2;
 
     //for( var i=0; i<system.DC.string_num; i++ ) {
     for( var i in _.range(system.DC.string_num)) {
-        var offset = i * size.wire_offset.base
+        //var offset = i * size.wire_offset.base
         var offset_wire = size.wire_offset.min + ( size.wire_offset.base * i );
         
         block('string', [x,y]);
@@ -715,28 +715,30 @@ var mk_drawing = function(settings){
         x -= size.string.w;
     }
 
-
-    
+//    rect(
+//        [ (loc.array.right+loc.array.left)/2, (loc.array.lower+loc.array.upper)/2 ],
+//        [ loc.array.right-loc.array.left, loc.array.lower-loc.array.upper ],
+//        'DC_pos');
+//    
     
     layer('DC_ground');
     line([
-        [ loc.array.left , loc.array.lower+ size.wire_offset.ground ],
-        [ loc.array.right+size.wire_offset.ground , loc.array.lower+ size.wire_offset.ground ],
+        //[ loc.array.left , loc.array.lower + size.wire_offset.ground ],
+        [ loc.array.left, loc.array.lower + size.wire_offset.ground ],
+        [ loc.array.right+size.wire_offset.ground , loc.array.lower + size.wire_offset.ground ],
         [ loc.array.right+size.wire_offset.ground , loc.array.y + size.wire_offset.ground],
         [ loc.array.x , loc.array.y+size.wire_offset.ground],
     ]);
 
     layer();
 
+    
 
 ///////////////////////////////
 // combiner box
     x = loc.jb_box.x;
     y = loc.jb_box.y;
 
-    var to_disconnect_x = 150;
-    var to_disconnect_y = -100;
-    
     rect(
         [x,y],
         [size.jb_box.w,size.jb_box.h],
@@ -760,13 +762,13 @@ var mk_drawing = function(settings){
         });
         line([
             [ x+(size.jb_box.w)/2 , y-offset],
-            [ x+size.jb_box.w+to_disconnect_x-offset , y-offset],
-            [ x+size.jb_box.w+to_disconnect_x-offset , y+to_disconnect_y-size.terminal_diam],
-            [ x+size.jb_box.w+to_disconnect_x-offset , y+to_disconnect_y-size.terminal_diam-size.terminal_diam*3],
+            [ loc.discbox.x-offset , y-offset],
+            [ loc.discbox.x-offset , loc.discbox.y+size.discbox.h/2-size.terminal_diam],
+            [ loc.discbox.x-offset , loc.discbox.y+size.discbox.h/2-size.terminal_diam-size.terminal_diam*3],
         ]);
         block( 'terminal', {
-            x: x+size.jb_box.w+to_disconnect_x-offset,
-            y: y+to_disconnect_y-size.terminal_diam
+            x: loc.discbox.x-offset,
+            y: loc.discbox.y+size.discbox.h/2-size.terminal_diam
         });
 
         layer('DC_neg');
@@ -780,13 +782,13 @@ var mk_drawing = function(settings){
         });
         line([
             [ x+size.jb_box.w/2+size.fuse.w/2 , y+offset],
-            [ x+size.jb_box.w+to_disconnect_x+offset , y+offset],
-            [ x+size.jb_box.w+to_disconnect_x+offset , y+to_disconnect_y-size.terminal_diam],
-            [ x+size.jb_box.w+to_disconnect_x+offset , y+to_disconnect_y-size.terminal_diam-size.terminal_diam*3],
+            [ loc.discbox.x+offset , y+offset],
+            [ loc.discbox.x+offset , loc.discbox.y+size.discbox.h/2-size.terminal_diam],
+            [ loc.discbox.x+offset , loc.discbox.y+size.discbox.h/2-size.terminal_diam-size.terminal_diam*3],
         ]);
         block( 'terminal', {
-            x: x+size.jb_box.w+to_disconnect_x+offset,
-            y: y+to_disconnect_y-size.terminal_diam
+            x: loc.discbox.x+offset,
+            y: loc.discbox.y+size.discbox.h/2-size.terminal_diam
         });
         layer();
     }
@@ -816,30 +818,36 @@ var mk_drawing = function(settings){
     });
     line([
         [ x+(size.jb_box.w)/2 , y+offset],
-        [ x+size.jb_box.w+to_disconnect_x+offset , y+offset],
-        [ x+size.jb_box.w+to_disconnect_x+offset , y+to_disconnect_y-size.terminal_diam],
-        [ x+size.jb_box.w+to_disconnect_x+offset , y+to_disconnect_y-size.terminal_diam-size.terminal_diam*3],
+        [ loc.discbox.x+offset , y+offset],
+        [ loc.discbox.x+offset , loc.discbox.y+size.discbox.h/2-size.terminal_diam],
+        [ loc.discbox.x+offset , loc.discbox.y+size.discbox.h/2-size.terminal_diam-size.terminal_diam*3],
     ]);
     block( 'terminal', {
-        x: x+size.jb_box.w+to_disconnect_x+offset,
-        y: y+to_disconnect_y-size.terminal_diam
+        x: loc.discbox.x+offset,
+        y: loc.discbox.y+size.discbox.h/2-size.terminal_diam
     });
     layer();
 
 
-    x += size.jb_box.w;
-
-    x += to_disconnect_x;
-    y += to_disconnect_y;
-
 ///////////////////////////////
+    // DC disconect
+    rect(
+        [loc.discbox.x, loc.discbox.y],
+        [size.discbox.w,size.discbox.h],
+        'box'
+    );
+
     // DC disconect combiner lines
+
+    x = loc.discbox.x;
+    y = loc.discbox.y + size.discbox.h/2;
+
     if( system.DC.string_num > 1){
         var offset_min = size.wire_offset.min;
         var offset_max = size.wire_offset.min + ( (system.DC.string_num-1) * size.wire_offset.base );
         line([
             [ x-offset_min, y-size.terminal_diam-size.terminal_diam*3],
-            [ x-offset_max , y-size.terminal_diam-size.terminal_diam*3],
+            [ x-offset_max, y-size.terminal_diam-size.terminal_diam*3],
         ], 'DC_pos');
         line([
             [ x+offset_min, y-size.terminal_diam-size.terminal_diam*3],
@@ -887,13 +895,6 @@ var mk_drawing = function(settings){
         x: x+offset,
         y: loc.inverter.y+size.inverter.h/2-size.terminal_diam,
     });
-
-    // DC disconect
-    rect(
-        [x, y-size.discbox.h/2],
-        [size.discbox.w,size.discbox.h],
-        'box'
-    );
 
 ///////////////////////////////
 //#inverter
@@ -1005,15 +1006,14 @@ var mk_drawing = function(settings){
     layer();
 
 
-//log('size:', [h,w])
-//log('location:', [x,y])
+//console.log('size:', [h,w])
+//console.log('location:', [x,y])
 //circ([x,y],5);
 
 
 
 //#AC load center
-    var bottom = loc.AC_loadcenter.wire_bundle_bottom;    
-    var breaker_spacing = loc.AC_loadcenter.breakers.spacing;
+    var breaker_spacing = size.AC_loadcenter.breakers.spacing;
 
     x = loc.AC_loadcenter.x;
     y = loc.AC_loadcenter.y;
@@ -1033,15 +1033,13 @@ var mk_drawing = function(settings){
     w = size.AC_loadcenter.breaker.w;
     h = size.AC_loadcenter.breaker.h;
 
-    y -= size.AC_loadcenter.h/4 + size.AC_loadcenter.breaker.h;
-
     padding = loc.AC_loadcenter.x - loc.AC_loadcenter.breakers.left - size.AC_loadcenter.breaker.w;
 
-    for( var i=0; i<20; i++){
-        
+    y = loc.AC_loadcenter.breakers.top;
+    y += size.AC_loadcenter.breakers.spacing/2;
+    for( var i=0; i<size.AC_loadcenter.breakers.num; i++){
         rect([x-padding-w/2,y],[w,h],'box');
         rect([x+padding+w/2,y],[w,h],'box');
-    
         y += breaker_spacing;
     }
 
@@ -1063,44 +1061,43 @@ var mk_drawing = function(settings){
 
     x = loc.inverter.bottom_right.x;
     y = loc.inverter.bottom_right.y;
-    x -= size.terminal_diam * (system.AC_conductors.length+3);
+    x -= size.terminal_diam * (system.AC_conductors.length+1);
     y -= size.terminal_diam;
 
+    var conduit_y = loc.AC_conduit.y;    
+    padding = size.terminal_diam;
     //var AC_layer_names = ['AC_ground', 'AC_neutral', 'AC_L1', 'AC_L2', 'AC_L2'];
 
-    //log(system.AC_conductors.length)
+    //console.log(system.AC_conductors.length)
 
     for( var i=0; i < system.AC_conductors.length; i++ ){
         block('terminal', [x,y] );
         layer('AC_'+system.AC_conductors[i]);
         line([
             [x, y],
-            [x, loc.AC_disc.bottom - size.terminal_diam * (i+1) ],
-            [loc.AC_disc.left, loc.AC_disc.bottom - size.terminal_diam * (i+1) ],
+            [x, loc.AC_disc.bottom - padding*2 - padding*i  ],
+            [loc.AC_disc.left, loc.AC_disc.bottom - padding*2 - padding*i ],
         ]);
         x += size.terminal_diam;
     }
     layer();
 
     x = loc.AC_disc.x;
-    y = loc.AC_disc.y;
-    padding = size.terminal_diam;
-
-    x -= size.AC_disc.w/2;
-    y += size.AC_disc.h/2;
-
-    y -= padding;
+    y = loc.AC_disc.y + size.AC_disc.h/2;
+    y -= padding*2;
 
     if( system.AC_conductors.indexOf('ground')+1 ) {
         layer('AC_ground');
         line([
-            [x,y],
-            [ x+size.AC_disc.w+padding*3, y ],
-            [ x+size.AC_disc.w+padding*3, bottom ],
-            [ loc.AC_loadcenter.left+padding*2, bottom ],
-            [ loc.AC_loadcenter.left+padding*2, y ],
-            [ loc.AC_loadcenter.groundbar.x-padding, y ],
-            [ loc.AC_loadcenter.groundbar.x-padding, loc.AC_loadcenter.groundbar.y+size.AC_loadcenter.groundbar.h/2 ],
+            [ x-size.AC_disc.w/2, y ],
+            [ x+size.AC_disc.w/2+padding*2, y ],
+            [ x+size.AC_disc.w/2+padding*2, conduit_y + breaker_spacing*2 ],
+            [ loc.AC_loadcenter.left+padding*2, conduit_y + breaker_spacing*2 ],
+            //[ loc.AC_loadcenter.left+padding*2, y ],
+            //[ loc.AC_loadcenter.groundbar.x-padding, y ],
+            //[ loc.AC_loadcenter.groundbar.x-padding, loc.AC_loadcenter.groundbar.y+size.AC_loadcenter.groundbar.h/2 ],
+            [ loc.AC_loadcenter.left+padding*2, loc.AC_loadcenter.groundbar.y ],
+            [ loc.AC_loadcenter.groundbar.x-size.AC_loadcenter.groundbar.w/2, loc.AC_loadcenter.groundbar.y ],
         ]);
     }
 
@@ -1108,36 +1105,45 @@ var mk_drawing = function(settings){
         y -= padding;
         layer('AC_neutral');
         line([
-            [x,y],
-            [ x+size.AC_disc.w-padding*1, y ],
-            [ x+size.AC_disc.w-padding*1, bottom-breaker_spacing*1 ],
-            [ loc.AC_loadcenter.neutralbar.x, bottom-breaker_spacing*1 ],
+            [ x-size.AC_disc.w/2, y ],
+            [ x+padding*3*2, y ],
+            [ x+padding*3*2, conduit_y + breaker_spacing*1 ],
+            [ loc.AC_loadcenter.neutralbar.x, conduit_y + breaker_spacing*1 ],
             [ loc.AC_loadcenter.neutralbar.x, 
                 loc.AC_loadcenter.neutralbar.y-size.AC_loadcenter.neutralbar.h/2 ],
         ]);
     }
         
      
+
     for( var i=1; i <= 3; i++ ) {
         if( system.AC_conductors.indexOf('L'+i)+1 ) {
             y -= padding;
             layer('AC_L'+i);
             line([
-                [x,y],
-                [ x+padding*(15-i*3), y ],
-                [ x+padding*(15-i*3), loc.AC_disc.switch_bottom ],
+                [ x-size.AC_disc.w/2, y ],
+                [ x+padding*3*(2-i), y ],
+                [ x+padding*3*(2-i), loc.AC_disc.switch_bottom ],
             ]);
-            block('terminal', [ x+padding*(15-i*3), loc.AC_disc.switch_bottom ] );
-            block('terminal', [ x+padding*(15-i*3), loc.AC_disc.switch_top ] );
+            block('terminal', [ x-padding*(i-2)*3, loc.AC_disc.switch_bottom ] );
+            block('terminal', [ x-padding*(i-2)*3, loc.AC_disc.switch_top ] );
             line([
-                [ x+padding*(15-i*3), loc.AC_disc.switch_top ],
-                [ x+padding*(15-i*3), bottom-breaker_spacing*(i+2) ],
-                [ loc.AC_loadcenter.breakers.left, bottom-breaker_spacing*(i+2) ],
+                [ x-padding*(i-2)*3, loc.AC_disc.switch_top ],
+                [ x-padding*(i-2)*3, conduit_y-breaker_spacing*(i-1) ],
+                [ loc.AC_loadcenter.breakers.left, conduit_y-breaker_spacing*(i-1) ],
             ]);
 
         }
 
     }
+
+
+
+
+
+
+
+// Wire table
 
     x = loc.wire_table.x;
     y = loc.wire_table.y;
@@ -1252,7 +1258,7 @@ module.exports = mk_drawing;
 
 },{"../lib/k/k.js":7,"./layers":2,"underscore":15}],4:[function(require,module,exports){
 "use strict";
-var log = console.log.bind(console);
+
 var k = require('../lib/k/k.js')
 
 var settings = {};
@@ -1271,9 +1277,14 @@ var config_options = settings.config_options = {};
 
 
 
-config_options.AC_type_options = ['120V', '240V', '208V', '277V', '480V Wye', '480V Delta'];
 config_options.string_num_options = [1,2,3,4,5,6];
 config_options.string_modules_options = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
+
+config_options.AC_loadcenter_types = {
+    '480/277V' : ['480V Wye', '480V Delta', '277V', '208V'],
+    '240V' : ['240V', '120V'],
+};
+
 config_options.AC_types = {
     '120V'      : ['ground', 'neutral', 'L1' ],
     '240V'      : ['ground', 'neutral', 'L1', 'L2' ],
@@ -1283,9 +1294,6 @@ config_options.AC_types = {
     '480V Delta': ['ground', 'L1', 'L2', 'L3' ],
 };
 
-
-
-//var components = settings.components = {};
 
 config_options.inverters = {};
 
@@ -1318,9 +1326,12 @@ config_options.inverters['SMA']['SI2500'] = {
 
 
 system.DC.string_num = 4;
-//log(kontainer('system'))
+//console.log(kontainer('system'))
 
 system.DC.string_modules = 6;
+
+config_options.DC_homerun_legths = [25,50,75,100];
+system.DC.homerun_length = 50;
 
 system.inverter = {};
 system.inverter.model = 'SI3000'; 
@@ -1440,7 +1451,7 @@ size.wire_offset = {
     base: 7,
     gap: size.module.w,
 };
-size.wire_offset.min = size.wire_offset.base * 3;
+size.wire_offset.min = size.wire_offset.base * 1;
 
 size.string = {};
 size.string.gap = size.module.frame.w/42;
@@ -1453,45 +1464,21 @@ size.fuse = {};
 size.fuse.w = 15;
 size.fuse.h = 4;
 
-// array
-
-loc.array = { x:250, y:600 };
-loc.array.upper = loc.array.y - size.string.h/2;
-loc.array.lower = loc.array.upper + size.string.h;
-loc.array.right = loc.array.x - size.module.frame.h*3;
-loc.array.left = loc.array.right - ( size.string.w * (system.DC.string_num-1) ) - ( size.module.frame.w*3/4 ) ;
-
-loc.DC = loc.array;
-
-// DC jb
-
-size.jb_box = {
-    h: 200,
-    w: 80,
-};
-
-loc.jb_box = {
-    x: loc.array.x + size.jb_box.w/2,
-    y: loc.array.y + size.jb_box.h/10,
-};
 
 
 
-// DC diconect
-
-size.discbox = {
-    w: 180,
-    h: 140,
-};
 
 
 // Inverter
-size.inverter = { w: 200, h: 150 };
+size.inverter = { w: 250, h: 150 };
 size.inverter.text_gap = 15;
 size.inverter.symbol_w = 50;
 size.inverter.symbol_h = 25;
 
-loc.inverter = { x:loc.array.x+275, y:loc.array.y-350 };
+loc.inverter = { 
+    x: size.drawing.w/2,
+    y: size.drawing.h/3,
+};
 loc.inverter.bottom = loc.inverter.y + size.inverter.h/2;
 loc.inverter.top = loc.inverter.y - size.inverter.h/2;
 loc.inverter.bottom_right = {
@@ -1499,12 +1486,44 @@ loc.inverter.bottom_right = {
     y: loc.inverter.y + size.inverter.h/2,
 };
 
+// array
+loc.array = { 
+    x: loc.inverter.x - 200,
+    y:600
+};
+loc.array.upper = loc.array.y - size.string.h/2;
+loc.array.lower = loc.array.upper + size.string.h;
+loc.array.right = loc.array.x - size.module.frame.h*3;
 
+loc.DC = loc.array;
+
+// DC jb
+size.jb_box = {
+    h: 150,
+    w: 80,
+};
+loc.jb_box = {
+    x: loc.array.x + size.jb_box.w/2,
+    y: loc.array.y + size.jb_box.h/10,
+};
+
+// DC diconect
+size.discbox = {
+    w: 140,
+    h: 50,
+};
+loc.discbox = {
+    x: loc.inverter.x - size.inverter.w/2 + size.discbox.w/2,
+    y: loc.inverter.y + size.inverter.h/2 + size.discbox.h/2 + 10,
+}
 
 // AC diconect
-size.AC_disc = { w: 75, h: 100 };
+size.AC_disc = { w: 80, h: 125 };
 
-loc.AC_disc = { x: loc.array.x+435, y: loc.array.y-100 };
+loc.AC_disc = { 
+    x: loc.inverter.x+200, 
+    y: loc.inverter.y+250
+};
 loc.AC_disc.bottom = loc.AC_disc.y + size.AC_disc.h/2;
 loc.AC_disc.top = loc.AC_disc.y - size.AC_disc.h/2;
 loc.AC_disc.left = loc.AC_disc.x - size.AC_disc.w/2;
@@ -1514,32 +1533,42 @@ loc.AC_disc.switch_bottom = loc.AC_disc.switch_top + 30;
 
 // AC panel
 
-size.AC_loadcenter = { w: 125, h: 300 }; 
-size.AC_loadcenter.breaker = { w: 20, h: 5, };
-
-size.AC_loadcenter.neutralbar = { w:5, h:40 };
-size.AC_loadcenter.groundbar = { w:40, h:5 };
-
 loc.AC_loadcenter = {
-    x: loc.AC_disc.x+150, 
-    y: loc.AC_disc.y-100
+    x: loc.inverter.x+350, 
+    y: loc.inverter.y+100
 };
-
-loc.AC_loadcenter.wire_bundle_bottom = loc.AC_disc.top - 20;
+size.AC_loadcenter = { w: 125, h: 300 }; 
 loc.AC_loadcenter.left = loc.AC_loadcenter.x - size.AC_loadcenter.w/2;
+loc.AC_loadcenter.top = loc.AC_loadcenter.y - size.AC_loadcenter.h/2;
+
+
+size.AC_loadcenter.breaker = { w: 20, h: size.terminal_diam, };
 loc.AC_loadcenter.breakers = {
     left: loc.AC_loadcenter.x - ( size.AC_loadcenter.breaker.w * 1.1 ),
-    spacing: size.terminal_diam,
 };
+size.AC_loadcenter.breakers = {
+    num: 20,
+    spacing: size.AC_loadcenter.breaker.h + 1,
+};
+loc.AC_loadcenter.breakers.top = loc.AC_loadcenter.top + size.AC_loadcenter.h/5;
+loc.AC_loadcenter.breakers.bottom = loc.AC_loadcenter.breakers.top + size.AC_loadcenter.breakers.spacing*size.AC_loadcenter.breakers.num;
+
+
+size.AC_loadcenter.neutralbar = { w:5, h:40 };
 loc.AC_loadcenter.neutralbar = {
     x: loc.AC_loadcenter.left + 20, 
-    y: loc.AC_loadcenter.y + size.AC_loadcenter.h*0.2 
+    y: loc.AC_loadcenter.y + size.AC_loadcenter.h*0.3 
 };
+
+size.AC_loadcenter.groundbar = { w:40, h:5 };
 loc.AC_loadcenter.groundbar = {
     x: loc.AC_loadcenter.x + 10, 
     y: loc.AC_loadcenter.y + size.AC_loadcenter.h*0.45
 };
 
+loc.AC_conduit = { 
+    y: loc.AC_loadcenter.breakers.bottom - size.AC_loadcenter.breakers.spacing/2,
+};
 
 
 // wire table
@@ -1601,14 +1630,19 @@ function loadTables(string){
             //log('new table ', title)
         } else if( need_fields ) {
             fields = line.split(',');
+            tables[title+"_fields"] = fields;
             need_fields = false;
+        //} else {
+        //    var entry = {};
+        //    var line_array = line.split(',');
+        //    fields.forEach( function(field, id){
+        //        entry[field.trim()] = line_array[id].trim(); 
+        //    });
+        //    tables[title].push( entry );
+        //}
         } else {
-            var entry = {};
             var line_array = line.split(',');
-            fields.forEach( function(field, id){
-                entry[field.trim()] = line_array[id].trim(); 
-            });
-            tables[title].push( entry );
+            tables[title][line_array[0].trim()] = line_array[1].trim(); 
         }
     });
 
@@ -1641,13 +1675,14 @@ module.exports.loadModules = loadModules;
 
 },{"../lib/k/k.js":7}],6:[function(require,module,exports){
 "use strict";
-var log = console.log.bind(console);
+
 var k = require('../lib/k/k.js');
 //var mk_drawing = require('./mk_drawing');
 //var display_svg = require('./display_svg');
 
 var update_system = function(settings) {
-    //log('---settings---', settings);
+    //console.log('---settings---', settings);
+    var config_options = settings.config_options;
     var system = settings.system;
     var loc = settings.drawing.loc;
     var size = settings.drawing.size;
@@ -1680,19 +1715,36 @@ var update_system = function(settings) {
         system.DC.voltage = system.DC.module.specs.Voc * system.DC.string_modules;
     }
 
+    config_options.DC_homerun_AWG_options = k.objIdArray( config_options.NEC_tables["Ch 9 Table 8 Conductor Properties"] );
+    config_options.DC_homerun_AWG = config_options.DC_homerun_AWG || config_options.DC_homerun_AWG_options[config_options.DC_homerun_AWG_options.length-1];
+
     //system.inverter = settings.config_options.inverters[system.inverter.model];
 
-    system.AC_loadcenter_type = '480/277V';
+
+    // AC
+
+    config_options.AC_loadcenter_type_options = k.objIdArray( config_options.AC_loadcenter_types );
+    config_options.AC_type_options = k.objIdArray( config_options.AC_types );
+    system.AC_loadcenter_type = system.AC_loadcenter_type || config_options.AC_loadcenter_type_options[0];
+    system.AC_types_availible = config_options.AC_loadcenter_types[system.AC_loadcenter_type];
+    config_options.AC_type_options.forEach( function( elem, id ){
+        if( ! elem in system.AC_types_availible ) {
+            config_options.AC_type_options.splice(id, 1);
+        }
+
+    })
+
+    //system.AC_loadcenter_type = '480/277V';
 
     system.AC_type = settings.system.AC_type;
 
     system.AC_conductors = settings.config_options.AC_types[system.AC_type];
 
-    var size = settings.drawing.size;
-    
     size.wire_offset.max = size.wire_offset.min + system.DC.string_num * size.wire_offset.base;
     size.wire_offset.ground = size.wire_offset.max + size.wire_offset.base*1;
-    loc.array.left = loc.array.right - ( size.string.w * (system.DC.string_num-1) ) - ( size.module.frame.w*3/4 ) ;
+
+    loc.array.left = loc.array.right - ( size.string.w * system.DC.string_num ) - ( size.module.frame.w*3/4 ) ;
+
     //return settings;
 };
 
@@ -1715,7 +1767,6 @@ var $ = require('./k_DOM.js');
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // log shortcut
-var log = console.log.bind(console)
 var logObj = function(obj){
     console.log(JSON.stringify(obj))
 }
@@ -1871,10 +1922,10 @@ k.AJAX = function(url, callback, object) {
                 callback(xmlhttp.responseText, object);
             }
             else if(xmlhttp.status == 400) {
-                log('There was an error 400')
+                console.log('There was an error 400')
             }
             else {
-                log('something else other than 200 was returned')
+                console.log('something else other than 200 was returned')
             }
         }
     }
@@ -1913,7 +1964,7 @@ $.ajaxSetup ({
 
 k.get_JSON = function(URL, callback, string) {
 //    var filename = URL.split('/').pop()
-//    log(URL)
+//    console.log(URL)
     $.getJSON( URL, function( json ) {
         callback(json, URL, string)
     }).fail(function(jqxhr, textStatus, error) { 
@@ -2056,12 +2107,12 @@ k.obj_log = function(obj, obj_name, max_level){
         return str
     }
     var max_level = max_level || 100
-    log(obj_name)
+    console.log(obj_name)
     var str = '-' + obj_name + '-'
     max_level++
     level_indent = 2
     str = levels(obj, level_indent, str)
-    log(str)
+    console.log(str)
 }
 
 
@@ -2100,7 +2151,7 @@ k.obj_tree = function(obj, title){
             }
             
             
-//            log(key,level)
+//            console.log(key,level)
             count++
             
         }
@@ -2125,17 +2176,17 @@ k.obj_display = function(obj){
 
         for(var key in obj) {
             var item = obj[key]
-    //        log(key, typeof(item))
+    //        console.log(key, typeof(item))
             if( typeof(item) == 'object' ){
     //            ('<li>').text("&nbsp;".repeat(level) + key))
                 ('<li>').text(key))
                 subobj_ul.append(levels(item,level+1))
-    //            log("&nbsp;".repeat(level) + key)
+    //            console.log("&nbsp;".repeat(level) + key)
             } else {
     //            subobj_div.append('<span>').text("&nbsp;".repeat(level) + key+": "+ item)
     //            ('<li>').text("&nbsp;".repeat(level) + key +": "+ item))
                 ('<li>').text(key +": "+ item))
-    //            log("&nbsp;".repeat(level) + key+": "+ item)
+    //            console.log("&nbsp;".repeat(level) + key+": "+ item)
             }
         }
         return subobj_ul
@@ -2174,7 +2225,7 @@ k.log_object_tree = function(components){
                             a.push(o[spec]);
                         }
                     }
-                    log(a.join(','))
+                    console.log(a.join(','))
                 }
             }
         }
@@ -2268,7 +2319,7 @@ k.d3.live_sparkline = function(id, history) {
     }
     
     var graph = d3.select('#'+id+' svg')
-    log( length)
+    console.log( length)
     // update with animation
     graph.selectAll("path")
         .data([data]) // set the new data
@@ -2308,8 +2359,8 @@ k.uptime = function(boot_time){
 }
 
 k.e.addTimeSince = function(event_list){
-    log(moment().format('YYYY-MM-DD'))
-    log(moment().fromNow())
+    console.log(moment().format('YYYY-MM-DD'))
+    console.log(moment().fromNow())
     event_list.forEach(function(event){
         var date_array = event.date.split('-').map(Number)
         var year = date_array[0]
@@ -2356,7 +2407,7 @@ k.d.bar = function(){
     bar.width_unit = '%' 
     bar.height = '8px'    
 
-    log(bar.width+'%')
+    console.log(bar.width+'%')
     bar.div = $('<div>').css('width', '0%')
     bar.element = $('<div>').addClass('progressbar').css('width', 100)
     bar.element.append(bar.div)
@@ -2492,7 +2543,6 @@ module.exports = $;
 
 },{"./k_DOM_extra.js":9,"./wrapper_prototype":12}],9:[function(require,module,exports){
 'use strict';
-var log = console.log.bind(console);
 
 var k = require('./k.js');
 var kontainer = require('./kontainer');
@@ -2515,17 +2565,17 @@ var selector_prototype = {
     },
     set_value: function(){
         if( this.elem.options[this.elem.selectedIndex] ){
-            //log('selected_value', this.elem.options[this.elem.selectedIndex].value);
+            //console.log('selected_value', this.elem.options[this.elem.selectedIndex].value);
             var new_value = this.elem.options[this.elem.selectedIndex].value;
         }
         if( this.optionsKontainer.ready ) {
-            //log('kontainer ready, setting to: ', new_value)
+            //console.log('kontainer ready, setting to: ', new_value)
             this.kontainer.set(new_value);
         }
         return this;    
     },
     update: function(){
-        //log('updating: ', this)
+        //console.log('updating: ', this)
         this.update_options();
         this.set_value();
         return this;
@@ -2637,7 +2687,7 @@ var selector = function(){
 
 var value_prototype = {
     update: function(){
-        //log('running value update', this)
+        //console.log('running value update', this)
         /*
         if( this.g_update !== undefined ){
             this.g_update();
@@ -2645,7 +2695,7 @@ var value_prototype = {
         */
         if( typeof this.kontainer !== 'undefined' ){
             this.value = this.kontainer.get();
-            //log('updating value', this.value)
+            //console.log('updating value', this.value)
         }
         if( isNaN(Number(this.value)) ){
             this.elem.innerHTML = this.value;
@@ -2923,7 +2973,6 @@ module.exports = wrapper_prototype;
 
 },{}],13:[function(require,module,exports){
 "use strict";
-var log = console.log.bind(console);
 
 var _ = require('underscore');
 var moment = require('moment');
@@ -2954,17 +3003,17 @@ function showLocation(location_json){
     location.results[0].address_components.forEach( function(component){
         if( component.types[0] === "locality" ) {
             system.city = component.long_name ;
-            //log('city ', system.city) 
+            //console.log('city ', system.city) 
         } else if( component.types[0] === "administrative_area_level_2" ){
             system.county = component.long_name ;
-            //log('county ', system.county)
+            //console.log('county ', system.county)
         }
     });
     update_system(settings);
 }
 
 function update(){
-    log('updating');
+    console.log('updating');
 
     update_system(settings);
 
@@ -3006,7 +3055,7 @@ function ready(input, config){
         ready_count++;
     }
     if( ready_count === 2 ){
-        log('ready');
+        console.log('ready');
         update(settings);
     }
 }
@@ -3047,31 +3096,26 @@ var system_container_array = [
     $('span').html('Module make: '),
     //$('selector') .setOptionsRef( 'components.moduleMakeArray' ) .setRef('system.pv_make'),
     $('selector') .setOptionsRef( 'settings.config_options.moduleMakeArray' ) .setRef('system.DC.module.make'),
-    
-    $('br'),
+    $('span').html(' | '),
     $('span').html('Module model: '),
     //$('selector').setOptionsRef( 'components.moduleModelArray' ).setRef('system.pv_model'),
     $('selector').setOptionsRef( 'settings.config_options.moduleModelArray' ).setRef('system.DC.module.model'),
     $('br'),
+
     $('span').html('Pmax: '),
     $('value').setRef('system.DC.module.specs.Pmax'),
-
     $('span').html(' | '),
     $('span').html('Isc: '),
     $('value').setRef('system.DC.module.specs.Isc'),
-
     $('span').html(' | '),
     $('span').html('Voc: '),
     $('value').setRef('system.DC.module.specs.Voc'),
-
     $('span').html(' | '),
     $('span').html('Imp: '),
     $('value').setRef('system.DC.module.specs.Imp'),
-    
     $('span').html(' | '),
     $('span').html('Vmp: '),
     $('value').setRef('system.DC.module.specs.Vmp'),
-
     $('br'),
 
     $('span').html('Number of strings: '),
@@ -3079,21 +3123,31 @@ var system_container_array = [
     $('span').html(' | '),
     $('span').html('Number of modules per string: '),
     $('selector').setOptionsRef( 'config_options.string_modules_options').setRef('system.DC.string_modules'),
+    $('span').html(' | '),
+    $('span').html('DC home run length (ft): '),
+    $('selector').setOptionsRef('config_options.DC_homerun_legths').setRef('system.DC.homerun_length'),
+    $('span').html(' | '),
+    $('span').html('DC home run AWG: '),
+    $('selector').setOptionsRef('config_options.DC_homerun_AWG_options').setRef('config_options.DC_homerun_AWG'),
     $('br'),
-    
+                                
     $('span').html('Array voltage: '),
     $('value').setRef('system.DC.voltage').setMax(600).attr('id', 'DC_volt'),
-
     $('span').html(' | '),
-
     $('span').html('Array current: '),
     $('value').setRef('system.DC.current'),
-
     $('br'),
-
+/*
+    $('span').html('DC voltage at inverter: '),
+    $('value').setRef('system.DC.voltage_inverter').setMax(600).attr('id', 'DC_volt'),
+    $('span').html(' | '),
+    $('br'),
+*/
+    $('span').html('AC loadcenter type: '),
+    $('selector').setOptionsRef( 'config_options.AC_loadcenter_type_options').setRef('system.AC_loadcenter_type'),
     $('span').html('AC type: '),
-
-    $('selector').setOptionsRef( 'config_options.AC_type_options').setRef('system.AC_type'),
+    //$('selector').setOptionsRef( 'config_options.AC_type_options').setRef('system.AC_type'),
+    $('selector').setOptionsRef( 'system.AC_types_availible').setRef('system.AC_type'),
 
     $('br'),
 
@@ -3116,8 +3170,8 @@ var boot_time = moment();
 var status_id = "status";
 setInterval(function(){ k.update_status_page(status_id, boot_time);},1000);
 
-log('settings', settings);
-log('window', window);
+console.log('settings', settings);
+console.log('window', window);
 
 
 },{"./app/display_svg.js":1,"./app/mk_drawing.js":3,"./app/settings.js":4,"./app/settings_functions":5,"./app/update_system":6,"./lib/k/k.js":7,"./lib/k/k_DOM":8,"./lib/k/k_data.js":10,"moment":14,"underscore":15}],14:[function(require,module,exports){
