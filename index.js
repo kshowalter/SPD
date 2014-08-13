@@ -1710,9 +1710,14 @@ var update_system = function(settings) {
 
     //system.module = settings.config_options.modules[settings.misc.module];
 
+    system.DC.array = {};
     if( system.DC.module.specs ){
-        system.DC.current = system.DC.module.specs.Isc * system.DC.string_num;
-        system.DC.voltage = system.DC.module.specs.Voc * system.DC.string_modules;
+        system.DC.array.Isc = system.DC.module.specs.Isc * system.DC.string_num;
+        system.DC.array.Voc = system.DC.module.specs.Voc * system.DC.string_modules;
+        system.DC.array.Imp = system.DC.module.specs.Imp * system.DC.string_num;
+        system.DC.array.Vmp = system.DC.module.specs.Vmp * system.DC.string_modules;
+        system.DC.array.Pmp = system.DC.array.Vmp * system.DC.array.Imp;
+
     }
 
     config_options.DC_homerun_AWG_options = k.objIdArray( config_options.NEC_tables["Ch 9 Table 8 Conductor Properties"] );
@@ -3093,6 +3098,8 @@ var system_container_array = [
     $('br'),
     //*/
 
+    $('span').html('Module').attr('class', 'sectionTitle'),
+    $('span').html(' | '),
     $('span').html('Module make: '),
     //$('selector') .setOptionsRef( 'components.moduleMakeArray' ) .setRef('system.pv_make'),
     $('selector') .setOptionsRef( 'settings.config_options.moduleMakeArray' ) .setRef('system.DC.module.make'),
@@ -3102,8 +3109,8 @@ var system_container_array = [
     $('selector').setOptionsRef( 'settings.config_options.moduleModelArray' ).setRef('system.DC.module.model'),
     $('br'),
 
-    $('span').html('Pmax: '),
-    $('value').setRef('system.DC.module.specs.Pmax'),
+    $('span').html('Pmp: '),
+    $('value').setRef('system.DC.module.specs.Pmp'),
     $('span').html(' | '),
     $('span').html('Isc: '),
     $('value').setRef('system.DC.module.specs.Isc'),
@@ -3118,12 +3125,17 @@ var system_container_array = [
     $('value').setRef('system.DC.module.specs.Vmp'),
     $('br'),
 
+    $('hr'),
+    $('span').html('Array').attr('class', 'sectionTitle'),
+    $('span').html(' | '),
+
     $('span').html('Number of strings: '),
     $('selector').setOptionsRef( 'config_options.string_num_options').setRef('system.DC.string_num'),
     $('span').html(' | '),
     $('span').html('Number of modules per string: '),
     $('selector').setOptionsRef( 'config_options.string_modules_options').setRef('system.DC.string_modules'),
-    $('span').html(' | '),
+    //$('span').html(' | '),
+    $('br'),
     $('span').html('DC home run length (ft): '),
     $('selector').setOptionsRef('config_options.DC_homerun_legths').setRef('system.DC.homerun_length'),
     $('span').html(' | '),
@@ -3131,18 +3143,32 @@ var system_container_array = [
     $('selector').setOptionsRef('config_options.DC_homerun_AWG_options').setRef('config_options.DC_homerun_AWG'),
     $('br'),
                                 
-    $('span').html('Array voltage: '),
-    $('value').setRef('system.DC.voltage').setMax(600).attr('id', 'DC_volt'),
+    $('span').html('Pmp: '),
+    $('value').setRef('system.DC.array.Pmp'),
     $('span').html(' | '),
-    $('span').html('Array current: '),
-    $('value').setRef('system.DC.current'),
+    $('span').html('Isc: '),
+    $('value').setRef('system.DC.array.Isc'),
+    $('span').html(' | '),
+    $('span').html('Voc: '),
+    $('value').setRef('system.DC.array.Voc').setMax(600).attr('id', 'DC_volt'),,
+    $('span').html(' | '),
+    $('span').html('Imp: '),
+    $('value').setRef('system.DC.array.Imp'),
+    $('span').html(' | '),
+    $('span').html('Vmp: '),
+    $('value').setRef('system.DC.array.Vmp'),
     $('br'),
+
 /*
     $('span').html('DC voltage at inverter: '),
     $('value').setRef('system.DC.voltage_inverter').setMax(600).attr('id', 'DC_volt'),
     $('span').html(' | '),
     $('br'),
 */
+    $('hr'),
+    $('span').html('AC').attr('class', 'sectionTitle'),
+    $('span').html(' | '),
+
     $('span').html('AC loadcenter type: '),
     $('selector').setOptionsRef( 'config_options.AC_loadcenter_type_options').setRef('system.AC_loadcenter_type'),
     $('span').html('AC type: '),
