@@ -58,6 +58,7 @@ function update(){
     // Add drawing elements to SVG on screen
     display_svg(settings, svg_container);
 
+    console.log('settings', settings)
 }
 
 

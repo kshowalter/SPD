@@ -52,6 +52,16 @@ function loadModules(string){
         if( modules[module.Make][module.Model] === undefined ){
             modules[module.Make][module.Model] = {};
         }
+
+        console.log(module)
+        var fields = k.objIdArray(module)
+        fields.forEach( function( field ){
+            var param = module[field];
+            console.log(field, param, parseFloat(param))
+            if( ! isNaN(parseFloat(param))){
+                module[field] = parseFloat(param);
+            }
+        })
         modules[module.Make][module.Model] = module;
     }
 
