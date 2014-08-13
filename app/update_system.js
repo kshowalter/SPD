@@ -1,11 +1,12 @@
 "use strict";
-var log = console.log.bind(console);
+
 var k = require('../lib/k/k.js');
 //var mk_drawing = require('./mk_drawing');
 //var display_svg = require('./display_svg');
 
 var update_system = function(settings) {
-    //log('---settings---', settings);
+    //console.log('---settings---', settings);
+    var config_options = settings.config_options;
     var system = settings.system;
     var loc = settings.drawing.loc;
     var size = settings.drawing.size;
@@ -38,19 +39,36 @@ var update_system = function(settings) {
         system.DC.voltage = system.DC.module.specs.Voc * system.DC.string_modules;
     }
 
+    config_options.DC_homerun_AWG_options = k.objIdArray( config_options.NEC_tables["Ch 9 Table 8 Conductor Properties"] );
+    config_options.DC_homerun_AWG = config_options.DC_homerun_AWG || config_options.DC_homerun_AWG_options[config_options.DC_homerun_AWG_options.length-1];
+
     //system.inverter = settings.config_options.inverters[system.inverter.model];
 
-    system.AC_loadcenter_type = '480/277V';
+
+    // AC
+
+    config_options.AC_loadcenter_type_options = k.objIdArray( config_options.AC_loadcenter_types );
+    config_options.AC_type_options = k.objIdArray( config_options.AC_types );
+    system.AC_loadcenter_type = system.AC_loadcenter_type || config_options.AC_loadcenter_type_options[0];
+    system.AC_types_availible = config_options.AC_loadcenter_types[system.AC_loadcenter_type];
+    config_options.AC_type_options.forEach( function( elem, id ){
+        if( ! elem in system.AC_types_availible ) {
+            config_options.AC_type_options.splice(id, 1);
+        }
+
+    })
+
+    //system.AC_loadcenter_type = '480/277V';
 
     system.AC_type = settings.system.AC_type;
 
     system.AC_conductors = settings.config_options.AC_types[system.AC_type];
 
-    var size = settings.drawing.size;
-    
     size.wire_offset.max = size.wire_offset.min + system.DC.string_num * size.wire_offset.base;
     size.wire_offset.ground = size.wire_offset.max + size.wire_offset.base*1;
-    loc.array.left = loc.array.right - ( size.string.w * (system.DC.string_num-1) ) - ( size.module.frame.w*3/4 ) ;
+
+    loc.array.left = loc.array.right - ( size.string.w * system.DC.string_num ) - ( size.module.frame.w*3/4 ) ;
+
     //return settings;
 };
 

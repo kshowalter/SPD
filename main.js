@@ -1,5 +1,4 @@
 "use strict";
-var log = console.log.bind(console);
 
 var _ = require('underscore');
 var moment = require('moment');
@@ -30,17 +29,17 @@ function showLocation(location_json){
     location.results[0].address_components.forEach( function(component){
         if( component.types[0] === "locality" ) {
             system.city = component.long_name ;
-            //log('city ', system.city) 
+            //console.log('city ', system.city) 
         } else if( component.types[0] === "administrative_area_level_2" ){
             system.county = component.long_name ;
-            //log('county ', system.county)
+            //console.log('county ', system.county)
         }
     });
     update_system(settings);
 }
 
 function update(){
-    log('updating');
+    console.log('updating');
 
     update_system(settings);
 
@@ -82,7 +81,7 @@ function ready(input, config){
         ready_count++;
     }
     if( ready_count === 2 ){
-        log('ready');
+        console.log('ready');
         update(settings);
     }
 }
@@ -123,31 +122,26 @@ var system_container_array = [
     $('span').html('Module make: '),
     //$('selector') .setOptionsRef( 'components.moduleMakeArray' ) .setRef('system.pv_make'),
     $('selector') .setOptionsRef( 'settings.config_options.moduleMakeArray' ) .setRef('system.DC.module.make'),
-    
-    $('br'),
+    $('span').html(' | '),
     $('span').html('Module model: '),
     //$('selector').setOptionsRef( 'components.moduleModelArray' ).setRef('system.pv_model'),
     $('selector').setOptionsRef( 'settings.config_options.moduleModelArray' ).setRef('system.DC.module.model'),
     $('br'),
+
     $('span').html('Pmax: '),
     $('value').setRef('system.DC.module.specs.Pmax'),
-
     $('span').html(' | '),
     $('span').html('Isc: '),
     $('value').setRef('system.DC.module.specs.Isc'),
-
     $('span').html(' | '),
     $('span').html('Voc: '),
     $('value').setRef('system.DC.module.specs.Voc'),
-
     $('span').html(' | '),
     $('span').html('Imp: '),
     $('value').setRef('system.DC.module.specs.Imp'),
-    
     $('span').html(' | '),
     $('span').html('Vmp: '),
     $('value').setRef('system.DC.module.specs.Vmp'),
-
     $('br'),
 
     $('span').html('Number of strings: '),
@@ -155,21 +149,31 @@ var system_container_array = [
     $('span').html(' | '),
     $('span').html('Number of modules per string: '),
     $('selector').setOptionsRef( 'config_options.string_modules_options').setRef('system.DC.string_modules'),
+    $('span').html(' | '),
+    $('span').html('DC home run length (ft): '),
+    $('selector').setOptionsRef('config_options.DC_homerun_legths').setRef('system.DC.homerun_length'),
+    $('span').html(' | '),
+    $('span').html('DC home run AWG: '),
+    $('selector').setOptionsRef('config_options.DC_homerun_AWG_options').setRef('config_options.DC_homerun_AWG'),
     $('br'),
-    
+                                
     $('span').html('Array voltage: '),
     $('value').setRef('system.DC.voltage').setMax(600).attr('id', 'DC_volt'),
-
     $('span').html(' | '),
-
     $('span').html('Array current: '),
     $('value').setRef('system.DC.current'),
-
     $('br'),
-
+/*
+    $('span').html('DC voltage at inverter: '),
+    $('value').setRef('system.DC.voltage_inverter').setMax(600).attr('id', 'DC_volt'),
+    $('span').html(' | '),
+    $('br'),
+*/
+    $('span').html('AC loadcenter type: '),
+    $('selector').setOptionsRef( 'config_options.AC_loadcenter_type_options').setRef('system.AC_loadcenter_type'),
     $('span').html('AC type: '),
-
-    $('selector').setOptionsRef( 'config_options.AC_type_options').setRef('system.AC_type'),
+    //$('selector').setOptionsRef( 'config_options.AC_type_options').setRef('system.AC_type'),
+    $('selector').setOptionsRef( 'system.AC_types_availible').setRef('system.AC_type'),
 
     $('br'),
 
@@ -192,6 +196,6 @@ var boot_time = moment();
 var status_id = "status";
 setInterval(function(){ k.update_status_page(status_id, boot_time);},1000);
 
-log('settings', settings);
-log('window', window);
+console.log('settings', settings);
+console.log('window', window);
 

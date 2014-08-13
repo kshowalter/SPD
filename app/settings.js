@@ -1,5 +1,5 @@
 "use strict";
-var log = console.log.bind(console);
+
 var k = require('../lib/k/k.js')
 
 var settings = {};
@@ -18,9 +18,14 @@ var config_options = settings.config_options = {};
 
 
 
-config_options.AC_type_options = ['120V', '240V', '208V', '277V', '480V Wye', '480V Delta'];
 config_options.string_num_options = [1,2,3,4,5,6];
 config_options.string_modules_options = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
+
+config_options.AC_loadcenter_types = {
+    '480/277V' : ['480V Wye', '480V Delta', '277V', '208V'],
+    '240V' : ['240V', '120V'],
+};
+
 config_options.AC_types = {
     '120V'      : ['ground', 'neutral', 'L1' ],
     '240V'      : ['ground', 'neutral', 'L1', 'L2' ],
@@ -30,9 +35,6 @@ config_options.AC_types = {
     '480V Delta': ['ground', 'L1', 'L2', 'L3' ],
 };
 
-
-
-//var components = settings.components = {};
 
 config_options.inverters = {};
 
@@ -65,9 +67,12 @@ config_options.inverters['SMA']['SI2500'] = {
 
 
 system.DC.string_num = 4;
-//log(kontainer('system'))
+//console.log(kontainer('system'))
 
 system.DC.string_modules = 6;
+
+config_options.DC_homerun_legths = [25,50,75,100];
+system.DC.homerun_length = 50;
 
 system.inverter = {};
 system.inverter.model = 'SI3000'; 
@@ -187,7 +192,7 @@ size.wire_offset = {
     base: 7,
     gap: size.module.w,
 };
-size.wire_offset.min = size.wire_offset.base * 3;
+size.wire_offset.min = size.wire_offset.base * 1;
 
 size.string = {};
 size.string.gap = size.module.frame.w/42;
@@ -200,45 +205,21 @@ size.fuse = {};
 size.fuse.w = 15;
 size.fuse.h = 4;
 
-// array
-
-loc.array = { x:250, y:600 };
-loc.array.upper = loc.array.y - size.string.h/2;
-loc.array.lower = loc.array.upper + size.string.h;
-loc.array.right = loc.array.x - size.module.frame.h*3;
-loc.array.left = loc.array.right - ( size.string.w * (system.DC.string_num-1) ) - ( size.module.frame.w*3/4 ) ;
-
-loc.DC = loc.array;
-
-// DC jb
-
-size.jb_box = {
-    h: 200,
-    w: 80,
-};
-
-loc.jb_box = {
-    x: loc.array.x + size.jb_box.w/2,
-    y: loc.array.y + size.jb_box.h/10,
-};
 
 
 
-// DC diconect
-
-size.discbox = {
-    w: 180,
-    h: 140,
-};
 
 
 // Inverter
-size.inverter = { w: 200, h: 150 };
+size.inverter = { w: 250, h: 150 };
 size.inverter.text_gap = 15;
 size.inverter.symbol_w = 50;
 size.inverter.symbol_h = 25;
 
-loc.inverter = { x:loc.array.x+275, y:loc.array.y-350 };
+loc.inverter = { 
+    x: size.drawing.w/2,
+    y: size.drawing.h/3,
+};
 loc.inverter.bottom = loc.inverter.y + size.inverter.h/2;
 loc.inverter.top = loc.inverter.y - size.inverter.h/2;
 loc.inverter.bottom_right = {
@@ -246,12 +227,44 @@ loc.inverter.bottom_right = {
     y: loc.inverter.y + size.inverter.h/2,
 };
 
+// array
+loc.array = { 
+    x: loc.inverter.x - 200,
+    y:600
+};
+loc.array.upper = loc.array.y - size.string.h/2;
+loc.array.lower = loc.array.upper + size.string.h;
+loc.array.right = loc.array.x - size.module.frame.h*3;
 
+loc.DC = loc.array;
+
+// DC jb
+size.jb_box = {
+    h: 150,
+    w: 80,
+};
+loc.jb_box = {
+    x: loc.array.x + size.jb_box.w/2,
+    y: loc.array.y + size.jb_box.h/10,
+};
+
+// DC diconect
+size.discbox = {
+    w: 140,
+    h: 50,
+};
+loc.discbox = {
+    x: loc.inverter.x - size.inverter.w/2 + size.discbox.w/2,
+    y: loc.inverter.y + size.inverter.h/2 + size.discbox.h/2 + 10,
+}
 
 // AC diconect
-size.AC_disc = { w: 75, h: 100 };
+size.AC_disc = { w: 80, h: 125 };
 
-loc.AC_disc = { x: loc.array.x+435, y: loc.array.y-100 };
+loc.AC_disc = { 
+    x: loc.inverter.x+200, 
+    y: loc.inverter.y+250
+};
 loc.AC_disc.bottom = loc.AC_disc.y + size.AC_disc.h/2;
 loc.AC_disc.top = loc.AC_disc.y - size.AC_disc.h/2;
 loc.AC_disc.left = loc.AC_disc.x - size.AC_disc.w/2;
@@ -261,32 +274,42 @@ loc.AC_disc.switch_bottom = loc.AC_disc.switch_top + 30;
 
 // AC panel
 
-size.AC_loadcenter = { w: 125, h: 300 }; 
-size.AC_loadcenter.breaker = { w: 20, h: 5, };
-
-size.AC_loadcenter.neutralbar = { w:5, h:40 };
-size.AC_loadcenter.groundbar = { w:40, h:5 };
-
 loc.AC_loadcenter = {
-    x: loc.AC_disc.x+150, 
-    y: loc.AC_disc.y-100
+    x: loc.inverter.x+350, 
+    y: loc.inverter.y+100
 };
-
-loc.AC_loadcenter.wire_bundle_bottom = loc.AC_disc.top - 20;
+size.AC_loadcenter = { w: 125, h: 300 }; 
 loc.AC_loadcenter.left = loc.AC_loadcenter.x - size.AC_loadcenter.w/2;
+loc.AC_loadcenter.top = loc.AC_loadcenter.y - size.AC_loadcenter.h/2;
+
+
+size.AC_loadcenter.breaker = { w: 20, h: size.terminal_diam, };
 loc.AC_loadcenter.breakers = {
     left: loc.AC_loadcenter.x - ( size.AC_loadcenter.breaker.w * 1.1 ),
-    spacing: size.terminal_diam,
 };
+size.AC_loadcenter.breakers = {
+    num: 20,
+    spacing: size.AC_loadcenter.breaker.h + 1,
+};
+loc.AC_loadcenter.breakers.top = loc.AC_loadcenter.top + size.AC_loadcenter.h/5;
+loc.AC_loadcenter.breakers.bottom = loc.AC_loadcenter.breakers.top + size.AC_loadcenter.breakers.spacing*size.AC_loadcenter.breakers.num;
+
+
+size.AC_loadcenter.neutralbar = { w:5, h:40 };
 loc.AC_loadcenter.neutralbar = {
     x: loc.AC_loadcenter.left + 20, 
-    y: loc.AC_loadcenter.y + size.AC_loadcenter.h*0.2 
+    y: loc.AC_loadcenter.y + size.AC_loadcenter.h*0.3 
 };
+
+size.AC_loadcenter.groundbar = { w:40, h:5 };
 loc.AC_loadcenter.groundbar = {
     x: loc.AC_loadcenter.x + 10, 
     y: loc.AC_loadcenter.y + size.AC_loadcenter.h*0.45
 };
 
+loc.AC_conduit = { 
+    y: loc.AC_loadcenter.breakers.bottom - size.AC_loadcenter.breakers.spacing/2,
+};
 
 
 // wire table
