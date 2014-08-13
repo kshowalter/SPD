@@ -34,9 +34,14 @@ var update_system = function(settings) {
 
     //system.module = settings.config_options.modules[settings.misc.module];
 
+    system.DC.array = {};
     if( system.DC.module.specs ){
-        system.DC.current = system.DC.module.specs.Isc * system.DC.string_num;
-        system.DC.voltage = system.DC.module.specs.Voc * system.DC.string_modules;
+        system.DC.array.Isc = system.DC.module.specs.Isc * system.DC.string_num;
+        system.DC.array.Voc = system.DC.module.specs.Voc * system.DC.string_modules;
+        system.DC.array.Imp = system.DC.module.specs.Imp * system.DC.string_num;
+        system.DC.array.Vmp = system.DC.module.specs.Vmp * system.DC.string_modules;
+        system.DC.array.Pmp = system.DC.array.Vmp * system.DC.array.Imp;
+
     }
 
     config_options.DC_homerun_AWG_options = k.objIdArray( config_options.NEC_tables["Ch 9 Table 8 Conductor Properties"] );
