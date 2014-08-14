@@ -1,0 +1,5 @@
+Make,Model,DC max power,DC volts low, DC volts high, AC volts low, AC volts high
+SMA, SI3000, 3300, 150, 350, 180, 250
+SMA, SI3500, 3800, 150, 450, 180, 250
+SMA, SI5000, 5500, 400, 600, 400, 500
+

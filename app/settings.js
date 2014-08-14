@@ -38,30 +38,30 @@ config_options.AC_types = {
 
 config_options.inverters = {};
 
-config_options.inverters['SMA'] = {};
-config_options.inverters['SMA']['SI3000'] = {
-    make:'SMA',
-    model:'3000',
+//config_options.inverters['SMA'] = {};
+//config_options.inverters['SMA']['SI3000'] = {
+//    make:'SMA',
+//    model:'3000',
+//
+//    DC_voltageWindow_low: 150,
+//    DC_voltageWindow_high: 350,
+//    max_power: 3300,
+//
+//    AC_options: ['240','208'],
+//
+//};
 
-    DC_voltageWindow_low: 150,
-    DC_voltageWindow_high: 350,
-    max_power: 3300,
-
-    AC_options: ['240','208'],
-
-};
-
-config_options.inverters['SMA']['SI2500'] = {
-    make:'SMA',
-    model:'2500',
-
-    DC_voltageWindow_low: 150,
-    DC_voltageWindow_high: 350,
-    max_power: 2900,
-
-    AC_options: ['240','208'],
-
-};
+//config_options.inverters['SMA']['SI2500'] = {
+//    make:'SMA',
+//    model:'2500',
+//
+//    DC_voltageWindow_low: 150,
+//    DC_voltageWindow_high: 350,
+//    max_power: 2900,
+//
+//    AC_options: ['240','208'],
+//
+//};
 
 
 

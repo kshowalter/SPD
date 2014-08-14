@@ -22,9 +22,9 @@ var update_system = function(settings) {
         system.DC.module.specs = settings.config_options.modules[system.DC.module.make][system.DC.module.model];
     }
     if( settings.config_options.inverters ){
-        settings.config_options.moduleMakeArray = k.objIdArray(settings.config_options.inverters);
+        settings.config_options.inverterMakeArray = k.objIdArray(settings.config_options.inverters);
         system.inverter.make = system.inverter.make || Object.keys( settings.config_options.inverters )[0];
-        settings.config_options.moduleModelArray = k.objIdArray(settings.config_options.inverters[system.DC.module.make]);
+        settings.config_options.inverterModelArray = k.objIdArray(settings.config_options.inverters[system.inverter.make]);
         system.inverter.model = system.inverter.model || Object.keys( settings.config_options.inverters[system.inverter.make] )[0];
         system.inverter.specs = settings.config_options.inverters[system.inverter.make][system.inverter.model];
     }

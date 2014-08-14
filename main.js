@@ -9,6 +9,7 @@ var $ = require('./lib/k/k_DOM');
 var settings = require('./app/settings.js');
 var loadTables = require('./app/settings_functions').loadTables;
 var loadModules = require('./app/settings_functions').loadModules;
+var loadComponents = require('./app/settings_functions').loadComponents;
 var mk_drawing = require('./app/mk_drawing.js');
 var display_svg = require('./app/display_svg.js');
 var update_system = require('./app/update_system');
@@ -67,6 +68,7 @@ k.AJAX('data/tables.txt', ready, {type:'loadTables'});
 
 //k.AJAX( 'data/modules.csv', loadModules, settings );
 k.AJAX( 'data/modules.csv', ready, {type:'loadModules'});
+k.AJAX( 'data/inverters.csv', ready, {type:'inverters'});
 
 
 
@@ -81,7 +83,12 @@ function ready(input, config){
         settings.config_options.modules = loadModules(input);
         ready_count++;
     }
-    if( ready_count === 2 ){
+    if( config.type === 'inverters'){
+        settings.config_options.inverters = loadComponents(input);
+        ready_count++;
+    }
+
+    if( ready_count === 3 ){
         console.log('ready');
         update(settings);
     }
@@ -188,6 +195,22 @@ var system_container_array = [
     $('br'),
 */
     $('hr'),
+    $('span').html('Inverter').attr('class', 'sectionTitle'),
+    $('span').html(' | '),
+    $('span').html('Inverter make: '),
+    //$('selector') .setOptionsRef( 'components.moduleMakeArray' ) .setRef('system.pv_make'),
+    $('selector') .setOptionsRef( 'settings.config_options.inverterMakeArray' ) .setRef('system.inverter.make'),
+    $('span').html(' | '),
+    $('span').html('Inverter model: '),
+    //$('selector').setOptionsRef( 'components.moduleModelArray' ).setRef('system.pv_model'),
+    $('selector').setOptionsRef( 'settings.config_options.inverterModelArray' ).setRef('system.inverter.model'),
+    $('br'),
+
+
+
+
+
+    $('hr'),
     $('span').html('AC').attr('class', 'sectionTitle'),
     $('span').html(' | '),
 
@@ -216,7 +239,8 @@ var system_container_array = [
 
 var boot_time = moment();
 var status_id = "status";
-setInterval(function(){ k.update_status_page(status_id, boot_time);},1000);
+var version_string = "Dev"
+setInterval(function(){ k.update_status_page(status_id, boot_time, version_string);},1000);
 
 console.log('settings', settings);
 console.log('window', window);

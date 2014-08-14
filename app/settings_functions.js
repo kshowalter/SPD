@@ -53,11 +53,9 @@ function loadModules(string){
             modules[module.Make][module.Model] = {};
         }
 
-        console.log(module)
         var fields = k.objIdArray(module)
         fields.forEach( function( field ){
             var param = module[field];
-            console.log(field, param, parseFloat(param))
             if( ! isNaN(parseFloat(param))){
                 module[field] = parseFloat(param);
             }
@@ -69,7 +67,34 @@ function loadModules(string){
 }
 
 
+function loadComponents(string){
+    var db = k.parseCSV(string);
+    var object = {}    
+    for( var i in db ){
+        var component = db[i];
+        if( object[component.Make] === undefined ){
+            object[component.Make] = {};
+        }
+        if( object[component.Make][component.Model] === undefined ){
+            object[component.Make][component.Model] = {};
+        }
+
+        var fields = k.objIdArray(component)
+        fields.forEach( function( field ){
+            var param = component[field];
+            if( ! isNaN(parseFloat(param))){
+                component[field] = parseFloat(param);
+            }
+        })
+        object[component.Make][component.Model] = component;
+    }
+
+    return object;
+}
+
+
 
 module.exports.loadTables = loadTables;
 module.exports.loadModules = loadModules;
+module.exports.loadComponents = loadComponents;
 
