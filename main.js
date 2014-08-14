@@ -117,6 +117,12 @@ var svg_container = svg_container_object.elem;
 
 
 var system_container_array = [
+    $('span').html('Please select your system spec below').attr('class', 'sectionTitle'),
+    $('span').html(' | '),
+    //$('input').attr('type', 'button').attr('value', 'clear selections').click(window.location.reload),
+    $('a').attr('href', 'javascript:window.location.reload()').html('clear selections'),
+    $('hr'),
+
     /*
     $('span').html('IP location |'),
     $('span').html('City: '),
