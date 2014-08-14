@@ -1297,30 +1297,30 @@ config_options.AC_types = {
 
 config_options.inverters = {};
 
-config_options.inverters['SMA'] = {};
-config_options.inverters['SMA']['SI3000'] = {
-    make:'SMA',
-    model:'3000',
+//config_options.inverters['SMA'] = {};
+//config_options.inverters['SMA']['SI3000'] = {
+//    make:'SMA',
+//    model:'3000',
+//
+//    DC_voltageWindow_low: 150,
+//    DC_voltageWindow_high: 350,
+//    max_power: 3300,
+//
+//    AC_options: ['240','208'],
+//
+//};
 
-    DC_voltageWindow_low: 150,
-    DC_voltageWindow_high: 350,
-    max_power: 3300,
-
-    AC_options: ['240','208'],
-
-};
-
-config_options.inverters['SMA']['SI2500'] = {
-    make:'SMA',
-    model:'2500',
-
-    DC_voltageWindow_low: 150,
-    DC_voltageWindow_high: 350,
-    max_power: 2900,
-
-    AC_options: ['240','208'],
-
-};
+//config_options.inverters['SMA']['SI2500'] = {
+//    make:'SMA',
+//    model:'2500',
+//
+//    DC_voltageWindow_low: 150,
+//    DC_voltageWindow_high: 350,
+//    max_power: 2900,
+//
+//    AC_options: ['240','208'],
+//
+//};
 
 
 
@@ -1661,6 +1661,14 @@ function loadModules(string){
         if( modules[module.Make][module.Model] === undefined ){
             modules[module.Make][module.Model] = {};
         }
+
+        var fields = k.objIdArray(module)
+        fields.forEach( function( field ){
+            var param = module[field];
+            if( ! isNaN(parseFloat(param))){
+                module[field] = parseFloat(param);
+            }
+        })
         modules[module.Make][module.Model] = module;
     }
 
@@ -1668,9 +1676,36 @@ function loadModules(string){
 }
 
 
+function loadComponents(string){
+    var db = k.parseCSV(string);
+    var object = {}    
+    for( var i in db ){
+        var component = db[i];
+        if( object[component.Make] === undefined ){
+            object[component.Make] = {};
+        }
+        if( object[component.Make][component.Model] === undefined ){
+            object[component.Make][component.Model] = {};
+        }
+
+        var fields = k.objIdArray(component)
+        fields.forEach( function( field ){
+            var param = component[field];
+            if( ! isNaN(parseFloat(param))){
+                component[field] = parseFloat(param);
+            }
+        })
+        object[component.Make][component.Model] = component;
+    }
+
+    return object;
+}
+
+
 
 module.exports.loadTables = loadTables;
 module.exports.loadModules = loadModules;
+module.exports.loadComponents = loadComponents;
 
 
 },{"../lib/k/k.js":7}],6:[function(require,module,exports){
@@ -1698,9 +1733,9 @@ var update_system = function(settings) {
         system.DC.module.specs = settings.config_options.modules[system.DC.module.make][system.DC.module.model];
     }
     if( settings.config_options.inverters ){
-        settings.config_options.moduleMakeArray = k.objIdArray(settings.config_options.inverters);
+        settings.config_options.inverterMakeArray = k.objIdArray(settings.config_options.inverters);
         system.inverter.make = system.inverter.make || Object.keys( settings.config_options.inverters )[0];
-        settings.config_options.moduleModelArray = k.objIdArray(settings.config_options.inverters[system.DC.module.make]);
+        settings.config_options.inverterModelArray = k.objIdArray(settings.config_options.inverters[system.inverter.make]);
         system.inverter.model = system.inverter.model || Object.keys( settings.config_options.inverters[system.inverter.make] )[0];
         system.inverter.specs = settings.config_options.inverters[system.inverter.make][system.inverter.model];
     }
@@ -1941,20 +1976,23 @@ k.AJAX = function(url, callback, object) {
 
 k.parseCSV = function(file_content) {
     var r = []
-    var lines = file_content.split('\n')
-    var header = lines.shift().split(',')
+    var lines = file_content.split('\n');
+    var header = lines.shift().split(',');
+    header.forEach(function(elem, id){
+        header[id] = elem.trim();
+    });
     for(var l = 0, len = lines.length; l < len; l++){
-        var line = lines[l]
+        var line = lines[l];
         if(line.length > 0){
-            var line_obj = {}
+            var line_obj = {};
             line.split(',').forEach(function(item,i){
-                line_obj[header[i]] = item
-            })
-            r.push(line_obj)
+                line_obj[header[i]] = item.trim();
+            });
+            r.push(line_obj);
         }
     }
-    return(r)
-}
+    return(r);
+};
 
 k.getCSV = function(URL, callback) {
     k.AJAX(URL, k.parseCSV() )
@@ -2079,9 +2117,10 @@ k.make_tabs = function(section_obj){
 }
 
 */
-k.update_status_page = function(status_id, boot_time) {
+k.update_status_page = function(status_id, boot_time, string) {
     var status_div = document.getElementById(status_id)
-    status_div.innerHTML = ''
+    status_div.innerHTML = string
+    status_div.innerHTML += ' | '
 
     var clock = document.createElement('span')
     clock.innerHTML = moment().format('YYYY-MM-DD HH:mm:ss')
@@ -2965,7 +3004,11 @@ var wrapper_prototype = {
         this.elem[attributeName] = value; 
         return this;
     },
-
+    click: function(clickFunction){
+        console.log('setting click to ', typeof clickFunction, clickFunction)
+        this.elem.addEventListener("click", function(){ clickFunction(); }, false);
+        return this;
+    },
     /*
     pushTo: function(array){
         array.push(this);
@@ -2988,6 +3031,7 @@ var $ = require('./lib/k/k_DOM');
 var settings = require('./app/settings.js');
 var loadTables = require('./app/settings_functions').loadTables;
 var loadModules = require('./app/settings_functions').loadModules;
+var loadComponents = require('./app/settings_functions').loadComponents;
 var mk_drawing = require('./app/mk_drawing.js');
 var display_svg = require('./app/display_svg.js');
 var update_system = require('./app/update_system');
@@ -3037,6 +3081,7 @@ function update(){
     // Add drawing elements to SVG on screen
     display_svg(settings, svg_container);
 
+    console.log('settings', settings)
 }
 
 
@@ -3045,6 +3090,7 @@ k.AJAX('data/tables.txt', ready, {type:'loadTables'});
 
 //k.AJAX( 'data/modules.csv', loadModules, settings );
 k.AJAX( 'data/modules.csv', ready, {type:'loadModules'});
+k.AJAX( 'data/inverters.csv', ready, {type:'inverters'});
 
 
 
@@ -3059,7 +3105,12 @@ function ready(input, config){
         settings.config_options.modules = loadModules(input);
         ready_count++;
     }
-    if( ready_count === 2 ){
+    if( config.type === 'inverters'){
+        settings.config_options.inverters = loadComponents(input);
+        ready_count++;
+    }
+
+    if( ready_count === 3 ){
         console.log('ready');
         update(settings);
     }
@@ -3088,6 +3139,12 @@ var svg_container = svg_container_object.elem;
 
 
 var system_container_array = [
+    $('span').html('Please select your system spec below').attr('class', 'sectionTitle'),
+    $('span').html(' | '),
+    //$('input').attr('type', 'button').attr('value', 'clear selections').click(window.location.reload),
+    $('a').attr('href', 'javascript:window.location.reload()').html('clear selections'),
+    $('hr'),
+
     /*
     $('span').html('IP location |'),
     $('span').html('City: '),
@@ -3166,6 +3223,22 @@ var system_container_array = [
     $('br'),
 */
     $('hr'),
+    $('span').html('Inverter').attr('class', 'sectionTitle'),
+    $('span').html(' | '),
+    $('span').html('Inverter make: '),
+    //$('selector') .setOptionsRef( 'components.moduleMakeArray' ) .setRef('system.pv_make'),
+    $('selector') .setOptionsRef( 'settings.config_options.inverterMakeArray' ) .setRef('system.inverter.make'),
+    $('span').html(' | '),
+    $('span').html('Inverter model: '),
+    //$('selector').setOptionsRef( 'components.moduleModelArray' ).setRef('system.pv_model'),
+    $('selector').setOptionsRef( 'settings.config_options.inverterModelArray' ).setRef('system.inverter.model'),
+    $('br'),
+
+
+
+
+
+    $('hr'),
     $('span').html('AC').attr('class', 'sectionTitle'),
     $('span').html(' | '),
 
@@ -3194,7 +3267,8 @@ var system_container_array = [
 
 var boot_time = moment();
 var status_id = "status";
-setInterval(function(){ k.update_status_page(status_id, boot_time);},1000);
+var version_string = "Dev"
+setInterval(function(){ k.update_status_page(status_id, boot_time, version_string);},1000);
 
 console.log('settings', settings);
 console.log('window', window);
