@@ -1,22 +1,28 @@
 
-
 .valueOutOfRange {
     color: red;
 
 }
-
 
 #drawing_page {
     margin-left: 15px;
     margin-top: 15px;
 }
 
-
 #status{
     font-size: 0.7em;
 }
 
-
 .sectionTitle {
     font-weight: bold;
+}
+
+.system_section {
+   top: 0px;
+   margin: 2px ;  
+   padding: 2px;
+   border-bottom-width: 1px;
+   border-bottom-color: lightgrey;
+   border-bottom-style: solid;
+   width: 100%;
 }
