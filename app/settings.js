@@ -4,7 +4,7 @@ var k = require('../lib/k/k.js')
 
 var settings = {};
 
-
+settings.status = {};
 settings.system = {};
 settings.select_registry = [];
 settings.value_registry = [];

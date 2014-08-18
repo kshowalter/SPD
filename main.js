@@ -14,14 +14,13 @@ var loadComponents = require('./app/settings_functions').loadComponents;
 var mk_drawing = require('./app/mk_drawing.js');
 var display_svg = require('./app/display_svg.js');
 var update_system = require('./app/update_system');
-var settings = require('./app/settings.js');
 
 var components = settings.components;
 var system = settings.system;
 
+settings.status.version_string = version_string;
 
-
-
+/*
 function lookupLocation(position){
     var url = 'http://maps.googleapis.com/maps/api/geocode/json?latlng='+position.coords.latitude+','+position.coords.longitude+'&sensor=true';
     k.AJAX(url, showLocation);
@@ -39,6 +38,7 @@ function showLocation(location_json){
     });
     update_system(settings);
 }
+*/
 
 function update(){
     console.log('updating');
@@ -236,7 +236,13 @@ if( version_string === 'Dev' && true ){
 }
 
 for( var section in page_sections ){
+    var show = false;
     if( section in settings.config_options.sections && settings.config_options.sections[section].display === true ){
+        show = true;
+    } else if ( section in page_sections  && ! (section in settings.config_options.sections) ) {
+        show = true;
+    }
+    if(show){
         var section_container = $('div').attr('class', 'system_section').appendTo(system_container);
         section_container.elem.style.width = settings.drawing.size.drawing.w.toString() + 'px';
         page_sections[section].forEach( function(kelem){

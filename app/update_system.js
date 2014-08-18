@@ -11,39 +11,57 @@ var update_system = function(settings) {
     var loc = settings.drawing.loc;
     var size = settings.drawing.size;
 
+    var show_defaults = false;
+    if( settings.status.version_string === 'Dev'){
+        show_defaults = true;
+    }
+
+
     //system.DC.string_num = settings.system.string_num; 
     //system.DC.string_modules = settings.system.string_modules;
     //if( settings.config_options.modules !== undefined ){
+
+    if( system.DC.module.make !== '' && system.DC.module.model !== '' ){
+        config_options.sections.modules.ready = true;
+    };
     if( settings.config_options.modules ){
         settings.config_options.moduleMakeArray = k.objIdArray(settings.config_options.modules);
         system.DC.module.make = system.DC.module.make || Object.keys( settings.config_options.modules )[0];
         settings.config_options.moduleModelArray = k.objIdArray(settings.config_options.modules[system.DC.module.make]);
         system.DC.module.model = system.DC.module.model || Object.keys( settings.config_options.modules[system.DC.module.make] )[0];
         system.DC.module.specs = settings.config_options.modules[system.DC.module.make][system.DC.module.model];
-    }
+    };
     if( settings.config_options.inverters ){
         settings.config_options.inverterMakeArray = k.objIdArray(settings.config_options.inverters);
         system.inverter.make = system.inverter.make || Object.keys( settings.config_options.inverters )[0];
         settings.config_options.inverterModelArray = k.objIdArray(settings.config_options.inverters[system.inverter.make]);
         system.inverter.model = system.inverter.model || Object.keys( settings.config_options.inverters[system.inverter.make] )[0];
         system.inverter.specs = settings.config_options.inverters[system.inverter.make][system.inverter.model];
+    };
+
+    //system.module = settings.config_options.modules[settings.misc.module];
+    if( config_options.sections.modules.ready ){
+        if( system.DC.module.specs ){
+            system.DC.array.Isc = system.DC.module.specs.Isc * system.DC.string_num;
+            system.DC.array.Voc = system.DC.module.specs.Voc * system.DC.string_modules;
+            system.DC.array.Imp = system.DC.module.specs.Imp * system.DC.string_num;
+            system.DC.array.Vmp = system.DC.module.specs.Vmp * system.DC.string_modules;
+            system.DC.array.Pmp = system.DC.array.Vmp * system.DC.array.Imp;
+
+        }
     }
+
+
 
     settings.config_options.moduleMakeArray = k.objIdArray(settings.config_options.modules);
     settings.config_options.moduleModelArray = k.objIdArray(settings.config_options.modules[system.DC.module.make]);
 
-    //system.module = settings.config_options.modules[settings.misc.module];
-
-    system.DC.array = {};
-    if( system.DC.module.specs ){
-        system.DC.array.Isc = system.DC.module.specs.Isc * system.DC.string_num;
-        system.DC.array.Voc = system.DC.module.specs.Voc * system.DC.string_modules;
-        system.DC.array.Imp = system.DC.module.specs.Imp * system.DC.string_num;
-        system.DC.array.Vmp = system.DC.module.specs.Vmp * system.DC.string_modules;
-        system.DC.array.Pmp = system.DC.array.Vmp * system.DC.array.Imp;
+    if( config_options.sections.module.ready ){
 
     }
 
+
+    system.DC.array = {};
     config_options.DC_homerun_AWG_options = k.objIdArray( config_options.NEC_tables["Ch 9 Table 8 Conductor Properties"] );
     config_options.DC_homerun_AWG = config_options.DC_homerun_AWG || config_options.DC_homerun_AWG_options[config_options.DC_homerun_AWG_options.length-1];
 
