@@ -1,5 +1,5 @@
 "use strict";
-var version_string = "Dev"
+var version_string = "Dev_branch"
 
 var _ = require('underscore');
 var moment = require('moment');
@@ -49,7 +49,7 @@ function update(){
         item.update(); 
     });
 
-    update_system(settings);
+    //update_system(settings);
 
     settings.value_registry.forEach(function(item){
         item.update(); 
@@ -81,7 +81,7 @@ function ready(input, config){
         ready_count++;
     }
     if( config.type === 'loadModules'){
-        settings.config_options.modules = loadModules(input);
+        settings.config_options.modules = loadComponents(input);
         ready_count++;
     }
     if( config.type === 'inverters'){
@@ -145,6 +145,8 @@ var page_sections = {
         $('selector').setOptionsRef( 'settings.config_options.moduleModelArray' ).setRef('system.DC.module.model'),
         $('br'),
 
+    ],
+    modules_params: [
         $('span').html('Pmp: '),
         $('value').setRef('system.DC.module.specs.Pmp'),
         $('span').html(' | '),
@@ -170,12 +172,6 @@ var page_sections = {
         $('span').html('Number of modules per string: '),
         $('selector').setOptionsRef( 'config_options.string_modules_options').setRef('system.DC.string_modules'),
         //$('span').html(' | '),
-        $('br'),
-        $('span').html('DC home run length (ft): '),
-        $('selector').setOptionsRef('config_options.DC_homerun_legths').setRef('system.DC.homerun_length'),
-        $('span').html(' | '),
-        $('span').html('DC home run AWG: '),
-        $('selector').setOptionsRef('config_options.DC_homerun_AWG_options').setRef('config_options.DC_homerun_AWG'),
         $('br'),
                                     
         $('span').html('Pmp: '),
@@ -203,7 +199,7 @@ var page_sections = {
         $('selector').setOptionsRef('config_options.DC_homerun_AWG_options').setRef('config_options.DC_homerun_AWG'),
 
     ],
-    Inverter: [
+    inverter: [
         $('span').html('Inverter').attr('class', 'sectionTitle'),
         $('span').html(' | '),
 
@@ -230,38 +226,44 @@ var page_sections = {
     ],
 }
 
+var sections = settings.status.sections;
+
+// Dev settings
 if( version_string === 'Dev' && true ){
-    for( var section in settings.config_options.sections ){
-        settings.config_options.sections[section].ready = true;
+    for( var section in settings.status.sections ){
+        settings.status.sections[section].ready = true;
+        settings.status.sections[section].set = true;
     };
+} else {
+    settings.status.sections.modules.ready = true;
+}
+////////
+
+
+function show_section(section){
+    var selection_container = $('div').attr('class', 'system_section').appendTo(system_container);
+    selection_container.attr('id', section );
+    selection_container.elem.style.width = settings.drawing.size.drawing.w.toString() + 'px';
+    page_sections[section].forEach( function(kelem){
+        kelem.appendTo(selection_container);
+        if( kelem.type === 'selector' ){
+            kelem.setRefObj(settings);
+            kelem.setUpdate(update);
+            settings.select_registry.push(kelem);
+            kelem.update(); 
+        } else if( kelem.type === 'value' ){
+            kelem.setRefObj(settings);
+            //kelem.setUpdate(update_system);
+            settings.value_registry.push(kelem);
+        }
+    });
 }
 
-for( var section in page_sections ){
-    var show = false;
-    if( section in settings.config_options.sections && settings.config_options.sections[section].ready === true ){
-        show = true;
-    } else if ( section in page_sections  && ! (section in settings.config_options.sections) ) {
-        show = true;
-    }
-    if(show){
-        var section_container = $('div').attr('class', 'system_section').appendTo(system_container);
-        section_container.elem.style.width = settings.drawing.size.drawing.w.toString() + 'px';
-        page_sections[section].forEach( function(kelem){
-            kelem.appendTo(section_container);
-            if( kelem.type === 'selector' ){
-                kelem.setRefObj(settings);
-                kelem.setUpdate(update);
-                settings.select_registry.push(kelem);
-                kelem.update(); 
-            } else if( kelem.type === 'value' ){
-                kelem.setRefObj(settings);
-                //kelem.setUpdate(update_system);
-                settings.value_registry.push(kelem);
-            }
-        });
 
-    }
-};
+show_section('title');
+if( sections.modules.ready ) show_section('modules');
+if( sections.modules.set ) show_section('modules_params');
+
 
 
 var boot_time = moment();

@@ -108,19 +108,12 @@ table, tr, td, th, tbody, thead{vertical-align:baseline}
 }
 
 
-#title {
+.title {
 	background: grey;
 	margin: 0;
 	padding: 0.1em;
     font-size: 1.5em
 
-}
-
-
-
-#main {
-    
-    
 }
 
 

@@ -16,7 +16,7 @@ system.DC.module = {};
 
 var config_options = settings.config_options = {};
 
-config_options.sections = {
+settings.status.sections = {
     modules: {},
     array: {},
     DC: {},

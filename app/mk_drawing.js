@@ -496,107 +496,149 @@ var mk_drawing = function(settings){
 
 ////////////////////////////////////////
 //#array
+    if( settings.status.sections.array.set ){
 
-    x = loc.array.right - size.string.w;
-    y = loc.array.y;
-    y -= size.string.h/2;
+        x = loc.array.right - size.string.w;
+        y = loc.array.y;
+        y -= size.string.h/2;
 
-    //for( var i=0; i<system.DC.string_num; i++ ) {
-    for( var i in _.range(system.DC.string_num)) {
-        //var offset = i * size.wire_offset.base
-        var offset_wire = size.wire_offset.min + ( size.wire_offset.base * i );
+        //for( var i=0; i<system.DC.string_num; i++ ) {
+        for( var i in _.range(system.DC.string_num)) {
+            //var offset = i * size.wire_offset.base
+            var offset_wire = size.wire_offset.min + ( size.wire_offset.base * i );
+            
+            block('string', [x,y]);
+            // positive home run
+            layer('DC_pos');
+            line([
+                [ x , loc.array.upper ],
+                [ x , loc.array.upper-offset_wire ],
+                [ loc.array.right+offset_wire , loc.array.upper-offset_wire ],
+                [ loc.array.right+offset_wire , loc.array.y-offset_wire],
+                [ loc.array.x , loc.array.y-offset_wire],
+            ]);
+
+            // negative home run
+            layer('DC_neg');
+            line([
+                [ x , loc.array.lower ],
+                [ x , loc.array.lower+offset_wire ],
+                [ loc.array.right+offset_wire , loc.array.lower+offset_wire ],
+                [ loc.array.right+offset_wire , loc.array.y+offset_wire],
+                [ loc.array.x , loc.array.y+offset_wire],
+            ]);
+
+            x -= size.string.w;
+        }
+
+    //    rect(
+    //        [ (loc.array.right+loc.array.left)/2, (loc.array.lower+loc.array.upper)/2 ],
+    //        [ loc.array.right-loc.array.left, loc.array.lower-loc.array.upper ],
+    //        'DC_pos');
+    //    
         
-        block('string', [x,y]);
-        // positive home run
-        layer('DC_pos');
+        layer('DC_ground');
         line([
-            [ x , loc.array.upper ],
-            [ x , loc.array.upper-offset_wire ],
-            [ loc.array.right+offset_wire , loc.array.upper-offset_wire ],
-            [ loc.array.right+offset_wire , loc.array.y-offset_wire],
-            [ loc.array.x , loc.array.y-offset_wire],
+            //[ loc.array.left , loc.array.lower + size.wire_offset.ground ],
+            [ loc.array.left, loc.array.lower + size.wire_offset.ground ],
+            [ loc.array.right+size.wire_offset.ground , loc.array.lower + size.wire_offset.ground ],
+            [ loc.array.right+size.wire_offset.ground , loc.array.y + size.wire_offset.ground],
+            [ loc.array.x , loc.array.y+size.wire_offset.ground],
         ]);
 
-        // negative home run
-        layer('DC_neg');
-        line([
-            [ x , loc.array.lower ],
-            [ x , loc.array.lower+offset_wire ],
-            [ loc.array.right+offset_wire , loc.array.lower+offset_wire ],
-            [ loc.array.right+offset_wire , loc.array.y+offset_wire],
-            [ loc.array.x , loc.array.y+offset_wire],
-        ]);
+        layer();
 
-        x -= size.string.w;
+        
     }
-
-//    rect(
-//        [ (loc.array.right+loc.array.left)/2, (loc.array.lower+loc.array.upper)/2 ],
-//        [ loc.array.right-loc.array.left, loc.array.lower-loc.array.upper ],
-//        'DC_pos');
-//    
-    
-    layer('DC_ground');
-    line([
-        //[ loc.array.left , loc.array.lower + size.wire_offset.ground ],
-        [ loc.array.left, loc.array.lower + size.wire_offset.ground ],
-        [ loc.array.right+size.wire_offset.ground , loc.array.lower + size.wire_offset.ground ],
-        [ loc.array.right+size.wire_offset.ground , loc.array.y + size.wire_offset.ground],
-        [ loc.array.x , loc.array.y+size.wire_offset.ground],
-    ]);
-
-    layer();
-
-    
 
 ///////////////////////////////
 // combiner box
-    x = loc.jb_box.x;
-    y = loc.jb_box.y;
 
-    rect(
-        [x,y],
-        [size.jb_box.w,size.jb_box.h],
-        'box'
-    );
+    if( settings.status.sections.DC.set ){
 
-    x = loc.array.x;
-    y = loc.array.y;
 
-    for( var i in _.range(system.DC.string_num)) {
-        var offset = size.wire_offset.min + ( size.wire_offset.base * i );
+        x = loc.jb_box.x;
+        y = loc.jb_box.y;
 
-        layer('DC_pos');
+        rect(
+            [x,y],
+            [size.jb_box.w,size.jb_box.h],
+            'box'
+        );
+
+        x = loc.array.x;
+        y = loc.array.y;
+
+        for( var i in _.range(system.DC.string_num)) {
+            var offset = size.wire_offset.min + ( size.wire_offset.base * i );
+
+            layer('DC_pos');
+            line([
+                [ x , y-offset],
+                [ x+(size.jb_box.w)/2 , y-offset],
+            ]);
+            block( 'terminal', {
+                x: x+(size.jb_box.w)/2,
+                y: y-offset,
+            });
+            line([
+                [ x+(size.jb_box.w)/2 , y-offset],
+                [ loc.discbox.x-offset , y-offset],
+                [ loc.discbox.x-offset , loc.discbox.y+size.discbox.h/2-size.terminal_diam],
+                [ loc.discbox.x-offset , loc.discbox.y+size.discbox.h/2-size.terminal_diam-size.terminal_diam*3],
+            ]);
+            block( 'terminal', {
+                x: loc.discbox.x-offset,
+                y: loc.discbox.y+size.discbox.h/2-size.terminal_diam
+            });
+
+            layer('DC_neg');
+            line([
+                [ x, y+offset],
+                [ x+size.jb_box.w/2-size.fuse.w/2 , y+offset],
+            ]);
+            block( 'fuse', {
+                x: x+size.jb_box.w/2 ,
+                y: y+offset,
+            });
+            line([
+                [ x+size.jb_box.w/2+size.fuse.w/2 , y+offset],
+                [ loc.discbox.x+offset , y+offset],
+                [ loc.discbox.x+offset , loc.discbox.y+size.discbox.h/2-size.terminal_diam],
+                [ loc.discbox.x+offset , loc.discbox.y+size.discbox.h/2-size.terminal_diam-size.terminal_diam*3],
+            ]);
+            block( 'terminal', {
+                x: loc.discbox.x+offset,
+                y: loc.discbox.y+size.discbox.h/2-size.terminal_diam
+            });
+            layer();
+        }
+
+        //layer('DC_ground');
+        //line([
+        //    [ loc.array.left , loc.array.lower + size.module.w + size.wire_offset.ground ],
+        //    [ loc.array.right+size.wire_offset.ground , loc.array.lower + size.module.w + size.wire_offset.ground ],
+        //    [ loc.array.right+size.wire_offset.ground , loc.array.y + size.module.w + size.wire_offset.ground],
+        //    [ loc.array.x , loc.array.y+size.module.w+size.wire_offset.ground],
+        //]);
+
+        //layer();
+
+        // Ground
+        //offset = size.wire_offset.gap + size.wire_offset.ground;
+        offset = size.wire_offset.ground;
+
+        layer('DC_ground');
         line([
-            [ x , y-offset],
-            [ x+(size.jb_box.w)/2 , y-offset],
+            [ x , y+offset],
+            [ x+(size.jb_box.w)/2 , y+offset],
         ]);
         block( 'terminal', {
             x: x+(size.jb_box.w)/2,
-            y: y-offset,
-        });
-        line([
-            [ x+(size.jb_box.w)/2 , y-offset],
-            [ loc.discbox.x-offset , y-offset],
-            [ loc.discbox.x-offset , loc.discbox.y+size.discbox.h/2-size.terminal_diam],
-            [ loc.discbox.x-offset , loc.discbox.y+size.discbox.h/2-size.terminal_diam-size.terminal_diam*3],
-        ]);
-        block( 'terminal', {
-            x: loc.discbox.x-offset,
-            y: loc.discbox.y+size.discbox.h/2-size.terminal_diam
-        });
-
-        layer('DC_neg');
-        line([
-            [ x, y+offset],
-            [ x+size.jb_box.w/2-size.fuse.w/2 , y+offset],
-        ]);
-        block( 'fuse', {
-            x: x+size.jb_box.w/2 ,
             y: y+offset,
         });
         line([
-            [ x+size.jb_box.w/2+size.fuse.w/2 , y+offset],
+            [ x+(size.jb_box.w)/2 , y+offset],
             [ loc.discbox.x+offset , y+offset],
             [ loc.discbox.x+offset , loc.discbox.y+size.discbox.h/2-size.terminal_diam],
             [ loc.discbox.x+offset , loc.discbox.y+size.discbox.h/2-size.terminal_diam-size.terminal_diam*3],
@@ -606,354 +648,337 @@ var mk_drawing = function(settings){
             y: loc.discbox.y+size.discbox.h/2-size.terminal_diam
         });
         layer();
-    }
-
-    //layer('DC_ground');
-    //line([
-    //    [ loc.array.left , loc.array.lower + size.module.w + size.wire_offset.ground ],
-    //    [ loc.array.right+size.wire_offset.ground , loc.array.lower + size.module.w + size.wire_offset.ground ],
-    //    [ loc.array.right+size.wire_offset.ground , loc.array.y + size.module.w + size.wire_offset.ground],
-    //    [ loc.array.x , loc.array.y+size.module.w+size.wire_offset.ground],
-    //]);
-
-    //layer();
-
-    // Ground
-    //offset = size.wire_offset.gap + size.wire_offset.ground;
-    offset = size.wire_offset.ground;
-
-    layer('DC_ground');
-    line([
-        [ x , y+offset],
-        [ x+(size.jb_box.w)/2 , y+offset],
-    ]);
-    block( 'terminal', {
-        x: x+(size.jb_box.w)/2,
-        y: y+offset,
-    });
-    line([
-        [ x+(size.jb_box.w)/2 , y+offset],
-        [ loc.discbox.x+offset , y+offset],
-        [ loc.discbox.x+offset , loc.discbox.y+size.discbox.h/2-size.terminal_diam],
-        [ loc.discbox.x+offset , loc.discbox.y+size.discbox.h/2-size.terminal_diam-size.terminal_diam*3],
-    ]);
-    block( 'terminal', {
-        x: loc.discbox.x+offset,
-        y: loc.discbox.y+size.discbox.h/2-size.terminal_diam
-    });
-    layer();
 
 
-///////////////////////////////
-    // DC disconect
-    rect(
-        [loc.discbox.x, loc.discbox.y],
-        [size.discbox.w,size.discbox.h],
-        'box'
-    );
+    ///////////////////////////////
+        // DC disconect
+        rect(
+            [loc.discbox.x, loc.discbox.y],
+            [size.discbox.w,size.discbox.h],
+            'box'
+        );
 
-    // DC disconect combiner lines
+        // DC disconect combiner lines
 
-    x = loc.discbox.x;
-    y = loc.discbox.y + size.discbox.h/2;
+        x = loc.discbox.x;
+        y = loc.discbox.y + size.discbox.h/2;
 
-    if( system.DC.string_num > 1){
-        var offset_min = size.wire_offset.min;
-        var offset_max = size.wire_offset.min + ( (system.DC.string_num-1) * size.wire_offset.base );
+        if( system.DC.string_num > 1){
+            var offset_min = size.wire_offset.min;
+            var offset_max = size.wire_offset.min + ( (system.DC.string_num-1) * size.wire_offset.base );
+            line([
+                [ x-offset_min, y-size.terminal_diam-size.terminal_diam*3],
+                [ x-offset_max, y-size.terminal_diam-size.terminal_diam*3],
+            ], 'DC_pos');
+            line([
+                [ x+offset_min, y-size.terminal_diam-size.terminal_diam*3],
+                [ x+offset_max, y-size.terminal_diam-size.terminal_diam*3],
+            ], 'DC_neg');
+        }
+        
+        // Inverter conection
+        //line([
+        //    [ x-offset_min, y-size.terminal_diam-size.terminal_diam*3],
+        //    [ x-offset_min, y-size.terminal_diam-size.terminal_diam*3],
+        //],'DC_pos');
+
+        //offset = offset_max - offset_min;
+        offset = size.wire_offset.min;
+
+        // neg
         line([
-            [ x-offset_min, y-size.terminal_diam-size.terminal_diam*3],
-            [ x-offset_max, y-size.terminal_diam-size.terminal_diam*3],
-        ], 'DC_pos');
+            [ x+offset, y-size.terminal_diam-size.terminal_diam*3],
+            [ x+offset, loc.inverter.y+size.inverter.h/2-size.terminal_diam ],
+        ],'DC_neg')
+        block( 'terminal', {
+            x: x+offset,
+            y: loc.inverter.y+size.inverter.h/2-size.terminal_diam,
+        });
+
+        // pos
         line([
-            [ x+offset_min, y-size.terminal_diam-size.terminal_diam*3],
-            [ x+offset_max, y-size.terminal_diam-size.terminal_diam*3],
-        ], 'DC_neg');
-    }
+            [ x-offset, y-size.terminal_diam-size.terminal_diam*3],
+            [ x-offset, loc.inverter.y+size.inverter.h/2-size.terminal_diam ],
+        ],'DC_pos')
+        block( 'terminal', {
+            x: x-offset,
+            y: loc.inverter.y+size.inverter.h/2-size.terminal_diam,
+        });
+
+        // ground
+        //offset = size.wire_offset.gap + size.wire_offset.ground;
+        offset = size.wire_offset.ground;
+        line([
+            [ x+offset, y-size.terminal_diam-size.terminal_diam*3],
+            [ x+offset, loc.inverter.y+size.inverter.h/2-size.terminal_diam ],
+        ],'DC_ground')
+        block( 'terminal', {
+            x: x+offset,
+            y: loc.inverter.y+size.inverter.h/2-size.terminal_diam,
+        });
     
-    // Inverter conection
-    //line([
-    //    [ x-offset_min, y-size.terminal_diam-size.terminal_diam*3],
-    //    [ x-offset_min, y-size.terminal_diam-size.terminal_diam*3],
-    //],'DC_pos');
+    }
 
-    //offset = offset_max - offset_min;
-    offset = size.wire_offset.min;
 
-    // neg
-    line([
-        [ x+offset, y-size.terminal_diam-size.terminal_diam*3],
-        [ x+offset, loc.inverter.y+size.inverter.h/2-size.terminal_diam ],
-    ],'DC_neg')
-    block( 'terminal', {
-        x: x+offset,
-        y: loc.inverter.y+size.inverter.h/2-size.terminal_diam,
-    });
 
-    // pos
-    line([
-        [ x-offset, y-size.terminal_diam-size.terminal_diam*3],
-        [ x-offset, loc.inverter.y+size.inverter.h/2-size.terminal_diam ],
-    ],'DC_pos')
-    block( 'terminal', {
-        x: x-offset,
-        y: loc.inverter.y+size.inverter.h/2-size.terminal_diam,
-    });
-
-    // ground
-    //offset = size.wire_offset.gap + size.wire_offset.ground;
-    offset = size.wire_offset.ground;
-    line([
-        [ x+offset, y-size.terminal_diam-size.terminal_diam*3],
-        [ x+offset, loc.inverter.y+size.inverter.h/2-size.terminal_diam ],
-    ],'DC_ground')
-    block( 'terminal', {
-        x: x+offset,
-        y: loc.inverter.y+size.inverter.h/2-size.terminal_diam,
-    });
 
 ///////////////////////////////
 //#inverter
-    x = loc.inverter.x;
-    y = loc.inverter.y;
 
-
-    //frame
-    layer('box');
-    rect(
-        [x,y],
-        [size.inverter.w, size.inverter.h]
-    );
-    // Label at top (Inverter, make, model, ...)
-    layer('text');
-    text(
-        [loc.inverter.x, loc.inverter.top + size.inverter.text_gap ],
-        [ 'Inverter', settings.system.inverter.make + " " + settings.system.inverter.model ],
-        'label'
-    );
-    layer();
-
-//#inverter symbol
-
-    x = loc.inverter.x;
-    y = loc.inverter.y;
+    if( settings.status.sections.inverter.set){
     
-    var w = size.inverter.symbol_w;
-    var h = size.inverter.symbol_h;
+        y = loc.inverter.y;
 
-    var space = w*1/12;
 
-    // Inverter symbol
-    layer('box');
+        //frame
+        layer('box');
+        rect(
+            [x,y],
+            [size.inverter.w, size.inverter.h]
+        );
+        // Label at top (Inverter, make, model, ...)
+        layer('text');
+        text(
+            [loc.inverter.x, loc.inverter.top + size.inverter.text_gap ],
+            [ 'Inverter', settings.system.inverter.make + " " + settings.system.inverter.model ],
+            'label'
+        );
+        layer();
 
-    // box
-    rect(
-        [x,y],
-        [w, h]
-    );
-    // diaganal
-    line([
-        [x-w/2, y+h/2],
-        [x+w/2, y-h/2],
-    
-    ]);
-    // DC
-    line([
-        [x - w/2 + space, 
-            y - h/2 + space],
-        [x - w/2 + space*6, 
-            y - h/2 + space],
-    ]);
-    line([
-        [x - w/2 + space, 
-            y - h/2 + space*2],
-        [x - w/2 + space*2, 
-            y - h/2 + space*2],
-    ]);
-    line([
-        [x - w/2 + space*3, 
-            y - h/2 + space*2],
-        [x - w/2 + space*4, 
-            y - h/2 + space*2],
-    ]);
-    line([
-        [x - w/2 + space*5, 
-            y - h/2 + space*2],
-        [x - w/2 + space*6, 
-            y - h/2 + space*2],
-    ]);
+    //#inverter symbol
 
-    // AC
-    line([
-        [x + w/2 - space, 
-            y + h/2 - space*1.5],
-        [x + w/2 - space*2, 
-            y + h/2 - space*1.5],
-    ]);
-    line([
-        [x + w/2 - space*3, 
-            y + h/2 - space*1.5],
-        [x + w/2 - space*4, 
-            y + h/2 - space*1.5],
-    ]);
-    line([
-        [x + w/2 - space*5, 
-            y + h/2 - space*1.5],
-        [x + w/2 - space*6, 
-            y + h/2 - space*1.5],
-    ]);
-    layer();
+        x = loc.inverter.x;
+        y = loc.inverter.y;
         
+        var w = size.inverter.symbol_w;
+        var h = size.inverter.symbol_h;
+
+        var space = w*1/12;
+
+        // Inverter symbol
+        layer('box');
+
+        // box
+        rect(
+            [x,y],
+            [w, h]
+        );
+        // diaganal
+        line([
+            [x-w/2, y+h/2],
+            [x+w/2, y-h/2],
+        
+        ]);
+        // DC
+        line([
+            [x - w/2 + space, 
+                y - h/2 + space],
+            [x - w/2 + space*6, 
+                y - h/2 + space],
+        ]);
+        line([
+            [x - w/2 + space, 
+                y - h/2 + space*2],
+            [x - w/2 + space*2, 
+                y - h/2 + space*2],
+        ]);
+        line([
+            [x - w/2 + space*3, 
+                y - h/2 + space*2],
+            [x - w/2 + space*4, 
+                y - h/2 + space*2],
+        ]);
+        line([
+            [x - w/2 + space*5, 
+                y - h/2 + space*2],
+            [x - w/2 + space*6, 
+                y - h/2 + space*2],
+        ]);
+
+        // AC
+        line([
+            [x + w/2 - space, 
+                y + h/2 - space*1.5],
+            [x + w/2 - space*2, 
+                y + h/2 - space*1.5],
+        ]);
+        line([
+            [x + w/2 - space*3, 
+                y + h/2 - space*1.5],
+            [x + w/2 - space*4, 
+                y + h/2 - space*1.5],
+        ]);
+        line([
+            [x + w/2 - space*5, 
+                y + h/2 - space*1.5],
+            [x + w/2 - space*6, 
+                y + h/2 - space*1.5],
+        ]);
+        layer();
+            
+
+
+
+
+    }
 
 
 
 
 
 //#AC_discconect
-    x = loc.AC_disc.x;
-    y = loc.AC_disc.y;
-    padding = size.terminal_diam;
 
-    layer('box');
-    rect(
-        [x, y],
-        [size.AC_disc.w, size.AC_disc.h]
-    );
-    layer();
-
-
-//console.log('size:', [h,w])
-//console.log('location:', [x,y])
-//circ([x,y],5);
+    if( settings.status.sections.AC.set ){
 
 
 
-//#AC load center
-    var breaker_spacing = size.AC_loadcenter.breakers.spacing;
 
-    x = loc.AC_loadcenter.x;
-    y = loc.AC_loadcenter.y;
-    w = size.AC_loadcenter.w;
-    h = size.AC_loadcenter.h;
+        x = loc.AC_disc.x;
+        y = loc.AC_disc.y;
+        padding = size.terminal_diam;
 
-    rect([x,y],
-        [w,h],
-        'box'
-    );
-
-    text([x,y-h*0.4],
-        [system.AC_loadcenter_type, 'Load Center'],
-        'label',
-        'text'
-    );
-    w = size.AC_loadcenter.breaker.w;
-    h = size.AC_loadcenter.breaker.h;
-
-    padding = loc.AC_loadcenter.x - loc.AC_loadcenter.breakers.left - size.AC_loadcenter.breaker.w;
-
-    y = loc.AC_loadcenter.breakers.top;
-    y += size.AC_loadcenter.breakers.spacing/2;
-    for( var i=0; i<size.AC_loadcenter.breakers.num; i++){
-        rect([x-padding-w/2,y],[w,h],'box');
-        rect([x+padding+w/2,y],[w,h],'box');
-        y += breaker_spacing;
-    }
-
-    var s, l;
-    
-    l = loc.AC_loadcenter.neutralbar;
-    s = size.AC_loadcenter.neutralbar;
-    rect([l.x,l.y], [s.w,s.h], 'AC_neutral' );
-
-    l = loc.AC_loadcenter.groundbar;
-    s = size.AC_loadcenter.groundbar;
-    rect([l.x,l.y], [s.w,s.h], 'AC_ground' );
-
-    block('ground', [l.x,l.y+s.h/2]);
-
-
-
-// AC lines
-
-    x = loc.inverter.bottom_right.x;
-    y = loc.inverter.bottom_right.y;
-    x -= size.terminal_diam * (system.AC_conductors.length+1);
-    y -= size.terminal_diam;
-
-    var conduit_y = loc.AC_conduit.y;    
-    padding = size.terminal_diam;
-    //var AC_layer_names = ['AC_ground', 'AC_neutral', 'AC_L1', 'AC_L2', 'AC_L2'];
-
-    //console.log(system.AC_conductors.length)
-
-    for( var i=0; i < system.AC_conductors.length; i++ ){
-        block('terminal', [x,y] );
-        layer('AC_'+system.AC_conductors[i]);
-        line([
+        layer('box');
+        rect(
             [x, y],
-            [x, loc.AC_disc.bottom - padding*2 - padding*i  ],
-            [loc.AC_disc.left, loc.AC_disc.bottom - padding*2 - padding*i ],
-        ]);
-        x += size.terminal_diam;
-    }
-    layer();
+            [size.AC_disc.w, size.AC_disc.h]
+        );
+        layer();
 
-    x = loc.AC_disc.x;
-    y = loc.AC_disc.y + size.AC_disc.h/2;
-    y -= padding*2;
 
-    if( system.AC_conductors.indexOf('ground')+1 ) {
-        layer('AC_ground');
-        line([
-            [ x-size.AC_disc.w/2, y ],
-            [ x+size.AC_disc.w/2+padding*2, y ],
-            [ x+size.AC_disc.w/2+padding*2, conduit_y + breaker_spacing*2 ],
-            [ loc.AC_loadcenter.left+padding*2, conduit_y + breaker_spacing*2 ],
-            //[ loc.AC_loadcenter.left+padding*2, y ],
-            //[ loc.AC_loadcenter.groundbar.x-padding, y ],
-            //[ loc.AC_loadcenter.groundbar.x-padding, loc.AC_loadcenter.groundbar.y+size.AC_loadcenter.groundbar.h/2 ],
-            [ loc.AC_loadcenter.left+padding*2, loc.AC_loadcenter.groundbar.y ],
-            [ loc.AC_loadcenter.groundbar.x-size.AC_loadcenter.groundbar.w/2, loc.AC_loadcenter.groundbar.y ],
-        ]);
-    }
+    //console.log('size:', [h,w])
+    //console.log('location:', [x,y])
+    //circ([x,y],5);
 
-    if( system.AC_conductors.indexOf('neutral')+1 ) {
-        y -= padding;
-        layer('AC_neutral');
-        line([
-            [ x-size.AC_disc.w/2, y ],
-            [ x+padding*3*2, y ],
-            [ x+padding*3*2, conduit_y + breaker_spacing*1 ],
-            [ loc.AC_loadcenter.neutralbar.x, conduit_y + breaker_spacing*1 ],
-            [ loc.AC_loadcenter.neutralbar.x, 
-                loc.AC_loadcenter.neutralbar.y-size.AC_loadcenter.neutralbar.h/2 ],
-        ]);
-    }
+
+
+    //#AC load center
+        var breaker_spacing = size.AC_loadcenter.breakers.spacing;
+
+        x = loc.AC_loadcenter.x;
+        y = loc.AC_loadcenter.y;
+        w = size.AC_loadcenter.w;
+        h = size.AC_loadcenter.h;
+
+        rect([x,y],
+            [w,h],
+            'box'
+        );
+
+        text([x,y-h*0.4],
+            [system.AC_loadcenter_type, 'Load Center'],
+            'label',
+            'text'
+        );
+        w = size.AC_loadcenter.breaker.w;
+        h = size.AC_loadcenter.breaker.h;
+
+        padding = loc.AC_loadcenter.x - loc.AC_loadcenter.breakers.left - size.AC_loadcenter.breaker.w;
+
+        y = loc.AC_loadcenter.breakers.top;
+        y += size.AC_loadcenter.breakers.spacing/2;
+        for( var i=0; i<size.AC_loadcenter.breakers.num; i++){
+            rect([x-padding-w/2,y],[w,h],'box');
+            rect([x+padding+w/2,y],[w,h],'box');
+            y += breaker_spacing;
+        }
+
+        var s, l;
         
-     
+        l = loc.AC_loadcenter.neutralbar;
+        s = size.AC_loadcenter.neutralbar;
+        rect([l.x,l.y], [s.w,s.h], 'AC_neutral' );
 
-    for( var i=1; i <= 3; i++ ) {
-        if( system.AC_conductors.indexOf('L'+i)+1 ) {
-            y -= padding;
-            layer('AC_L'+i);
+        l = loc.AC_loadcenter.groundbar;
+        s = size.AC_loadcenter.groundbar;
+        rect([l.x,l.y], [s.w,s.h], 'AC_ground' );
+
+        block('ground', [l.x,l.y+s.h/2]);
+
+
+
+    // AC lines
+
+        x = loc.inverter.bottom_right.x;
+        y = loc.inverter.bottom_right.y;
+        x -= size.terminal_diam * (system.AC_conductors.length+1);
+        y -= size.terminal_diam;
+
+        var conduit_y = loc.AC_conduit.y;    
+        padding = size.terminal_diam;
+        //var AC_layer_names = ['AC_ground', 'AC_neutral', 'AC_L1', 'AC_L2', 'AC_L2'];
+
+        //console.log(system.AC_conductors.length)
+
+        for( var i=0; i < system.AC_conductors.length; i++ ){
+            block('terminal', [x,y] );
+            layer('AC_'+system.AC_conductors[i]);
+            line([
+                [x, y],
+                [x, loc.AC_disc.bottom - padding*2 - padding*i  ],
+                [loc.AC_disc.left, loc.AC_disc.bottom - padding*2 - padding*i ],
+            ]);
+            x += size.terminal_diam;
+        }
+        layer();
+
+        x = loc.AC_disc.x;
+        y = loc.AC_disc.y + size.AC_disc.h/2;
+        y -= padding*2;
+
+        if( system.AC_conductors.indexOf('ground')+1 ) {
+            layer('AC_ground');
             line([
                 [ x-size.AC_disc.w/2, y ],
-                [ x+padding*3*(2-i), y ],
-                [ x+padding*3*(2-i), loc.AC_disc.switch_bottom ],
+                [ x+size.AC_disc.w/2+padding*2, y ],
+                [ x+size.AC_disc.w/2+padding*2, conduit_y + breaker_spacing*2 ],
+                [ loc.AC_loadcenter.left+padding*2, conduit_y + breaker_spacing*2 ],
+                //[ loc.AC_loadcenter.left+padding*2, y ],
+                //[ loc.AC_loadcenter.groundbar.x-padding, y ],
+                //[ loc.AC_loadcenter.groundbar.x-padding, loc.AC_loadcenter.groundbar.y+size.AC_loadcenter.groundbar.h/2 ],
+                [ loc.AC_loadcenter.left+padding*2, loc.AC_loadcenter.groundbar.y ],
+                [ loc.AC_loadcenter.groundbar.x-size.AC_loadcenter.groundbar.w/2, loc.AC_loadcenter.groundbar.y ],
             ]);
-            block('terminal', [ x-padding*(i-2)*3, loc.AC_disc.switch_bottom ] );
-            block('terminal', [ x-padding*(i-2)*3, loc.AC_disc.switch_top ] );
+        }
+
+        if( system.AC_conductors.indexOf('neutral')+1 ) {
+            y -= padding;
+            layer('AC_neutral');
             line([
-                [ x-padding*(i-2)*3, loc.AC_disc.switch_top ],
-                [ x-padding*(i-2)*3, conduit_y-breaker_spacing*(i-1) ],
-                [ loc.AC_loadcenter.breakers.left, conduit_y-breaker_spacing*(i-1) ],
+                [ x-size.AC_disc.w/2, y ],
+                [ x+padding*3*2, y ],
+                [ x+padding*3*2, conduit_y + breaker_spacing*1 ],
+                [ loc.AC_loadcenter.neutralbar.x, conduit_y + breaker_spacing*1 ],
+                [ loc.AC_loadcenter.neutralbar.x, 
+                    loc.AC_loadcenter.neutralbar.y-size.AC_loadcenter.neutralbar.h/2 ],
             ]);
+        }
+            
+        
+
+        for( var i=1; i <= 3; i++ ) {
+            if( system.AC_conductors.indexOf('L'+i)+1 ) {
+                y -= padding;
+                layer('AC_L'+i);
+                line([
+                    [ x-size.AC_disc.w/2, y ],
+                    [ x+padding*3*(2-i), y ],
+                    [ x+padding*3*(2-i), loc.AC_disc.switch_bottom ],
+                ]);
+                block('terminal', [ x-padding*(i-2)*3, loc.AC_disc.switch_bottom ] );
+                block('terminal', [ x-padding*(i-2)*3, loc.AC_disc.switch_top ] );
+                line([
+                    [ x-padding*(i-2)*3, loc.AC_disc.switch_top ],
+                    [ x-padding*(i-2)*3, conduit_y-breaker_spacing*(i-1) ],
+                    [ loc.AC_loadcenter.breakers.left, conduit_y-breaker_spacing*(i-1) ],
+                ]);
+
+            }
 
         }
 
+
+
     }
-
-
-
 
 
 
