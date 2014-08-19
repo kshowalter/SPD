@@ -72,19 +72,9 @@ config_options.inverters = {};
 
 
 
-system.DC.string_num = 4;
-//console.log(kontainer('system'))
-
-system.DC.string_modules = 6;
-
 config_options.DC_homerun_legths = [25,50,75,100];
-system.DC.homerun_length = 50;
 
 system.inverter = {};
-system.inverter.model = 'SI3000'; 
-
-system.AC_type = '480V Delta';
-
 
 
 // Drawing specific

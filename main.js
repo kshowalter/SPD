@@ -91,6 +91,7 @@ function ready(input, config){
 
     if( ready_count === 3 ){
         console.log('ready');
+        settings.status.data_loaded = true;
         update(settings);
     }
 }
@@ -231,13 +232,13 @@ var page_sections = {
 
 if( version_string === 'Dev' && true ){
     for( var section in settings.config_options.sections ){
-        settings.config_options.sections[section].display = true;
+        settings.config_options.sections[section].ready = true;
     };
 }
 
 for( var section in page_sections ){
     var show = false;
-    if( section in settings.config_options.sections && settings.config_options.sections[section].display === true ){
+    if( section in settings.config_options.sections && settings.config_options.sections[section].ready === true ){
         show = true;
     } else if ( section in page_sections  && ! (section in settings.config_options.sections) ) {
         show = true;
