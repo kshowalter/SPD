@@ -40,6 +40,28 @@ function showLocation(location_json){
 }
 */
 
+function show_hide_sections(){
+    for( var section in page_sections ){
+
+        /*
+        var sec = $('.'+section );
+        var show = false;
+        if( section in settings.config_options.sections && settings.config_options.sections[section].ready === true ){
+            sec.elem.style.display = 'block';
+        } else if ( section in page_sections  && ! (section in settings.config_options.sections) ) {
+            show = true;
+        }
+        if(show){
+        */
+
+        $('#title').show();
+        if( sections.modules.ready ) $('#modules').show();
+        if( sections.modules.set ) $('#modules_params').show();
+
+    }
+}
+
+
 function update(){
     console.log('updating');
 
@@ -59,6 +81,8 @@ function update(){
     settings.elements = mk_drawing(settings);
     // Add drawing elements to SVG on screen
     display_svg(settings, svg_container);
+
+    show_hide_sections();
 
     console.log('settings', settings)
 }
@@ -239,11 +263,11 @@ if( version_string === 'Dev' && true ){
 }
 ////////
 
-
-function show_section(section){
+for( section in page_sections ){
     var selection_container = $('div').attr('class', 'system_section').appendTo(system_container);
     selection_container.attr('id', section );
     selection_container.elem.style.width = settings.drawing.size.drawing.w.toString() + 'px';
+    selection_container.elem.style.display = 'none';
     page_sections[section].forEach( function(kelem){
         kelem.appendTo(selection_container);
         if( kelem.type === 'selector' ){
@@ -258,13 +282,6 @@ function show_section(section){
         }
     });
 }
-
-
-show_section('title');
-if( sections.modules.ready ) show_section('modules');
-if( sections.modules.set ) show_section('modules_params');
-
-
 
 var boot_time = moment();
 var status_id = "status";

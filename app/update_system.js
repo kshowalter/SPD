@@ -54,7 +54,8 @@ var update_system = function(settings) {
 
 
 
-            if( system.DC.module.make !== '' && system.DC.module.model !== '' ){
+            //if( system.DC.module.make !== '' && system.DC.module.model !== '' ){
+            if( system.DC.module.make && system.DC.module.model ){
                 settings.status.sections.modules.set = true;
                 settings.status.sections.array.ready = true;
             };
