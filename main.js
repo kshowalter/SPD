@@ -40,9 +40,9 @@ function showLocation(location_json){
 }
 */
 
-function show_hide_sections(){
+function show_hide_sections(page_sections){
     for( var section in page_sections ){
-
+        var sections = settings.status.sections;
         /*
         var sec = $('.'+section );
         var show = false;
@@ -57,6 +57,15 @@ function show_hide_sections(){
         $('#title').show();
         if( sections.modules.ready ) $('#modules').show();
         if( sections.modules.set ) $('#modules_params').show();
+        if( sections.array.ready ) $('#array').show();
+        if( sections.array.set ) $('#array_params').show();
+        if( sections.DC.ready ) $('#DC').show();
+        if( sections.DC.set ) $('#DC_params').show();
+        if( sections.inverter.ready ) $('#inverter').show();
+        //if( sections.inverter.set ) $('#inverter_params').show();
+        if( sections.AC.ready ) $('#AC').show();
+        if( sections.AC.set ) $('#AC_params').show();
+
 
     }
 }
@@ -82,7 +91,7 @@ function update(){
     // Add drawing elements to SVG on screen
     display_svg(settings, svg_container);
 
-    show_hide_sections();
+    show_hide_sections(page_sections);
 
     console.log('settings', settings)
 }
@@ -196,8 +205,8 @@ var page_sections = {
         $('span').html('Number of modules per string: '),
         $('selector').setOptionsRef( 'config_options.string_modules_options').setRef('system.DC.string_modules'),
         //$('span').html(' | '),
-        $('br'),
-                                    
+    ],
+    array_params: [
         $('span').html('Pmp: '),
         $('value').setRef('system.DC.array.Pmp'),
         $('span').html(' | '),
@@ -217,11 +226,19 @@ var page_sections = {
         $('span').html('DC').attr('class', 'sectionTitle'),
         $('span').html(' | '),
         $('span').html('DC home run length (ft): '),
-        $('selector').setOptionsRef('config_options.DC_homerun_legths').setRef('system.DC.homerun_length'),
+        $('selector').setOptionsRef('config_options.DC_homerun_lengths').setRef('system.DC.homerun.length'),
         $('span').html(' | '),
         $('span').html('DC home run AWG: '),
-        $('selector').setOptionsRef('config_options.DC_homerun_AWG_options').setRef('config_options.DC_homerun_AWG'),
+        $('selector').setOptionsRef('config_options.DC_homerun_AWG_options').setRef('system.DC.homerun.AWG'),
 
+    ],
+    DC_params: [
+        $('span').html('Resistance: '),
+        $('value').setRef('system.DC.homerun.resistance'),
+        $('span').html(' | '),
+//        $('span').html('Vmp: '),
+//        $('value').setRef('system.DC.homerun.'),
+//        $('span').html(' | '),
     ],
     inverter: [
         $('span').html('Inverter').attr('class', 'sectionTitle'),
@@ -250,7 +267,7 @@ var page_sections = {
     ],
 }
 
-var sections = settings.status.sections;
+console.log('page_sections', page_sections);
 
 // Dev settings
 if( version_string === 'Dev' && true ){
