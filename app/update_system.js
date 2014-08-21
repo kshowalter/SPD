@@ -36,6 +36,7 @@ var update_system = function(settings) {
             settings.config_options.inverterModelArray = k.objIdArray(settings.config_options.inverters[system.inverter.make]);
 
             system.AC_loadcenter_type = system.AC_loadcenter_type || config_options.AC_loadcenter_type_options[0];
+            console.log(system.AC_loadcenter_type)
 
         }
     }
@@ -64,7 +65,7 @@ var update_system = function(settings) {
         // Array
         if( settings.status.sections.array.ready){
             
-            if( system.DC.string_num !== '' && system.DC.string_modules !== '' ){
+            if( system.DC.string_num && system.DC.string_modules ){
                 settings.status.sections.array.set = true;
             };
         }
@@ -94,7 +95,7 @@ var update_system = function(settings) {
             config_options.DC_homerun_AWG_options = config_options.DC_homerun_AWG_options || k.objIdArray( config_options.NEC_tables["Ch 9 Table 8 Conductor Properties"] );
 
             //if( system.DC.homerun.length !== '' && system.DC.homerun.AWG !== '' ){
-            if( system.DC.homerun.length !== undefined && system.DC.homerun.AWG !== undefined ){
+            if( system.DC.homerun.length && system.DC.homerun.AWG ){
                 console.log( '-homerun. length: ', system.DC.homerun.length, ' AWG: ', system.DC.homerun.AWG )
                 settings.status.sections.DC.set = true;
             };
@@ -148,7 +149,7 @@ var update_system = function(settings) {
             }
 
 
-            if( settings.AC_loadcenter_type && settings.AC_type ){
+            if( system.AC_loadcenter_type && system.AC_type ){
                 settings.status.sections.AC.set = true;
                 //settings.status.sections.AC.ready = true;
             };

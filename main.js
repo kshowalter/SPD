@@ -1,5 +1,5 @@
 "use strict";
-var version_string = "Dev_branch"
+var version_string = "Dev"
 
 var _ = require('underscore');
 var moment = require('moment');
@@ -62,7 +62,7 @@ function show_hide_sections(page_sections){
         if( sections.DC.ready ) $('#DC').show();
         if( sections.DC.set ) $('#DC_params').show();
         if( sections.inverter.ready ) $('#inverter').show();
-        //if( sections.inverter.set ) $('#inverter_params').show();
+        if( sections.inverter.set ) $('#inverter_params').show();
         if( sections.AC.ready ) $('#AC').show();
         if( sections.AC.set ) $('#AC_params').show();
 
@@ -253,6 +253,10 @@ var page_sections = {
         $('selector').setOptionsRef( 'settings.config_options.inverterModelArray' ).setRef('system.inverter.model'),
 
     ],
+    inverter_params: [
+        $('span').html('Inverter specs'),
+        $('span').html(' | '),
+    ],
     AC: [
         $('span').html('AC').attr('class', 'sectionTitle'),
         $('span').html(' | '),
@@ -264,6 +268,9 @@ var page_sections = {
         $('selector').setOptionsRef( 'system.AC_types_availible').setRef('system.AC_type'),
         $('br'),
 
+    ],
+    AC_params: [
+        $('span').html('AC params')
     ],
 }
 

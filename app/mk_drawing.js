@@ -727,6 +727,7 @@ var mk_drawing = function(settings){
 
     if( settings.status.sections.inverter.set){
     
+        x = loc.inverter.x;
         y = loc.inverter.y;
 
 
