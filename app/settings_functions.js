@@ -1,5 +1,4 @@
 var k = require('../lib/k/k.js')
-var log = console.log.bind(console);
 //var update_system = require('./update').update_system;
 
 function loadTables(string){
@@ -18,7 +17,6 @@ function loadTables(string){
             title = line;
             tables[title] = [];
             need_title = false; 
-            //log('new table ', title)
         } else if( need_fields ) {
             fields = line.split(',');
             tables[title+"_fields"] = fields;
@@ -41,25 +39,33 @@ function loadTables(string){
 }
 
 
-function loadModules(string){
-    var db = k.parseCSV(string);
-    var modules = {}    
-    for( var i in db ){
-        var module = db[i];
-        if( modules[module.Make] === undefined ){
-            modules[module.Make] = {};
-        }
-        if( modules[module.Make][module.Model] === undefined ){
-            modules[module.Make][module.Model] = {};
-        }
-        modules[module.Make][module.Model] = module;
-    }
 
-    return modules;
+function loadComponents(string){
+    var db = k.parseCSV(string);
+    var object = {}    
+    for( var i in db ){
+        var component = db[i];
+        if( object[component.Make] === undefined ){
+            object[component.Make] = {};
+        }
+        if( object[component.Make][component.Model] === undefined ){
+            object[component.Make][component.Model] = {};
+        }
+
+        var fields = k.objIdArray(component)
+        fields.forEach( function( field ){
+            var param = component[field];
+            if( ! field in ['Make', 'Model'] && ! isNaN(parseFloat(param))){
+                component[field] = parseFloat(param);
+            }
+        })
+        object[component.Make][component.Model] = component;
+    }
+    return object;
 }
 
 
 
 module.exports.loadTables = loadTables;
-module.exports.loadModules = loadModules;
+module.exports.loadComponents = loadComponents;
 

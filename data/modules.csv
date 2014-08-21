@@ -1,4 +1,4 @@
-Make,Model,Pmax,Isc,Voc,Imp,Vmp
+Make,Model,Pmp,Isc,Voc,Imp,Vmp
 Suniva,255-60-4-1B0,255,8.96,38.1,8.45,30.2 
 Suniva,260-60-4-1B0,260,9.01,38.3,8.52,30.5 
 Suniva,265-60-4-1B0,265,9.12,38.3,8.64,30.7 
