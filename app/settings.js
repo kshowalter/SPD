@@ -4,7 +4,7 @@ var k = require('../lib/k/k.js')
 
 var settings = {};
 
-
+settings.status = {};
 settings.system = {};
 settings.select_registry = [];
 settings.value_registry = [];
@@ -13,10 +13,11 @@ var system = settings.system;
 system.wire_config_num = 5;
 system.DC = {};
 system.DC.module = {};
+system.DC.homerun = {};
 
 var config_options = settings.config_options = {};
 
-config_options.sections = {
+settings.status.sections = {
     modules: {},
     array: {},
     DC: {},
@@ -41,6 +42,8 @@ config_options.AC_types = {
     '480V Delta': ['ground', 'L1', 'L2', 'L3' ],
 };
 
+config_options.AC_loadcenter_type_options = k.objIdArray( config_options.AC_loadcenter_types );
+config_options.AC_type_options = k.objIdArray( config_options.AC_types );
 
 config_options.inverters = {};
 
@@ -72,19 +75,8 @@ config_options.inverters = {};
 
 
 
-system.DC.string_num = 4;
-//console.log(kontainer('system'))
-
-system.DC.string_modules = 6;
-
-config_options.DC_homerun_legths = [25,50,75,100];
-system.DC.homerun_length = 50;
 
 system.inverter = {};
-system.inverter.model = 'SI3000'; 
-
-system.AC_type = '480V Delta';
-
 
 
 // Drawing specific
