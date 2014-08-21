@@ -3124,7 +3124,7 @@ module.exports = wrapper_prototype;
 
 },{}],13:[function(require,module,exports){
 "use strict";
-var version_string = "Dev"
+var version_string = "Alpha20140921";
 
 var _ = require('underscore');
 var moment = require('moment');
