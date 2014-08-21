@@ -1,5 +1,4 @@
 var k = require('../lib/k/k.js')
-var log = console.log.bind(console);
 //var update_system = require('./update').update_system;
 
 function loadTables(string){
@@ -18,7 +17,6 @@ function loadTables(string){
             title = line;
             tables[title] = [];
             need_title = false; 
-            //log('new table ', title)
         } else if( need_fields ) {
             fields = line.split(',');
             tables[title+"_fields"] = fields;

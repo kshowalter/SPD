@@ -125,7 +125,7 @@ function ready(input, config){
     if( ready_count === 3 ){
         console.log('ready');
         settings.status.data_loaded = true;
-        update(settings);
+        update();
     }
 }
 

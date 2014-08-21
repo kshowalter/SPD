@@ -4,7 +4,6 @@ var k = require('../lib/k/k.js');
 //var settings = require('./settings.js');
 //var l_attr = settings.drawing.l_attr;
 var _ = require('underscore');
-//console.log('settings', settings);
 // setup drawing containers
 var l_attr = require('./layers');
 
@@ -148,7 +147,7 @@ var add = function(type, points, layer_name) {
 
     if( typeof layer_name === 'undefined' ) { layer_name = layer_active; } 
     if( ! (layer_name in l_attr) ) { 
-        console.log('Layer name not found, using base');
+        console.log('Error: Layer name not found, using base');
         layer_name = 'base'; 
     }
 
@@ -259,7 +258,6 @@ var mk_drawing = function(settings){
     //var components = settings.components;
     //var system = settings.system;
     var system = settings.system;
-    //console.log('---settings---', settings);
 
     var size = settings.drawing.size;
     var loc = settings.drawing.loc;
@@ -846,8 +844,6 @@ var mk_drawing = function(settings){
         layer();
 
 
-    //console.log('size:', [h,w])
-    //console.log('location:', [x,y])
     //circ([x,y],5);
 
 
@@ -907,8 +903,6 @@ var mk_drawing = function(settings){
         var conduit_y = loc.AC_conduit.y;    
         padding = size.terminal_diam;
         //var AC_layer_names = ['AC_ground', 'AC_neutral', 'AC_L1', 'AC_L2', 'AC_L2'];
-
-        //console.log(system.AC_conductors.length)
 
         for( var i=0; i < system.AC_conductors.length; i++ ){
             block('terminal', [x,y] );
