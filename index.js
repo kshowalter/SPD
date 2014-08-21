@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 var log = console.log.bind(console);
 //var settings = require('./settings.js');
@@ -189,7 +189,6 @@ var k = require('../lib/k/k.js');
 //var settings = require('./settings.js');
 //var l_attr = settings.drawing.l_attr;
 var _ = require('underscore');
-//console.log('settings', settings);
 // setup drawing containers
 var l_attr = require('./layers');
 
@@ -333,7 +332,7 @@ var add = function(type, points, layer_name) {
 
     if( typeof layer_name === 'undefined' ) { layer_name = layer_active; } 
     if( ! (layer_name in l_attr) ) { 
-        console.log('Layer name not found, using base');
+        console.log('Error: Layer name not found, using base');
         layer_name = 'base'; 
     }
 
@@ -444,7 +443,6 @@ var mk_drawing = function(settings){
     //var components = settings.components;
     //var system = settings.system;
     var system = settings.system;
-    //console.log('---settings---', settings);
 
     var size = settings.drawing.size;
     var loc = settings.drawing.loc;
@@ -912,6 +910,7 @@ var mk_drawing = function(settings){
 
     if( settings.status.sections.inverter.set){
     
+        x = loc.inverter.x;
         y = loc.inverter.y;
 
 
@@ -1030,8 +1029,6 @@ var mk_drawing = function(settings){
         layer();
 
 
-    //console.log('size:', [h,w])
-    //console.log('location:', [x,y])
     //circ([x,y],5);
 
 
@@ -1091,8 +1088,6 @@ var mk_drawing = function(settings){
         var conduit_y = loc.AC_conduit.y;    
         padding = size.terminal_diam;
         //var AC_layer_names = ['AC_ground', 'AC_neutral', 'AC_L1', 'AC_L2', 'AC_L2'];
-
-        //console.log(system.AC_conductors.length)
 
         for( var i=0; i < system.AC_conductors.length; i++ ){
             block('terminal', [x,y] );
@@ -1313,8 +1308,9 @@ config_options.string_num_options = [1,2,3,4,5,6];
 config_options.string_modules_options = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
 
 config_options.AC_loadcenter_types = {
-    '480/277V' : ['480V Wye', '480V Delta', '277V', '208V'],
     '240V' : ['240V', '120V'],
+    '208/120V' : ['208V', '120V'],
+    '480/277V' : ['480V Wye', '480V Delta', '277V'],
 };
 
 config_options.AC_types = {
@@ -1631,7 +1627,6 @@ module.exports = settings;
 
 },{"../lib/k/k.js":7}],5:[function(require,module,exports){
 var k = require('../lib/k/k.js')
-var log = console.log.bind(console);
 //var update_system = require('./update').update_system;
 
 function loadTables(string){
@@ -1650,7 +1645,6 @@ function loadTables(string){
             title = line;
             tables[title] = [];
             need_title = false; 
-            //log('new table ', title)
         } else if( need_fields ) {
             fields = line.split(',');
             tables[title+"_fields"] = fields;
@@ -1743,6 +1737,7 @@ var update_system = function(settings) {
             settings.config_options.inverterModelArray = k.objIdArray(settings.config_options.inverters[system.inverter.make]);
 
             system.AC_loadcenter_type = system.AC_loadcenter_type || config_options.AC_loadcenter_type_options[0];
+            //console.log(system.AC_loadcenter_type)
 
         }
     }
@@ -1771,7 +1766,7 @@ var update_system = function(settings) {
         // Array
         if( settings.status.sections.array.ready){
             
-            if( system.DC.string_num !== '' && system.DC.string_modules !== '' ){
+            if( system.DC.string_num && system.DC.string_modules ){
                 settings.status.sections.array.set = true;
             };
         }
@@ -1801,8 +1796,8 @@ var update_system = function(settings) {
             config_options.DC_homerun_AWG_options = config_options.DC_homerun_AWG_options || k.objIdArray( config_options.NEC_tables["Ch 9 Table 8 Conductor Properties"] );
 
             //if( system.DC.homerun.length !== '' && system.DC.homerun.AWG !== '' ){
-            if( system.DC.homerun.length !== undefined && system.DC.homerun.AWG !== undefined ){
-                console.log( '-homerun. length: ', system.DC.homerun.length, ' AWG: ', system.DC.homerun.AWG )
+            if( system.DC.homerun.length && system.DC.homerun.AWG ){
+                //console.log( '-homerun. length: ', system.DC.homerun.length, ' AWG: ', system.DC.homerun.AWG )
                 settings.status.sections.DC.set = true;
             };
         }
@@ -1855,7 +1850,7 @@ var update_system = function(settings) {
             }
 
 
-            if( settings.AC_loadcenter_type && settings.AC_type ){
+            if( system.AC_loadcenter_type && system.AC_type ){
                 settings.status.sections.AC.set = true;
                 //settings.status.sections.AC.ready = true;
             };
@@ -2698,30 +2693,32 @@ var selector_prototype = {
         }
     },
     set_value: function(){
-        if( this.elem.options[this.elem.selectedIndex] ){
+        if( this.elem.options[this.elem.selectedIndex] && this.elem.options[this.elem.selectedIndex].value ){
             //console.log('selected_value', this.elem.options[this.elem.selectedIndex].value);
             var new_value = this.elem.options[this.elem.selectedIndex].value;
+            if( this.optionsKontainer.ready ) {
+                //console.log('kontainer ready, setting to: ', new_value)
+                //if( ! isNaN(parseFloat(new_value))) new_value = parseFloat(new_value);
+                this.kontainer.set(new_value);
+            }
+            return this;    
         }
-        if( this.optionsKontainer.ready ) {
-            //console.log('kontainer ready, setting to: ', new_value)
-            this.kontainer.set(new_value);
-        }
-        return this;    
     },
     update: function(){
         //console.log('updating: ', this)
-        this.update_options();
         this.set_value();
+        this.update_options();
         return this;
     },
     update_options: function(){
         if( this.kontainer.ready ) {
             var current_value = this.kontainer.get();
+            if( typeof current_value == "object") current_value = null;
         } else {
             var current_value = null; 
         }
 
-        if( this.optionsKontainer.ready ) {
+        if( this.optionsKontainer.ready && this.kontainer.ready ) {
             var old_options = this.options;
             this.options = this.optionsKontainer.get();
             if( this.options instanceof Array ){
@@ -2729,14 +2726,21 @@ var selector_prototype = {
                 if( old_options !== this.options ){
                     if( this.options !== undefined && this.options instanceof Array) {
                         //this.elem.innerHTML = '';
-                        this.elem.innerHTML = '<option selected disabled hidden value=""></option>'
+                        this.elem.innerHTML = '<option selected disabled hidden></option>'
                         this.options.forEach(function(value,id){
                             var o = document.createElement('option');
                             o.value = value;
-                            if( value === current_value ) {
-                                o.selected = "selected";
+                            if( current_value ){
+                                if( value.toString() === current_value.toString() ) {
+                                    //console.log('found it:', value);
+                                    o.selected = "selected";
+                                } else {
+                                    //console.log('does not match: ', value, current_value)
+                                }
+                                //o.setAttribute('class', 'selector_option');
+                            } else {
+                                //console.log('no current value')
                             }
-                            //o.setAttribute('class', 'selector_option');
                             o.innerHTML = value;
                             var that = this;
                             this.elem.appendChild(o);
@@ -2830,6 +2834,7 @@ var value_prototype = {
             this.g_update();
         }
         */
+       var decimals = this.decimals || 3;
         if( typeof this.kontainer !== 'undefined' ){
             this.value = this.kontainer.get();
             //console.log('updating value', this.value)
@@ -2837,7 +2842,7 @@ var value_prototype = {
         if( isNaN(Number(this.value)) ){
             this.elem.innerHTML = this.value;
         } else {
-            this.elem.innerHTML = Number(this.value).toFixed(3);
+            this.elem.innerHTML = Number(this.value).toFixed(decimals);
             if( this.min !== undefined && this.value <= this.min ) {
                 this.attr('class', 'valueOutOfRange');
             } else if( this.max !== undefined && this.value >= this.max ) {
@@ -2887,6 +2892,11 @@ var value_prototype = {
     },
     setMin: function(value){
         this.min = value;
+        this.update();
+        return this;
+    },
+    setDecimals: function(n){
+        this.decimals = n;
         this.update();
         return this;
     },
@@ -3006,7 +3016,6 @@ function KDB() {
 
 },{}],11:[function(require,module,exports){
 'use strict';
-var log = console.log.bind(console);
 
 var kontainer = {
     ref: function(refString){
@@ -3035,33 +3044,27 @@ var kontainer = {
         }
     },
     set: function(input){
-        //log('kontainer setting to ', this.refString, input)
         if( typeof this.object === 'undefined' || typeof this.refString === 'undefined' ){
             return false;
         }
         var parent = this.object;
         var last_level = this.refArray[this.refArray.length-1];
-        //log('last_level',last_level)
 
         this.refArray.forEach(function(level_name,i){
             if( typeof parent[level_name] === 'undefined' ) {
                 parent[level_name] = {};
             }
             if( level_name !== last_level ){
-                //log('moving to ', level_name)
                 parent = parent[level_name];
             }
         });
-        //log('parent',parent);
         parent[last_level] = input;
-        //log(this.get())
         return parent[last_level];
     },
     get: function(){
         var level = this.object;
         this.refArray.forEach(function(level_name,i){
             if( typeof level[level_name] === 'undefined' ) {
-                //log('kontainer: '+level_name+' not defined');
                 return false;
             }
             level = level[level_name];
@@ -3121,7 +3124,7 @@ module.exports = wrapper_prototype;
 
 },{}],13:[function(require,module,exports){
 "use strict";
-var version_string = "Dev_branch"
+var version_string = "Dev"
 
 var _ = require('underscore');
 var moment = require('moment');
@@ -3184,7 +3187,7 @@ function show_hide_sections(page_sections){
         if( sections.DC.ready ) $('#DC').show();
         if( sections.DC.set ) $('#DC_params').show();
         if( sections.inverter.ready ) $('#inverter').show();
-        //if( sections.inverter.set ) $('#inverter_params').show();
+        if( sections.inverter.set ) $('#inverter_params').show();
         if( sections.AC.ready ) $('#AC').show();
         if( sections.AC.set ) $('#AC_params').show();
 
@@ -3247,7 +3250,7 @@ function ready(input, config){
     if( ready_count === 3 ){
         console.log('ready');
         settings.status.data_loaded = true;
-        update(settings);
+        update();
     }
 }
 
@@ -3303,19 +3306,19 @@ var page_sections = {
     ],
     modules_params: [
         $('span').html('Pmp: '),
-        $('value').setRef('system.DC.module.specs.Pmp'),
+        $('value').setRef('system.DC.module.specs.Pmp').setDecimals(1),
         $('span').html(' | '),
         $('span').html('Isc: '),
-        $('value').setRef('system.DC.module.specs.Isc'),
+        $('value').setRef('system.DC.module.specs.Isc').setDecimals(2),
         $('span').html(' | '),
         $('span').html('Voc: '),
-        $('value').setRef('system.DC.module.specs.Voc'),
+        $('value').setRef('system.DC.module.specs.Voc').setDecimals(1),
         $('span').html(' | '),
         $('span').html('Imp: '),
-        $('value').setRef('system.DC.module.specs.Imp'),
+        $('value').setRef('system.DC.module.specs.Imp').setDecimals(2),
         $('span').html(' | '),
         $('span').html('Vmp: '),
-        $('value').setRef('system.DC.module.specs.Vmp'),
+        $('value').setRef('system.DC.module.specs.Vmp').setDecimals(1),
     ],
     array: [
         $('span').html('Array').attr('class', 'sectionTitle'),
@@ -3330,19 +3333,19 @@ var page_sections = {
     ],
     array_params: [
         $('span').html('Pmp: '),
-        $('value').setRef('system.DC.array.Pmp'),
+        $('value').setRef('system.DC.array.Pmp').setDecimals(1),
         $('span').html(' | '),
         $('span').html('Isc: '),
-        $('value').setRef('system.DC.array.Isc'),
+        $('value').setRef('system.DC.array.Isc').setDecimals(2),
         $('span').html(' | '),
         $('span').html('Voc: '),
-        $('value').setRef('system.DC.array.Voc').setMax(600).attr('id', 'DC_volt'),,
+        $('value').setRef('system.DC.array.Voc').setMax(600).attr('id', 'DC_volt').setDecimals(1),
         $('span').html(' | '),
         $('span').html('Imp: '),
-        $('value').setRef('system.DC.array.Imp'),
+        $('value').setRef('system.DC.array.Imp').setDecimals(2),
         $('span').html(' | '),
         $('span').html('Vmp: '),
-        $('value').setRef('system.DC.array.Vmp'),
+        $('value').setRef('system.DC.array.Vmp').setDecimals(1),
     ],
     DC: [
         $('span').html('DC').attr('class', 'sectionTitle'),
@@ -3375,17 +3378,24 @@ var page_sections = {
         $('selector').setOptionsRef( 'settings.config_options.inverterModelArray' ).setRef('system.inverter.model'),
 
     ],
+    inverter_params: [
+        $('span').html('Inverter specs'),
+        $('span').html(' | '),
+    ],
     AC: [
         $('span').html('AC').attr('class', 'sectionTitle'),
         $('span').html(' | '),
 
-        $('span').html('AC loadcenter type: '),
+        $('span').html('AC Load Center type: '),
         $('selector').setOptionsRef( 'config_options.AC_loadcenter_type_options').setRef('system.AC_loadcenter_type'),
         $('span').html('AC type: '),
         //$('selector').setOptionsRef( 'config_options.AC_type_options').setRef('system.AC_type'),
         $('selector').setOptionsRef( 'system.AC_types_availible').setRef('system.AC_type'),
         $('br'),
 
+    ],
+    AC_params: [
+        $('span').html('AC params')
     ],
 }
 

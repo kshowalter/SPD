@@ -29,8 +29,9 @@ config_options.string_num_options = [1,2,3,4,5,6];
 config_options.string_modules_options = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
 
 config_options.AC_loadcenter_types = {
-    '480/277V' : ['480V Wye', '480V Delta', '277V', '208V'],
     '240V' : ['240V', '120V'],
+    '208/120V' : ['208V', '120V'],
+    '480/277V' : ['480V Wye', '480V Delta', '277V'],
 };
 
 config_options.AC_types = {
