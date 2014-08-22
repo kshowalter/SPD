@@ -106,8 +106,8 @@ var update_system = function(settings) {
         if( settings.status.sections.DC.set ){
             
             system.DC.homerun.resistance = config_options.NEC_tables["Ch 9 Table 8 Conductor Properties"][system.DC.homerun.AWG];
-
             settings.status.sections.inverter.ready = true;
+            settings.status.active_section = 'inverter';
         }
         
         // Inverter
@@ -128,6 +128,7 @@ var update_system = function(settings) {
 
             if( true ){
                 settings.status.sections.AC.ready = true;
+                settings.status.active_section = 'AC';
             };
         }
 
@@ -153,7 +154,6 @@ var update_system = function(settings) {
 
             if( system.AC_loadcenter_type && system.AC_type ){
                 settings.status.sections.AC.set = true;
-                //settings.status.sections.AC.ready = true;
             };
         }
 
