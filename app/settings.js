@@ -24,6 +24,8 @@ settings.status.sections = {
     inverter: {},
     AC: {},
 };
+config_options.section_options = k.objIdArray(settings.status.sections);
+settings.status.active_section = 'modules';
 
 config_options.string_num_options = [1,2,3,4,5,6];
 config_options.string_modules_options = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];

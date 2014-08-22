@@ -1,5 +1,5 @@
 "use strict";
-var version_string = "Alpha20140921";
+var version_string = "Dev_brach";
 
 var _ = require('underscore');
 var moment = require('moment');
@@ -40,33 +40,47 @@ function showLocation(location_json){
 }
 */
 
-function show_hide_sections(page_sections){
-    for( var section in page_sections ){
-        var sections = settings.status.sections;
-        /*
-        var sec = $('.'+section );
-        var show = false;
-        if( section in settings.config_options.sections && settings.config_options.sections[section].ready === true ){
-            sec.elem.style.display = 'block';
-        } else if ( section in page_sections  && ! (section in settings.config_options.sections) ) {
-            show = true;
-        }
-        if(show){
-        */
-
-        $('#title').show();
-        if( sections.modules.ready ) $('#modules').show();
-        if( sections.modules.set ) $('#modules_params').show();
-        if( sections.array.ready ) $('#array').show();
-        if( sections.array.set ) $('#array_params').show();
-        if( sections.DC.ready ) $('#DC').show();
-        if( sections.DC.set ) $('#DC_params').show();
-        if( sections.inverter.ready ) $('#inverter').show();
-        if( sections.inverter.set ) $('#inverter_params').show();
-        if( sections.AC.ready ) $('#AC').show();
-        if( sections.AC.set ) $('#AC_params').show();
+function add_sections(sections, parent_container, display_type){
+    display_type = display_type || 'none';
+    for( section in sections ){
+        var selection_container = $('div').attr('class', 'system_section').appendTo(parent_container);
+        selection_container.attr('id', section );
+        selection_container.elem.style.width = settings.drawing.size.drawing.w.toString() + 'px';
+        selection_container.elem.style.display = display_type;
+        sections[section].forEach( function(kelem){
+            kelem.appendTo(selection_container);
+            if( kelem.type === 'selector' ){
+                kelem.setRefObj(settings);
+                kelem.setUpdate(update);
+                settings.select_registry.push(kelem);
+                kelem.update(); 
+            } else if( kelem.type === 'value' ){
+                kelem.setRefObj(settings);
+                //kelem.setUpdate(update_system);
+                settings.value_registry.push(kelem);
+            }
+        });
+    }
+}
 
 
+function show_hide_params(page_sections){
+    for( var list_name in page_sections ){
+        var id = '#'+list_name;
+        var section_name = list_name.split('_')[0];
+        var section = $(id);
+        if( settings.status.sections[section_name].set ) section.show();
+        else section.hide();
+    }
+}
+
+function show_hide_selections(page_sections, active_section_name){
+    for( var list_name in page_sections ){
+        var id = '#'+list_name;
+        var section_name = list_name.split('_')[0];
+        var section = $(id);
+        if( section_name === active_section_name ) section.show();
+        else section.hide();
     }
 }
 
@@ -91,7 +105,8 @@ function update(){
     // Add drawing elements to SVG on screen
     display_svg(settings, svg_container);
 
-    show_hide_sections(page_sections);
+    show_hide_params(page_sections_params);
+    show_hide_selections(page_sections_config, settings.status.active_section)
 
     console.log('settings', settings)
 }
@@ -150,7 +165,7 @@ var svg_container = svg_container_object.elem;
 
 
 
-var page_sections = {
+var page_sections_header = {
     title: [
         $('span').html('Please select your system spec below').attr('class', 'sectionTitle'),
         $('span').html(' | '),
@@ -165,7 +180,13 @@ var page_sections = {
         $('value').setRef('system.county'),
         $('br'),
         //*/
+        $('selector').setOptionsRef( 'config_options.section_options' ).setRef('status.active_section'),
     ],
+};
+
+
+
+var page_sections_config = {
     modules: [
         $('span').html('Module').attr('class', 'sectionTitle'),
         $('span').html(' | '),
@@ -179,6 +200,55 @@ var page_sections = {
         $('br'),
 
     ],
+    array: [
+        $('span').html('Array').attr('class', 'sectionTitle'),
+        $('span').html(' | '),
+
+        $('span').html('Number of strings: '),
+        $('selector').setOptionsRef( 'config_options.string_num_options').setRef('system.DC.string_num'),
+        $('span').html(' | '),
+        $('span').html('Number of modules per string: '),
+        $('selector').setOptionsRef( 'config_options.string_modules_options').setRef('system.DC.string_modules'),
+        //$('span').html(' | '),
+    ],
+    DC: [
+        $('span').html('DC').attr('class', 'sectionTitle'),
+        $('span').html(' | '),
+        $('span').html('DC home run length (ft): '),
+        $('selector').setOptionsRef('config_options.DC_homerun_lengths').setRef('system.DC.homerun.length'),
+        $('span').html(' | '),
+        $('span').html('DC home run AWG: '),
+        $('selector').setOptionsRef('config_options.DC_homerun_AWG_options').setRef('system.DC.homerun.AWG'),
+
+    ],
+    inverter: [
+        $('span').html('Inverter').attr('class', 'sectionTitle'),
+        $('span').html(' | '),
+
+        $('span').html('Inverter make: '),
+        //$('selector') .setOptionsRef( 'components.moduleMakeArray' ) .setRef('system.pv_make'),
+        $('selector') .setOptionsRef( 'settings.config_options.inverterMakeArray' ) .setRef('system.inverter.make'),
+        $('span').html(' | '),
+        $('span').html('Inverter model: '),
+        //$('selector').setOptionsRef( 'components.moduleModelArray' ).setRef('system.pv_model'),
+        $('selector').setOptionsRef( 'settings.config_options.inverterModelArray' ).setRef('system.inverter.model'),
+
+    ],
+    AC: [
+        $('span').html('AC').attr('class', 'sectionTitle'),
+        $('span').html(' | '),
+
+        $('span').html('AC Load Center type: '),
+        $('selector').setOptionsRef( 'config_options.AC_loadcenter_type_options').setRef('system.AC_loadcenter_type'),
+        $('span').html('AC type: '),
+        //$('selector').setOptionsRef( 'config_options.AC_type_options').setRef('system.AC_type'),
+        $('selector').setOptionsRef( 'system.AC_types_availible').setRef('system.AC_type'),
+        $('br'),
+
+    ],
+    
+}
+var page_sections_params = {
     modules_params: [
         $('span').html('Pmp: '),
         $('value').setRef('system.DC.module.specs.Pmp').setDecimals(1),
@@ -194,17 +264,6 @@ var page_sections = {
         $('span').html(' | '),
         $('span').html('Vmp: '),
         $('value').setRef('system.DC.module.specs.Vmp').setDecimals(1),
-    ],
-    array: [
-        $('span').html('Array').attr('class', 'sectionTitle'),
-        $('span').html(' | '),
-
-        $('span').html('Number of strings: '),
-        $('selector').setOptionsRef( 'config_options.string_num_options').setRef('system.DC.string_num'),
-        $('span').html(' | '),
-        $('span').html('Number of modules per string: '),
-        $('selector').setOptionsRef( 'config_options.string_modules_options').setRef('system.DC.string_modules'),
-        //$('span').html(' | '),
     ],
     array_params: [
         $('span').html('Pmp: '),
@@ -222,16 +281,6 @@ var page_sections = {
         $('span').html('Vmp: '),
         $('value').setRef('system.DC.array.Vmp').setDecimals(1),
     ],
-    DC: [
-        $('span').html('DC').attr('class', 'sectionTitle'),
-        $('span').html(' | '),
-        $('span').html('DC home run length (ft): '),
-        $('selector').setOptionsRef('config_options.DC_homerun_lengths').setRef('system.DC.homerun.length'),
-        $('span').html(' | '),
-        $('span').html('DC home run AWG: '),
-        $('selector').setOptionsRef('config_options.DC_homerun_AWG_options').setRef('system.DC.homerun.AWG'),
-
-    ],
     DC_params: [
         $('span').html('Resistance: '),
         $('value').setRef('system.DC.homerun.resistance'),
@@ -240,41 +289,17 @@ var page_sections = {
 //        $('value').setRef('system.DC.homerun.'),
 //        $('span').html(' | '),
     ],
-    inverter: [
-        $('span').html('Inverter').attr('class', 'sectionTitle'),
-        $('span').html(' | '),
-
-        $('span').html('Inverter make: '),
-        //$('selector') .setOptionsRef( 'components.moduleMakeArray' ) .setRef('system.pv_make'),
-        $('selector') .setOptionsRef( 'settings.config_options.inverterMakeArray' ) .setRef('system.inverter.make'),
-        $('span').html(' | '),
-        $('span').html('Inverter model: '),
-        //$('selector').setOptionsRef( 'components.moduleModelArray' ).setRef('system.pv_model'),
-        $('selector').setOptionsRef( 'settings.config_options.inverterModelArray' ).setRef('system.inverter.model'),
-
-    ],
     inverter_params: [
         $('span').html('Inverter specs'),
         $('span').html(' | '),
-    ],
-    AC: [
-        $('span').html('AC').attr('class', 'sectionTitle'),
-        $('span').html(' | '),
-
-        $('span').html('AC Load Center type: '),
-        $('selector').setOptionsRef( 'config_options.AC_loadcenter_type_options').setRef('system.AC_loadcenter_type'),
-        $('span').html('AC type: '),
-        //$('selector').setOptionsRef( 'config_options.AC_type_options').setRef('system.AC_type'),
-        $('selector').setOptionsRef( 'system.AC_types_availible').setRef('system.AC_type'),
-        $('br'),
-
     ],
     AC_params: [
         $('span').html('AC params')
     ],
 }
 
-console.log('page_sections', page_sections);
+
+
 
 // Dev settings
 if( version_string === 'Dev' && true ){
@@ -287,25 +312,17 @@ if( version_string === 'Dev' && true ){
 }
 ////////
 
-for( section in page_sections ){
-    var selection_container = $('div').attr('class', 'system_section').appendTo(system_container);
-    selection_container.attr('id', section );
-    selection_container.elem.style.width = settings.drawing.size.drawing.w.toString() + 'px';
-    selection_container.elem.style.display = 'none';
-    page_sections[section].forEach( function(kelem){
-        kelem.appendTo(selection_container);
-        if( kelem.type === 'selector' ){
-            kelem.setRefObj(settings);
-            kelem.setUpdate(update);
-            settings.select_registry.push(kelem);
-            kelem.update(); 
-        } else if( kelem.type === 'value' ){
-            kelem.setRefObj(settings);
-            //kelem.setUpdate(update_system);
-            settings.value_registry.push(kelem);
-        }
-    });
-}
+
+var header_container = $('div').appendTo(system_container);
+var config_container = $('div').appendTo(system_container).style('height', '50px').style('background', 'lightgrey');
+var params_container = $('div').appendTo(system_container).style('height', '150px');
+
+
+
+add_sections(page_sections_header, header_container, 'block');
+add_sections(page_sections_config, config_container);
+add_sections(page_sections_params, params_container);
+
 
 var boot_time = moment();
 var status_id = "status";
