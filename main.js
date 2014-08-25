@@ -39,6 +39,19 @@ function showLocation(location_json){
     update_system(settings);
 }
 */
+function kelem_setup(kelem){
+    if( kelem.type === 'selector' ){
+        kelem.setRefObj(settings);
+        kelem.setUpdate(update);
+        settings.select_registry.push(kelem);
+        kelem.update(); 
+    } else if( kelem.type === 'value' ){
+        kelem.setRefObj(settings);
+        //kelem.setUpdate(update_system);
+        settings.value_registry.push(kelem);
+    }
+    return kelem;
+}
 
 function add_sections(sections, parent_container, display_type){
     display_type = display_type || 'none';
@@ -49,16 +62,7 @@ function add_sections(sections, parent_container, display_type){
         selection_container.elem.style.display = display_type;
         sections[section].forEach( function(kelem){
             kelem.appendTo(selection_container);
-            if( kelem.type === 'selector' ){
-                kelem.setRefObj(settings);
-                kelem.setUpdate(update);
-                settings.select_registry.push(kelem);
-                kelem.update(); 
-            } else if( kelem.type === 'value' ){
-                kelem.setRefObj(settings);
-                //kelem.setUpdate(update_system);
-                settings.value_registry.push(kelem);
-            }
+            kelem_setup(kelem);
         });
     }
 }
@@ -165,25 +169,6 @@ var svg_container = svg_container_object.elem;
 
 
 
-var page_sections_header = {
-    title: [
-        $('span').html('Please select your system spec below').attr('class', 'sectionTitle'),
-        $('span').html(' | '),
-        //$('input').attr('type', 'button').attr('value', 'clear selections').click(window.location.reload),
-        $('a').attr('href', 'javascript:window.location.reload()').html('clear selections'),
-        /*
-        $('span').html('IP location |'),
-        $('span').html('City: '),
-        $('value').setRef('system.city'),
-        $('span').html(' | '),
-        $('span').html('County: '),
-        $('value').setRef('system.county'),
-        $('br'),
-        //*/
-        $('selector').setOptionsRef( 'config_options.section_options' ).setRef('status.active_section'),
-    ],
-};
-
 
 
 var page_sections_config = {
@@ -230,7 +215,7 @@ var page_sections_config = {
         $('selector') .setOptionsRef( 'settings.config_options.inverterMakeArray' ) .setRef('system.inverter.make'),
         $('span').html(' | '),
         $('span').html('Inverter model: '),
-        //$('selector').setOptionsRef( 'components.moduleModelArray' ).setRef('system.pv_model'),
+        //$('selector').setOptionsRef( 'components.moduleModelArray' ).setRef('snecisaryystem.pv_model'),
         $('selector').setOptionsRef( 'settings.config_options.inverterModelArray' ).setRef('system.inverter.model'),
 
     ],
@@ -313,14 +298,30 @@ if( version_string === 'Dev' && true ){
 ////////
 
 
+
+
 var header_container = $('div').appendTo(system_container);
-var config_container = $('div').appendTo(system_container).style('height', '50px').style('background', 'lightgrey');
-var params_container = $('div').appendTo(system_container).style('height', '150px');
+
+$('span').html('Please select your system spec below').attr('class', 'sectionTitle').appendTo(header_container);
+$('span').html(' | ').appendTo(header_container);
+//$('input').attr('type', 'button').attr('value', 'clear selections').click(window.location.reload),
+$('a').attr('href', 'javascript:window.location.reload()').html('clear selections').appendTo(header_container);
 
 
+var config_container = $('div').attr('class', 'system_section').style('height', '100px').style('background', 'lightgrey').appendTo(system_container);
+//var corner_title = $('div').attr('class', 'corner_title').appendTo(config_container);
+var section_selector = $('selector').setOptionsRef( 'config_options.section_options' ).setRef('status.active_section').attr('class', 'corner_title').appendTo(config_container);
+//var section_selector = $('selector').setOptionsRef( 'config_options.section_options' ).setRef('status.active_section').appendTo(corner_title);
+kelem_setup(section_selector);
+console.log(section_selector);
 
-add_sections(page_sections_header, header_container, 'block');
+//$('span').html('<- title here').attr('class', 'corner_title').appendTo(config_container);
+//var selection_container = $('div').appendTo(config_container);
+
+//add_sections(page_sections_config, selection_container);
 add_sections(page_sections_config, config_container);
+
+var params_container = $('div').appendTo(system_container).style('height', '150px');
 add_sections(page_sections_params, params_container);
 
 
