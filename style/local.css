@@ -1,3 +1,26 @@
+body {
+    background: #DFDFDF;
+}
+
+.page {
+    background: WhiteSmoke;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.section_title {
+    font-weight: bold;
+    background: #DFDFDF;
+    color: #424242;
+    font-size: 80%;
+    padding: 2px;
+    padding-top: 10px;
+}
+
+.section {
+    width: 100%;
+    background: WhiteSmoke;
+}
 
 .valueOutOfRange {
     color: red;
@@ -13,16 +36,40 @@
     font-size: 0.7em;
 }
 
-.sectionTitle {
+
+
+.category_title {
     font-weight: bold;
+    padding: 0px 3px 0px 3px;
 }
 
-.system_section {
-   top: 0px;
-   margin: 2px ;  
-   padding: 2px;
-   border-bottom-width: 1px;
-   border-bottom-color: lightgrey;
-   border-bottom-style: solid;
-   width: 100%;
+.value_display {
+    border-right-width: 1px;
+    border-right-style: dotted;
+    border-right-color: grey;
+}
+
+
+.corner_title {
+    float: left;
+	background: WhiteSmoke ;
+    padding: 0px 2px 2px 0px;  
+    margin: 0px 4px 4px 0px;  
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: grey;
+    border-right-width: 1px;
+    border-right-style: solid;
+    border-right-color: grey;
+}
+
+.param_section {
+    margin: 4px;
+
+
+}
+
+.drawing {
+    margin: 10px;
+    background: white;
 }

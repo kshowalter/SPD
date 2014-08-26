@@ -16,6 +16,8 @@ system.DC.module = {};
 system.DC.homerun = {};
 
 var config_options = settings.config_options = {};
+var status = settings.status;
+
 
 settings.status.sections = {
     modules: {},
@@ -24,6 +26,8 @@ settings.status.sections = {
     inverter: {},
     AC: {},
 };
+config_options.section_options = k.objIdArray(settings.status.sections);
+settings.status.active_section = 'modules';
 
 config_options.string_num_options = [1,2,3,4,5,6];
 config_options.string_modules_options = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
@@ -47,6 +51,9 @@ config_options.AC_loadcenter_type_options = k.objIdArray( config_options.AC_load
 config_options.AC_type_options = k.objIdArray( config_options.AC_types );
 
 config_options.inverters = {};
+
+config_options.page_options = ['Page 1 of 1'];
+status.active_page = config_options.page_options[0];
 
 //config_options.inverters['SMA'] = {};
 //config_options.inverters['SMA']['SI3000'] = {
