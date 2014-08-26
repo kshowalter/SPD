@@ -1295,6 +1295,8 @@ system.DC.module = {};
 system.DC.homerun = {};
 
 var config_options = settings.config_options = {};
+var status = settings.status;
+
 
 settings.status.sections = {
     modules: {},
@@ -1303,6 +1305,8 @@ settings.status.sections = {
     inverter: {},
     AC: {},
 };
+config_options.section_options = k.objIdArray(settings.status.sections);
+settings.status.active_section = 'modules';
 
 config_options.string_num_options = [1,2,3,4,5,6];
 config_options.string_modules_options = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
@@ -1326,6 +1330,9 @@ config_options.AC_loadcenter_type_options = k.objIdArray( config_options.AC_load
 config_options.AC_type_options = k.objIdArray( config_options.AC_types );
 
 config_options.inverters = {};
+
+config_options.page_options = ['Page 1 of 1'];
+status.active_page = config_options.page_options[0];
 
 //config_options.inverters['SMA'] = {};
 //config_options.inverters['SMA']['SI3000'] = {
@@ -1760,6 +1767,7 @@ var update_system = function(settings) {
             if( system.DC.module.make && system.DC.module.model ){
                 settings.status.sections.modules.set = true;
                 settings.status.sections.array.ready = true;
+                settings.status.active_section = 'array';
             };
         }
 
@@ -1786,6 +1794,7 @@ var update_system = function(settings) {
 
             if( system.DC.array !== undefined ){
                 settings.status.sections.DC.ready = true;
+                settings.status.active_section = 'DC';
             };
         }
 
@@ -1805,8 +1814,8 @@ var update_system = function(settings) {
         if( settings.status.sections.DC.set ){
             
             system.DC.homerun.resistance = config_options.NEC_tables["Ch 9 Table 8 Conductor Properties"][system.DC.homerun.AWG];
-
             settings.status.sections.inverter.ready = true;
+            settings.status.active_section = 'inverter';
         }
         
         // Inverter
@@ -1827,6 +1836,7 @@ var update_system = function(settings) {
 
             if( true ){
                 settings.status.sections.AC.ready = true;
+                settings.status.active_section = 'AC';
             };
         }
 
@@ -1852,7 +1862,6 @@ var update_system = function(settings) {
 
             if( system.AC_loadcenter_type && system.AC_type ){
                 settings.status.sections.AC.set = true;
-                //settings.status.sections.AC.ready = true;
             };
         }
 
@@ -2697,7 +2706,7 @@ var selector_prototype = {
             //console.log('selected_value', this.elem.options[this.elem.selectedIndex].value);
             var new_value = this.elem.options[this.elem.selectedIndex].value;
             if( this.optionsKontainer.ready ) {
-                //console.log('kontainer ready, setting to: ', new_value)
+                console.log('kontainer ready, setting to: ', new_value)
                 //if( ! isNaN(parseFloat(new_value))) new_value = parseFloat(new_value);
                 this.kontainer.set(new_value);
             }
@@ -2706,7 +2715,7 @@ var selector_prototype = {
     },
     update: function(){
         //console.log('updating: ', this)
-        this.set_value();
+        //this.set_value();
         this.update_options();
         return this;
     },
@@ -2732,10 +2741,10 @@ var selector_prototype = {
                             o.value = value;
                             if( current_value ){
                                 if( value.toString() === current_value.toString() ) {
-                                    //console.log('found it:', value);
+                                    console.log('found it:', value);
                                     o.selected = "selected";
                                 } else {
-                                    //console.log('does not match: ', value, current_value)
+                                    console.log('does not match: ', value, current_value)
                                 }
                                 //o.setAttribute('class', 'selector_option');
                             } else {
@@ -3106,10 +3115,16 @@ var wrapper_prototype = {
         return this;
     },
     show: function(){
-        this.elem.style.display = 'block';
+        this.elem.style.display = 'inline';
+        return this;
     },
     hide: function(){
         this.elem.style.display = 'none';
+        return this;
+    },
+    style: function(field, value){
+        this.elem.style[field] = value;
+        return this;
     },
     /*
     /*
@@ -3124,7 +3139,8 @@ module.exports = wrapper_prototype;
 
 },{}],13:[function(require,module,exports){
 "use strict";
-var version_string = "Alpha20140921";
+var version_string = "Dev_branch";
+//var version_string = "Dev";
 
 var _ = require('underscore');
 var moment = require('moment');
@@ -3164,34 +3180,69 @@ function showLocation(location_json){
     update_system(settings);
 }
 */
+function kelem_setup(kelem){
+    if( kelem.type === 'selector' ){
+        kelem.setRefObj(settings);
+        kelem.setUpdate(update);
+        settings.select_registry.push(kelem);
+        kelem.update(); 
+    } else if( kelem.type === 'value' ){
+        kelem.setRefObj(settings);
+        //kelem.setUpdate(update_system);
+        settings.value_registry.push(kelem);
+    }
+    return kelem;
+}
 
-function show_hide_sections(page_sections){
-    for( var section in page_sections ){
-        var sections = settings.status.sections;
-        /*
-        var sec = $('.'+section );
-        var show = false;
-        if( section in settings.config_options.sections && settings.config_options.sections[section].ready === true ){
-            sec.elem.style.display = 'block';
-        } else if ( section in page_sections  && ! (section in settings.config_options.sections) ) {
-            show = true;
-        }
-        if(show){
-        */
+function add_sections(sections, parent_container, display_type){
+    display_type = display_type || 'none';
+    for( section in sections ){
+        var selection_container = $('div').attr('class', 'section').appendTo(parent_container);
+        selection_container.attr('id', section );
+        //selection_container.elem.style.width = settings.drawing.size.drawing.w.toString() + 'px';
+        selection_container.elem.style.display = display_type;
+        sections[section].forEach( function(kelem){
+            kelem.appendTo(selection_container);
+            kelem_setup(kelem);
+        });
+    }
+}
 
-        $('#title').show();
-        if( sections.modules.ready ) $('#modules').show();
-        if( sections.modules.set ) $('#modules_params').show();
-        if( sections.array.ready ) $('#array').show();
-        if( sections.array.set ) $('#array_params').show();
-        if( sections.DC.ready ) $('#DC').show();
-        if( sections.DC.set ) $('#DC_params').show();
-        if( sections.inverter.ready ) $('#inverter').show();
-        if( sections.inverter.set ) $('#inverter_params').show();
-        if( sections.AC.ready ) $('#AC').show();
-        if( sections.AC.set ) $('#AC_params').show();
+function add_params(sections, parent_container){
+    for( section in sections ){
+        var title = section.split('_')[0];
+        var section_container = $('div').attr('class', 'param_section').appendTo(parent_container);
+        $('span').html(title).attr('class', 'category_title').appendTo(section_container);
+        var selection_container = $('span').appendTo(section_container);
+        selection_container.attr('id', section );
+        //selection_container.elem.style.width = settings.drawing.size.drawing.w.toString() + 'px';
+        selection_container.elem.style.display = 'none';
+        sections[section].forEach( function(kelem){
+            kelem_setup(kelem);
+            kelem.appendTo(selection_container);
+        });
+    }
+}
 
 
+
+function show_hide_params(page_sections){
+    for( var list_name in page_sections ){
+        var id = '#'+list_name;
+        var section_name = list_name.split('_')[0];
+        var section = $(id);
+        if( settings.status.sections[section_name].set ) section.show();
+        else section.hide();
+    }
+}
+
+function show_hide_selections(page_sections, active_section_name){
+    for( var list_name in page_sections ){
+        var id = '#'+list_name;
+        var section_name = list_name.split('_')[0];
+        var section = $(id);
+        if( section_name === active_section_name ) section.show();
+        else section.hide();
     }
 }
 
@@ -3216,7 +3267,8 @@ function update(){
     // Add drawing elements to SVG on screen
     display_svg(settings, svg_container);
 
-    show_hide_sections(page_sections);
+    show_hide_params(page_sections_params);
+    show_hide_selections(page_sections_config, settings.status.active_section)
 
     console.log('settings', settings)
 }
@@ -3255,55 +3307,73 @@ function ready(input, config){
 }
 
 
-// # Page setup
-
-var svg_container_id = 'svg_container';
-var svg_container = document.getElementById(svg_container_id);
-var system_container_id = 'system_container';
-
-
-var title = 'PV drawing test';
-
-k.setup_body(title);
-var draw_page = $('div').attr('id', 'drawing_page');
-document.body.appendChild(draw_page.elem);
-
-var system_container = $('div').attr('id', system_container_id).appendTo(draw_page);
-
-var svg_container_object = $('div').attr('id', svg_container_id).appendTo(draw_page);
-var svg_container = svg_container_object.elem;
 
 
 
-var page_sections = {
-    title: [
-        $('span').html('Please select your system spec below').attr('class', 'sectionTitle'),
-        $('span').html(' | '),
-        //$('input').attr('type', 'button').attr('value', 'clear selections').click(window.location.reload),
-        $('a').attr('href', 'javascript:window.location.reload()').html('clear selections'),
-        /*
-        $('span').html('IP location |'),
-        $('span').html('City: '),
-        $('value').setRef('system.city'),
-        $('span').html(' | '),
-        $('span').html('County: '),
-        $('value').setRef('system.county'),
-        $('br'),
-        //*/
-    ],
+
+var page_sections_config = {
     modules: [
-        $('span').html('Module').attr('class', 'sectionTitle'),
+        $('span').html('Module').attr('class', 'category_title'),
         $('span').html(' | '),
         $('span').html('Module make: '),
         //$('selector') .setOptionsRef( 'components.moduleMakeArray' ) .setRef('system.pv_make'),
-        $('selector') .setOptionsRef( 'settings.config_options.moduleMakeArray' ) .setRef('system.DC.module.make'),
+        $('selector') .setOptionsRef( 'config_options.moduleMakeArray' ) .setRef('system.DC.module.make'),
         $('span').html(' | '),
         $('span').html('Module model: '),
         //$('selector').setOptionsRef( 'components.moduleModelArray' ).setRef('system.pv_model'),
-        $('selector').setOptionsRef( 'settings.config_options.moduleModelArray' ).setRef('system.DC.module.model'),
+        $('selector').setOptionsRef( 'config_options.moduleModelArray' ).setRef('system.DC.module.model'),
         $('br'),
 
     ],
+    array: [
+        $('span').html('Array').attr('class', 'category_title'),
+        $('span').html(' | '),
+
+        $('span').html('Number of strings: '),
+        $('selector').setOptionsRef( 'config_options.string_num_options').setRef('system.DC.string_num'),
+        $('span').html(' | '),
+        $('span').html('Number of modules per string: '),
+        $('selector').setOptionsRef( 'config_options.string_modules_options').setRef('system.DC.string_modules'),
+        //$('span').html(' | '),
+    ],
+    DC: [
+        $('span').html('DC').attr('class', 'category_title'),
+        $('span').html(' | '),
+        $('span').html('DC home run length (ft): '),
+        $('selector').setOptionsRef('config_options.DC_homerun_lengths').setRef('system.DC.homerun.length'),
+        $('span').html(' | '),
+        $('span').html('DC home run AWG: '),
+        $('selector').setOptionsRef('config_options.DC_homerun_AWG_options').setRef('system.DC.homerun.AWG'),
+
+    ],
+    inverter: [
+        $('span').html('Inverter').attr('class', 'category_title'),
+        $('span').html(' | '),
+
+        $('span').html('Inverter make: '),
+        //$('selector') .setOptionsRef( 'components.moduleMakeArray' ) .setRef('system.pv_make'),
+        $('selector') .setOptionsRef( 'config_options.inverterMakeArray' ) .setRef('system.inverter.make'),
+        $('span').html(' | '),
+        $('span').html('Inverter model: '),
+        //$('selector').setOptionsRef( 'components.moduleModelArray' ).setRef('snecisaryystem.pv_model'),
+        $('selector').setOptionsRef( 'config_options.inverterModelArray' ).setRef('system.inverter.model'),
+
+    ],
+    AC: [
+        $('span').html('AC').attr('class', 'category_title'),
+        $('span').html(' | '),
+
+        $('span').html('AC Load Center type: '),
+        $('selector').setOptionsRef( 'config_options.AC_loadcenter_type_options').setRef('system.AC_loadcenter_type'),
+        $('span').html('AC type: '),
+        //$('selector').setOptionsRef( 'config_options.AC_type_options').setRef('system.AC_type'),
+        $('selector').setOptionsRef( 'system.AC_types_availible').setRef('system.AC_type'),
+        $('br'),
+
+    ],
+    
+}
+var page_sections_params = {
     modules_params: [
         $('span').html('Pmp: '),
         $('value').setRef('system.DC.module.specs.Pmp').setDecimals(1),
@@ -3320,18 +3390,9 @@ var page_sections = {
         $('span').html('Vmp: '),
         $('value').setRef('system.DC.module.specs.Vmp').setDecimals(1),
     ],
-    array: [
-        $('span').html('Array').attr('class', 'sectionTitle'),
-        $('span').html(' | '),
-
-        $('span').html('Number of strings: '),
-        $('selector').setOptionsRef( 'config_options.string_num_options').setRef('system.DC.string_num'),
-        $('span').html(' | '),
-        $('span').html('Number of modules per string: '),
-        $('selector').setOptionsRef( 'config_options.string_modules_options').setRef('system.DC.string_modules'),
-        //$('span').html(' | '),
-    ],
     array_params: [
+        $('span').html('Array').attr('class', 'category_title'),
+        $('span').html(' | '),
         $('span').html('Pmp: '),
         $('value').setRef('system.DC.array.Pmp').setDecimals(1),
         $('span').html(' | '),
@@ -3347,16 +3408,6 @@ var page_sections = {
         $('span').html('Vmp: '),
         $('value').setRef('system.DC.array.Vmp').setDecimals(1),
     ],
-    DC: [
-        $('span').html('DC').attr('class', 'sectionTitle'),
-        $('span').html(' | '),
-        $('span').html('DC home run length (ft): '),
-        $('selector').setOptionsRef('config_options.DC_homerun_lengths').setRef('system.DC.homerun.length'),
-        $('span').html(' | '),
-        $('span').html('DC home run AWG: '),
-        $('selector').setOptionsRef('config_options.DC_homerun_AWG_options').setRef('system.DC.homerun.AWG'),
-
-    ],
     DC_params: [
         $('span').html('Resistance: '),
         $('value').setRef('system.DC.homerun.resistance'),
@@ -3365,41 +3416,17 @@ var page_sections = {
 //        $('value').setRef('system.DC.homerun.'),
 //        $('span').html(' | '),
     ],
-    inverter: [
-        $('span').html('Inverter').attr('class', 'sectionTitle'),
-        $('span').html(' | '),
-
-        $('span').html('Inverter make: '),
-        //$('selector') .setOptionsRef( 'components.moduleMakeArray' ) .setRef('system.pv_make'),
-        $('selector') .setOptionsRef( 'settings.config_options.inverterMakeArray' ) .setRef('system.inverter.make'),
-        $('span').html(' | '),
-        $('span').html('Inverter model: '),
-        //$('selector').setOptionsRef( 'components.moduleModelArray' ).setRef('system.pv_model'),
-        $('selector').setOptionsRef( 'settings.config_options.inverterModelArray' ).setRef('system.inverter.model'),
-
-    ],
     inverter_params: [
         $('span').html('Inverter specs'),
         $('span').html(' | '),
-    ],
-    AC: [
-        $('span').html('AC').attr('class', 'sectionTitle'),
-        $('span').html(' | '),
-
-        $('span').html('AC Load Center type: '),
-        $('selector').setOptionsRef( 'config_options.AC_loadcenter_type_options').setRef('system.AC_loadcenter_type'),
-        $('span').html('AC type: '),
-        //$('selector').setOptionsRef( 'config_options.AC_type_options').setRef('system.AC_type'),
-        $('selector').setOptionsRef( 'system.AC_types_availible').setRef('system.AC_type'),
-        $('br'),
-
     ],
     AC_params: [
         $('span').html('AC params')
     ],
 }
 
-console.log('page_sections', page_sections);
+
+
 
 // Dev settings
 if( version_string === 'Dev' && true ){
@@ -3412,25 +3439,61 @@ if( version_string === 'Dev' && true ){
 }
 ////////
 
-for( section in page_sections ){
-    var selection_container = $('div').attr('class', 'system_section').appendTo(system_container);
-    selection_container.attr('id', section );
-    selection_container.elem.style.width = settings.drawing.size.drawing.w.toString() + 'px';
-    selection_container.elem.style.display = 'none';
-    page_sections[section].forEach( function(kelem){
-        kelem.appendTo(selection_container);
-        if( kelem.type === 'selector' ){
-            kelem.setRefObj(settings);
-            kelem.setUpdate(update);
-            settings.select_registry.push(kelem);
-            kelem.update(); 
-        } else if( kelem.type === 'value' ){
-            kelem.setRefObj(settings);
-            //kelem.setUpdate(update_system);
-            settings.value_registry.push(kelem);
-        }
-    });
-}
+
+
+
+
+// # Page setup
+//var svg_container_id = 'svg_container';
+var system_container_id = 'system_container';
+var title = 'PV drawing test';
+
+
+k.setup_body(title);
+
+var page = $('div').attr('class', 'page').appendTo($(document.body));
+page.style('width', (settings.drawing.size.drawing.w+20).toString() + "px" )
+
+
+
+var system_container = $('div').attr('id', system_container_id).appendTo(page);
+
+
+var header_container = $('div').appendTo(page);
+$('span').html('Please select your system spec below').attr('class', 'category_title').appendTo(header_container);
+$('span').html(' | ').appendTo(header_container);
+//$('input').attr('type', 'button').attr('value', 'clear selections').click(window.location.reload),
+$('a').attr('href', 'javascript:window.location.reload()').html('clear selections').appendTo(header_container);
+
+
+// System setup
+$('div').html('System Setup').attr('class', 'section_title').appendTo(page);
+var config_container = $('div').attr('class', 'section').appendTo(page);
+var section_selector = $('selector').setOptionsRef( 'config_options.section_options' ).setRef('status.active_section').attr('class', 'corner_title').appendTo(config_container);
+kelem_setup(section_selector);
+console.log(section_selector);
+add_sections(page_sections_config, config_container);
+
+// Parameters and specifications
+$('div').html('System Parameters').attr('class', 'section_title').appendTo(page);
+var params_container = $('div').attr('class', 'section').style('height', '150px').appendTo(page);
+add_params(page_sections_params, params_container);
+
+// drawing
+$('div').html('Drawing').attr('class', 'section_title').appendTo(page);
+var drawing = $('div').attr('class', 'section').appendTo(page);
+var page_selector = $('selector').setOptionsRef( 'config_options.page_options' ).setRef('status.active_page').attr('class', 'corner_title').appendTo(drawing);
+kelem_setup(page_selector);
+console.log(page_selector)
+var svg_container_object = $('div').attr('class', 'drawing').style('clear', 'both').appendTo(drawing);
+//svg_container_object.style('width', settings.drawing.size.drawing.w+"px" )
+var svg_container = svg_container_object.elem;
+$('br').appendTo(drawing);
+
+///////////////////
+$('div').html(' ').attr('class', 'section_title').appendTo(page);
+
+
 
 var boot_time = moment();
 var status_id = "status";
