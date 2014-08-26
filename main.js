@@ -1,5 +1,6 @@
 "use strict";
-var version_string = "Dev_brach";
+var version_string = "Dev_branch";
+//var version_string = "Dev";
 
 var _ = require('underscore');
 var moment = require('moment');
@@ -56,9 +57,9 @@ function kelem_setup(kelem){
 function add_sections(sections, parent_container, display_type){
     display_type = display_type || 'none';
     for( section in sections ){
-        var selection_container = $('div').attr('class', 'system_section').appendTo(parent_container);
+        var selection_container = $('div').attr('class', 'section').appendTo(parent_container);
         selection_container.attr('id', section );
-        selection_container.elem.style.width = settings.drawing.size.drawing.w.toString() + 'px';
+        //selection_container.elem.style.width = settings.drawing.size.drawing.w.toString() + 'px';
         selection_container.elem.style.display = display_type;
         sections[section].forEach( function(kelem){
             kelem.appendTo(selection_container);
@@ -66,6 +67,23 @@ function add_sections(sections, parent_container, display_type){
         });
     }
 }
+
+function add_params(sections, parent_container){
+    for( section in sections ){
+        var title = section.split('_')[0];
+        var section_container = $('div').attr('class', 'param_section').appendTo(parent_container);
+        $('span').html(title).attr('class', 'category_title').appendTo(section_container);
+        var selection_container = $('span').appendTo(section_container);
+        selection_container.attr('id', section );
+        //selection_container.elem.style.width = settings.drawing.size.drawing.w.toString() + 'px';
+        selection_container.elem.style.display = 'none';
+        sections[section].forEach( function(kelem){
+            kelem_setup(kelem);
+            kelem.appendTo(selection_container);
+        });
+    }
+}
+
 
 
 function show_hide_params(page_sections){
@@ -149,44 +167,26 @@ function ready(input, config){
 }
 
 
-// # Page setup
-
-var svg_container_id = 'svg_container';
-var svg_container = document.getElementById(svg_container_id);
-var system_container_id = 'system_container';
-
-
-var title = 'PV drawing test';
-
-k.setup_body(title);
-var draw_page = $('div').attr('id', 'drawing_page');
-document.body.appendChild(draw_page.elem);
-
-var system_container = $('div').attr('id', system_container_id).appendTo(draw_page);
-
-var svg_container_object = $('div').attr('id', svg_container_id).appendTo(draw_page);
-var svg_container = svg_container_object.elem;
-
 
 
 
 
 var page_sections_config = {
     modules: [
-        $('span').html('Module').attr('class', 'sectionTitle'),
+        $('span').html('Module').attr('class', 'category_title'),
         $('span').html(' | '),
         $('span').html('Module make: '),
         //$('selector') .setOptionsRef( 'components.moduleMakeArray' ) .setRef('system.pv_make'),
-        $('selector') .setOptionsRef( 'settings.config_options.moduleMakeArray' ) .setRef('system.DC.module.make'),
+        $('selector') .setOptionsRef( 'config_options.moduleMakeArray' ) .setRef('system.DC.module.make'),
         $('span').html(' | '),
         $('span').html('Module model: '),
         //$('selector').setOptionsRef( 'components.moduleModelArray' ).setRef('system.pv_model'),
-        $('selector').setOptionsRef( 'settings.config_options.moduleModelArray' ).setRef('system.DC.module.model'),
+        $('selector').setOptionsRef( 'config_options.moduleModelArray' ).setRef('system.DC.module.model'),
         $('br'),
 
     ],
     array: [
-        $('span').html('Array').attr('class', 'sectionTitle'),
+        $('span').html('Array').attr('class', 'category_title'),
         $('span').html(' | '),
 
         $('span').html('Number of strings: '),
@@ -197,7 +197,7 @@ var page_sections_config = {
         //$('span').html(' | '),
     ],
     DC: [
-        $('span').html('DC').attr('class', 'sectionTitle'),
+        $('span').html('DC').attr('class', 'category_title'),
         $('span').html(' | '),
         $('span').html('DC home run length (ft): '),
         $('selector').setOptionsRef('config_options.DC_homerun_lengths').setRef('system.DC.homerun.length'),
@@ -207,20 +207,20 @@ var page_sections_config = {
 
     ],
     inverter: [
-        $('span').html('Inverter').attr('class', 'sectionTitle'),
+        $('span').html('Inverter').attr('class', 'category_title'),
         $('span').html(' | '),
 
         $('span').html('Inverter make: '),
         //$('selector') .setOptionsRef( 'components.moduleMakeArray' ) .setRef('system.pv_make'),
-        $('selector') .setOptionsRef( 'settings.config_options.inverterMakeArray' ) .setRef('system.inverter.make'),
+        $('selector') .setOptionsRef( 'config_options.inverterMakeArray' ) .setRef('system.inverter.make'),
         $('span').html(' | '),
         $('span').html('Inverter model: '),
         //$('selector').setOptionsRef( 'components.moduleModelArray' ).setRef('snecisaryystem.pv_model'),
-        $('selector').setOptionsRef( 'settings.config_options.inverterModelArray' ).setRef('system.inverter.model'),
+        $('selector').setOptionsRef( 'config_options.inverterModelArray' ).setRef('system.inverter.model'),
 
     ],
     AC: [
-        $('span').html('AC').attr('class', 'sectionTitle'),
+        $('span').html('AC').attr('class', 'category_title'),
         $('span').html(' | '),
 
         $('span').html('AC Load Center type: '),
@@ -251,6 +251,8 @@ var page_sections_params = {
         $('value').setRef('system.DC.module.specs.Vmp').setDecimals(1),
     ],
     array_params: [
+        $('span').html('Array').attr('class', 'category_title'),
+        $('span').html(' | '),
         $('span').html('Pmp: '),
         $('value').setRef('system.DC.array.Pmp').setDecimals(1),
         $('span').html(' | '),
@@ -300,29 +302,57 @@ if( version_string === 'Dev' && true ){
 
 
 
-var header_container = $('div').appendTo(system_container);
 
-$('span').html('Please select your system spec below').attr('class', 'sectionTitle').appendTo(header_container);
+// # Page setup
+//var svg_container_id = 'svg_container';
+var system_container_id = 'system_container';
+var title = 'PV drawing test';
+
+
+k.setup_body(title);
+
+var page = $('div').attr('class', 'page').appendTo($(document.body));
+page.style('width', (settings.drawing.size.drawing.w+20).toString() + "px" )
+
+
+
+var system_container = $('div').attr('id', system_container_id).appendTo(page);
+
+
+var header_container = $('div').appendTo(page);
+$('span').html('Please select your system spec below').attr('class', 'category_title').appendTo(header_container);
 $('span').html(' | ').appendTo(header_container);
 //$('input').attr('type', 'button').attr('value', 'clear selections').click(window.location.reload),
 $('a').attr('href', 'javascript:window.location.reload()').html('clear selections').appendTo(header_container);
 
 
-var config_container = $('div').attr('class', 'system_section').style('height', '100px').style('background', 'lightgrey').appendTo(system_container);
-//var corner_title = $('div').attr('class', 'corner_title').appendTo(config_container);
+// System setup
+$('div').html('System Setup').attr('class', 'section_title').appendTo(page);
+var config_container = $('div').attr('class', 'section').appendTo(page);
 var section_selector = $('selector').setOptionsRef( 'config_options.section_options' ).setRef('status.active_section').attr('class', 'corner_title').appendTo(config_container);
-//var section_selector = $('selector').setOptionsRef( 'config_options.section_options' ).setRef('status.active_section').appendTo(corner_title);
 kelem_setup(section_selector);
 console.log(section_selector);
-
-//$('span').html('<- title here').attr('class', 'corner_title').appendTo(config_container);
-//var selection_container = $('div').appendTo(config_container);
-
-//add_sections(page_sections_config, selection_container);
 add_sections(page_sections_config, config_container);
 
-var params_container = $('div').appendTo(system_container).style('height', '150px');
-add_sections(page_sections_params, params_container);
+// Parameters and specifications
+$('div').html('System Parameters').attr('class', 'section_title').appendTo(page);
+var params_container = $('div').attr('class', 'section').style('height', '150px').appendTo(page);
+add_params(page_sections_params, params_container);
+
+// drawing
+$('div').html('Drawing').attr('class', 'section_title').appendTo(page);
+var drawing = $('div').attr('class', 'section').appendTo(page);
+var page_selector = $('selector').setOptionsRef( 'config_options.page_options' ).setRef('status.active_page').attr('class', 'corner_title').appendTo(drawing);
+kelem_setup(page_selector);
+console.log(page_selector)
+var svg_container_object = $('div').attr('class', 'drawing').style('clear', 'both').appendTo(drawing);
+//svg_container_object.style('width', settings.drawing.size.drawing.w+"px" )
+var svg_container = svg_container_object.elem;
+$('br').appendTo(drawing);
+
+///////////////////
+$('div').html(' ').attr('class', 'section_title').appendTo(page);
+
 
 
 var boot_time = moment();
