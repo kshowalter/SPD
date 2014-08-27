@@ -4,12 +4,17 @@ body {
 
 .page {
     background: WhiteSmoke;
+    margin: 10px;
 }
 
 #system_container {
     float: left;
     margin-right: 25px;
     width: 700px;
+}
+
+#config_container {
+    height: 100px;
 }
 
 #drawing {

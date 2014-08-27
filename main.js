@@ -109,10 +109,13 @@ function show_hide_selections(page_sections, active_section_name){
 
 function update(){
     console.log('updating');
+    //console.log('-section', settings.status.active_section);
 
     update_system(settings);
+    //console.log('-section', settings.status.active_section);
 
     settings.select_registry.forEach(function(item){
+        //console.log(item)
         item.update(); 
     });
 
@@ -328,10 +331,10 @@ $('a').attr('href', 'javascript:window.location.reload()').html('clear selection
 
 // System setup
 $('div').html('System Setup').attr('class', 'section_title').appendTo(system_container);
-var config_container = $('div').attr('class', 'section').appendTo(system_container);
+var config_container = $('div').attr('id', 'config_container').attr('class', 'section').appendTo(system_container);
 var section_selector = $('selector').setOptionsRef( 'config_options.section_options' ).setRef('status.active_section').attr('class', 'corner_title').appendTo(config_container);
 kelem_setup(section_selector);
-console.log(section_selector);
+//console.log(section_selector);
 add_sections(page_sections_config, config_container);
 
 // Parameters and specifications
@@ -345,7 +348,7 @@ drawing.style('width', (settings.drawing.size.drawing.w+20).toString() + "px" )
 $('div').html('Drawing').attr('class', 'section_title').appendTo(drawing);
 var page_selector = $('selector').setOptionsRef( 'config_options.page_options' ).setRef('status.active_page').attr('class', 'corner_title').appendTo(drawing);
 kelem_setup(page_selector);
-console.log(page_selector)
+//console.log(page_selector)
 var svg_container_object = $('div').attr('class', 'drawing').style('clear', 'both').appendTo(drawing);
 //svg_container_object.style('width', settings.drawing.size.drawing.w+"px" )
 var svg_container = svg_container_object.elem;
