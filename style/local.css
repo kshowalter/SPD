@@ -4,8 +4,16 @@ body {
 
 .page {
     background: WhiteSmoke;
-    margin-left: auto;
-    margin-right: auto;
+}
+
+#system_container {
+    float: left;
+    margin-right: 25px;
+    width: 700px;
+}
+
+#drawing {
+    float: left;
 }
 
 .section_title {
@@ -27,10 +35,6 @@ body {
 
 }
 
-#drawing_page {
-    margin-left: 15px;
-    margin-top: 15px;
-}
 
 #status{
     font-size: 0.7em;

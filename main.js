@@ -312,14 +312,14 @@ var title = 'PV drawing test';
 k.setup_body(title);
 
 var page = $('div').attr('class', 'page').appendTo($(document.body));
-page.style('width', (settings.drawing.size.drawing.w+20).toString() + "px" )
+//page.style('width', (settings.drawing.size.drawing.w+20).toString() + "px" )
 
 
 
 var system_container = $('div').attr('id', system_container_id).appendTo(page);
 
 
-var header_container = $('div').appendTo(page);
+var header_container = $('div').appendTo(system_container);
 $('span').html('Please select your system spec below').attr('class', 'category_title').appendTo(header_container);
 $('span').html(' | ').appendTo(header_container);
 //$('input').attr('type', 'button').attr('value', 'clear selections').click(window.location.reload),
@@ -327,21 +327,22 @@ $('a').attr('href', 'javascript:window.location.reload()').html('clear selection
 
 
 // System setup
-$('div').html('System Setup').attr('class', 'section_title').appendTo(page);
-var config_container = $('div').attr('class', 'section').appendTo(page);
+$('div').html('System Setup').attr('class', 'section_title').appendTo(system_container);
+var config_container = $('div').attr('class', 'section').appendTo(system_container);
 var section_selector = $('selector').setOptionsRef( 'config_options.section_options' ).setRef('status.active_section').attr('class', 'corner_title').appendTo(config_container);
 kelem_setup(section_selector);
 console.log(section_selector);
 add_sections(page_sections_config, config_container);
 
 // Parameters and specifications
-$('div').html('System Parameters').attr('class', 'section_title').appendTo(page);
-var params_container = $('div').attr('class', 'section').style('height', '150px').appendTo(page);
+$('div').html('System Parameters').attr('class', 'section_title').appendTo(system_container);
+var params_container = $('div').attr('class', 'section').style('height', '150px').appendTo(system_container);
 add_params(page_sections_params, params_container);
 
 // drawing
-$('div').html('Drawing').attr('class', 'section_title').appendTo(page);
-var drawing = $('div').attr('class', 'section').appendTo(page);
+var drawing = $('div').attr('id', 'drawing').attr('class', 'section').appendTo(page);
+drawing.style('width', (settings.drawing.size.drawing.w+20).toString() + "px" )
+$('div').html('Drawing').attr('class', 'section_title').appendTo(drawing);
 var page_selector = $('selector').setOptionsRef( 'config_options.page_options' ).setRef('status.active_page').attr('class', 'corner_title').appendTo(drawing);
 kelem_setup(page_selector);
 console.log(page_selector)
@@ -351,7 +352,7 @@ var svg_container = svg_container_object.elem;
 $('br').appendTo(drawing);
 
 ///////////////////
-$('div').html(' ').attr('class', 'section_title').appendTo(page);
+$('div').html(' ').attr('class', 'section_title').appendTo(drawing);
 
 
 
