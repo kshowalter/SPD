@@ -2706,9 +2706,10 @@ var selector_prototype = {
             //console.log('selected_value', this.elem.options[this.elem.selectedIndex].value);
             var new_value = this.elem.options[this.elem.selectedIndex].value;
             if( this.optionsKontainer.ready ) {
-                console.log('kontainer ready, setting to: ', new_value)
+                //console.log('kontainer ready, setting to: ', new_value)
                 //if( ! isNaN(parseFloat(new_value))) new_value = parseFloat(new_value);
                 this.kontainer.set(new_value);
+                this.value = new_value;
             }
             return this;    
         }
@@ -2720,11 +2721,12 @@ var selector_prototype = {
         return this;
     },
     update_options: function(){
+        var old_value = this.value;
         if( this.kontainer.ready ) {
-            var current_value = this.kontainer.get();
-            if( typeof current_value == "object") current_value = null;
+            this.value = this.kontainer.get();
+            if( typeof this.value == "object") this.value = null;
         } else {
-            var current_value = null; 
+            this.value = null; 
         }
 
         if( this.optionsKontainer.ready && this.kontainer.ready ) {
@@ -2732,19 +2734,19 @@ var selector_prototype = {
             this.options = this.optionsKontainer.get();
             if( this.options instanceof Array ){
                 //this.options.unshift('');
-                if( old_options !== this.options ){
+                if( this.options !== old_options|| this.value !== old_value ){
                     if( this.options !== undefined && this.options instanceof Array) {
                         //this.elem.innerHTML = '';
                         this.elem.innerHTML = '<option selected disabled hidden></option>'
                         this.options.forEach(function(value,id){
                             var o = document.createElement('option');
                             o.value = value;
-                            if( current_value ){
-                                if( value.toString() === current_value.toString() ) {
-                                    console.log('found it:', value);
+                            if( this.value ){
+                                if( value.toString() === this.value.toString() ) {
+                                    //console.log('found it:', value);
                                     o.selected = "selected";
                                 } else {
-                                    console.log('does not match: ', value, current_value)
+                                    //console.log('does not match: ', value, this.value)
                                 }
                                 //o.setAttribute('class', 'selector_option');
                             } else {
@@ -3139,7 +3141,7 @@ module.exports = wrapper_prototype;
 
 },{}],13:[function(require,module,exports){
 "use strict";
-var version_string = "Dev_branch";
+var version_string = "Alpha20140827";
 //var version_string = "Dev";
 
 var _ = require('underscore');
@@ -3249,10 +3251,13 @@ function show_hide_selections(page_sections, active_section_name){
 
 function update(){
     console.log('updating');
+    //console.log('-section', settings.status.active_section);
 
     update_system(settings);
+    //console.log('-section', settings.status.active_section);
 
     settings.select_registry.forEach(function(item){
+        //console.log(item)
         item.update(); 
     });
 
@@ -3375,6 +3380,7 @@ var page_sections_config = {
 }
 var page_sections_params = {
     modules_params: [
+        $('span').html(' | '),
         $('span').html('Pmp: '),
         $('value').setRef('system.DC.module.specs.Pmp').setDecimals(1),
         $('span').html(' | '),
@@ -3391,7 +3397,6 @@ var page_sections_params = {
         $('value').setRef('system.DC.module.specs.Vmp').setDecimals(1),
     ],
     array_params: [
-        $('span').html('Array').attr('class', 'category_title'),
         $('span').html(' | '),
         $('span').html('Pmp: '),
         $('value').setRef('system.DC.array.Pmp').setDecimals(1),
@@ -3409,6 +3414,7 @@ var page_sections_params = {
         $('value').setRef('system.DC.array.Vmp').setDecimals(1),
     ],
     DC_params: [
+        $('span').html(' | '),
         $('span').html('Resistance: '),
         $('value').setRef('system.DC.homerun.resistance'),
         $('span').html(' | '),
@@ -3417,11 +3423,14 @@ var page_sections_params = {
 //        $('span').html(' | '),
     ],
     inverter_params: [
+        $('span').html(' | '),
         $('span').html('Inverter specs'),
         $('span').html(' | '),
     ],
     AC_params: [
-        $('span').html('AC params')
+        $('span').html(' | '),
+        $('span').html('AC params'),
+        $('span').html(' | '),
     ],
 }
 
@@ -3452,14 +3461,14 @@ var title = 'PV drawing test';
 k.setup_body(title);
 
 var page = $('div').attr('class', 'page').appendTo($(document.body));
-page.style('width', (settings.drawing.size.drawing.w+20).toString() + "px" )
+//page.style('width', (settings.drawing.size.drawing.w+20).toString() + "px" )
 
 
 
 var system_container = $('div').attr('id', system_container_id).appendTo(page);
 
 
-var header_container = $('div').appendTo(page);
+var header_container = $('div').appendTo(system_container);
 $('span').html('Please select your system spec below').attr('class', 'category_title').appendTo(header_container);
 $('span').html(' | ').appendTo(header_container);
 //$('input').attr('type', 'button').attr('value', 'clear selections').click(window.location.reload),
@@ -3467,31 +3476,32 @@ $('a').attr('href', 'javascript:window.location.reload()').html('clear selection
 
 
 // System setup
-$('div').html('System Setup').attr('class', 'section_title').appendTo(page);
-var config_container = $('div').attr('class', 'section').appendTo(page);
+$('div').html('System Setup').attr('class', 'section_title').appendTo(system_container);
+var config_container = $('div').attr('id', 'config_container').attr('class', 'section').appendTo(system_container);
 var section_selector = $('selector').setOptionsRef( 'config_options.section_options' ).setRef('status.active_section').attr('class', 'corner_title').appendTo(config_container);
 kelem_setup(section_selector);
-console.log(section_selector);
+//console.log(section_selector);
 add_sections(page_sections_config, config_container);
 
 // Parameters and specifications
-$('div').html('System Parameters').attr('class', 'section_title').appendTo(page);
-var params_container = $('div').attr('class', 'section').style('height', '150px').appendTo(page);
+$('div').html('System Parameters').attr('class', 'section_title').appendTo(system_container);
+var params_container = $('div').attr('class', 'section').style('height', '150px').appendTo(system_container);
 add_params(page_sections_params, params_container);
 
 // drawing
-$('div').html('Drawing').attr('class', 'section_title').appendTo(page);
-var drawing = $('div').attr('class', 'section').appendTo(page);
+var drawing = $('div').attr('id', 'drawing').attr('class', 'section').appendTo(page);
+drawing.style('width', (settings.drawing.size.drawing.w+20).toString() + "px" )
+$('div').html('Drawing').attr('class', 'section_title').appendTo(drawing);
 var page_selector = $('selector').setOptionsRef( 'config_options.page_options' ).setRef('status.active_page').attr('class', 'corner_title').appendTo(drawing);
 kelem_setup(page_selector);
-console.log(page_selector)
+//console.log(page_selector)
 var svg_container_object = $('div').attr('class', 'drawing').style('clear', 'both').appendTo(drawing);
 //svg_container_object.style('width', settings.drawing.size.drawing.w+"px" )
 var svg_container = svg_container_object.elem;
 $('br').appendTo(drawing);
 
 ///////////////////
-$('div').html(' ').attr('class', 'section_title').appendTo(page);
+$('div').html(' ').attr('class', 'section_title').appendTo(drawing);
 
 
 

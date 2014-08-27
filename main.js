@@ -1,5 +1,5 @@
 "use strict";
-var version_string = "Dev_branch";
+var version_string = "Alpha20140827";
 //var version_string = "Dev";
 
 var _ = require('underscore');
