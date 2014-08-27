@@ -238,6 +238,7 @@ var page_sections_config = {
 }
 var page_sections_params = {
     modules_params: [
+        $('span').html(' | '),
         $('span').html('Pmp: '),
         $('value').setRef('system.DC.module.specs.Pmp').setDecimals(1),
         $('span').html(' | '),
@@ -254,7 +255,6 @@ var page_sections_params = {
         $('value').setRef('system.DC.module.specs.Vmp').setDecimals(1),
     ],
     array_params: [
-        $('span').html('Array').attr('class', 'category_title'),
         $('span').html(' | '),
         $('span').html('Pmp: '),
         $('value').setRef('system.DC.array.Pmp').setDecimals(1),
@@ -272,6 +272,7 @@ var page_sections_params = {
         $('value').setRef('system.DC.array.Vmp').setDecimals(1),
     ],
     DC_params: [
+        $('span').html(' | '),
         $('span').html('Resistance: '),
         $('value').setRef('system.DC.homerun.resistance'),
         $('span').html(' | '),
@@ -280,11 +281,14 @@ var page_sections_params = {
 //        $('span').html(' | '),
     ],
     inverter_params: [
+        $('span').html(' | '),
         $('span').html('Inverter specs'),
         $('span').html(' | '),
     ],
     AC_params: [
-        $('span').html('AC params')
+        $('span').html(' | '),
+        $('span').html('AC params'),
+        $('span').html(' | '),
     ],
 }
 
