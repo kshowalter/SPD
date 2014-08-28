@@ -1,5 +1,4 @@
 'use strict';
-var log = console.log.bind(console);
 //var settings = require('./settings.js');
 //var snapsvg = require('snapsvg');
 //log(settings);
@@ -7,11 +6,11 @@ var log = console.log.bind(console);
 
 
 var display_svg = function(settings, container){
-    log('displaying svg');
+    console.log('displaying svg');
     var l_attr = settings.drawing.l_attr;
     var fonts = settings.drawing.fonts;
     var elements = settings.elements;
-    //log('elements: ', elements);
+    //console.log('elements: ', elements);
     container.innerHTML = '';
     //container.empty()
 
@@ -36,13 +35,13 @@ var display_svg = function(settings, container){
 
         if( elem.type === 'rect') {
             //svg.rect( elem.w, elem.h ).move( x-elem.w/2, y-elem.h/2 ).attr( l_attr[elem.layer_name] );
-            //log('elem:', elem );
+            //console.log('elem:', elem );
             //if( isNaN(elem.w) ) {
-            //    log('error: elem not fully defined', elem)
+            //    console.log('error: elem not fully defined', elem)
             //    elem.w = 10;
             //}
             //if( isNaN(elem.h) ) {
-            //    log('error: elem not fully defined', elem)
+            //    console.log('error: elem not fully defined', elem)
             //    elem.h = 10;
             //}
             var r = document.createElementNS("http://www.w3.org/2000/svg", 'rect');
@@ -61,7 +60,7 @@ var display_svg = function(settings, container){
                 if( ! isNaN(point[0]) && ! isNaN(point[1]) ){
                     points2.push([ point[0]+offset.x, point[1]+offset.y ]);
                 } else {
-                    log('error: elem not fully defined', elem)
+                    console.log('error: elem not fully defined', elem)
                 }
             });
             //svg.polyline( points2 ).attr( l_attr[elem.layer_name] );
