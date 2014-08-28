@@ -1,12 +1,14 @@
 "use strict";
-var version_string = "Alpha20140827";
-//var version_string = "Dev";
+//var version_string = "Alpha20140827";
+var version_string = "Dev";
 
 var _ = require('underscore');
 var moment = require('moment');
 var k = require('./lib/k/k.js');
 var k_data = require('./lib/k/k_data.js');
 var $ = require('./lib/k/k_DOM');
+
+var pdfkit = require('pdfkit');
 
 var settings = require('./app/settings.js');
 var loadTables = require('./app/settings_functions').loadTables;
