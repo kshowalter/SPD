@@ -4,12 +4,39 @@
     "author": "",
     "description": "",
 
+    "browserify": {
+        "transform": [ "browserify-shim" ]
+    },
     "dependencies": {
         "underscore": "latest",
         "moment": "latest",
-        "snapsvg": "latest"
+        "snapsvg": "latest",
+        "brfs": "1.0.2",
+        "pdfkit": "latest",
+        "jquery": "latest"
     },
+    "devDependencies": {
+        "browserify": "^5.11.0",
+        "browserify-shim": "^3.7.0",
+        "beefy": "latest"
+    },
+    "browser": {
+        "jsPDF": "./lib/jspdf",
+        "FileSaver": "./lib/FileSaver",
+        "svgToPdf": "./lib/svgToPdf"
 
-    "build": "browserify main.js -o index.js",
-    "watch": "watchify main.js -o index.js --debug --verbose"
+    },
+    "browserify-shim": {
+        "FileSaver": {
+            "exports": "saveAs"
+        },
+        "jsPDF": {
+            "exports": "jsPDF",
+            "depends": ["FileSaver:saveAs"]
+        },
+        "svgToPdf": {
+            "exports": "svgToPdf",
+            "depends": ["jquery:$"]
+        }
+    } 
 }
