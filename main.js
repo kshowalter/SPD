@@ -8,7 +8,6 @@ var k = require('./lib/k/k.js');
 var k_data = require('./lib/k/k_data.js');
 var $ = require('./lib/k/k_DOM');
 
-var pdfkit = require('pdfkit');
 
 var settings = require('./app/settings.js');
 var loadTables = require('./app/settings_functions').loadTables;
@@ -16,6 +15,7 @@ var loadModules = require('./app/settings_functions').loadModules;
 var loadComponents = require('./app/settings_functions').loadComponents;
 var mk_drawing = require('./app/mk_drawing.js');
 var display_svg = require('./app/display_svg.js');
+var mk_pdf = require('./app/mk_pdf.js');
 var update_system = require('./app/update_system');
 
 var components = settings.components;
@@ -131,6 +131,9 @@ function update(){
     settings.elements = mk_drawing(settings);
     // Add drawing elements to SVG on screen
     display_svg(settings, svg_container);
+
+    var pdf = mk_pdf(settings, svg_container);
+    console.log(pdf);
 
     show_hide_params(page_sections_params);
     show_hide_selections(page_sections_config, settings.status.active_section)
