@@ -132,8 +132,12 @@ function update(){
     // Add drawing elements to SVG on screen
     display_svg(settings, svg_container);
 
-    var pdf = mk_pdf(settings, svg_container);
-    console.log(pdf);
+    var svg = $("#svg_drawing").elem;
+    console.log(svg);
+
+    var pdf_download = mk_pdf(svg_container);
+    console.log(pdf_download);
+    $('#download').append($(pdf_download));
 
     show_hide_params(page_sections_params);
     show_hide_selections(page_sections_config, settings.status.active_section)
@@ -358,6 +362,9 @@ $('div').html('Drawing').attr('class', 'section_title').appendTo(drawing);
 var page_selector = $('selector').setOptionsRef( 'config_options.page_options' ).setRef('status.active_page').attr('class', 'corner_title').appendTo(drawing);
 kelem_setup(page_selector);
 //console.log(page_selector)
+
+$('span').attr('id', 'download').appendTo(drawing);
+
 var svg_container_object = $('div').attr('class', 'drawing').style('clear', 'both').appendTo(drawing);
 //svg_container_object.style('width', settings.drawing.size.drawing.w+"px" )
 var svg_container = svg_container_object.elem;
