@@ -82,3 +82,10 @@ body {
     margin: 10px;
     background: white;
 }
+
+
+
+.float_right {
+    float: right;
+    padding: 4px;
+}

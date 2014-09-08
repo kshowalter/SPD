@@ -135,9 +135,10 @@ function update(){
     var svg = $("#svg_drawing").elem;
     console.log(svg);
 
-    var pdf_download = mk_pdf(svg_container);
+    var pdf_download = mk_pdf(settings);
+    pdf_download.html("Download PDF");
     console.log(pdf_download);
-    $('#download').append($(pdf_download));
+    $('#download').append(pdf_download);
 
     show_hide_params(page_sections_params);
     show_hide_selections(page_sections_config, settings.status.active_section)
@@ -363,7 +364,7 @@ var page_selector = $('selector').setOptionsRef( 'config_options.page_options' )
 kelem_setup(page_selector);
 //console.log(page_selector)
 
-$('span').attr('id', 'download').appendTo(drawing);
+$('span').attr('id', 'download').attr('class', 'float_right').appendTo(drawing);
 
 var svg_container_object = $('div').attr('class', 'drawing').style('clear', 'both').appendTo(drawing);
 //svg_container_object.style('width', settings.drawing.size.drawing.w+"px" )
