@@ -23,7 +23,8 @@
     "browser": {
         "jsPDF": "./lib/jspdf",
         "FileSaver": "./lib/FileSaver",
-        "svgToPdf": "./lib/svgToPdf"
+        "svgToPdf": "./lib/svgToPdf",
+        "k": "./lib/k/k"
 
     },
     "browserify-shim": {
