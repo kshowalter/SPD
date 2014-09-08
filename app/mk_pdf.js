@@ -19,53 +19,35 @@ var $ = require('../lib/k/k_DOM');
 //console.log(svgElementToPdf)
 
 
-var mk_pdf = function(svg){
+var mk_pdf = function(settings){
     console.log('Making PDF');
-    console.log(svg);
+
+    var l_attr = settings.drawing.l_attr;
+    var fonts = settings.drawing.fonts;
+    var elements = settings.elements;
+    //console.log('elements: ', elements);
+    //container.empty()
+
     //doc = new PDFDocument;
     //var doc = new PDFDocument;
     var doc = new jsPDF('l', 'in', 'letter');
 
 
-    var x = 1;
-    var y = 2;
-    var width = 1.5;
-    var height = 2.75;
-    doc.setLineWidth(0.01);
-    doc.rect(x, y, width, height);
-    var c = doc.circle(5, 5, 1)
+//    var x = 1;
+//    var y = 2;
+//    var width = 1.5;
+//    var height = 2.75;
+//    doc.setLineWidth(0.01);
+//    doc.rect(x, y, width, height);
+//    var c = doc.circle(5, 5, 1)
 //    //c.fill("#6600FF");
 //
-    console.log(doc);
-    //doc.save("drawing.pdf");
-    //doc.output('datauri');
-    var url = doc.output('datauristring');
-    console.log(url);
     
-    var link = $('a').href('Download').href(url);
-    console.log(link)
-    
-    return link;
 
 
 
-//    console.log('displaying svg');
-//    var l_attr = settings.drawing.l_attr;
-//    var fonts = settings.drawing.fonts;
-//    var elements = settings.elements;
-//    //console.log('elements: ', elements);
-//    container.innerHTML = '';
-//    //container.empty()
-//
-//    //var svg_elem = document.getElementById('SvgjsSvg1000')
-//    var svg_elem = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
-//    svg_elem.setAttribute('id','svg_drawing');
-//    svg_elem.setAttribute('width', settings.drawing.size.drawing.w);
-//    svg_elem.setAttribute('height', settings.drawing.size.drawing.h);
-//    container.appendChild(svg_elem);
-//    //var svg = snapsvg(svg_elem).size(size.drawing.w, size.drawing.h);
-//    //var svg = snapsvg('#svg_drawing');
-//
+
+
 //    // Loop through all the drawing contents, call the function below.
 //    elements.forEach( function(elem,id) {
 //        show_elem_array(elem);
@@ -77,26 +59,10 @@ var mk_pdf = function(svg){
 //        if( typeof elem.y !== 'undefined' ) { var y = elem.y + offset.y; } 
 //
 //        if( elem.type === 'rect') {
-//            //svg.rect( elem.w, elem.h ).move( x-elem.w/2, y-elem.h/2 ).attr( l_attr[elem.layer_name] );
-//            //console.log('elem:', elem );
-//            //if( isNaN(elem.w) ) {
-//            //    console.log('error: elem not fully defined', elem)
-//            //    elem.w = 10;
-//            //}
-//            //if( isNaN(elem.h) ) {
-//            //    console.log('error: elem not fully defined', elem)
-//            //    elem.h = 10;
-//            //}
-//            var r = document.createElementNS("http://www.w3.org/2000/svg", 'rect');
-//            r.setAttribute('width', elem.w);
-//            r.setAttribute('height', elem.h);
-//            r.setAttribute('x', x-elem.w/2);
-//            r.setAttribute('y', y-elem.h/2);
-//            var attr = l_attr[elem.layer_name];
-//            for( var i2 in attr ){
-//                r.setAttribute(i2, attr[i2]);
-//            }
-//            svg_elem.appendChild(r);
+//
+//            doc.rect(x-elem.w/2, y-elem.h/2, elem.w, elem.h )
+//
+//            
 //        } else if( elem.type === 'line') {
 //            var points2 = [];
 //            elem.points.forEach( function(point){
@@ -118,7 +84,7 @@ var mk_pdf = function(svg){
 //        } else if( elem.type === 'text') {
 //            //var t = svg.text( elem.strings ).move( elem.points[0][0], elem.points[0][1] ).attr( l_attr[elem.layer_name] )
 //            var font = fonts[elem.font];
-//            
+//
 //            var t = document.createElementNS("http://www.w3.org/2000/svg", 'text');
 //            t.setAttribute('x', x);
 //            //t.setAttribute('y', y + font['font-size']/2 );
@@ -152,20 +118,6 @@ var mk_pdf = function(svg){
 //                c.setAttribute(i2, attr[i2]);
 //            }
 //            svg_elem.appendChild(c);
-//            /*
-//            c.attributes( l_attr[elem.layer_name] )
-//            c.attributes({
-//                rx: 5,
-//                --------------------------
-//                ry: 5,
-//                cx: elem.points[0][0]-elem.d/2,
-//                cy: elem.points[0][1]-elem.d/2
-//            })
-//            var c2 = svg.ellipse( elem.r, elem.r )
-//            c2.move( elem.points[0][0]-elem.d/2, elem.points[0][1]-elem.d/2 )
-//            c2.attr({rx:5, ry:5})
-//            c2.attr( l_attr[elem.layer_name] )
-//            */
 //        } else if(elem.type === 'block') {
 //            // if it is a block, run this function through each element.
 //            elem.elements.forEach( function(block_elem,id){
@@ -175,7 +127,16 @@ var mk_pdf = function(svg){
 //    }
 
 
+    console.log(doc);
+    //doc.save("drawing.pdf");
+    //doc.output('datauri');
+    var url = doc.output('datauristring');
+    console.log(url);
     
+    var link = $('a').href('Download').href(url);
+    console.log(link)
+    
+    return link;
 };
 
 
