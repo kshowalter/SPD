@@ -14,7 +14,7 @@ var loadTables = require('./app/settings_functions').loadTables;
 var loadModules = require('./app/settings_functions').loadModules;
 var loadComponents = require('./app/settings_functions').loadComponents;
 var mk_drawing = require('./app/mk_drawing.js');
-var display_svg = require('./app/display_svg.js');
+var mk_svg= require('./app/mk_svg.js');
 var mk_pdf = require('./app/mk_pdf.js');
 var update_system = require('./app/update_system');
 
@@ -129,11 +129,13 @@ function update(){
 
     // Make drawing
     settings.elements = mk_drawing(settings);
-    // Add drawing elements to SVG on screen
-    display_svg(settings, svg_container);
 
-    var svg = $("#svg_drawing").elem;
+    // Add drawing elements to SVG on screen
+    var svg = mk_svg(settings);
     console.log(svg);
+    var svg_wrapper = $(svg);
+    console.log(svg_wrapper)
+    $("#drawing").append($(svg));
 
     var pdf_download = mk_pdf(settings);
     pdf_download.html("Download PDF");
@@ -357,7 +359,7 @@ var params_container = $('div').attr('class', 'section').style('height', '150px'
 add_params(page_sections_params, params_container);
 
 // drawing
-var drawing = $('div').attr('id', 'drawing').attr('class', 'section').appendTo(page);
+var drawing = $('div').attr('id', 'drawing_section').attr('class', 'section').appendTo(page);
 drawing.style('width', (settings.drawing.size.drawing.w+20).toString() + "px" )
 $('div').html('Drawing').attr('class', 'section_title').appendTo(drawing);
 var page_selector = $('selector').setOptionsRef( 'config_options.page_options' ).setRef('status.active_page').attr('class', 'corner_title').appendTo(drawing);
@@ -366,9 +368,7 @@ kelem_setup(page_selector);
 
 $('span').attr('id', 'download').attr('class', 'float_right').appendTo(drawing);
 
-var svg_container_object = $('div').attr('class', 'drawing').style('clear', 'both').appendTo(drawing);
-//svg_container_object.style('width', settings.drawing.size.drawing.w+"px" )
-var svg_container = svg_container_object.elem;
+var svg_container_object = $('div').attr('id', 'drawing').style('clear', 'both').appendTo(drawing);
 $('br').appendTo(drawing);
 
 ///////////////////
