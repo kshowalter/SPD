@@ -1,144 +1,4 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-'use strict';
-var log = console.log.bind(console);
-//var settings = require('./settings.js');
-//var snapsvg = require('snapsvg');
-//log(settings);
-
-
-
-var display_svg = function(settings, container){
-    log('displaying svg');
-    var l_attr = settings.drawing.l_attr;
-    var fonts = settings.drawing.fonts;
-    var elements = settings.elements;
-    //log('elements: ', elements);
-    container.innerHTML = '';
-    //container.empty()
-
-    //var svg_elem = document.getElementById('SvgjsSvg1000')
-    var svg_elem = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
-    svg_elem.setAttribute('id','svg_drawing');
-    svg_elem.setAttribute('width', settings.drawing.size.drawing.w);
-    svg_elem.setAttribute('height', settings.drawing.size.drawing.h);
-    container.appendChild(svg_elem);
-    //var svg = snapsvg(svg_elem).size(size.drawing.w, size.drawing.h);
-    //var svg = snapsvg('#svg_drawing');
-
-    // Loop through all the drawing contents, call the function below.
-    elements.forEach( function(elem,id) {
-        show_elem_array(elem);
-    });
-
-    function show_elem_array(elem, offset){
-        offset = offset || {x:0,y:0};
-        if( typeof elem.x !== 'undefined' ) { var x = elem.x + offset.x; } 
-        if( typeof elem.y !== 'undefined' ) { var y = elem.y + offset.y; } 
-
-        if( elem.type === 'rect') {
-            //svg.rect( elem.w, elem.h ).move( x-elem.w/2, y-elem.h/2 ).attr( l_attr[elem.layer_name] );
-            //log('elem:', elem );
-            //if( isNaN(elem.w) ) {
-            //    log('error: elem not fully defined', elem)
-            //    elem.w = 10;
-            //}
-            //if( isNaN(elem.h) ) {
-            //    log('error: elem not fully defined', elem)
-            //    elem.h = 10;
-            //}
-            var r = document.createElementNS("http://www.w3.org/2000/svg", 'rect');
-            r.setAttribute('width', elem.w);
-            r.setAttribute('height', elem.h);
-            r.setAttribute('x', x-elem.w/2);
-            r.setAttribute('y', y-elem.h/2);
-            var attr = l_attr[elem.layer_name];
-            for( var i2 in attr ){
-                r.setAttribute(i2, attr[i2]);
-            }
-            svg_elem.appendChild(r);
-        } else if( elem.type === 'line') {
-            var points2 = [];
-            elem.points.forEach( function(point){
-                if( ! isNaN(point[0]) && ! isNaN(point[1]) ){
-                    points2.push([ point[0]+offset.x, point[1]+offset.y ]);
-                } else {
-                    log('error: elem not fully defined', elem)
-                }
-            });
-            //svg.polyline( points2 ).attr( l_attr[elem.layer_name] );
-
-            var l = document.createElementNS("http://www.w3.org/2000/svg", 'polyline');
-            l.setAttribute( 'points', points2.join(' ') );
-            var attr = l_attr[elem.layer_name];
-            for( var i2 in attr ){
-                l.setAttribute(i2, attr[i2]);
-            }
-            svg_elem.appendChild(l);
-        } else if( elem.type === 'text') {
-            //var t = svg.text( elem.strings ).move( elem.points[0][0], elem.points[0][1] ).attr( l_attr[elem.layer_name] )
-            var font = fonts[elem.font];
-            
-            var t = document.createElementNS("http://www.w3.org/2000/svg", 'text');
-            t.setAttribute('x', x);
-            //t.setAttribute('y', y + font['font-size']/2 );
-            t.setAttribute('y', y );
-            if(elem.rotated){
-                //t.setAttribute('transform', "rotate(" + elem.rotated + " " + x + " " + y + ")" );
-                t.setAttribute('transform', "rotate(" + elem.rotated + " " + x + " " + y + ")" );
-            }
-            for( var i2 in l_attr[elem.layer_name] ){
-                t.setAttribute( i2, l_attr[elem.layer_name][i2] );
-            }
-            for( var i2 in font ){
-                t.setAttribute( i2, font[i2] );
-            }
-            for( var i2 in elem.strings ){
-                var tspan = document.createElementNS("http://www.w3.org/2000/svg", 'tspan');
-                tspan.setAttribute('dy', font['font-size']*1.5*i2 );
-                tspan.setAttribute('x', x);
-                tspan.innerHTML = elem.strings[i2];
-                t.appendChild(tspan);
-            }
-            svg_elem.appendChild(t);
-        } else if( elem.type === 'circ') {
-            var c = document.createElementNS("http://www.w3.org/2000/svg", 'ellipse');
-            c.setAttribute('rx', elem.d/2);
-            c.setAttribute('ry', elem.d/2);
-            c.setAttribute('cx', x);
-            c.setAttribute('cy', y);
-            var attr = l_attr[elem.layer_name];
-            for( var i2 in attr ){
-                c.setAttribute(i2, attr[i2]);
-            }
-            svg_elem.appendChild(c);
-            /*
-            c.attributes( l_attr[elem.layer_name] )
-            c.attributes({
-                rx: 5,
-                --------------------------
-                ry: 5,
-                cx: elem.points[0][0]-elem.d/2,
-                cy: elem.points[0][1]-elem.d/2
-            })
-            var c2 = svg.ellipse( elem.r, elem.r )
-            c2.move( elem.points[0][0]-elem.d/2, elem.points[0][1]-elem.d/2 )
-            c2.attr({rx:5, ry:5})
-            c2.attr( l_attr[elem.layer_name] )
-            */
-        } else if(elem.type === 'block') {
-            // if it is a block, run this function through each element.
-            elem.elements.forEach( function(block_elem,id){
-                show_elem_array(block_elem, {x:x, y:y}) 
-            });
-        }
-    }
-};
-
-
-module.exports = display_svg;
-
-
-},{}],2:[function(require,module,exports){
 var l_attr = {};
 
 l_attr.base = {
@@ -182,7 +42,7 @@ l_attr.AC_L3.stroke = 'Blue';
 
 module.exports = l_attr;
 
-},{}],3:[function(require,module,exports){
+},{}],2:[function(require,module,exports){
 'use strict';
 
 var k = require('../lib/k/k.js');
@@ -1276,7 +1136,318 @@ var mk_drawing = function(settings){
 
 module.exports = mk_drawing;
 
-},{"../lib/k/k.js":7,"./layers":2,"underscore":15}],4:[function(require,module,exports){
+},{"../lib/k/k.js":10,"./layers":1,"underscore":18}],3:[function(require,module,exports){
+'use strict';
+//var settings = require('./settings.js');
+//var snapsvg = require('snapsvg');
+//log(settings);
+
+var saveAs = require("../lib/FileSaver");
+console.log(saveAs);
+window.saveAs = saveAs;
+
+var jsPDF = require("../lib/jspdf");
+
+//var $ = require("jquery");
+var $ = require('../lib/k/k_DOM');
+
+//var svgElementToPdf = require("../lib/svgToPdf");
+//var PDFDocument = require('pdfkit');
+//window.saveAs = require("../lib/FileSaver.js");
+//require("../lib/svgToPdf.js");
+//console.log(svgElementToPdf)
+
+
+var mk_pdf = function(settings){
+    console.log('Making PDF');
+    var title = settings.system.inverter.make + " " + settings.system.inverter.model + " Inverter System"; 
+
+    var scale = settings.page.letter.scale;                        
+
+    var l_attr = settings.drawing.l_attr;
+    var fonts = settings.drawing.fonts;
+    var elements = settings.elements;
+    //console.log('elements: ', elements);
+    //container.empty()
+
+    //doc = new PDFDocument;
+    //var doc = new PDFDocument;
+    var doc = new jsPDF('l', 'in', 'letter');
+
+
+    doc.setProperties({
+        title: title,
+        creator: 'FSEC'
+    });
+//    var x = 1;
+//    var y = 2;
+//    var width = 1.5;
+//    var height = 2.75;
+//    doc.setLineWidth(0.01);
+//    doc.rect(x, y, width, height);
+//    var c = doc.circle(5, 5, 1)
+//    //c.fill("#6600FF");
+//
+    
+
+
+
+
+
+    // Loop through all the drawing contents, call the function below.
+    elements.forEach( function(elem,id) {
+        show_elem_array(elem);
+    });
+
+    function show_elem_array(elem, offset){
+        var x,y;
+        offset = offset || {x:0,y:0};
+        if( typeof elem.x !== 'undefined' ) { x = elem.x + offset.x; } 
+        if( typeof elem.y !== 'undefined' ) { y = elem.y + offset.y; } 
+
+        if( elem.type === 'rect') {
+            x = x * scale;
+            y = y * scale;
+            var w = elem.w * scale;
+            var h = elem.h * scale;
+
+            //Draw Rectangle
+            doc.setLineWidth(0.005);
+            doc.setDrawColor(0);
+            doc.rect(x-w/2, y-h/2, w, h, 'D')
+
+            
+        } else if( elem.type === 'line') {
+            var px,py,px_last,py_last;
+            doc.setLineWidth(0.005);
+            elem.points.forEach( function(point){
+                if( ! isNaN(point[0]) && ! isNaN(point[1]) ){
+                    px = (point[0]+offset.x)*scale;
+                    py = (point[1]+offset.y)*scale;
+                    if( px_last !== undefined ){
+                        doc.line(px_last, py_last, px, py);
+                    }
+                    px_last = px;
+                    py_last = py;
+                } else {
+                    console.log('error: elem not fully defined', elem)
+                }
+            });
+
+            //var l = document.createElementNS("http://www.w3.org/2000/svg", 'polyline');
+            //l.setAttribute( 'points', points2.join(' ') );
+            //var attr = l_attr[elem.layer_name];
+            //for( var i2 in attr ){
+            //    l.setAttribute(i2, attr[i2]);
+            //}
+            //svg_elem.appendChild(l);
+            //Adding a Line
+            
+        } else if( elem.type === 'text') {
+            x = x * scale;
+            y = y * scale;
+            //var font = fonts[elem.font];
+
+            //var t = document.createElementNS("http://www.w3.org/2000/svg", 'text');
+            //t.setAttribute('x', x);
+            //t.setAttribute('y', y );
+            //if(elem.rotated){
+            //    t.setAttribute('transform', "rotate(" + elem.rotated + " " + x + " " + y + ")" );
+            //}
+            //for( var i2 in l_attr[elem.layer_name] ){
+            //    t.setAttribute( i2, l_attr[elem.layer_name][i2] );
+            //}
+            //for( var i2 in font ){
+            //    t.setAttribute( i2, font[i2] );
+            //}
+            //for( var i2 in elem.strings ){
+            //    var tspan = document.createElementNS("http://www.w3.org/2000/svg", 'tspan');
+            //    tspan.setAttribute('dy', font['font-size']*1.5*i2 );
+            //    tspan.setAttribute('x', x);
+            //    tspan.innerHTML = elem.strings[i2];
+            //    t.appendChild(tspan);
+            //}
+            //svg_elem.appendChild(t);
+        } else if( elem.type === 'circ') {
+            x = x * scale;
+            y = y * scale;
+            var d = elem.d * scale;
+            doc.setLineWidth(0.005);
+            doc.setDrawColor(0);
+            doc.circle(x, y, d/2, 'D');
+            //var c = document.createElementNS("http://www.w3.org/2000/svg", 'ellipse');
+            //c.setAttribute('rx', elem.d/2);
+            //c.setAttribute('ry', elem.d/2);
+            //c.setAttribute('cx', x);
+            //c.setAttribute('cy', y);
+            //var attr = l_attr[elem.layer_name];
+            //for( var i2 in attr ){
+            //    c.setAttribute(i2, attr[i2]);
+            //}
+            //svg_elem.appendChild(c);
+        } else if(elem.type === 'block') {
+            // if it is a block, run this function through each element.
+            elem.elements.forEach( function(block_elem,id){
+                show_elem_array(block_elem, {x:x, y:y}) 
+            });
+        }
+    }
+
+
+    console.log(doc);
+    //doc.save("drawing.pdf");
+    //doc.output('datauri');
+    var url = doc.output('datauristring');
+    console.log(url);
+    
+    var link = $('a').href('Download').href(url);
+    console.log(link)
+    
+    return link;
+};
+
+
+module.exports = mk_pdf;
+
+},{"../lib/FileSaver":8,"../lib/jspdf":9,"../lib/k/k_DOM":11}],4:[function(require,module,exports){
+'use strict';
+//var settings = require('./settings.js');
+//var snapsvg = require('snapsvg');
+//log(settings);
+
+
+
+var display_svg = function(settings){
+    console.log('displaying svg');
+    var l_attr = settings.drawing.l_attr;
+    var fonts = settings.drawing.fonts;
+    var elements = settings.elements;
+    //console.log('elements: ', elements);
+    //container.empty()
+
+    //var svg_elem = document.getElementById('SvgjsSvg1000')
+    var svg_elem = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
+    svg_elem.setAttribute('id','svg_drawing');
+    svg_elem.setAttribute('width', settings.drawing.size.drawing.w);
+    svg_elem.setAttribute('height', settings.drawing.size.drawing.h);
+    //var svg = snapsvg(svg_elem).size(size.drawing.w, size.drawing.h);
+    //var svg = snapsvg('#svg_drawing');
+
+    // Loop through all the drawing contents, call the function below.
+    elements.forEach( function(elem,id) {
+        show_elem_array(elem);
+    });
+
+    function show_elem_array(elem, offset){
+        offset = offset || {x:0,y:0};
+        if( typeof elem.x !== 'undefined' ) { var x = elem.x + offset.x; } 
+        if( typeof elem.y !== 'undefined' ) { var y = elem.y + offset.y; } 
+
+        if( elem.type === 'rect') {
+            //svg.rect( elem.w, elem.h ).move( x-elem.w/2, y-elem.h/2 ).attr( l_attr[elem.layer_name] );
+            //console.log('elem:', elem );
+            //if( isNaN(elem.w) ) {
+            //    console.log('error: elem not fully defined', elem)
+            //    elem.w = 10;
+            //}
+            //if( isNaN(elem.h) ) {
+            //    console.log('error: elem not fully defined', elem)
+            //    elem.h = 10;
+            //}
+            var r = document.createElementNS("http://www.w3.org/2000/svg", 'rect');
+            r.setAttribute('width', elem.w);
+            r.setAttribute('height', elem.h);
+            r.setAttribute('x', x-elem.w/2);
+            r.setAttribute('y', y-elem.h/2);
+            var attr = l_attr[elem.layer_name];
+            for( var i2 in attr ){
+                r.setAttribute(i2, attr[i2]);
+            }
+            svg_elem.appendChild(r);
+        } else if( elem.type === 'line') {
+            var points2 = [];
+            elem.points.forEach( function(point){
+                if( ! isNaN(point[0]) && ! isNaN(point[1]) ){
+                    points2.push([ point[0]+offset.x, point[1]+offset.y ]);
+                } else {
+                    console.log('error: elem not fully defined', elem)
+                }
+            });
+            //svg.polyline( points2 ).attr( l_attr[elem.layer_name] );
+
+            var l = document.createElementNS("http://www.w3.org/2000/svg", 'polyline');
+            l.setAttribute( 'points', points2.join(' ') );
+            var attr = l_attr[elem.layer_name];
+            for( var i2 in attr ){
+                l.setAttribute(i2, attr[i2]);
+            }
+            svg_elem.appendChild(l);
+        } else if( elem.type === 'text') {
+            //var t = svg.text( elem.strings ).move( elem.points[0][0], elem.points[0][1] ).attr( l_attr[elem.layer_name] )
+            var font = fonts[elem.font];
+            
+            var t = document.createElementNS("http://www.w3.org/2000/svg", 'text');
+            t.setAttribute('x', x);
+            //t.setAttribute('y', y + font['font-size']/2 );
+            t.setAttribute('y', y );
+            if(elem.rotated){
+                //t.setAttribute('transform', "rotate(" + elem.rotated + " " + x + " " + y + ")" );
+                t.setAttribute('transform', "rotate(" + elem.rotated + " " + x + " " + y + ")" );
+            }
+            for( var i2 in l_attr[elem.layer_name] ){
+                t.setAttribute( i2, l_attr[elem.layer_name][i2] );
+            }
+            for( var i2 in font ){
+                t.setAttribute( i2, font[i2] );
+            }
+            for( var i2 in elem.strings ){
+                var tspan = document.createElementNS("http://www.w3.org/2000/svg", 'tspan');
+                tspan.setAttribute('dy', font['font-size']*1.5*i2 );
+                tspan.setAttribute('x', x);
+                tspan.innerHTML = elem.strings[i2];
+                t.appendChild(tspan);
+            }
+            svg_elem.appendChild(t);
+        } else if( elem.type === 'circ') {
+            var c = document.createElementNS("http://www.w3.org/2000/svg", 'ellipse');
+            c.setAttribute('rx', elem.d/2);
+            c.setAttribute('ry', elem.d/2);
+            c.setAttribute('cx', x);
+            c.setAttribute('cy', y);
+            var attr = l_attr[elem.layer_name];
+            for( var i2 in attr ){
+                c.setAttribute(i2, attr[i2]);
+            }
+            svg_elem.appendChild(c);
+            /*
+            c.attributes( l_attr[elem.layer_name] )
+            c.attributes({
+                rx: 5,
+                --------------------------
+                ry: 5,
+                cx: elem.points[0][0]-elem.d/2,
+                cy: elem.points[0][1]-elem.d/2
+            })
+            var c2 = svg.ellipse( elem.r, elem.r )
+            c2.move( elem.points[0][0]-elem.d/2, elem.points[0][1]-elem.d/2 )
+            c2.attr({rx:5, ry:5})
+            c2.attr( l_attr[elem.layer_name] )
+            */
+        } else if(elem.type === 'block') {
+            // if it is a block, run this function through each element.
+            elem.elements.forEach( function(block_elem,id){
+                show_elem_array(block_elem, {x:x, y:y}) 
+            });
+        }
+    }
+    return svg_elem;
+};
+
+
+module.exports = display_svg;
+
+
+},{}],5:[function(require,module,exports){
 "use strict";
 
 var k = require('../lib/k/k.js')
@@ -1287,6 +1458,11 @@ settings.status = {};
 settings.system = {};
 settings.select_registry = [];
 settings.value_registry = [];
+
+
+
+
+
 
 var system = settings.system;
 system.wire_config_num = 5;
@@ -1628,11 +1804,33 @@ loc.general_notes.x = size.general_notes.w/2 + 30;
 loc.general_notes.y = size.general_notes.h/2 + 30;
 
 
+
+
+
+settings.page = {};
+settings.page.letter = {
+    units: 'inches',
+    w: 11.0,
+    h: 8.5,
+}
+
+var x_scale = settings.page.letter.w / settings.drawing.size.drawing.w;
+var y_scale = settings.page.letter.h / settings.drawing.size.drawing.h; 
+if( x_scale < y_scale ) {
+    settings.page.letter.scale = x_scale;
+} else {
+    settings.page.letter.scale = y_scale;
+}
+
+
+
+
+
 /////////////////////
 
 module.exports = settings;
 
-},{"../lib/k/k.js":7}],5:[function(require,module,exports){
+},{"../lib/k/k.js":10}],6:[function(require,module,exports){
 var k = require('../lib/k/k.js')
 //var update_system = require('./update').update_system;
 
@@ -1705,7 +1903,7 @@ module.exports.loadTables = loadTables;
 module.exports.loadComponents = loadComponents;
 
 
-},{"../lib/k/k.js":7}],6:[function(require,module,exports){
+},{"../lib/k/k.js":10}],7:[function(require,module,exports){
 "use strict";
 
 var k = require('../lib/k/k.js');
@@ -1886,7 +2084,1984 @@ var update_system = function(settings) {
 
 module.exports = update_system;
 
-},{"../lib/k/k.js":7}],7:[function(require,module,exports){
+},{"../lib/k/k.js":10}],8:[function(require,module,exports){
+/* FileSaver.js
+ * A saveAs() FileSaver implementation.
+ * 2014-08-29
+ *
+ * By Eli Grey, http://eligrey.com
+ * License: X11/MIT
+ *   See https://github.com/eligrey/FileSaver.js/blob/master/LICENSE.md
+ */
+
+/*global self */
+/*jslint bitwise: true, indent: 4, laxbreak: true, laxcomma: true, smarttabs: true, plusplus: true */
+
+/*! @source http://purl.eligrey.com/github/FileSaver.js/blob/master/FileSaver.js */
+
+var saveAs = saveAs
+  // IE 10+ (native saveAs)
+  || (typeof navigator !== "undefined" &&
+      navigator.msSaveOrOpenBlob && navigator.msSaveOrOpenBlob.bind(navigator))
+  // Everyone else
+  || (function(view) {
+	"use strict";
+	// IE <10 is explicitly unsupported
+	if (typeof navigator !== "undefined" &&
+	    /MSIE [1-9]\./.test(navigator.userAgent)) {
+		return;
+	}
+	var
+		  doc = view.document
+		  // only get URL when necessary in case Blob.js hasn't overridden it yet
+		, get_URL = function() {
+			return view.URL || view.webkitURL || view;
+		}
+		, save_link = doc.createElementNS("http://www.w3.org/1999/xhtml", "a")
+		, can_use_save_link = "download" in save_link
+		, click = function(node) {
+			var event = doc.createEvent("MouseEvents");
+			event.initMouseEvent(
+				"click", true, false, view, 0, 0, 0, 0, 0
+				, false, false, false, false, 0, null
+			);
+			node.dispatchEvent(event);
+		}
+		, webkit_req_fs = view.webkitRequestFileSystem
+		, req_fs = view.requestFileSystem || webkit_req_fs || view.mozRequestFileSystem
+		, throw_outside = function(ex) {
+			(view.setImmediate || view.setTimeout)(function() {
+				throw ex;
+			}, 0);
+		}
+		, force_saveable_type = "application/octet-stream"
+		, fs_min_size = 0
+		// See https://code.google.com/p/chromium/issues/detail?id=375297#c7 for
+		// the reasoning behind the timeout and revocation flow
+		, arbitrary_revoke_timeout = 10
+		, revoke = function(file) {
+			var revoker = function() {
+				if (typeof file === "string") { // file is an object URL
+					get_URL().revokeObjectURL(file);
+				} else { // file is a File
+					file.remove();
+				}
+			};
+			if (view.chrome) {
+				revoker();
+			} else {
+				setTimeout(revoker, arbitrary_revoke_timeout);
+			}
+		}
+		, dispatch = function(filesaver, event_types, event) {
+			event_types = [].concat(event_types);
+			var i = event_types.length;
+			while (i--) {
+				var listener = filesaver["on" + event_types[i]];
+				if (typeof listener === "function") {
+					try {
+						listener.call(filesaver, event || filesaver);
+					} catch (ex) {
+						throw_outside(ex);
+					}
+				}
+			}
+		}
+		, FileSaver = function(blob, name) {
+			// First try a.download, then web filesystem, then object URLs
+			var
+				  filesaver = this
+				, type = blob.type
+				, blob_changed = false
+				, object_url
+				, target_view
+				, dispatch_all = function() {
+					dispatch(filesaver, "writestart progress write writeend".split(" "));
+				}
+				// on any filesys errors revert to saving with object URLs
+				, fs_error = function() {
+					// don't create more object URLs than needed
+					if (blob_changed || !object_url) {
+						object_url = get_URL().createObjectURL(blob);
+					}
+					if (target_view) {
+						target_view.location.href = object_url;
+					} else {
+						var new_tab = view.open(object_url, "_blank");
+						if (new_tab == undefined && typeof safari !== "undefined") {
+							//Apple do not allow window.open, see http://bit.ly/1kZffRI
+							view.location.href = object_url
+						}
+					}
+					filesaver.readyState = filesaver.DONE;
+					dispatch_all();
+					revoke(object_url);
+				}
+				, abortable = function(func) {
+					return function() {
+						if (filesaver.readyState !== filesaver.DONE) {
+							return func.apply(this, arguments);
+						}
+					};
+				}
+				, create_if_not_found = {create: true, exclusive: false}
+				, slice
+			;
+			filesaver.readyState = filesaver.INIT;
+			if (!name) {
+				name = "download";
+			}
+			if (can_use_save_link) {
+				object_url = get_URL().createObjectURL(blob);
+				save_link.href = object_url;
+				save_link.download = name;
+				click(save_link);
+				filesaver.readyState = filesaver.DONE;
+				dispatch_all();
+				revoke(object_url);
+				return;
+			}
+			// Object and web filesystem URLs have a problem saving in Google Chrome when
+			// viewed in a tab, so I force save with application/octet-stream
+			// http://code.google.com/p/chromium/issues/detail?id=91158
+			// Update: Google errantly closed 91158, I submitted it again:
+			// https://code.google.com/p/chromium/issues/detail?id=389642
+			if (view.chrome && type && type !== force_saveable_type) {
+				slice = blob.slice || blob.webkitSlice;
+				blob = slice.call(blob, 0, blob.size, force_saveable_type);
+				blob_changed = true;
+			}
+			// Since I can't be sure that the guessed media type will trigger a download
+			// in WebKit, I append .download to the filename.
+			// https://bugs.webkit.org/show_bug.cgi?id=65440
+			if (webkit_req_fs && name !== "download") {
+				name += ".download";
+			}
+			if (type === force_saveable_type || webkit_req_fs) {
+				target_view = view;
+			}
+			if (!req_fs) {
+				fs_error();
+				return;
+			}
+			fs_min_size += blob.size;
+			req_fs(view.TEMPORARY, fs_min_size, abortable(function(fs) {
+				fs.root.getDirectory("saved", create_if_not_found, abortable(function(dir) {
+					var save = function() {
+						dir.getFile(name, create_if_not_found, abortable(function(file) {
+							file.createWriter(abortable(function(writer) {
+								writer.onwriteend = function(event) {
+									target_view.location.href = file.toURL();
+									filesaver.readyState = filesaver.DONE;
+									dispatch(filesaver, "writeend", event);
+									revoke(file);
+								};
+								writer.onerror = function() {
+									var error = writer.error;
+									if (error.code !== error.ABORT_ERR) {
+										fs_error();
+									}
+								};
+								"writestart progress write abort".split(" ").forEach(function(event) {
+									writer["on" + event] = filesaver["on" + event];
+								});
+								writer.write(blob);
+								filesaver.abort = function() {
+									writer.abort();
+									filesaver.readyState = filesaver.DONE;
+								};
+								filesaver.readyState = filesaver.WRITING;
+							}), fs_error);
+						}), fs_error);
+					};
+					dir.getFile(name, {create: false}, abortable(function(file) {
+						// delete file if it already exists
+						file.remove();
+						save();
+					}), abortable(function(ex) {
+						if (ex.code === ex.NOT_FOUND_ERR) {
+							save();
+						} else {
+							fs_error();
+						}
+					}));
+				}), fs_error);
+			}), fs_error);
+		}
+		, FS_proto = FileSaver.prototype
+		, saveAs = function(blob, name) {
+			return new FileSaver(blob, name);
+		}
+	;
+	FS_proto.abort = function() {
+		var filesaver = this;
+		filesaver.readyState = filesaver.DONE;
+		dispatch(filesaver, "abort");
+	};
+	FS_proto.readyState = FS_proto.INIT = 0;
+	FS_proto.WRITING = 1;
+	FS_proto.DONE = 2;
+
+	FS_proto.error =
+	FS_proto.onwritestart =
+	FS_proto.onprogress =
+	FS_proto.onwrite =
+	FS_proto.onabort =
+	FS_proto.onerror =
+	FS_proto.onwriteend =
+		null;
+
+	return saveAs;
+}(
+	   typeof self !== "undefined" && self
+	|| typeof window !== "undefined" && window
+	|| this.content
+));
+// `self` is undefined in Firefox for Android content script context
+// while `this` is nsIContentFrameMessageManager
+// with an attribute `content` that corresponds to the window
+
+if (typeof module !== "undefined" && module !== null) {
+  module.exports = saveAs;
+} else if ((typeof define !== "undefined" && define !== null) && (define.amd != null)) {
+  define([], function() {
+    return saveAs;
+  });
+}
+
+},{}],9:[function(require,module,exports){
+/** @preserve
+ * jsPDF - PDF Document creation from JavaScript
+ * Version ${versionID}
+ *                           CommitID ${commitID}
+ *
+ * Copyright (c) 2010-2014 James Hall, https://github.com/MrRio/jsPDF
+ *               2010 Aaron Spike, https://github.com/acspike
+ *               2012 Willow Systems Corporation, willow-systems.com
+ *               2012 Pablo Hess, https://github.com/pablohess
+ *               2012 Florian Jenett, https://github.com/fjenett
+ *               2013 Warren Weckesser, https://github.com/warrenweckesser
+ *               2013 Youssef Beddad, https://github.com/lifof
+ *               2013 Lee Driscoll, https://github.com/lsdriscoll
+ *               2013 Stefan Slonevskiy, https://github.com/stefslon
+ *               2013 Jeremy Morel, https://github.com/jmorel
+ *               2013 Christoph Hartmann, https://github.com/chris-rock
+ *               2014 Juan Pablo Gaviria, https://github.com/juanpgaviria
+ *               2014 James Makes, https://github.com/dollaruw
+ *               2014 Diego Casorran, https://github.com/diegocr
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Contributor(s):
+ *    siefkenj, ahwolf, rickygu, Midnith, saintclair, eaparango,
+ *    kim3er, mfo, alnorth,
+ */
+
+/**
+ * Creates new jsPDF document object instance.
+ *
+ * @class
+ * @param orientation One of "portrait" or "landscape" (or shortcuts "p" (Default), "l")
+ * @param unit        Measurement unit to be used when coordinates are specified.
+ *                    One of "pt" (points), "mm" (Default), "cm", "in"
+ * @param format      One of 'pageFormats' as shown below, default: a4
+ * @returns {jsPDF}
+ * @name jsPDF
+ */
+var jsPDF = (function(global) {
+	'use strict';
+	var pdfVersion = '1.3',
+		pageFormats = { // Size in pt of various paper formats
+			'a0'  : [2383.94, 3370.39], 'a1'  : [1683.78, 2383.94],
+			'a2'  : [1190.55, 1683.78], 'a3'  : [ 841.89, 1190.55],
+			'a4'  : [ 595.28,  841.89], 'a5'  : [ 419.53,  595.28],
+			'a6'  : [ 297.64,  419.53], 'a7'  : [ 209.76,  297.64],
+			'a8'  : [ 147.40,  209.76], 'a9'  : [ 104.88,  147.40],
+			'a10' : [  73.70,  104.88], 'b0'  : [2834.65, 4008.19],
+			'b1'  : [2004.09, 2834.65], 'b2'  : [1417.32, 2004.09],
+			'b3'  : [1000.63, 1417.32], 'b4'  : [ 708.66, 1000.63],
+			'b5'  : [ 498.90,  708.66], 'b6'  : [ 354.33,  498.90],
+			'b7'  : [ 249.45,  354.33], 'b8'  : [ 175.75,  249.45],
+			'b9'  : [ 124.72,  175.75], 'b10' : [  87.87,  124.72],
+			'c0'  : [2599.37, 3676.54], 'c1'  : [1836.85, 2599.37],
+			'c2'  : [1298.27, 1836.85], 'c3'  : [ 918.43, 1298.27],
+			'c4'  : [ 649.13,  918.43], 'c5'  : [ 459.21,  649.13],
+			'c6'  : [ 323.15,  459.21], 'c7'  : [ 229.61,  323.15],
+			'c8'  : [ 161.57,  229.61], 'c9'  : [ 113.39,  161.57],
+			'c10' : [  79.37,  113.39], 'dl'  : [ 311.81,  623.62],
+			'letter'            : [612,   792],
+			'government-letter' : [576,   756],
+			'legal'             : [612,  1008],
+			'junior-legal'      : [576,   360],
+			'ledger'            : [1224,  792],
+			'tabloid'           : [792,  1224],
+			'credit-card'       : [153,   243]
+		};
+
+	/**
+	 * jsPDF's Internal PubSub Implementation.
+	 * See mrrio.github.io/jsPDF/doc/symbols/PubSub.html
+	 * Backward compatible rewritten on 2014 by
+	 * Diego Casorran, https://github.com/diegocr
+	 *
+	 * @class
+	 * @name PubSub
+	 */
+	function PubSub(context) {
+		var topics = {};
+
+		this.subscribe = function(topic, callback, once) {
+			if(typeof callback !== 'function') {
+				return false;
+			}
+
+			if(!topics.hasOwnProperty(topic)) {
+				topics[topic] = {};
+			}
+
+			var id = Math.random().toString(35);
+			topics[topic][id] = [callback,!!once];
+
+			return id;
+		};
+
+		this.unsubscribe = function(token) {
+			for(var topic in topics) {
+				if(topics[topic][token]) {
+					delete topics[topic][token];
+					return true;
+				}
+			}
+			return false;
+		};
+
+		this.publish = function(topic) {
+			if(topics.hasOwnProperty(topic)) {
+				var args = Array.prototype.slice.call(arguments, 1), idr = [];
+
+				for(var id in topics[topic]) {
+					var sub = topics[topic][id];
+					try {
+						sub[0].apply(context, args);
+					} catch(ex) {
+						if(global.console) {
+							console.error('jsPDF PubSub Error', ex.message, ex);
+						}
+					}
+					if(sub[1]) idr.push(id);
+				}
+				if(idr.length) idr.forEach(this.unsubscribe);
+			}
+		};
+	}
+
+	/**
+	 * @constructor
+	 * @private
+	 */
+	function jsPDF(orientation, unit, format, compressPdf) {
+		var options = {};
+
+		if (typeof orientation === 'object') {
+			options = orientation;
+
+			orientation = options.orientation;
+			unit = options.unit || unit;
+			format = options.format || format;
+			compressPdf = options.compress || options.compressPdf || compressPdf;
+		}
+
+		// Default options
+		unit        = unit || 'mm';
+		format      = format || 'a4';
+		orientation = ('' + (orientation || 'P')).toLowerCase();
+
+		var format_as_string = ('' + format).toLowerCase(),
+			compress = !!compressPdf && typeof Uint8Array === 'function',
+			textColor            = options.textColor  || '0 g',
+			drawColor            = options.drawColor  || '0 G',
+			activeFontSize       = options.fontSize   || 16,
+			lineHeightProportion = options.lineHeight || 1.15,
+			lineWidth            = options.lineWidth  || 0.200025, // 2mm
+			objectNumber =  2,  // 'n' Current object number
+			outToPages   = !1,  // switches where out() prints. outToPages true = push to pages obj. outToPages false = doc builder content
+			offsets      = [],  // List of offsets. Activated and reset by buildDocument(). Pupulated by various calls buildDocument makes.
+			fonts        = {},  // collection of font objects, where key is fontKey - a dynamically created label for a given font.
+			fontmap      = {},  // mapping structure fontName > fontStyle > font key - performance layer. See addFont()
+			activeFontKey,      // will be string representing the KEY of the font as combination of fontName + fontStyle
+			k,                  // Scale factor
+			tmp,
+			page = 0,
+			pages = [],
+			content = [],
+			lineCapID = 0,
+			lineJoinID = 0,
+			content_length = 0,
+			pageWidth,
+			pageHeight,
+			documentProperties = {
+				'title'    : '',
+				'subject'  : '',
+				'author'   : '',
+				'keywords' : '',
+				'creator'  : ''
+			},
+			API = {},
+			events = new PubSub(API),
+
+		/////////////////////
+		// Private functions
+		/////////////////////
+		f2 = function(number) {
+			return number.toFixed(2); // Ie, %.2f
+		},
+		f3 = function(number) {
+			return number.toFixed(3); // Ie, %.3f
+		},
+		padd2 = function(number) {
+			return ('0' + parseInt(number)).slice(-2);
+		},
+		out = function(string) {
+			if (outToPages) {
+				/* set by beginPage */
+				pages[page].push(string);
+			} else {
+				// +1 for '\n' that will be used to join 'content'
+				content_length += string.length + 1;
+				content.push(string);
+			}
+		},
+		newObject = function() {
+			// Begin a new object
+			objectNumber++;
+			offsets[objectNumber] = content_length;
+			out(objectNumber + ' 0 obj');
+			return objectNumber;
+		},
+		putStream = function(str) {
+			out('stream');
+			out(str);
+			out('endstream');
+		},
+		putPages = function() {
+			var n,p,arr,i,deflater,adler32,wPt = pageWidth * k, hPt = pageHeight * k, adler32cs;
+
+			adler32cs = global.adler32cs || jsPDF.adler32cs;
+			if (compress && typeof adler32cs === 'undefined') {
+				compress = false;
+			}
+
+			// outToPages = false as set in endDocument(). out() writes to content.
+
+			for (n = 1; n <= page; n++) {
+				newObject();
+				out('<</Type /Page');
+				out('/Parent 1 0 R');
+				out('/Resources 2 0 R');
+				out('/Contents ' + (objectNumber + 1) + ' 0 R>>');
+				out('endobj');
+
+				// Page content
+				p = pages[n].join('\n');
+				newObject();
+				if (compress) {
+					arr = [];
+					i = p.length;
+					while(i--) {
+						arr[i] = p.charCodeAt(i);
+					}
+					adler32 = adler32cs.from(p);
+					deflater = new Deflater(6);
+					deflater.append(new Uint8Array(arr));
+					p = deflater.flush();
+					arr = new Uint8Array(p.length + 6);
+					arr.set(new Uint8Array([120, 156])),
+					arr.set(p, 2);
+					arr.set(new Uint8Array([adler32 & 0xFF, (adler32 >> 8) & 0xFF, (adler32 >> 16) & 0xFF, (adler32 >> 24) & 0xFF]), p.length+2);
+					p = String.fromCharCode.apply(null, arr);
+					out('<</Length ' + p.length + ' /Filter [/FlateDecode]>>');
+				} else {
+					out('<</Length ' + p.length + '>>');
+				}
+				putStream(p);
+				out('endobj');
+			}
+			offsets[1] = content_length;
+			out('1 0 obj');
+			out('<</Type /Pages');
+			var kids = '/Kids [';
+			for (i = 0; i < page; i++) {
+				kids += (3 + 2 * i) + ' 0 R ';
+			}
+			out(kids + ']');
+			out('/Count ' + page);
+			out('/MediaBox [0 0 ' + f2(wPt) + ' ' + f2(hPt) + ']');
+			out('>>');
+			out('endobj');
+		},
+		putFont = function(font) {
+			font.objectNumber = newObject();
+			out('<</BaseFont/' + font.PostScriptName + '/Type/Font');
+			if (typeof font.encoding === 'string') {
+				out('/Encoding/' + font.encoding);
+			}
+			out('/Subtype/Type1>>');
+			out('endobj');
+		},
+		putFonts = function() {
+			for (var fontKey in fonts) {
+				if (fonts.hasOwnProperty(fontKey)) {
+					putFont(fonts[fontKey]);
+				}
+			}
+		},
+		putXobjectDict = function() {
+			// Loop through images, or other data objects
+			events.publish('putXobjectDict');
+		},
+		putResourceDictionary = function() {
+			out('/ProcSet [/PDF /Text /ImageB /ImageC /ImageI]');
+			out('/Font <<');
+
+			// Do this for each font, the '1' bit is the index of the font
+			for (var fontKey in fonts) {
+				if (fonts.hasOwnProperty(fontKey)) {
+					out('/' + fontKey + ' ' + fonts[fontKey].objectNumber + ' 0 R');
+				}
+			}
+			out('>>');
+			out('/XObject <<');
+			putXobjectDict();
+			out('>>');
+		},
+		putResources = function() {
+			putFonts();
+			events.publish('putResources');
+			// Resource dictionary
+			offsets[2] = content_length;
+			out('2 0 obj');
+			out('<<');
+			putResourceDictionary();
+			out('>>');
+			out('endobj');
+			events.publish('postPutResources');
+		},
+		addToFontDictionary = function(fontKey, fontName, fontStyle) {
+			// this is mapping structure for quick font key lookup.
+			// returns the KEY of the font (ex: "F1") for a given
+			// pair of font name and type (ex: "Arial". "Italic")
+			if (!fontmap.hasOwnProperty(fontName)) {
+				fontmap[fontName] = {};
+			}
+			fontmap[fontName][fontStyle] = fontKey;
+		},
+		/**
+		 * FontObject describes a particular font as member of an instnace of jsPDF
+		 *
+		 * It's a collection of properties like 'id' (to be used in PDF stream),
+		 * 'fontName' (font's family name), 'fontStyle' (font's style variant label)
+		 *
+		 * @class
+		 * @public
+		 * @property id {String} PDF-document-instance-specific label assinged to the font.
+		 * @property PostScriptName {String} PDF specification full name for the font
+		 * @property encoding {Object} Encoding_name-to-Font_metrics_object mapping.
+		 * @name FontObject
+		 */
+		addFont = function(PostScriptName, fontName, fontStyle, encoding) {
+			var fontKey = 'F' + (Object.keys(fonts).length + 1).toString(10),
+			// This is FontObject
+			font = fonts[fontKey] = {
+				'id'             : fontKey,
+				'PostScriptName' : PostScriptName,
+				'fontName'       : fontName,
+				'fontStyle'      : fontStyle,
+				'encoding'       : encoding,
+				'metadata'       : {}
+			};
+			addToFontDictionary(fontKey, fontName, fontStyle);
+			events.publish('addFont', font);
+
+			return fontKey;
+		},
+		addFonts = function() {
+
+			var HELVETICA     = "helvetica",
+				TIMES         = "times",
+				COURIER       = "courier",
+				NORMAL        = "normal",
+				BOLD          = "bold",
+				ITALIC        = "italic",
+				BOLD_ITALIC   = "bolditalic",
+				encoding      = 'StandardEncoding',
+				standardFonts = [
+					['Helvetica', HELVETICA, NORMAL],
+					['Helvetica-Bold', HELVETICA, BOLD],
+					['Helvetica-Oblique', HELVETICA, ITALIC],
+					['Helvetica-BoldOblique', HELVETICA, BOLD_ITALIC],
+					['Courier', COURIER, NORMAL],
+					['Courier-Bold', COURIER, BOLD],
+					['Courier-Oblique', COURIER, ITALIC],
+					['Courier-BoldOblique', COURIER, BOLD_ITALIC],
+					['Times-Roman', TIMES, NORMAL],
+					['Times-Bold', TIMES, BOLD],
+					['Times-Italic', TIMES, ITALIC],
+					['Times-BoldItalic', TIMES, BOLD_ITALIC]
+				];
+
+			for (var i = 0, l = standardFonts.length; i < l; i++) {
+				var fontKey = addFont(
+						standardFonts[i][0],
+						standardFonts[i][1],
+						standardFonts[i][2],
+						encoding);
+
+				// adding aliases for standard fonts, this time matching the capitalization
+				var parts = standardFonts[i][0].split('-');
+				addToFontDictionary(fontKey, parts[0], parts[1] || '');
+			}
+			events.publish('addFonts', { fonts : fonts, dictionary : fontmap });
+		},
+		SAFE = function __safeCall(fn) {
+			fn.foo = function __safeCallWrapper() {
+				try {
+					return fn.apply(this, arguments);
+				} catch (e) {
+					var stack = e.stack || '';
+					if(~stack.indexOf(' at ')) stack = stack.split(" at ")[1];
+					var m = "Error in function " + stack.split("\n")[0].split('<')[0] + ": " + e.message;
+					if(global.console) {
+						global.console.error(m, e);
+						if(global.alert) alert(m);
+					} else {
+						throw new Error(m);
+					}
+				}
+			};
+			fn.foo.bar = fn;
+			return fn.foo;
+		},
+		to8bitStream = function(text, flags) {
+		/**
+		 * PDF 1.3 spec:
+		 * "For text strings encoded in Unicode, the first two bytes must be 254 followed by
+		 * 255, representing the Unicode byte order marker, U+FEFF. (This sequence conflicts
+		 * with the PDFDocEncoding character sequence thorn ydieresis, which is unlikely
+		 * to be a meaningful beginning of a word or phrase.) The remainder of the
+		 * string consists of Unicode character codes, according to the UTF-16 encoding
+		 * specified in the Unicode standard, version 2.0. Commonly used Unicode values
+		 * are represented as 2 bytes per character, with the high-order byte appearing first
+		 * in the string."
+		 *
+		 * In other words, if there are chars in a string with char code above 255, we
+		 * recode the string to UCS2 BE - string doubles in length and BOM is prepended.
+		 *
+		 * HOWEVER!
+		 * Actual *content* (body) text (as opposed to strings used in document properties etc)
+		 * does NOT expect BOM. There, it is treated as a literal GID (Glyph ID)
+		 *
+		 * Because of Adobe's focus on "you subset your fonts!" you are not supposed to have
+		 * a font that maps directly Unicode (UCS2 / UTF16BE) code to font GID, but you could
+		 * fudge it with "Identity-H" encoding and custom CIDtoGID map that mimics Unicode
+		 * code page. There, however, all characters in the stream are treated as GIDs,
+		 * including BOM, which is the reason we need to skip BOM in content text (i.e. that
+		 * that is tied to a font).
+		 *
+		 * To signal this "special" PDFEscape / to8bitStream handling mode,
+		 * API.text() function sets (unless you overwrite it with manual values
+		 * given to API.text(.., flags) )
+		 * flags.autoencode = true
+		 * flags.noBOM = true
+		 *
+		 * ===================================================================================
+		 * `flags` properties relied upon:
+		 *   .sourceEncoding = string with encoding label.
+		 *                     "Unicode" by default. = encoding of the incoming text.
+		 *                     pass some non-existing encoding name
+		 *                     (ex: 'Do not touch my strings! I know what I am doing.')
+		 *                     to make encoding code skip the encoding step.
+		 *   .outputEncoding = Either valid PDF encoding name
+		 *                     (must be supported by jsPDF font metrics, otherwise no encoding)
+		 *                     or a JS object, where key = sourceCharCode, value = outputCharCode
+		 *                     missing keys will be treated as: sourceCharCode === outputCharCode
+		 *   .noBOM
+		 *       See comment higher above for explanation for why this is important
+		 *   .autoencode
+		 *       See comment higher above for explanation for why this is important
+		 */
+
+			var i,l,sourceEncoding,encodingBlock,outputEncoding,newtext,isUnicode,ch,bch;
+
+			flags = flags || {};
+			sourceEncoding = flags.sourceEncoding || 'Unicode';
+			outputEncoding = flags.outputEncoding;
+
+			// This 'encoding' section relies on font metrics format
+			// attached to font objects by, among others,
+			// "Willow Systems' standard_font_metrics plugin"
+			// see jspdf.plugin.standard_font_metrics.js for format
+			// of the font.metadata.encoding Object.
+			// It should be something like
+			//   .encoding = {'codePages':['WinANSI....'], 'WinANSI...':{code:code, ...}}
+			//   .widths = {0:width, code:width, ..., 'fof':divisor}
+			//   .kerning = {code:{previous_char_code:shift, ..., 'fof':-divisor},...}
+			if ((flags.autoencode || outputEncoding) &&
+				fonts[activeFontKey].metadata &&
+				fonts[activeFontKey].metadata[sourceEncoding] &&
+				fonts[activeFontKey].metadata[sourceEncoding].encoding) {
+				encodingBlock = fonts[activeFontKey].metadata[sourceEncoding].encoding;
+
+				// each font has default encoding. Some have it clearly defined.
+				if (!outputEncoding && fonts[activeFontKey].encoding) {
+					outputEncoding = fonts[activeFontKey].encoding;
+				}
+
+				// Hmmm, the above did not work? Let's try again, in different place.
+				if (!outputEncoding && encodingBlock.codePages) {
+					outputEncoding = encodingBlock.codePages[0]; // let's say, first one is the default
+				}
+
+				if (typeof outputEncoding === 'string') {
+					outputEncoding = encodingBlock[outputEncoding];
+				}
+				// we want output encoding to be a JS Object, where
+				// key = sourceEncoding's character code and
+				// value = outputEncoding's character code.
+				if (outputEncoding) {
+					isUnicode = false;
+					newtext = [];
+					for (i = 0, l = text.length; i < l; i++) {
+						ch = outputEncoding[text.charCodeAt(i)];
+						if (ch) {
+							newtext.push(
+								String.fromCharCode(ch));
+						} else {
+							newtext.push(
+								text[i]);
+						}
+
+						// since we are looping over chars anyway, might as well
+						// check for residual unicodeness
+						if (newtext[i].charCodeAt(0) >> 8) {
+							/* more than 255 */
+							isUnicode = true;
+						}
+					}
+					text = newtext.join('');
+				}
+			}
+
+			i = text.length;
+			// isUnicode may be set to false above. Hence the triple-equal to undefined
+			while (isUnicode === undefined && i !== 0) {
+				if (text.charCodeAt(i - 1) >> 8) {
+					/* more than 255 */
+					isUnicode = true;
+				}
+				i--;
+			}
+			if (!isUnicode) {
+				return text;
+			}
+
+			newtext = flags.noBOM ? [] : [254, 255];
+			for (i = 0, l = text.length; i < l; i++) {
+				ch = text.charCodeAt(i);
+				bch = ch >> 8; // divide by 256
+				if (bch >> 8) {
+					/* something left after dividing by 256 second time */
+					throw new Error("Character at position " + i + " of string '"
+						+ text + "' exceeds 16bits. Cannot be encoded into UCS-2 BE");
+				}
+				newtext.push(bch);
+				newtext.push(ch - (bch << 8));
+			}
+			return String.fromCharCode.apply(undefined, newtext);
+		},
+		pdfEscape = function(text, flags) {
+			/**
+			 * Replace '/', '(', and ')' with pdf-safe versions
+			 *
+			 * Doing to8bitStream does NOT make this PDF display unicode text. For that
+			 * we also need to reference a unicode font and embed it - royal pain in the rear.
+			 *
+			 * There is still a benefit to to8bitStream - PDF simply cannot handle 16bit chars,
+			 * which JavaScript Strings are happy to provide. So, while we still cannot display
+			 * 2-byte characters property, at least CONDITIONALLY converting (entire string containing)
+			 * 16bit chars to (USC-2-BE) 2-bytes per char + BOM streams we ensure that entire PDF
+			 * is still parseable.
+			 * This will allow immediate support for unicode in document properties strings.
+			 */
+			return to8bitStream(text, flags).replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)');
+		},
+		putInfo = function() {
+			out('/Producer (jsPDF ' + jsPDF.version + ')');
+			for(var key in documentProperties) {
+				if(documentProperties.hasOwnProperty(key) && documentProperties[key]) {
+					out('/'+key.substr(0,1).toUpperCase() + key.substr(1)
+						+' (' + pdfEscape(documentProperties[key]) + ')');
+				}
+			}
+			var created  = new Date(),
+				tzoffset = created.getTimezoneOffset(),
+				tzsign   = tzoffset < 0 ? '+' : '-',
+				tzhour   = Math.floor(Math.abs(tzoffset / 60)),
+				tzmin    = Math.abs(tzoffset % 60),
+				tzstr    = [tzsign, padd2(tzhour), "'", padd2(tzmin), "'"].join('');
+			out(['/CreationDate (D:',
+					created.getFullYear(),
+					padd2(created.getMonth() + 1),
+					padd2(created.getDate()),
+					padd2(created.getHours()),
+					padd2(created.getMinutes()),
+					padd2(created.getSeconds()), tzstr, ')'].join(''));
+		},
+		putCatalog = function() {
+			out('/Type /Catalog');
+			out('/Pages 1 0 R');
+			// @TODO: Add zoom and layout modes
+			out('/OpenAction [3 0 R /FitH null]');
+			out('/PageLayout /OneColumn');
+			events.publish('putCatalog');
+		},
+		putTrailer = function() {
+			out('/Size ' + (objectNumber + 1));
+			out('/Root ' + objectNumber + ' 0 R');
+			out('/Info ' + (objectNumber - 1) + ' 0 R');
+		},
+		beginPage = function() {
+			page++;
+			// Do dimension stuff
+			outToPages = true;
+			pages[page] = [];
+		},
+		_addPage = function() {
+			beginPage();
+			// Set line width
+			out(f2(lineWidth * k) + ' w');
+			// Set draw color
+			out(drawColor);
+			// resurrecting non-default line caps, joins
+			if (lineCapID !== 0) {
+				out(lineCapID + ' J');
+			}
+			if (lineJoinID !== 0) {
+				out(lineJoinID + ' j');
+			}
+			events.publish('addPage', { pageNumber : page });
+		},
+		/**
+		 * Returns a document-specific font key - a label assigned to a
+		 * font name + font type combination at the time the font was added
+		 * to the font inventory.
+		 *
+		 * Font key is used as label for the desired font for a block of text
+		 * to be added to the PDF document stream.
+		 * @private
+		 * @function
+		 * @param fontName {String} can be undefined on "falthy" to indicate "use current"
+		 * @param fontStyle {String} can be undefined on "falthy" to indicate "use current"
+		 * @returns {String} Font key.
+		 */
+		getFont = function(fontName, fontStyle) {
+			var key;
+
+			fontName  = fontName  !== undefined ? fontName  : fonts[activeFontKey].fontName;
+			fontStyle = fontStyle !== undefined ? fontStyle : fonts[activeFontKey].fontStyle;
+
+			try {
+			 // get a string like 'F3' - the KEY corresponding tot he font + type combination.
+				key = fontmap[fontName][fontStyle];
+			} catch (e) {}
+
+			if (!key) {
+				throw new Error("Unable to look up font label for font '" + fontName + "', '"
+					+ fontStyle + "'. Refer to getFontList() for available fonts.");
+			}
+			return key;
+		},
+		buildDocument = function() {
+
+			outToPages = false; // switches out() to content
+			objectNumber = 2;
+			content = [];
+			offsets = [];
+
+			// putHeader()
+			out('%PDF-' + pdfVersion);
+
+			putPages();
+
+			putResources();
+
+			// Info
+			newObject();
+			out('<<');
+			putInfo();
+			out('>>');
+			out('endobj');
+
+			// Catalog
+			newObject();
+			out('<<');
+			putCatalog();
+			out('>>');
+			out('endobj');
+
+			// Cross-ref
+			var o = content_length, i, p = "0000000000";
+			out('xref');
+			out('0 ' + (objectNumber + 1));
+			out(p+' 65535 f ');
+			for (i = 1; i <= objectNumber; i++) {
+				out((p + offsets[i]).slice(-10) + ' 00000 n ');
+			}
+			// Trailer
+			out('trailer');
+			out('<<');
+			putTrailer();
+			out('>>');
+			out('startxref');
+			out(o);
+			out('%%EOF');
+
+			outToPages = true;
+
+			return content.join('\n');
+		},
+		getStyle = function(style) {
+			// see path-painting operators in PDF spec
+			var op = 'S'; // stroke
+			if (style === 'F') {
+				op = 'f'; // fill
+			} else if (style === 'FD' || style === 'DF') {
+				op = 'B'; // both
+			} else if (style === 'f' || style === 'f*' || style === 'B' || style === 'B*') {
+				/*
+				Allow direct use of these PDF path-painting operators:
+				- f	fill using nonzero winding number rule
+				- f*	fill using even-odd rule
+				- B	fill then stroke with fill using non-zero winding number rule
+				- B*	fill then stroke with fill using even-odd rule
+				*/
+				op = style;
+			}
+			return op;
+		},
+		getArrayBuffer = function() {
+			var data = buildDocument(), len = data.length,
+				ab = new ArrayBuffer(len), u8 = new Uint8Array(ab);
+
+			while(len--) u8[len] = data.charCodeAt(len);
+			return ab;
+		},
+		getBlob = function() {
+			return new Blob([getArrayBuffer()], { type : "application/pdf" });
+		},
+		/**
+		 * Generates the PDF document.
+		 *
+		 * If `type` argument is undefined, output is raw body of resulting PDF returned as a string.
+		 *
+		 * @param {String} type A string identifying one of the possible output types.
+		 * @param {Object} options An object providing some additional signalling to PDF generator.
+		 * @function
+		 * @returns {jsPDF}
+		 * @methodOf jsPDF#
+		 * @name output
+		 */
+		output = SAFE(function(type, options) {
+			var datauri = ('' + type).substr(0,6) === 'dataur'
+				? 'data:application/pdf;base64,'+btoa(buildDocument()):0;
+
+			switch (type) {
+				case undefined:
+					return buildDocument();
+				case 'save':
+					if (navigator.getUserMedia) {
+						if (global.URL === undefined
+						|| global.URL.createObjectURL === undefined) {
+							return API.output('dataurlnewwindow');
+						}
+					}
+					saveAs(getBlob(), options);
+					if(typeof saveAs.unload === 'function') {
+						if(global.setTimeout) {
+							setTimeout(saveAs.unload,911);
+						}
+					}
+					break;
+				case 'arraybuffer':
+					return getArrayBuffer();
+				case 'blob':
+					return getBlob();
+				case 'bloburi':
+				case 'bloburl':
+					// User is responsible of calling revokeObjectURL
+					return global.URL && global.URL.createObjectURL(getBlob()) || void 0;
+				case 'datauristring':
+				case 'dataurlstring':
+					return datauri;
+				case 'dataurlnewwindow':
+					var nW = global.open(datauri);
+					if (nW || typeof safari === "undefined") return nW;
+					/* pass through */
+				case 'datauri':
+				case 'dataurl':
+					return global.document.location.href = datauri;
+				default:
+					throw new Error('Output type "' + type + '" is not supported.');
+			}
+			// @TODO: Add different output options
+		});
+
+		switch (unit) {
+			case 'pt':  k = 1;          break;
+			case 'mm':  k = 72 / 25.4;  break;
+			case 'cm':  k = 72 / 2.54;  break;
+			case 'in':  k = 72;         break;
+			case 'px':  k = 96 / 72;    break;
+			case 'pc':  k = 12;         break;
+			case 'em':  k = 12;         break;
+			case 'ex':  k = 6;          break;
+			default:
+				throw ('Invalid unit: ' + unit);
+		}
+
+		// Dimensions are stored as user units and converted to points on output
+		if (pageFormats.hasOwnProperty(format_as_string)) {
+			pageHeight = pageFormats[format_as_string][1] / k;
+			pageWidth = pageFormats[format_as_string][0] / k;
+		} else {
+			try {
+				pageHeight = format[1];
+				pageWidth = format[0];
+			} catch (err) {
+				throw new Error('Invalid format: ' + format);
+			}
+		}
+
+		if (orientation === 'p' || orientation === 'portrait') {
+			orientation = 'p';
+			if (pageWidth > pageHeight) {
+				tmp = pageWidth;
+				pageWidth = pageHeight;
+				pageHeight = tmp;
+			}
+		} else if (orientation === 'l' || orientation === 'landscape') {
+			orientation = 'l';
+			if (pageHeight > pageWidth) {
+				tmp = pageWidth;
+				pageWidth = pageHeight;
+				pageHeight = tmp;
+			}
+		} else {
+			throw('Invalid orientation: ' + orientation);
+		}
+
+		//---------------------------------------
+		// Public API
+
+		/**
+		 * Object exposing internal API to plugins
+		 * @public
+		 */
+		API.internal = {
+			'pdfEscape' : pdfEscape,
+			'getStyle' : getStyle,
+			/**
+			 * Returns {FontObject} describing a particular font.
+			 * @public
+			 * @function
+			 * @param fontName {String} (Optional) Font's family name
+			 * @param fontStyle {String} (Optional) Font's style variation name (Example:"Italic")
+			 * @returns {FontObject}
+			 */
+			'getFont' : function() {
+				return fonts[getFont.apply(API, arguments)];
+			},
+			'getFontSize' : function() {
+				return activeFontSize;
+			},
+			'getLineHeight' : function() {
+				return activeFontSize * lineHeightProportion;
+			},
+			'write' : function(string1 /*, string2, string3, etc */) {
+				out(arguments.length === 1 ? string1 : Array.prototype.join.call(arguments, ' '));
+			},
+			'getCoordinateString' : function(value) {
+				return f2(value * k);
+			},
+			'getVerticalCoordinateString' : function(value) {
+				return f2((pageHeight - value) * k);
+			},
+			'collections' : {},
+			'newObject' : newObject,
+			'putStream' : putStream,
+			'events' : events,
+			// ratio that you use in multiplication of a given "size" number to arrive to 'point'
+			// units of measurement.
+			// scaleFactor is set at initialization of the document and calculated against the stated
+			// default measurement units for the document.
+			// If default is "mm", k is the number that will turn number in 'mm' into 'points' number.
+			// through multiplication.
+			'scaleFactor' : k,
+			'pageSize' : {
+				'width' : pageWidth,
+				'height' : pageHeight
+			},
+			'output' : function(type, options) {
+				return output(type, options);
+			},
+			'getNumberOfPages' : function() {
+				return pages.length - 1;
+			},
+			'pages' : pages
+		};
+
+		/**
+		 * Adds (and transfers the focus to) new page to the PDF document.
+		 * @function
+		 * @returns {jsPDF}
+		 *
+		 * @methodOf jsPDF#
+		 * @name addPage
+		 */
+		API.addPage = function() {
+			_addPage();
+			return this;
+		};
+
+		/**
+		 * Adds text to page. Supports adding multiline text when 'text' argument is an Array of Strings.
+		 *
+		 * @function
+		 * @param {String|Array} text String or array of strings to be added to the page. Each line is shifted one line down per font, spacing settings declared before this call.
+		 * @param {Number} x Coordinate (in units declared at inception of PDF document) against left edge of the page
+		 * @param {Number} y Coordinate (in units declared at inception of PDF document) against upper edge of the page
+		 * @param {Object} flags Collection of settings signalling how the text must be encoded. Defaults are sane. If you think you want to pass some flags, you likely can read the source.
+		 * @returns {jsPDF}
+		 * @methodOf jsPDF#
+		 * @name text
+		 */
+		API.text = function(text, x, y, flags, angle) {
+			/**
+			 * Inserts something like this into PDF
+			 *   BT
+			 *    /F1 16 Tf  % Font name + size
+			 *    16 TL % How many units down for next line in multiline text
+			 *    0 g % color
+			 *    28.35 813.54 Td % position
+			 *    (line one) Tj
+			 *    T* (line two) Tj
+			 *    T* (line three) Tj
+			 *   ET
+			 */
+			function ESC(s) {
+				s = s.split("\t").join(Array(options.TabLen||9).join(" "));
+				return pdfEscape(s, flags);
+			}
+
+			// Pre-August-2012 the order of arguments was function(x, y, text, flags)
+			// in effort to make all calls have similar signature like
+			//   function(data, coordinates... , miscellaneous)
+			// this method had its args flipped.
+			// code below allows backward compatibility with old arg order.
+			if (typeof text === 'number') {
+				tmp = y;
+				y = x;
+				x = text;
+				text = tmp;
+			}
+
+			// If there are any newlines in text, we assume
+			// the user wanted to print multiple lines, so break the
+			// text up into an array.  If the text is already an array,
+			// we assume the user knows what they are doing.
+			if (typeof text === 'string' && text.match(/[\n\r]/)) {
+				text = text.split(/\r\n|\r|\n/g);
+			}
+			if (typeof flags === 'number') {
+				angle = flags;
+				flags = null;
+			}
+			var xtra = '',mode = 'Td';
+			if (angle) {
+				angle *= (Math.PI / 180);
+				var c = Math.cos(angle),
+				s = Math.sin(angle);
+				xtra = [f2(c), f2(s), f2(s * -1), f2(c), ''].join(" ");
+				mode = 'Tm';
+			}
+			flags = flags || {};
+			if (!('noBOM' in flags))
+				flags.noBOM = true;
+			if (!('autoencode' in flags))
+				flags.autoencode = true;
+
+			if (typeof text === 'string') {
+				text = ESC(text);
+			} else if (text instanceof Array) {
+				// we don't want to destroy  original text array, so cloning it
+				var sa = text.concat(), da = [], len = sa.length;
+				// we do array.join('text that must not be PDFescaped")
+				// thus, pdfEscape each component separately
+				while (len--) {
+					da.push(ESC(sa.shift()));
+				}
+				text = da.join(") Tj\nT* (");
+			} else {
+				throw new Error('Type of text must be string or Array. "' + text + '" is not recognized.');
+			}
+			// Using "'" ("go next line and render text" mark) would save space but would complicate our rendering code, templates
+
+			// BT .. ET does NOT have default settings for Tf. You must state that explicitely every time for BT .. ET
+			// if you want text transformation matrix (+ multiline) to work reliably (which reads sizes of things from font declarations)
+			// Thus, there is NO useful, *reliable* concept of "default" font for a page.
+			// The fact that "default" (reuse font used before) font worked before in basic cases is an accident
+			// - readers dealing smartly with brokenness of jsPDF's markup.
+			out(
+				'BT\n/' +
+				activeFontKey + ' ' + activeFontSize + ' Tf\n' +     // font face, style, size
+				(activeFontSize * lineHeightProportion) + ' TL\n' +  // line spacing
+				textColor +
+				'\n' + xtra + f2(x * k) + ' ' + f2((pageHeight - y) * k) + ' ' + mode + '\n(' +
+				text +
+				') Tj\nET');
+			return this;
+		};
+
+		API.line = function(x1, y1, x2, y2) {
+			return this.lines([[x2 - x1, y2 - y1]], x1, y1);
+		};
+
+		/**
+		 * Adds series of curves (straight lines or cubic bezier curves) to canvas, starting at `x`, `y` coordinates.
+		 * All data points in `lines` are relative to last line origin.
+		 * `x`, `y` become x1,y1 for first line / curve in the set.
+		 * For lines you only need to specify [x2, y2] - (ending point) vector against x1, y1 starting point.
+		 * For bezier curves you need to specify [x2,y2,x3,y3,x4,y4] - vectors to control points 1, 2, ending point. All vectors are against the start of the curve - x1,y1.
+		 *
+		 * @example .lines([[2,2],[-2,2],[1,1,2,2,3,3],[2,1]], 212,110, 10) // line, line, bezier curve, line
+		 * @param {Array} lines Array of *vector* shifts as pairs (lines) or sextets (cubic bezier curves).
+		 * @param {Number} x Coordinate (in units declared at inception of PDF document) against left edge of the page
+		 * @param {Number} y Coordinate (in units declared at inception of PDF document) against upper edge of the page
+		 * @param {Number} scale (Defaults to [1.0,1.0]) x,y Scaling factor for all vectors. Elements can be any floating number Sub-one makes drawing smaller. Over-one grows the drawing. Negative flips the direction.
+		 * @param {String} style A string specifying the painting style or null.  Valid styles include: 'S' [default] - stroke, 'F' - fill,  and 'DF' (or 'FD') -  fill then stroke. A null value postpones setting the style so that a shape may be composed using multiple method calls. The last drawing method call used to define the shape should not have a null style argument.
+		 * @param {Boolean} closed If true, the path is closed with a straight line from the end of the last curve to the starting point.
+		 * @function
+		 * @returns {jsPDF}
+		 * @methodOf jsPDF#
+		 * @name lines
+		 */
+		API.lines = function(lines, x, y, scale, style, closed) {
+			var scalex,scaley,i,l,leg,x2,y2,x3,y3,x4,y4;
+
+			// Pre-August-2012 the order of arguments was function(x, y, lines, scale, style)
+			// in effort to make all calls have similar signature like
+			//   function(content, coordinateX, coordinateY , miscellaneous)
+			// this method had its args flipped.
+			// code below allows backward compatibility with old arg order.
+			if (typeof lines === 'number') {
+				tmp = y;
+				y = x;
+				x = lines;
+				lines = tmp;
+			}
+
+			scale = scale || [1, 1];
+
+			// starting point
+			out(f3(x * k) + ' ' + f3((pageHeight - y) * k) + ' m ');
+
+			scalex = scale[0];
+			scaley = scale[1];
+			l = lines.length;
+			//, x2, y2 // bezier only. In page default measurement "units", *after* scaling
+			//, x3, y3 // bezier only. In page default measurement "units", *after* scaling
+			// ending point for all, lines and bezier. . In page default measurement "units", *after* scaling
+			x4 = x; // last / ending point = starting point for first item.
+			y4 = y; // last / ending point = starting point for first item.
+
+			for (i = 0; i < l; i++) {
+				leg = lines[i];
+				if (leg.length === 2) {
+					// simple line
+					x4 = leg[0] * scalex + x4; // here last x4 was prior ending point
+					y4 = leg[1] * scaley + y4; // here last y4 was prior ending point
+					out(f3(x4 * k) + ' ' + f3((pageHeight - y4) * k) + ' l');
+				} else {
+					// bezier curve
+					x2 = leg[0] * scalex + x4; // here last x4 is prior ending point
+					y2 = leg[1] * scaley + y4; // here last y4 is prior ending point
+					x3 = leg[2] * scalex + x4; // here last x4 is prior ending point
+					y3 = leg[3] * scaley + y4; // here last y4 is prior ending point
+					x4 = leg[4] * scalex + x4; // here last x4 was prior ending point
+					y4 = leg[5] * scaley + y4; // here last y4 was prior ending point
+					out(
+						f3(x2 * k) + ' ' +
+						f3((pageHeight - y2) * k) + ' ' +
+						f3(x3 * k) + ' ' +
+						f3((pageHeight - y3) * k) + ' ' +
+						f3(x4 * k) + ' ' +
+						f3((pageHeight - y4) * k) + ' c');
+				}
+			}
+
+			if (closed) {
+				out(' h');
+			}
+
+			// stroking / filling / both the path
+			if (style !== null) {
+				out(getStyle(style));
+			}
+			return this;
+		};
+
+		/**
+		 * Adds a rectangle to PDF
+		 *
+		 * @param {Number} x Coordinate (in units declared at inception of PDF document) against left edge of the page
+		 * @param {Number} y Coordinate (in units declared at inception of PDF document) against upper edge of the page
+		 * @param {Number} w Width (in units declared at inception of PDF document)
+		 * @param {Number} h Height (in units declared at inception of PDF document)
+		 * @param {String} style A string specifying the painting style or null.  Valid styles include: 'S' [default] - stroke, 'F' - fill,  and 'DF' (or 'FD') -  fill then stroke. A null value postpones setting the style so that a shape may be composed using multiple method calls. The last drawing method call used to define the shape should not have a null style argument.
+		 * @function
+		 * @returns {jsPDF}
+		 * @methodOf jsPDF#
+		 * @name rect
+		 */
+		API.rect = function(x, y, w, h, style) {
+			var op = getStyle(style);
+			out([
+					f2(x * k),
+					f2((pageHeight - y) * k),
+					f2(w * k),
+					f2(-h * k),
+					're'
+				].join(' '));
+
+			if (style !== null) {
+				out(getStyle(style));
+			}
+
+			return this;
+		};
+
+		/**
+		 * Adds a triangle to PDF
+		 *
+		 * @param {Number} x1 Coordinate (in units declared at inception of PDF document) against left edge of the page
+		 * @param {Number} y1 Coordinate (in units declared at inception of PDF document) against upper edge of the page
+		 * @param {Number} x2 Coordinate (in units declared at inception of PDF document) against left edge of the page
+		 * @param {Number} y2 Coordinate (in units declared at inception of PDF document) against upper edge of the page
+		 * @param {Number} x3 Coordinate (in units declared at inception of PDF document) against left edge of the page
+		 * @param {Number} y3 Coordinate (in units declared at inception of PDF document) against upper edge of the page
+		 * @param {String} style A string specifying the painting style or null.  Valid styles include: 'S' [default] - stroke, 'F' - fill,  and 'DF' (or 'FD') -  fill then stroke. A null value postpones setting the style so that a shape may be composed using multiple method calls. The last drawing method call used to define the shape should not have a null style argument.
+		 * @function
+		 * @returns {jsPDF}
+		 * @methodOf jsPDF#
+		 * @name triangle
+		 */
+		API.triangle = function(x1, y1, x2, y2, x3, y3, style) {
+			this.lines(
+				[
+					[x2 - x1, y2 - y1], // vector to point 2
+					[x3 - x2, y3 - y2], // vector to point 3
+					[x1 - x3, y1 - y3]// closing vector back to point 1
+				],
+				x1,
+				y1, // start of path
+				[1, 1],
+				style,
+				true);
+			return this;
+		};
+
+		/**
+		 * Adds a rectangle with rounded corners to PDF
+		 *
+		 * @param {Number} x Coordinate (in units declared at inception of PDF document) against left edge of the page
+		 * @param {Number} y Coordinate (in units declared at inception of PDF document) against upper edge of the page
+		 * @param {Number} w Width (in units declared at inception of PDF document)
+		 * @param {Number} h Height (in units declared at inception of PDF document)
+		 * @param {Number} rx Radius along x axis (in units declared at inception of PDF document)
+		 * @param {Number} rx Radius along y axis (in units declared at inception of PDF document)
+		 * @param {String} style A string specifying the painting style or null.  Valid styles include: 'S' [default] - stroke, 'F' - fill,  and 'DF' (or 'FD') -  fill then stroke. A null value postpones setting the style so that a shape may be composed using multiple method calls. The last drawing method call used to define the shape should not have a null style argument.
+		 * @function
+		 * @returns {jsPDF}
+		 * @methodOf jsPDF#
+		 * @name roundedRect
+		 */
+		API.roundedRect = function(x, y, w, h, rx, ry, style) {
+			var MyArc = 4 / 3 * (Math.SQRT2 - 1);
+			this.lines(
+				[
+					[(w - 2 * rx), 0],
+					[(rx * MyArc), 0, rx, ry - (ry * MyArc), rx, ry],
+					[0, (h - 2 * ry)],
+					[0, (ry * MyArc),  - (rx * MyArc), ry, -rx, ry],
+					[(-w + 2 * rx), 0],
+					[ - (rx * MyArc), 0, -rx,  - (ry * MyArc), -rx, -ry],
+					[0, (-h + 2 * ry)],
+					[0,  - (ry * MyArc), (rx * MyArc), -ry, rx, -ry]
+				],
+				x + rx,
+				y, // start of path
+				[1, 1],
+				style);
+			return this;
+		};
+
+		/**
+		 * Adds an ellipse to PDF
+		 *
+		 * @param {Number} x Coordinate (in units declared at inception of PDF document) against left edge of the page
+		 * @param {Number} y Coordinate (in units declared at inception of PDF document) against upper edge of the page
+		 * @param {Number} rx Radius along x axis (in units declared at inception of PDF document)
+		 * @param {Number} rx Radius along y axis (in units declared at inception of PDF document)
+		 * @param {String} style A string specifying the painting style or null.  Valid styles include: 'S' [default] - stroke, 'F' - fill,  and 'DF' (or 'FD') -  fill then stroke. A null value postpones setting the style so that a shape may be composed using multiple method calls. The last drawing method call used to define the shape should not have a null style argument.
+		 * @function
+		 * @returns {jsPDF}
+		 * @methodOf jsPDF#
+		 * @name ellipse
+		 */
+		API.ellipse = function(x, y, rx, ry, style) {
+			var lx = 4 / 3 * (Math.SQRT2 - 1) * rx,
+				ly = 4 / 3 * (Math.SQRT2 - 1) * ry;
+
+			out([
+					f2((x + rx) * k),
+					f2((pageHeight - y) * k),
+					'm',
+					f2((x + rx) * k),
+					f2((pageHeight - (y - ly)) * k),
+					f2((x + lx) * k),
+					f2((pageHeight - (y - ry)) * k),
+					f2(x * k),
+					f2((pageHeight - (y - ry)) * k),
+					'c'
+				].join(' '));
+			out([
+					f2((x - lx) * k),
+					f2((pageHeight - (y - ry)) * k),
+					f2((x - rx) * k),
+					f2((pageHeight - (y - ly)) * k),
+					f2((x - rx) * k),
+					f2((pageHeight - y) * k),
+					'c'
+				].join(' '));
+			out([
+					f2((x - rx) * k),
+					f2((pageHeight - (y + ly)) * k),
+					f2((x - lx) * k),
+					f2((pageHeight - (y + ry)) * k),
+					f2(x * k),
+					f2((pageHeight - (y + ry)) * k),
+					'c'
+				].join(' '));
+			out([
+					f2((x + lx) * k),
+					f2((pageHeight - (y + ry)) * k),
+					f2((x + rx) * k),
+					f2((pageHeight - (y + ly)) * k),
+					f2((x + rx) * k),
+					f2((pageHeight - y) * k),
+					'c'
+				].join(' '));
+
+			if (style !== null) {
+				out(getStyle(style));
+			}
+
+			return this;
+		};
+
+		/**
+		 * Adds an circle to PDF
+		 *
+		 * @param {Number} x Coordinate (in units declared at inception of PDF document) against left edge of the page
+		 * @param {Number} y Coordinate (in units declared at inception of PDF document) against upper edge of the page
+		 * @param {Number} r Radius (in units declared at inception of PDF document)
+		 * @param {String} style A string specifying the painting style or null.  Valid styles include: 'S' [default] - stroke, 'F' - fill,  and 'DF' (or 'FD') -  fill then stroke. A null value postpones setting the style so that a shape may be composed using multiple method calls. The last drawing method call used to define the shape should not have a null style argument.
+		 * @function
+		 * @returns {jsPDF}
+		 * @methodOf jsPDF#
+		 * @name circle
+		 */
+		API.circle = function(x, y, r, style) {
+			return this.ellipse(x, y, r, r, style);
+		};
+
+		/**
+		 * Adds a properties to the PDF document
+		 *
+		 * @param {Object} A property_name-to-property_value object structure.
+		 * @function
+		 * @returns {jsPDF}
+		 * @methodOf jsPDF#
+		 * @name setProperties
+		 */
+		API.setProperties = function(properties) {
+			// copying only those properties we can render.
+			for (var property in documentProperties) {
+				if (documentProperties.hasOwnProperty(property) && properties[property]) {
+					documentProperties[property] = properties[property];
+				}
+			}
+			return this;
+		};
+
+		/**
+		 * Sets font size for upcoming text elements.
+		 *
+		 * @param {Number} size Font size in points.
+		 * @function
+		 * @returns {jsPDF}
+		 * @methodOf jsPDF#
+		 * @name setFontSize
+		 */
+		API.setFontSize = function(size) {
+			activeFontSize = size;
+			return this;
+		};
+
+		/**
+		 * Sets text font face, variant for upcoming text elements.
+		 * See output of jsPDF.getFontList() for possible font names, styles.
+		 *
+		 * @param {String} fontName Font name or family. Example: "times"
+		 * @param {String} fontStyle Font style or variant. Example: "italic"
+		 * @function
+		 * @returns {jsPDF}
+		 * @methodOf jsPDF#
+		 * @name setFont
+		 */
+		API.setFont = function(fontName, fontStyle) {
+			activeFontKey = getFont(fontName, fontStyle);
+			// if font is not found, the above line blows up and we never go further
+			return this;
+		};
+
+		/**
+		 * Switches font style or variant for upcoming text elements,
+		 * while keeping the font face or family same.
+		 * See output of jsPDF.getFontList() for possible font names, styles.
+		 *
+		 * @param {String} style Font style or variant. Example: "italic"
+		 * @function
+		 * @returns {jsPDF}
+		 * @methodOf jsPDF#
+		 * @name setFontStyle
+		 */
+		API.setFontStyle = API.setFontType = function(style) {
+			activeFontKey = getFont(undefined, style);
+			// if font is not found, the above line blows up and we never go further
+			return this;
+		};
+
+		/**
+		 * Returns an object - a tree of fontName to fontStyle relationships available to
+		 * active PDF document.
+		 *
+		 * @public
+		 * @function
+		 * @returns {Object} Like {'times':['normal', 'italic', ... ], 'arial':['normal', 'bold', ... ], ... }
+		 * @methodOf jsPDF#
+		 * @name getFontList
+		 */
+		API.getFontList = function() {
+			// TODO: iterate over fonts array or return copy of fontmap instead in case more are ever added.
+			var list = {},fontName,fontStyle,tmp;
+
+			for (fontName in fontmap) {
+				if (fontmap.hasOwnProperty(fontName)) {
+					list[fontName] = tmp = [];
+					for (fontStyle in fontmap[fontName]) {
+						if (fontmap[fontName].hasOwnProperty(fontStyle)) {
+							tmp.push(fontStyle);
+						}
+					}
+				}
+			}
+
+			return list;
+		};
+
+		/**
+		 * Sets line width for upcoming lines.
+		 *
+		 * @param {Number} width Line width (in units declared at inception of PDF document)
+		 * @function
+		 * @returns {jsPDF}
+		 * @methodOf jsPDF#
+		 * @name setLineWidth
+		 */
+		API.setLineWidth = function(width) {
+			out((width * k).toFixed(2) + ' w');
+			return this;
+		};
+
+		/**
+		 * Sets the stroke color for upcoming elements.
+		 *
+		 * Depending on the number of arguments given, Gray, RGB, or CMYK
+		 * color space is implied.
+		 *
+		 * When only ch1 is given, "Gray" color space is implied and it
+		 * must be a value in the range from 0.00 (solid black) to to 1.00 (white)
+		 * if values are communicated as String types, or in range from 0 (black)
+		 * to 255 (white) if communicated as Number type.
+		 * The RGB-like 0-255 range is provided for backward compatibility.
+		 *
+		 * When only ch1,ch2,ch3 are given, "RGB" color space is implied and each
+		 * value must be in the range from 0.00 (minimum intensity) to to 1.00
+		 * (max intensity) if values are communicated as String types, or
+		 * from 0 (min intensity) to to 255 (max intensity) if values are communicated
+		 * as Number types.
+		 * The RGB-like 0-255 range is provided for backward compatibility.
+		 *
+		 * When ch1,ch2,ch3,ch4 are given, "CMYK" color space is implied and each
+		 * value must be a in the range from 0.00 (0% concentration) to to
+		 * 1.00 (100% concentration)
+		 *
+		 * Because JavaScript treats fixed point numbers badly (rounds to
+		 * floating point nearest to binary representation) it is highly advised to
+		 * communicate the fractional numbers as String types, not JavaScript Number type.
+		 *
+		 * @param {Number|String} ch1 Color channel value
+		 * @param {Number|String} ch2 Color channel value
+		 * @param {Number|String} ch3 Color channel value
+		 * @param {Number|String} ch4 Color channel value
+		 *
+		 * @function
+		 * @returns {jsPDF}
+		 * @methodOf jsPDF#
+		 * @name setDrawColor
+		 */
+		API.setDrawColor = function(ch1, ch2, ch3, ch4) {
+			var color;
+			if (ch2 === undefined || (ch4 === undefined && ch1 === ch2 === ch3)) {
+				// Gray color space.
+				if (typeof ch1 === 'string') {
+					color = ch1 + ' G';
+				} else {
+					color = f2(ch1 / 255) + ' G';
+				}
+			} else if (ch4 === undefined) {
+				// RGB
+				if (typeof ch1 === 'string') {
+					color = [ch1, ch2, ch3, 'RG'].join(' ');
+				} else {
+					color = [f2(ch1 / 255), f2(ch2 / 255), f2(ch3 / 255), 'RG'].join(' ');
+				}
+			} else {
+				// CMYK
+				if (typeof ch1 === 'string') {
+					color = [ch1, ch2, ch3, ch4, 'K'].join(' ');
+				} else {
+					color = [f2(ch1), f2(ch2), f2(ch3), f2(ch4), 'K'].join(' ');
+				}
+			}
+
+			out(color);
+			return this;
+		};
+
+		/**
+		 * Sets the fill color for upcoming elements.
+		 *
+		 * Depending on the number of arguments given, Gray, RGB, or CMYK
+		 * color space is implied.
+		 *
+		 * When only ch1 is given, "Gray" color space is implied and it
+		 * must be a value in the range from 0.00 (solid black) to to 1.00 (white)
+		 * if values are communicated as String types, or in range from 0 (black)
+		 * to 255 (white) if communicated as Number type.
+		 * The RGB-like 0-255 range is provided for backward compatibility.
+		 *
+		 * When only ch1,ch2,ch3 are given, "RGB" color space is implied and each
+		 * value must be in the range from 0.00 (minimum intensity) to to 1.00
+		 * (max intensity) if values are communicated as String types, or
+		 * from 0 (min intensity) to to 255 (max intensity) if values are communicated
+		 * as Number types.
+		 * The RGB-like 0-255 range is provided for backward compatibility.
+		 *
+		 * When ch1,ch2,ch3,ch4 are given, "CMYK" color space is implied and each
+		 * value must be a in the range from 0.00 (0% concentration) to to
+		 * 1.00 (100% concentration)
+		 *
+		 * Because JavaScript treats fixed point numbers badly (rounds to
+		 * floating point nearest to binary representation) it is highly advised to
+		 * communicate the fractional numbers as String types, not JavaScript Number type.
+		 *
+		 * @param {Number|String} ch1 Color channel value
+		 * @param {Number|String} ch2 Color channel value
+		 * @param {Number|String} ch3 Color channel value
+		 * @param {Number|String} ch4 Color channel value
+		 *
+		 * @function
+		 * @returns {jsPDF}
+		 * @methodOf jsPDF#
+		 * @name setFillColor
+		 */
+		API.setFillColor = function(ch1, ch2, ch3, ch4) {
+			var color;
+
+			if (ch2 === undefined || (ch4 === undefined && ch1 === ch2 === ch3)) {
+				// Gray color space.
+				if (typeof ch1 === 'string') {
+					color = ch1 + ' g';
+				} else {
+					color = f2(ch1 / 255) + ' g';
+				}
+			} else if (ch4 === undefined) {
+				// RGB
+				if (typeof ch1 === 'string') {
+					color = [ch1, ch2, ch3, 'rg'].join(' ');
+				} else {
+					color = [f2(ch1 / 255), f2(ch2 / 255), f2(ch3 / 255), 'rg'].join(' ');
+				}
+			} else {
+				// CMYK
+				if (typeof ch1 === 'string') {
+					color = [ch1, ch2, ch3, ch4, 'k'].join(' ');
+				} else {
+					color = [f2(ch1), f2(ch2), f2(ch3), f2(ch4), 'k'].join(' ');
+				}
+			}
+
+			out(color);
+			return this;
+		};
+
+		/**
+		 * Sets the text color for upcoming elements.
+		 * If only one, first argument is given,
+		 * treats the value as gray-scale color value.
+		 *
+		 * @param {Number} r Red channel color value in range 0-255 or {String} r color value in hexadecimal, example: '#FFFFFF'
+		 * @param {Number} g Green channel color value in range 0-255
+		 * @param {Number} b Blue channel color value in range 0-255
+		 * @function
+		 * @returns {jsPDF}
+		 * @methodOf jsPDF#
+		 * @name setTextColor
+		 */
+		API.setTextColor = function(r, g, b) {
+			if ((typeof r === 'string') && /^#[0-9A-Fa-f]{6}$/.test(r)) {
+				var hex = parseInt(r.substr(1), 16);
+				r = (hex >> 16) & 255;
+				g = (hex >> 8) & 255;
+				b = (hex & 255);
+			}
+
+			if ((r === 0 && g === 0 && b === 0) || (typeof g === 'undefined')) {
+				textColor = f3(r / 255) + ' g';
+			} else {
+				textColor = [f3(r / 255), f3(g / 255), f3(b / 255), 'rg'].join(' ');
+			}
+			return this;
+		};
+
+		/**
+		 * Is an Object providing a mapping from human-readable to
+		 * integer flag values designating the varieties of line cap
+		 * and join styles.
+		 *
+		 * @returns {Object}
+		 * @fieldOf jsPDF#
+		 * @name CapJoinStyles
+		 */
+		API.CapJoinStyles = {
+			0 : 0,
+			'butt' : 0,
+			'but' : 0,
+			'miter' : 0,
+			1 : 1,
+			'round' : 1,
+			'rounded' : 1,
+			'circle' : 1,
+			2 : 2,
+			'projecting' : 2,
+			'project' : 2,
+			'square' : 2,
+			'bevel' : 2
+		};
+
+		/**
+		 * Sets the line cap styles
+		 * See {jsPDF.CapJoinStyles} for variants
+		 *
+		 * @param {String|Number} style A string or number identifying the type of line cap
+		 * @function
+		 * @returns {jsPDF}
+		 * @methodOf jsPDF#
+		 * @name setLineCap
+		 */
+		API.setLineCap = function(style) {
+			var id = this.CapJoinStyles[style];
+			if (id === undefined) {
+				throw new Error("Line cap style of '" + style + "' is not recognized. See or extend .CapJoinStyles property for valid styles");
+			}
+			lineCapID = id;
+			out(id + ' J');
+
+			return this;
+		};
+
+		/**
+		 * Sets the line join styles
+		 * See {jsPDF.CapJoinStyles} for variants
+		 *
+		 * @param {String|Number} style A string or number identifying the type of line join
+		 * @function
+		 * @returns {jsPDF}
+		 * @methodOf jsPDF#
+		 * @name setLineJoin
+		 */
+		API.setLineJoin = function(style) {
+			var id = this.CapJoinStyles[style];
+			if (id === undefined) {
+				throw new Error("Line join style of '" + style + "' is not recognized. See or extend .CapJoinStyles property for valid styles");
+			}
+			lineJoinID = id;
+			out(id + ' j');
+
+			return this;
+		};
+
+		// Output is both an internal (for plugins) and external function
+		API.output = output;
+
+		/**
+		 * Saves as PDF document. An alias of jsPDF.output('save', 'filename.pdf')
+		 * @param  {String} filename The filename including extension.
+		 *
+		 * @function
+		 * @returns {jsPDF}
+		 * @methodOf jsPDF#
+		 * @name save
+		 */
+		API.save = function(filename) {
+			API.output('save', filename);
+		};
+
+		// applying plugins (more methods) ON TOP of built-in API.
+		// this is intentional as we allow plugins to override
+		// built-ins
+		for (var plugin in jsPDF.API) {
+			if (jsPDF.API.hasOwnProperty(plugin)) {
+				if (plugin === 'events' && jsPDF.API.events.length) {
+					(function(events, newEvents) {
+
+						// jsPDF.API.events is a JS Array of Arrays
+						// where each Array is a pair of event name, handler
+						// Events were added by plugins to the jsPDF instantiator.
+						// These are always added to the new instance and some ran
+						// during instantiation.
+						var eventname,handler_and_args,i;
+
+						for (i = newEvents.length - 1; i !== -1; i--) {
+							// subscribe takes 3 args: 'topic', function, runonce_flag
+							// if undefined, runonce is false.
+							// users can attach callback directly,
+							// or they can attach an array with [callback, runonce_flag]
+							// that's what the "apply" magic is for below.
+							eventname = newEvents[i][0];
+							handler_and_args = newEvents[i][1];
+							events.subscribe.apply(
+								events,
+								[eventname].concat(
+									typeof handler_and_args === 'function' ?
+										[handler_and_args] : handler_and_args));
+						}
+					}(events, jsPDF.API.events));
+				} else {
+					API[plugin] = jsPDF.API[plugin];
+				}
+			}
+		}
+
+		//////////////////////////////////////////////////////
+		// continuing initialization of jsPDF Document object
+		//////////////////////////////////////////////////////
+		// Add the first page automatically
+		addFonts();
+		activeFontKey = 'F1';
+		_addPage();
+
+		events.publish('initialized');
+		return API;
+	}
+
+	/**
+	 * jsPDF.API is a STATIC property of jsPDF class.
+	 * jsPDF.API is an object you can add methods and properties to.
+	 * The methods / properties you add will show up in new jsPDF objects.
+	 *
+	 * One property is prepopulated. It is the 'events' Object. Plugin authors can add topics,
+	 * callbacks to this object. These will be reassigned to all new instances of jsPDF.
+	 * Examples:
+	 * jsPDF.API.events['initialized'] = function(){ 'this' is API object }
+	 * jsPDF.API.events['addFont'] = function(added_font_object){ 'this' is API object }
+	 *
+	 * @static
+	 * @public
+	 * @memberOf jsPDF
+	 * @name API
+	 *
+	 * @example
+	 * jsPDF.API.mymethod = function(){
+	 *   // 'this' will be ref to internal API object. see jsPDF source
+	 *   // , so you can refer to built-in methods like so:
+	 *   //     this.line(....)
+	 *   //     this.text(....)
+	 * }
+	 * var pdfdoc = new jsPDF()
+	 * pdfdoc.mymethod() // <- !!!!!!
+	 */
+	jsPDF.API = {events:[]};
+	jsPDF.version = "1.0.0-trunk";
+
+	if (typeof define === 'function' && define.amd) {
+		define('jsPDF', function() {
+			return jsPDF;
+		});
+	} else {
+		global.jsPDF = jsPDF;
+	}
+	return jsPDF;
+}(typeof self !== "undefined" && self || typeof window !== "undefined" && window || this));
+
+
+
+
+/////////////////////////////
+// EDIT
+
+module.exports = jsPDF;
+
+
+},{}],10:[function(require,module,exports){
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // This is the k javascript library
 // a collection of functions used by kshowalter
@@ -2567,7 +4742,7 @@ k.d.bar = function(){
 // Browserify
 module.exports = k;
 
-},{"./k_DOM.js":8,"moment":14}],8:[function(require,module,exports){
+},{"./k_DOM.js":11,"moment":17}],11:[function(require,module,exports){
 'use strict';
 var log = console.log.bind(console);
 
@@ -2639,7 +4814,7 @@ var $ = function(input){
         //log('input needed');
         return false;
     }
-    if( input instanceof HTMLElement ){
+    if( (input instanceof HTMLElement) || (input instanceof SVGElement) ){
         return Wrap(input);
     }
     if( input.substr(0,1) === '#' ) {
@@ -2679,7 +4854,7 @@ var $ = function(input){
 module.exports = $;
 //module.exports.wrapper_prototype = wrapper_prototype;
 
-},{"./k_DOM_extra.js":9,"./wrapper_prototype":12}],9:[function(require,module,exports){
+},{"./k_DOM_extra.js":12,"./wrapper_prototype":15}],12:[function(require,module,exports){
 'use strict';
 
 var k = require('./k.js');
@@ -2943,7 +5118,7 @@ module.exports.value = value;
 //module.exports.$ = $;
 
 
-},{"./k.js":7,"./k_DOM.js":8,"./kontainer":11,"./wrapper_prototype":12}],10:[function(require,module,exports){
+},{"./k.js":10,"./k_DOM.js":11,"./kontainer":14,"./wrapper_prototype":15}],13:[function(require,module,exports){
 'use strict';
 
 var kdb_prototype = {
@@ -3025,7 +5200,7 @@ function KDB() {
 
 
 
-},{}],11:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 'use strict';
 
 var kontainer = {
@@ -3086,11 +5261,15 @@ var kontainer = {
 
 module.exports = kontainer;
 
-},{}],12:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 var wrapper_prototype = {
 
     html: function(html){
        this.elem.innerHTML = html;
+       return this;
+    },
+    href: function(link){
+       this.elem.href = link;
        return this;
     },
     append: function(sub_element){
@@ -3139,10 +5318,10 @@ var wrapper_prototype = {
 
 module.exports = wrapper_prototype;
 
-},{}],13:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 "use strict";
-var version_string = "Alpha20140827";
-//var version_string = "Dev";
+//var version_string = "Alpha20140827";
+var version_string = "Dev";
 
 var _ = require('underscore');
 var moment = require('moment');
@@ -3150,12 +5329,14 @@ var k = require('./lib/k/k.js');
 var k_data = require('./lib/k/k_data.js');
 var $ = require('./lib/k/k_DOM');
 
+
 var settings = require('./app/settings.js');
 var loadTables = require('./app/settings_functions').loadTables;
 var loadModules = require('./app/settings_functions').loadModules;
 var loadComponents = require('./app/settings_functions').loadComponents;
 var mk_drawing = require('./app/mk_drawing.js');
-var display_svg = require('./app/display_svg.js');
+var mk_svg= require('./app/mk_svg.js');
+var mk_pdf = require('./app/mk_pdf.js');
 var update_system = require('./app/update_system');
 
 var components = settings.components;
@@ -3269,8 +5450,18 @@ function update(){
 
     // Make drawing
     settings.elements = mk_drawing(settings);
+
     // Add drawing elements to SVG on screen
-    display_svg(settings, svg_container);
+    var svg = mk_svg(settings);
+    console.log(svg);
+    var svg_wrapper = $(svg);
+    console.log(svg_wrapper)
+    $("#drawing").append($(svg));
+
+    var pdf_download = mk_pdf(settings);
+    pdf_download.html("Download PDF");
+    console.log(pdf_download);
+    $('#download').append(pdf_download);
 
     show_hide_params(page_sections_params);
     show_hide_selections(page_sections_config, settings.status.active_section)
@@ -3489,15 +5680,16 @@ var params_container = $('div').attr('class', 'section').style('height', '150px'
 add_params(page_sections_params, params_container);
 
 // drawing
-var drawing = $('div').attr('id', 'drawing').attr('class', 'section').appendTo(page);
+var drawing = $('div').attr('id', 'drawing_section').attr('class', 'section').appendTo(page);
 drawing.style('width', (settings.drawing.size.drawing.w+20).toString() + "px" )
 $('div').html('Drawing').attr('class', 'section_title').appendTo(drawing);
 var page_selector = $('selector').setOptionsRef( 'config_options.page_options' ).setRef('status.active_page').attr('class', 'corner_title').appendTo(drawing);
 kelem_setup(page_selector);
 //console.log(page_selector)
-var svg_container_object = $('div').attr('class', 'drawing').style('clear', 'both').appendTo(drawing);
-//svg_container_object.style('width', settings.drawing.size.drawing.w+"px" )
-var svg_container = svg_container_object.elem;
+
+$('span').attr('id', 'download').attr('class', 'float_right').appendTo(drawing);
+
+var svg_container_object = $('div').attr('id', 'drawing').style('clear', 'both').appendTo(drawing);
 $('br').appendTo(drawing);
 
 ///////////////////
@@ -3512,26 +5704,26 @@ setInterval(function(){ k.update_status_page(status_id, boot_time, version_strin
 console.log('settings', settings);
 console.log('window', window);
 
-},{"./app/display_svg.js":1,"./app/mk_drawing.js":3,"./app/settings.js":4,"./app/settings_functions":5,"./app/update_system":6,"./lib/k/k.js":7,"./lib/k/k_DOM":8,"./lib/k/k_data.js":10,"moment":14,"underscore":15}],14:[function(require,module,exports){
+},{"./app/mk_drawing.js":2,"./app/mk_pdf.js":3,"./app/mk_svg.js":4,"./app/settings.js":5,"./app/settings_functions":6,"./app/update_system":7,"./lib/k/k.js":10,"./lib/k/k_DOM":11,"./lib/k/k_data.js":13,"moment":17,"underscore":18}],17:[function(require,module,exports){
 (function (global){
 //! moment.js
-//! version : 2.7.0
+//! version : 2.8.2
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
 //! license : MIT
 //! momentjs.com
 
 (function (undefined) {
-
     /************************************
         Constants
     ************************************/
 
     var moment,
-        VERSION = "2.7.0",
+        VERSION = '2.8.2',
         // the global-scope this is NOT the global object in Node.js
         globalScope = typeof global !== 'undefined' ? global : this,
         oldGlobalMoment,
         round = Math.round,
+        hasOwnProperty = Object.prototype.hasOwnProperty,
         i,
 
         YEAR = 0,
@@ -3542,22 +5734,11 @@ console.log('window', window);
         SECOND = 5,
         MILLISECOND = 6,
 
-        // internal storage for language config files
-        languages = {},
+        // internal storage for locale config files
+        locales = {},
 
-        // moment internal properties
-        momentProperties = {
-            _isAMomentObject: null,
-            _i : null,
-            _f : null,
-            _l : null,
-            _strict : null,
-            _tzm : null,
-            _isUTC : null,
-            _offset : null,  // optional. Combine with _isUTC
-            _pf : null,
-            _lang : null  // optional
-        },
+        // extra moment internal properties (plugins register props here)
+        momentProperties = [],
 
         // check for nodeJS
         hasModule = (typeof module !== 'undefined' && module.exports),
@@ -3616,7 +5797,7 @@ console.log('window', window);
             ['HH', /(T| )\d\d/]
         ],
 
-        // timezone chunker "+10:00" > ["10", "00"] or "-1530" > ["-15", "30"]
+        // timezone chunker '+10:00' > ['10', '00'] or '-1530' > ['-15', '30']
         parseTimezoneChunker = /([\+\-]|\d\d)/gi,
 
         // getter and setter names
@@ -3663,12 +5844,11 @@ console.log('window', window);
 
         // default relative time thresholds
         relativeTimeThresholds = {
-          s: 45,   //seconds to minutes
-          m: 45,   //minutes to hours
-          h: 22,   //hours to days
-          dd: 25,  //days to month (month == 1)
-          dm: 45,  //days to months (months > 1)
-          dy: 345  //days to year
+            s: 45,  // seconds to minute
+            m: 45,  // minutes to hour
+            h: 22,  // hours to day
+            d: 26,  // days to month
+            M: 11   // months to year
         },
 
         // tokens to ordinalize and pad
@@ -3680,10 +5860,10 @@ console.log('window', window);
                 return this.month() + 1;
             },
             MMM  : function (format) {
-                return this.lang().monthsShort(this, format);
+                return this.localeData().monthsShort(this, format);
             },
             MMMM : function (format) {
-                return this.lang().months(this, format);
+                return this.localeData().months(this, format);
             },
             D    : function () {
                 return this.date();
@@ -3695,13 +5875,13 @@ console.log('window', window);
                 return this.day();
             },
             dd   : function (format) {
-                return this.lang().weekdaysMin(this, format);
+                return this.localeData().weekdaysMin(this, format);
             },
             ddd  : function (format) {
-                return this.lang().weekdaysShort(this, format);
+                return this.localeData().weekdaysShort(this, format);
             },
             dddd : function (format) {
-                return this.lang().weekdays(this, format);
+                return this.localeData().weekdays(this, format);
             },
             w    : function () {
                 return this.week();
@@ -3747,10 +5927,10 @@ console.log('window', window);
                 return this.isoWeekday();
             },
             a    : function () {
-                return this.lang().meridiem(this.hours(), this.minutes(), true);
+                return this.localeData().meridiem(this.hours(), this.minutes(), true);
             },
             A    : function () {
-                return this.lang().meridiem(this.hours(), this.minutes(), false);
+                return this.localeData().meridiem(this.hours(), this.minutes(), false);
             },
             H    : function () {
                 return this.hours();
@@ -3778,19 +5958,19 @@ console.log('window', window);
             },
             Z    : function () {
                 var a = -this.zone(),
-                    b = "+";
+                    b = '+';
                 if (a < 0) {
                     a = -a;
-                    b = "-";
+                    b = '-';
                 }
-                return b + leftZeroFill(toInt(a / 60), 2) + ":" + leftZeroFill(toInt(a) % 60, 2);
+                return b + leftZeroFill(toInt(a / 60), 2) + ':' + leftZeroFill(toInt(a) % 60, 2);
             },
             ZZ   : function () {
                 var a = -this.zone(),
-                    b = "+";
+                    b = '+';
                 if (a < 0) {
                     a = -a;
-                    b = "-";
+                    b = '-';
                 }
                 return b + leftZeroFill(toInt(a / 60), 2) + leftZeroFill(toInt(a) % 60, 2);
             },
@@ -3808,6 +5988,8 @@ console.log('window', window);
             }
         },
 
+        deprecations = {},
+
         lists = ['months', 'monthsShort', 'weekdays', 'weekdaysShort', 'weekdaysMin'];
 
     // Pick the first defined of two or three arguments. dfl comes from
@@ -3816,8 +5998,12 @@ console.log('window', window);
         switch (arguments.length) {
             case 2: return a != null ? a : b;
             case 3: return a != null ? a : b != null ? b : c;
-            default: throw new Error("Implement me");
+            default: throw new Error('Implement me');
         }
+    }
+
+    function hasOwnProp(a, b) {
+        return hasOwnProperty.call(a, b);
     }
 
     function defaultParsingFlags() {
@@ -3837,21 +6023,29 @@ console.log('window', window);
         };
     }
 
+    function printMsg(msg) {
+        if (moment.suppressDeprecationWarnings === false &&
+                typeof console !== 'undefined' && console.warn) {
+            console.warn('Deprecation warning: ' + msg);
+        }
+    }
+
     function deprecate(msg, fn) {
         var firstTime = true;
-        function printMsg() {
-            if (moment.suppressDeprecationWarnings === false &&
-                    typeof console !== 'undefined' && console.warn) {
-                console.warn("Deprecation warning: " + msg);
-            }
-        }
         return extend(function () {
             if (firstTime) {
-                printMsg();
+                printMsg(msg);
                 firstTime = false;
             }
             return fn.apply(this, arguments);
         }, fn);
+    }
+
+    function deprecateSimple(name, msg) {
+        if (!deprecations[name]) {
+            printMsg(msg);
+            deprecations[name] = true;
+        }
     }
 
     function padToken(func, count) {
@@ -3861,7 +6055,7 @@ console.log('window', window);
     }
     function ordinalizeToken(func, period) {
         return function (a) {
-            return this.lang().ordinal(func.call(this, a), period);
+            return this.localeData().ordinal(func.call(this, a), period);
         };
     }
 
@@ -3880,14 +6074,16 @@ console.log('window', window);
         Constructors
     ************************************/
 
-    function Language() {
-
+    function Locale() {
     }
 
     // Moment prototype object
-    function Moment(config) {
-        checkOverflow(config);
-        extend(this, config);
+    function Moment(config, skipOverflow) {
+        if (skipOverflow !== false) {
+            checkOverflow(config);
+        }
+        copyConfig(this, config);
+        this._d = new Date(+config._d);
     }
 
     // Duration Constructor
@@ -3921,6 +6117,8 @@ console.log('window', window);
 
         this._data = {};
 
+        this._locale = moment.localeData();
+
         this._bubble();
     }
 
@@ -3931,31 +6129,67 @@ console.log('window', window);
 
     function extend(a, b) {
         for (var i in b) {
-            if (b.hasOwnProperty(i)) {
+            if (hasOwnProp(b, i)) {
                 a[i] = b[i];
             }
         }
 
-        if (b.hasOwnProperty("toString")) {
+        if (hasOwnProp(b, 'toString')) {
             a.toString = b.toString;
         }
 
-        if (b.hasOwnProperty("valueOf")) {
+        if (hasOwnProp(b, 'valueOf')) {
             a.valueOf = b.valueOf;
         }
 
         return a;
     }
 
-    function cloneMoment(m) {
-        var result = {}, i;
-        for (i in m) {
-            if (m.hasOwnProperty(i) && momentProperties.hasOwnProperty(i)) {
-                result[i] = m[i];
+    function copyConfig(to, from) {
+        var i, prop, val;
+
+        if (typeof from._isAMomentObject !== 'undefined') {
+            to._isAMomentObject = from._isAMomentObject;
+        }
+        if (typeof from._i !== 'undefined') {
+            to._i = from._i;
+        }
+        if (typeof from._f !== 'undefined') {
+            to._f = from._f;
+        }
+        if (typeof from._l !== 'undefined') {
+            to._l = from._l;
+        }
+        if (typeof from._strict !== 'undefined') {
+            to._strict = from._strict;
+        }
+        if (typeof from._tzm !== 'undefined') {
+            to._tzm = from._tzm;
+        }
+        if (typeof from._isUTC !== 'undefined') {
+            to._isUTC = from._isUTC;
+        }
+        if (typeof from._offset !== 'undefined') {
+            to._offset = from._offset;
+        }
+        if (typeof from._pf !== 'undefined') {
+            to._pf = from._pf;
+        }
+        if (typeof from._locale !== 'undefined') {
+            to._locale = from._locale;
+        }
+
+        if (momentProperties.length > 0) {
+            for (i in momentProperties) {
+                prop = momentProperties[i];
+                val = from[prop];
+                if (typeof val !== 'undefined') {
+                    to[prop] = val;
+                }
             }
         }
 
-        return result;
+        return to;
     }
 
     function absRound(number) {
@@ -3978,7 +6212,51 @@ console.log('window', window);
         return (sign ? (forceSign ? '+' : '') : '-') + output;
     }
 
-    // helper function for _.addTime and _.subtractTime
+    function positiveMomentsDifference(base, other) {
+        var res = {milliseconds: 0, months: 0};
+
+        res.months = other.month() - base.month() +
+            (other.year() - base.year()) * 12;
+        if (base.clone().add(res.months, 'M').isAfter(other)) {
+            --res.months;
+        }
+
+        res.milliseconds = +other - +(base.clone().add(res.months, 'M'));
+
+        return res;
+    }
+
+    function momentsDifference(base, other) {
+        var res;
+        other = makeAs(other, base);
+        if (base.isBefore(other)) {
+            res = positiveMomentsDifference(base, other);
+        } else {
+            res = positiveMomentsDifference(other, base);
+            res.milliseconds = -res.milliseconds;
+            res.months = -res.months;
+        }
+
+        return res;
+    }
+
+    // TODO: remove 'name' arg after deprecation is removed
+    function createAdder(direction, name) {
+        return function (val, period) {
+            var dur, tmp;
+            //invert the arguments, but complain about it
+            if (period !== null && !isNaN(+period)) {
+                deprecateSimple(name, 'moment().' + name  + '(period, number) is deprecated. Please use moment().' + name + '(number, period).');
+                tmp = val; val = period; period = tmp;
+            }
+
+            val = typeof val === 'string' ? +val : val;
+            dur = moment.duration(val, period);
+            addOrSubtractDurationFromMoment(this, dur, direction);
+            return this;
+        };
+    }
+
     function addOrSubtractDurationFromMoment(mom, duration, isAdding, updateOffset) {
         var milliseconds = duration._milliseconds,
             days = duration._days,
@@ -4005,8 +6283,8 @@ console.log('window', window);
     }
 
     function isDate(input) {
-        return  Object.prototype.toString.call(input) === '[object Date]' ||
-                input instanceof Date;
+        return Object.prototype.toString.call(input) === '[object Date]' ||
+            input instanceof Date;
     }
 
     // compare two arrays, return the number of differences
@@ -4038,7 +6316,7 @@ console.log('window', window);
             prop;
 
         for (prop in inputObject) {
-            if (inputObject.hasOwnProperty(prop)) {
+            if (hasOwnProp(inputObject, prop)) {
                 normalizedProp = normalizeUnits(prop);
                 if (normalizedProp) {
                     normalizedInput[normalizedProp] = inputObject[prop];
@@ -4066,7 +6344,7 @@ console.log('window', window);
 
         moment[field] = function (format, index) {
             var i, getter,
-                method = moment.fn._lang[field],
+                method = moment._locale[field],
                 results = [];
 
             if (typeof format === 'number') {
@@ -4076,7 +6354,7 @@ console.log('window', window);
 
             getter = function (i) {
                 var m = moment().utc().set(setter, i);
-                return method.call(moment.fn._lang, m, format || '');
+                return method.call(moment._locale, m, format || '');
             };
 
             if (index != null) {
@@ -4161,8 +6439,48 @@ console.log('window', window);
         return m._isValid;
     }
 
-    function normalizeLanguage(key) {
+    function normalizeLocale(key) {
         return key ? key.toLowerCase().replace('_', '-') : key;
+    }
+
+    // pick the locale from the array
+    // try ['en-au', 'en-gb'] as 'en-au', 'en-gb', 'en', as in move through the list trying each
+    // substring from most specific to least, but move to the next array item if it's a more specific variant than the current root
+    function chooseLocale(names) {
+        var i = 0, j, next, locale, split;
+
+        while (i < names.length) {
+            split = normalizeLocale(names[i]).split('-');
+            j = split.length;
+            next = normalizeLocale(names[i + 1]);
+            next = next ? next.split('-') : null;
+            while (j > 0) {
+                locale = loadLocale(split.slice(0, j).join('-'));
+                if (locale) {
+                    return locale;
+                }
+                if (next && next.length >= j && compareArrays(split, next, true) >= j - 1) {
+                    //the next array item is better than a shallower substring of this one
+                    break;
+                }
+                j--;
+            }
+            i++;
+        }
+        return null;
+    }
+
+    function loadLocale(name) {
+        var oldLocale = null;
+        if (!locales[name] && hasModule) {
+            try {
+                oldLocale = moment.locale();
+                require('./locale/' + name);
+                // because defineLocale currently also sets the global locale, we want to undo that for lazy loaded locales
+                moment.locale(oldLocale);
+            } catch (e) { }
+        }
+        return locales[name];
     }
 
     // Return a moment from input, that is local/utc/zone equivalent to model.
@@ -4172,11 +6490,11 @@ console.log('window', window);
     }
 
     /************************************
-        Languages
+        Locale
     ************************************/
 
 
-    extend(Language.prototype, {
+    extend(Locale.prototype, {
 
         set : function (config) {
             var prop, i;
@@ -4190,12 +6508,12 @@ console.log('window', window);
             }
         },
 
-        _months : "January_February_March_April_May_June_July_August_September_October_November_December".split("_"),
+        _months : 'January_February_March_April_May_June_July_August_September_October_November_December'.split('_'),
         months : function (m) {
             return this._months[m.month()];
         },
 
-        _monthsShort : "Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec".split("_"),
+        _monthsShort : 'Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec'.split('_'),
         monthsShort : function (m) {
             return this._monthsShort[m.month()];
         },
@@ -4221,17 +6539,17 @@ console.log('window', window);
             }
         },
 
-        _weekdays : "Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday".split("_"),
+        _weekdays : 'Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday'.split('_'),
         weekdays : function (m) {
             return this._weekdays[m.day()];
         },
 
-        _weekdaysShort : "Sun_Mon_Tue_Wed_Thu_Fri_Sat".split("_"),
+        _weekdaysShort : 'Sun_Mon_Tue_Wed_Thu_Fri_Sat'.split('_'),
         weekdaysShort : function (m) {
             return this._weekdaysShort[m.day()];
         },
 
-        _weekdaysMin : "Su_Mo_Tu_We_Th_Fr_Sa".split("_"),
+        _weekdaysMin : 'Su_Mo_Tu_We_Th_Fr_Sa'.split('_'),
         weekdaysMin : function (m) {
             return this._weekdaysMin[m.day()];
         },
@@ -4258,11 +6576,11 @@ console.log('window', window);
         },
 
         _longDateFormat : {
-            LT : "h:mm A",
-            L : "MM/DD/YYYY",
-            LL : "MMMM D YYYY",
-            LLL : "MMMM D YYYY LT",
-            LLLL : "dddd, MMMM D YYYY LT"
+            LT : 'h:mm A',
+            L : 'MM/DD/YYYY',
+            LL : 'MMMM D, YYYY',
+            LLL : 'MMMM D, YYYY LT',
+            LLLL : 'dddd, MMMM D, YYYY LT'
         },
         longDateFormat : function (key) {
             var output = this._longDateFormat[key];
@@ -4304,35 +6622,37 @@ console.log('window', window);
         },
 
         _relativeTime : {
-            future : "in %s",
-            past : "%s ago",
-            s : "a few seconds",
-            m : "a minute",
-            mm : "%d minutes",
-            h : "an hour",
-            hh : "%d hours",
-            d : "a day",
-            dd : "%d days",
-            M : "a month",
-            MM : "%d months",
-            y : "a year",
-            yy : "%d years"
+            future : 'in %s',
+            past : '%s ago',
+            s : 'a few seconds',
+            m : 'a minute',
+            mm : '%d minutes',
+            h : 'an hour',
+            hh : '%d hours',
+            d : 'a day',
+            dd : '%d days',
+            M : 'a month',
+            MM : '%d months',
+            y : 'a year',
+            yy : '%d years'
         },
+
         relativeTime : function (number, withoutSuffix, string, isFuture) {
             var output = this._relativeTime[string];
             return (typeof output === 'function') ?
                 output(number, withoutSuffix, string, isFuture) :
                 output.replace(/%d/i, number);
         },
+
         pastFuture : function (diff, output) {
             var format = this._relativeTime[diff > 0 ? 'future' : 'past'];
             return typeof format === 'function' ? format(output) : format.replace(/%s/i, output);
         },
 
         ordinal : function (number) {
-            return this._ordinal.replace("%d", number);
+            return this._ordinal.replace('%d', number);
         },
-        _ordinal : "%d",
+        _ordinal : '%d',
 
         preparse : function (string) {
             return string;
@@ -4357,78 +6677,6 @@ console.log('window', window);
         }
     });
 
-    // Loads a language definition into the `languages` cache.  The function
-    // takes a key and optionally values.  If not in the browser and no values
-    // are provided, it will load the language file module.  As a convenience,
-    // this function also returns the language values.
-    function loadLang(key, values) {
-        values.abbr = key;
-        if (!languages[key]) {
-            languages[key] = new Language();
-        }
-        languages[key].set(values);
-        return languages[key];
-    }
-
-    // Remove a language from the `languages` cache. Mostly useful in tests.
-    function unloadLang(key) {
-        delete languages[key];
-    }
-
-    // Determines which language definition to use and returns it.
-    //
-    // With no parameters, it will return the global language.  If you
-    // pass in a language key, such as 'en', it will return the
-    // definition for 'en', so long as 'en' has already been loaded using
-    // moment.lang.
-    function getLangDefinition(key) {
-        var i = 0, j, lang, next, split,
-            get = function (k) {
-                if (!languages[k] && hasModule) {
-                    try {
-                        require('./lang/' + k);
-                    } catch (e) { }
-                }
-                return languages[k];
-            };
-
-        if (!key) {
-            return moment.fn._lang;
-        }
-
-        if (!isArray(key)) {
-            //short-circuit everything else
-            lang = get(key);
-            if (lang) {
-                return lang;
-            }
-            key = [key];
-        }
-
-        //pick the language from the array
-        //try ['en-au', 'en-gb'] as 'en-au', 'en-gb', 'en', as in move through the list trying each
-        //substring from most specific to least, but move to the next array item if it's a more specific variant than the current root
-        while (i < key.length) {
-            split = normalizeLanguage(key[i]).split('-');
-            j = split.length;
-            next = normalizeLanguage(key[i + 1]);
-            next = next ? next.split('-') : null;
-            while (j > 0) {
-                lang = get(split.slice(0, j).join('-'));
-                if (lang) {
-                    return lang;
-                }
-                if (next && next.length >= j && compareArrays(split, next, true) >= j - 1) {
-                    //the next array item is better than a shallower substring of this one
-                    break;
-                }
-                j--;
-            }
-            i++;
-        }
-        return moment.fn._lang;
-    }
-
     /************************************
         Formatting
     ************************************/
@@ -4436,9 +6684,9 @@ console.log('window', window);
 
     function removeFormattingTokens(input) {
         if (input.match(/\[[\s\S]/)) {
-            return input.replace(/^\[|\]$/g, "");
+            return input.replace(/^\[|\]$/g, '');
         }
-        return input.replace(/\\/g, "");
+        return input.replace(/\\/g, '');
     }
 
     function makeFormatFunction(format) {
@@ -4453,7 +6701,7 @@ console.log('window', window);
         }
 
         return function (mom) {
-            var output = "";
+            var output = '';
             for (i = 0; i < length; i++) {
                 output += array[i] instanceof Function ? array[i].call(mom, format) : array[i];
             }
@@ -4463,12 +6711,11 @@ console.log('window', window);
 
     // format date using native date object
     function formatMoment(m, format) {
-
         if (!m.isValid()) {
-            return m.lang().invalidDate();
+            return m.localeData().invalidDate();
         }
 
-        format = expandFormat(format, m.lang());
+        format = expandFormat(format, m.localeData());
 
         if (!formatFunctions[format]) {
             formatFunctions[format] = makeFormatFunction(format);
@@ -4477,11 +6724,11 @@ console.log('window', window);
         return formatFunctions[format](m);
     }
 
-    function expandFormat(format, lang) {
+    function expandFormat(format, locale) {
         var i = 5;
 
         function replaceLongDateFormatTokens(input) {
-            return lang.longDateFormat(input) || input;
+            return locale.longDateFormat(input) || input;
         }
 
         localFormattingTokens.lastIndex = 0;
@@ -4522,13 +6769,19 @@ console.log('window', window);
         case 'ggggg':
             return strict ? parseTokenSixDigits : parseTokenOneToSixDigits;
         case 'S':
-            if (strict) { return parseTokenOneDigit; }
+            if (strict) {
+                return parseTokenOneDigit;
+            }
             /* falls through */
         case 'SS':
-            if (strict) { return parseTokenTwoDigits; }
+            if (strict) {
+                return parseTokenTwoDigits;
+            }
             /* falls through */
         case 'SSS':
-            if (strict) { return parseTokenThreeDigits; }
+            if (strict) {
+                return parseTokenThreeDigits;
+            }
             /* falls through */
         case 'DDD':
             return parseTokenOneToThreeDigits;
@@ -4540,7 +6793,7 @@ console.log('window', window);
             return parseTokenWord;
         case 'a':
         case 'A':
-            return getLangDefinition(config._l)._meridiemParse;
+            return config._locale._meridiemParse;
         case 'X':
             return parseTokenTimestampMs;
         case 'Z':
@@ -4577,13 +6830,13 @@ console.log('window', window);
         case 'Do':
             return parseTokenOrdinal;
         default :
-            a = new RegExp(regexpEscape(unescapeFormat(token.replace('\\', '')), "i"));
+            a = new RegExp(regexpEscape(unescapeFormat(token.replace('\\', '')), 'i'));
             return a;
         }
     }
 
     function timezoneMinutesFromString(string) {
-        string = string || "";
+        string = string || '';
         var possibleTzMatches = (string.match(parseTokenTimezone) || []),
             tzChunk = possibleTzMatches[possibleTzMatches.length - 1] || [],
             parts = (tzChunk + '').match(parseTimezoneChunker) || ['-', 0, 0],
@@ -4612,7 +6865,7 @@ console.log('window', window);
             break;
         case 'MMM' : // fall through to MMMM
         case 'MMMM' :
-            a = getLangDefinition(config._l).monthsParse(input);
+            a = config._locale.monthsParse(input);
             // if we didn't find a month name, mark the date as invalid.
             if (a != null) {
                 datePartArray[MONTH] = a;
@@ -4652,7 +6905,7 @@ console.log('window', window);
         // AM / PM
         case 'a' : // fall through to A
         case 'A' :
-            config._isPm = getLangDefinition(config._l).isPM(input);
+            config._isPm = config._locale.isPM(input);
             break;
         // 24 HOUR
         case 'H' : // fall through to hh
@@ -4692,7 +6945,7 @@ console.log('window', window);
         case 'dd':
         case 'ddd':
         case 'dddd':
-            a = getLangDefinition(config._l).weekdaysParse(input);
+            a = config._locale.weekdaysParse(input);
             // if we didn't get a weekday name, mark the date as invalid
             if (a != null) {
                 config._w = config._w || {};
@@ -4728,7 +6981,7 @@ console.log('window', window);
     }
 
     function dayOfYearFromWeekInfo(config) {
-        var w, weekYear, week, weekday, dow, doy, temp, lang;
+        var w, weekYear, week, weekday, dow, doy, temp;
 
         w = config._w;
         if (w.GG != null || w.W != null || w.E != null) {
@@ -4743,9 +6996,8 @@ console.log('window', window);
             week = dfl(w.W, 1);
             weekday = dfl(w.E, 1);
         } else {
-            lang = getLangDefinition(config._l);
-            dow = lang._week.dow;
-            doy = lang._week.doy;
+            dow = config._locale._week.dow;
+            doy = config._locale._week.doy;
 
             weekYear = dfl(w.gg, config._a[YEAR], weekOfYear(moment(), dow, doy).year);
             week = dfl(w.w, 1);
@@ -4859,7 +7111,6 @@ console.log('window', window);
 
     // date from string and format string
     function makeDateFromStringAndFormat(config) {
-
         if (config._f === moment.ISO_8601) {
             parseISO(config);
             return;
@@ -4869,13 +7120,12 @@ console.log('window', window);
         config._pf.empty = true;
 
         // This array is used to make a Date, either with `new Date` or `Date.UTC`
-        var lang = getLangDefinition(config._l),
-            string = '' + config._i,
+        var string = '' + config._i,
             i, parsedInput, tokens, token, skipped,
             stringLength = string.length,
             totalParsedInputLength = 0;
 
-        tokens = expandFormat(config._f, lang).match(formattingTokens) || [];
+        tokens = expandFormat(config._f, config._locale).match(formattingTokens) || [];
 
         for (i = 0; i < tokens.length; i++) {
             token = tokens[i];
@@ -4950,7 +7200,7 @@ console.log('window', window);
 
         for (i = 0; i < config._f.length; i++) {
             currentScore = 0;
-            tempConfig = extend({}, config);
+            tempConfig = copyConfig({}, config);
             tempConfig._pf = defaultParsingFlags();
             tempConfig._f = config._f[i];
             makeDateFromStringAndFormat(tempConfig);
@@ -4986,8 +7236,8 @@ console.log('window', window);
             config._pf.iso = true;
             for (i = 0, l = isoDates.length; i < l; i++) {
                 if (isoDates[i][1].exec(string)) {
-                    // match[5] should be "T" or undefined
-                    config._f = isoDates[i][0] + (match[6] || " ");
+                    // match[5] should be 'T' or undefined
+                    config._f = isoDates[i][0] + (match[6] || ' ');
                     break;
                 }
             }
@@ -4998,7 +7248,7 @@ console.log('window', window);
                 }
             }
             if (string.match(parseTokenTimezone)) {
-                config._f += "Z";
+                config._f += 'Z';
             }
             makeDateFromStringAndFormat(config);
         } else {
@@ -5016,20 +7266,18 @@ console.log('window', window);
     }
 
     function makeDateFromInput(config) {
-        var input = config._i,
-            matched = aspNetJsonRegex.exec(input);
-
+        var input = config._i, matched;
         if (input === undefined) {
             config._d = new Date();
-        } else if (matched) {
+        } else if (isDate(input)) {
+            config._d = new Date(+input);
+        } else if ((matched = aspNetJsonRegex.exec(input)) !== null) {
             config._d = new Date(+matched[1]);
         } else if (typeof input === 'string') {
             makeDateFromString(config);
         } else if (isArray(input)) {
             config._a = input.slice(0);
             dateFromConfig(config);
-        } else if (isDate(input)) {
-            config._d = new Date(+input);
         } else if (typeof(input) === 'object') {
             dateFromObject(config);
         } else if (typeof(input) === 'number') {
@@ -5060,13 +7308,13 @@ console.log('window', window);
         return date;
     }
 
-    function parseWeekday(input, language) {
+    function parseWeekday(input, locale) {
         if (typeof input === 'string') {
             if (!isNaN(input)) {
                 input = parseInt(input, 10);
             }
             else {
-                input = language.weekdaysParse(input);
+                input = locale.weekdaysParse(input);
                 if (typeof input !== 'number') {
                     return null;
                 }
@@ -5081,29 +7329,33 @@ console.log('window', window);
 
 
     // helper function for moment.fn.from, moment.fn.fromNow, and moment.duration.fn.humanize
-    function substituteTimeAgo(string, number, withoutSuffix, isFuture, lang) {
-        return lang.relativeTime(number || 1, !!withoutSuffix, string, isFuture);
+    function substituteTimeAgo(string, number, withoutSuffix, isFuture, locale) {
+        return locale.relativeTime(number || 1, !!withoutSuffix, string, isFuture);
     }
 
-    function relativeTime(milliseconds, withoutSuffix, lang) {
-        var seconds = round(Math.abs(milliseconds) / 1000),
-            minutes = round(seconds / 60),
-            hours = round(minutes / 60),
-            days = round(hours / 24),
-            years = round(days / 365),
-            args = seconds < relativeTimeThresholds.s  && ['s', seconds] ||
+    function relativeTime(posNegDuration, withoutSuffix, locale) {
+        var duration = moment.duration(posNegDuration).abs(),
+            seconds = round(duration.as('s')),
+            minutes = round(duration.as('m')),
+            hours = round(duration.as('h')),
+            days = round(duration.as('d')),
+            months = round(duration.as('M')),
+            years = round(duration.as('y')),
+
+            args = seconds < relativeTimeThresholds.s && ['s', seconds] ||
                 minutes === 1 && ['m'] ||
                 minutes < relativeTimeThresholds.m && ['mm', minutes] ||
                 hours === 1 && ['h'] ||
                 hours < relativeTimeThresholds.h && ['hh', hours] ||
                 days === 1 && ['d'] ||
-                days <= relativeTimeThresholds.dd && ['dd', days] ||
-                days <= relativeTimeThresholds.dm && ['M'] ||
-                days < relativeTimeThresholds.dy && ['MM', round(days / 30)] ||
+                days < relativeTimeThresholds.d && ['dd', days] ||
+                months === 1 && ['M'] ||
+                months < relativeTimeThresholds.M && ['MM', months] ||
                 years === 1 && ['y'] || ['yy', years];
+
         args[2] = withoutSuffix;
-        args[3] = milliseconds > 0;
-        args[4] = lang;
+        args[3] = +posNegDuration > 0;
+        args[4] = locale;
         return substituteTimeAgo.apply({}, args);
     }
 
@@ -5134,7 +7386,7 @@ console.log('window', window);
             daysToDayOfWeek += 7;
         }
 
-        adjustedMoment = moment(mom).add('d', daysToDayOfWeek);
+        adjustedMoment = moment(mom).add(daysToDayOfWeek, 'd');
         return {
             week: Math.ceil(adjustedMoment.dayOfYear() / 7),
             year: adjustedMoment.year()
@@ -5164,18 +7416,18 @@ console.log('window', window);
         var input = config._i,
             format = config._f;
 
+        config._locale = config._locale || moment.localeData(config._l);
+
         if (input === null || (format === undefined && input === '')) {
             return moment.invalid({nullInput: true});
         }
 
         if (typeof input === 'string') {
-            config._i = input = getLangDefinition().preparse(input);
+            config._i = input = config._locale.preparse(input);
         }
 
         if (moment.isMoment(input)) {
-            config = cloneMoment(input);
-
-            config._d = new Date(+input._d);
+            return new Moment(input, true);
         } else if (format) {
             if (isArray(format)) {
                 makeDateFromStringAndArray(config);
@@ -5189,12 +7441,12 @@ console.log('window', window);
         return new Moment(config);
     }
 
-    moment = function (input, format, lang, strict) {
+    moment = function (input, format, locale, strict) {
         var c;
 
-        if (typeof(lang) === "boolean") {
-            strict = lang;
-            lang = undefined;
+        if (typeof(locale) === 'boolean') {
+            strict = locale;
+            locale = undefined;
         }
         // object construction must be done this way.
         // https://github.com/moment/moment/issues/1423
@@ -5202,7 +7454,7 @@ console.log('window', window);
         c._isAMomentObject = true;
         c._i = input;
         c._f = format;
-        c._l = lang;
+        c._l = locale;
         c._strict = strict;
         c._isUTC = false;
         c._pf = defaultParsingFlags();
@@ -5213,13 +7465,14 @@ console.log('window', window);
     moment.suppressDeprecationWarnings = false;
 
     moment.createFromInputFallback = deprecate(
-            "moment construction falls back to js Date. This is " +
-            "discouraged and will be removed in upcoming major " +
-            "release. Please refer to " +
-            "https://github.com/moment/moment/issues/1407 for more info.",
-            function (config) {
-        config._d = new Date(config._i);
-    });
+        'moment construction falls back to js Date. This is ' +
+        'discouraged and will be removed in upcoming major ' +
+        'release. Please refer to ' +
+        'https://github.com/moment/moment/issues/1407 for more info.',
+        function (config) {
+            config._d = new Date(config._i);
+        }
+    );
 
     // Pick a moment m from moments so that m[fn](other) is true for all
     // other. This relies on the function fn to be transitive.
@@ -5256,12 +7509,12 @@ console.log('window', window);
     };
 
     // creating with utc
-    moment.utc = function (input, format, lang, strict) {
+    moment.utc = function (input, format, locale, strict) {
         var c;
 
-        if (typeof(lang) === "boolean") {
-            strict = lang;
-            lang = undefined;
+        if (typeof(locale) === 'boolean') {
+            strict = locale;
+            locale = undefined;
         }
         // object construction must be done this way.
         // https://github.com/moment/moment/issues/1423
@@ -5269,7 +7522,7 @@ console.log('window', window);
         c._isAMomentObject = true;
         c._useUTC = true;
         c._isUTC = true;
-        c._l = lang;
+        c._l = locale;
         c._i = input;
         c._f = format;
         c._strict = strict;
@@ -5290,7 +7543,8 @@ console.log('window', window);
             match = null,
             sign,
             ret,
-            parseIso;
+            parseIso,
+            diffRes;
 
         if (moment.isDuration(input)) {
             duration = {
@@ -5306,7 +7560,7 @@ console.log('window', window);
                 duration.milliseconds = input;
             }
         } else if (!!(match = aspNetTimeSpanJsonRegex.exec(input))) {
-            sign = (match[1] === "-") ? -1 : 1;
+            sign = (match[1] === '-') ? -1 : 1;
             duration = {
                 y: 0,
                 d: toInt(match[DATE]) * sign,
@@ -5316,7 +7570,7 @@ console.log('window', window);
                 ms: toInt(match[MILLISECOND]) * sign
             };
         } else if (!!(match = isoDurationRegex.exec(input))) {
-            sign = (match[1] === "-") ? -1 : 1;
+            sign = (match[1] === '-') ? -1 : 1;
             parseIso = function (inp) {
                 // We'd normally use ~~inp for this, but unfortunately it also
                 // converts floats to ints.
@@ -5334,12 +7588,19 @@ console.log('window', window);
                 s: parseIso(match[7]),
                 w: parseIso(match[8])
             };
+        } else if (typeof duration === 'object' &&
+                ('from' in duration || 'to' in duration)) {
+            diffRes = momentsDifference(moment(duration.from), moment(duration.to));
+
+            duration = {};
+            duration.ms = diffRes.milliseconds;
+            duration.M = diffRes.months;
         }
 
         ret = new Duration(duration);
 
-        if (moment.isDuration(input) && input.hasOwnProperty('_lang')) {
-            ret._lang = input._lang;
+        if (moment.isDuration(input) && hasOwnProp(input, '_locale')) {
+            ret._locale = input._locale;
         }
 
         return ret;
@@ -5363,46 +7624,99 @@ console.log('window', window);
     moment.updateOffset = function () {};
 
     // This function allows you to set a threshold for relative time strings
-    moment.relativeTimeThreshold = function(threshold, limit) {
-      if (relativeTimeThresholds[threshold] === undefined) {
-        return false;
-      }
-      relativeTimeThresholds[threshold] = limit;
-      return true;
+    moment.relativeTimeThreshold = function (threshold, limit) {
+        if (relativeTimeThresholds[threshold] === undefined) {
+            return false;
+        }
+        if (limit === undefined) {
+            return relativeTimeThresholds[threshold];
+        }
+        relativeTimeThresholds[threshold] = limit;
+        return true;
     };
 
-    // This function will load languages and then set the global language.  If
+    moment.lang = deprecate(
+        'moment.lang is deprecated. Use moment.locale instead.',
+        function (key, value) {
+            return moment.locale(key, value);
+        }
+    );
+
+    // This function will load locale and then set the global locale.  If
     // no arguments are passed in, it will simply return the current global
-    // language key.
-    moment.lang = function (key, values) {
-        var r;
-        if (!key) {
-            return moment.fn._lang._abbr;
+    // locale key.
+    moment.locale = function (key, values) {
+        var data;
+        if (key) {
+            if (typeof(values) !== 'undefined') {
+                data = moment.defineLocale(key, values);
+            }
+            else {
+                data = moment.localeData(key);
+            }
+
+            if (data) {
+                moment.duration._locale = moment._locale = data;
+            }
         }
-        if (values) {
-            loadLang(normalizeLanguage(key), values);
-        } else if (values === null) {
-            unloadLang(key);
-            key = 'en';
-        } else if (!languages[key]) {
-            getLangDefinition(key);
-        }
-        r = moment.duration.fn._lang = moment.fn._lang = getLangDefinition(key);
-        return r._abbr;
+
+        return moment._locale._abbr;
     };
 
-    // returns language data
-    moment.langData = function (key) {
-        if (key && key._lang && key._lang._abbr) {
-            key = key._lang._abbr;
+    moment.defineLocale = function (name, values) {
+        if (values !== null) {
+            values.abbr = name;
+            if (!locales[name]) {
+                locales[name] = new Locale();
+            }
+            locales[name].set(values);
+
+            // backwards compat for now: also set the locale
+            moment.locale(name);
+
+            return locales[name];
+        } else {
+            // useful for testing
+            delete locales[name];
+            return null;
         }
-        return getLangDefinition(key);
+    };
+
+    moment.langData = deprecate(
+        'moment.langData is deprecated. Use moment.localeData instead.',
+        function (key) {
+            return moment.localeData(key);
+        }
+    );
+
+    // returns locale data
+    moment.localeData = function (key) {
+        var locale;
+
+        if (key && key._locale && key._locale._abbr) {
+            key = key._locale._abbr;
+        }
+
+        if (!key) {
+            return moment._locale;
+        }
+
+        if (!isArray(key)) {
+            //short-circuit everything else
+            locale = loadLocale(key);
+            if (locale) {
+                return locale;
+            }
+            key = [key];
+        }
+
+        return chooseLocale(key);
     };
 
     // compare moment object
     moment.isMoment = function (obj) {
         return obj instanceof Moment ||
-            (obj != null &&  obj.hasOwnProperty('_isAMomentObject'));
+            (obj != null && hasOwnProp(obj, '_isAMomentObject'));
     };
 
     // for typechecking Duration objects
@@ -5458,7 +7772,7 @@ console.log('window', window);
         },
 
         toString : function () {
-            return this.clone().lang('en').format("ddd MMM DD YYYY HH:mm:ss [GMT]ZZ");
+            return this.clone().locale('en').format('ddd MMM DD YYYY HH:mm:ss [GMT]ZZ');
         },
 
         toDate : function () {
@@ -5492,7 +7806,6 @@ console.log('window', window);
         },
 
         isDSTShifted : function () {
-
             if (this._a) {
                 return this.isValid() && compareArrays(this._a, (this._isUTC ? moment.utc(this._a) : moment(this._a)).toArray()) > 0;
             }
@@ -5508,48 +7821,30 @@ console.log('window', window);
             return this._pf.overflow;
         },
 
-        utc : function () {
-            return this.zone(0);
+        utc : function (keepLocalTime) {
+            return this.zone(0, keepLocalTime);
         },
 
-        local : function () {
-            this.zone(0);
-            this._isUTC = false;
+        local : function (keepLocalTime) {
+            if (this._isUTC) {
+                this.zone(0, keepLocalTime);
+                this._isUTC = false;
+
+                if (keepLocalTime) {
+                    this.add(this._d.getTimezoneOffset(), 'm');
+                }
+            }
             return this;
         },
 
         format : function (inputString) {
             var output = formatMoment(this, inputString || moment.defaultFormat);
-            return this.lang().postformat(output);
+            return this.localeData().postformat(output);
         },
 
-        add : function (input, val) {
-            var dur;
-            // switch args to support add('s', 1) and add(1, 's')
-            if (typeof input === 'string' && typeof val === 'string') {
-                dur = moment.duration(isNaN(+val) ? +input : +val, isNaN(+val) ? val : input);
-            } else if (typeof input === 'string') {
-                dur = moment.duration(+val, input);
-            } else {
-                dur = moment.duration(input, val);
-            }
-            addOrSubtractDurationFromMoment(this, dur, 1);
-            return this;
-        },
+        add : createAdder(1, 'add'),
 
-        subtract : function (input, val) {
-            var dur;
-            // switch args to support subtract('s', 1) and subtract(1, 's')
-            if (typeof input === 'string' && typeof val === 'string') {
-                dur = moment.duration(isNaN(+val) ? +input : +val, isNaN(+val) ? val : input);
-            } else if (typeof input === 'string') {
-                dur = moment.duration(+val, input);
-            } else {
-                dur = moment.duration(input, val);
-            }
-            addOrSubtractDurationFromMoment(this, dur, -1);
-            return this;
-        },
+        subtract : createAdder(-1, 'subtract'),
 
         diff : function (input, units, asFloat) {
             var that = makeAs(input, this),
@@ -5586,7 +7881,7 @@ console.log('window', window);
         },
 
         from : function (time, withoutSuffix) {
-            return moment.duration(this.diff(time)).lang(this.lang()._abbr).humanize(!withoutSuffix);
+            return moment.duration({to: this, from: time}).locale(this.locale()).humanize(!withoutSuffix);
         },
 
         fromNow : function (withoutSuffix) {
@@ -5605,7 +7900,7 @@ console.log('window', window);
                     diff < 1 ? 'sameDay' :
                     diff < 2 ? 'nextDay' :
                     diff < 7 ? 'nextWeek' : 'sameElse';
-            return this.format(this.lang().calendar(format, this));
+            return this.format(this.localeData().calendar(format, this));
         },
 
         isLeapYear : function () {
@@ -5620,8 +7915,8 @@ console.log('window', window);
         day : function (input) {
             var day = this._isUTC ? this._d.getUTCDay() : this._d.getDay();
             if (input != null) {
-                input = parseWeekday(input, this.lang());
-                return this.add({ d : input - day });
+                input = parseWeekday(input, this.localeData());
+                return this.add(input - day, 'd');
             } else {
                 return day;
             }
@@ -5629,7 +7924,7 @@ console.log('window', window);
 
         month : makeAccessor('Month', true),
 
-        startOf: function (units) {
+        startOf : function (units) {
             units = normalizeUnits(units);
             // the following switch intentionally omits break keywords
             // to utilize falling through the cases.
@@ -5674,7 +7969,7 @@ console.log('window', window);
 
         endOf: function (units) {
             units = normalizeUnits(units);
-            return this.startOf(units).add((units === 'isoWeek' ? 'week' : units), 1).subtract('ms', 1);
+            return this.startOf(units).add(1, (units === 'isoWeek' ? 'week' : units)).subtract(1, 'ms');
         },
 
         isAfter: function (input, units) {
@@ -5693,7 +7988,7 @@ console.log('window', window);
         },
 
         min: deprecate(
-                 "moment().min is deprecated, use moment.min instead. https://github.com/moment/moment/issues/1548",
+                 'moment().min is deprecated, use moment.min instead. https://github.com/moment/moment/issues/1548',
                  function (other) {
                      other = moment.apply(null, arguments);
                      return other < this ? this : other;
@@ -5701,36 +7996,43 @@ console.log('window', window);
          ),
 
         max: deprecate(
-                "moment().max is deprecated, use moment.max instead. https://github.com/moment/moment/issues/1548",
+                'moment().max is deprecated, use moment.max instead. https://github.com/moment/moment/issues/1548',
                 function (other) {
                     other = moment.apply(null, arguments);
                     return other > this ? this : other;
                 }
         ),
 
-        // keepTime = true means only change the timezone, without affecting
-        // the local hour. So 5:31:26 +0300 --[zone(2, true)]--> 5:31:26 +0200
-        // It is possible that 5:31:26 doesn't exist int zone +0200, so we
-        // adjust the time as needed, to be valid.
+        // keepLocalTime = true means only change the timezone, without
+        // affecting the local hour. So 5:31:26 +0300 --[zone(2, true)]-->
+        // 5:31:26 +0200 It is possible that 5:31:26 doesn't exist int zone
+        // +0200, so we adjust the time as needed, to be valid.
         //
         // Keeping the time actually adds/subtracts (one hour)
         // from the actual represented time. That is why we call updateOffset
         // a second time. In case it wants us to change the offset again
         // _changeInProgress == true case, then we have to adjust, because
         // there is no such time in the given timezone.
-        zone : function (input, keepTime) {
-            var offset = this._offset || 0;
+        zone : function (input, keepLocalTime) {
+            var offset = this._offset || 0,
+                localAdjust;
             if (input != null) {
-                if (typeof input === "string") {
+                if (typeof input === 'string') {
                     input = timezoneMinutesFromString(input);
                 }
                 if (Math.abs(input) < 16) {
                     input = input * 60;
                 }
+                if (!this._isUTC && keepLocalTime) {
+                    localAdjust = this._d.getTimezoneOffset();
+                }
                 this._offset = input;
                 this._isUTC = true;
+                if (localAdjust != null) {
+                    this.subtract(localAdjust, 'm');
+                }
                 if (offset !== input) {
-                    if (!keepTime || this._changeInProgress) {
+                    if (!keepLocalTime || this._changeInProgress) {
                         addOrSubtractDurationFromMoment(this,
                                 moment.duration(offset - input, 'm'), 1, false);
                     } else if (!this._changeInProgress) {
@@ -5746,11 +8048,11 @@ console.log('window', window);
         },
 
         zoneAbbr : function () {
-            return this._isUTC ? "UTC" : "";
+            return this._isUTC ? 'UTC' : '';
         },
 
         zoneName : function () {
-            return this._isUTC ? "Coordinated Universal Time" : "";
+            return this._isUTC ? 'Coordinated Universal Time' : '';
         },
 
         parseZone : function () {
@@ -5779,7 +8081,7 @@ console.log('window', window);
 
         dayOfYear : function (input) {
             var dayOfYear = round((moment(this).startOf('day') - moment(this).startOf('year')) / 864e5) + 1;
-            return input == null ? dayOfYear : this.add("d", (input - dayOfYear));
+            return input == null ? dayOfYear : this.add((input - dayOfYear), 'd');
         },
 
         quarter : function (input) {
@@ -5787,28 +8089,28 @@ console.log('window', window);
         },
 
         weekYear : function (input) {
-            var year = weekOfYear(this, this.lang()._week.dow, this.lang()._week.doy).year;
-            return input == null ? year : this.add("y", (input - year));
+            var year = weekOfYear(this, this.localeData()._week.dow, this.localeData()._week.doy).year;
+            return input == null ? year : this.add((input - year), 'y');
         },
 
         isoWeekYear : function (input) {
             var year = weekOfYear(this, 1, 4).year;
-            return input == null ? year : this.add("y", (input - year));
+            return input == null ? year : this.add((input - year), 'y');
         },
 
         week : function (input) {
-            var week = this.lang().week(this);
-            return input == null ? week : this.add("d", (input - week) * 7);
+            var week = this.localeData().week(this);
+            return input == null ? week : this.add((input - week) * 7, 'd');
         },
 
         isoWeek : function (input) {
             var week = weekOfYear(this, 1, 4).week;
-            return input == null ? week : this.add("d", (input - week) * 7);
+            return input == null ? week : this.add((input - week) * 7, 'd');
         },
 
         weekday : function (input) {
-            var weekday = (this.day() + 7 - this.lang()._week.dow) % 7;
-            return input == null ? weekday : this.add("d", input - weekday);
+            var weekday = (this.day() + 7 - this.localeData()._week.dow) % 7;
+            return input == null ? weekday : this.add(input - weekday, 'd');
         },
 
         isoWeekday : function (input) {
@@ -5823,7 +8125,7 @@ console.log('window', window);
         },
 
         weeksInYear : function () {
-            var weekInfo = this._lang._week;
+            var weekInfo = this.localeData()._week;
             return weeksInYear(this.year(), weekInfo.dow, weekInfo.doy);
         },
 
@@ -5840,16 +8142,32 @@ console.log('window', window);
             return this;
         },
 
-        // If passed a language key, it will set the language for this
-        // instance.  Otherwise, it will return the language configuration
+        // If passed a locale key, it will set the locale for this
+        // instance.  Otherwise, it will return the locale configuration
         // variables for this instance.
-        lang : function (key) {
+        locale : function (key) {
             if (key === undefined) {
-                return this._lang;
+                return this._locale._abbr;
             } else {
-                this._lang = getLangDefinition(key);
+                this._locale = moment.localeData(key);
                 return this;
             }
+        },
+
+        lang : deprecate(
+            'moment().lang() is deprecated. Use moment().localeData() instead.',
+            function (key) {
+                if (key === undefined) {
+                    return this.localeData();
+                } else {
+                    this._locale = moment.localeData(key);
+                    return this;
+                }
+            }
+        ),
+
+        localeData : function () {
+            return this._locale;
         }
     });
 
@@ -5858,7 +8176,7 @@ console.log('window', window);
 
         // TODO: Move this out of here!
         if (typeof value === 'string') {
-            value = mom.lang().monthsParse(value);
+            value = mom.localeData().monthsParse(value);
             // TODO: Another silent failure?
             if (typeof value !== 'number') {
                 return mom;
@@ -5905,9 +8223,9 @@ console.log('window', window);
     moment.fn.hour = moment.fn.hours = makeAccessor('Hours', true);
     // moment.fn.month is defined separately
     moment.fn.date = makeAccessor('Date', true);
-    moment.fn.dates = deprecate("dates accessor is deprecated. Use date instead.", makeAccessor('Date', true));
+    moment.fn.dates = deprecate('dates accessor is deprecated. Use date instead.', makeAccessor('Date', true));
     moment.fn.year = makeAccessor('FullYear', true);
-    moment.fn.years = deprecate("years accessor is deprecated. Use year instead.", makeAccessor('FullYear', true));
+    moment.fn.years = deprecate('years accessor is deprecated. Use year instead.', makeAccessor('FullYear', true));
 
     // add plural methods
     moment.fn.days = moment.fn.day;
@@ -5924,6 +8242,17 @@ console.log('window', window);
     ************************************/
 
 
+    function daysToYears (days) {
+        // 400 years have 146097 days (taking into account leap year rules)
+        return days * 400 / 146097;
+    }
+
+    function yearsToDays (years) {
+        // years * 365 + absRound(years / 4) -
+        //     absRound(years / 100) + absRound(years / 400);
+        return years * 146097 / 400;
+    }
+
     extend(moment.duration.fn = Duration.prototype, {
 
         _bubble : function () {
@@ -5931,7 +8260,7 @@ console.log('window', window);
                 days = this._days,
                 months = this._months,
                 data = this._data,
-                seconds, minutes, hours, years;
+                seconds, minutes, hours, years = 0;
 
             // The following code bubbles up values, see the tests for
             // examples of what that means.
@@ -5947,13 +8276,38 @@ console.log('window', window);
             data.hours = hours % 24;
 
             days += absRound(hours / 24);
-            data.days = days % 30;
 
+            // Accurately convert days to years, assume start from year 0.
+            years = absRound(daysToYears(days));
+            days -= absRound(yearsToDays(years));
+
+            // 30 days to a month
+            // TODO (iskren): Use anchor date (like 1st Jan) to compute this.
             months += absRound(days / 30);
-            data.months = months % 12;
+            days %= 30;
 
-            years = absRound(months / 12);
+            // 12 months -> 1 year
+            years += absRound(months / 12);
+            months %= 12;
+
+            data.days = days;
+            data.months = months;
             data.years = years;
+        },
+
+        abs : function () {
+            this._milliseconds = Math.abs(this._milliseconds);
+            this._days = Math.abs(this._days);
+            this._months = Math.abs(this._months);
+
+            this._data.milliseconds = Math.abs(this._data.milliseconds);
+            this._data.seconds = Math.abs(this._data.seconds);
+            this._data.minutes = Math.abs(this._data.minutes);
+            this._data.hours = Math.abs(this._data.hours);
+            this._data.months = Math.abs(this._data.months);
+            this._data.years = Math.abs(this._data.years);
+
+            return this;
         },
 
         weeks : function () {
@@ -5968,14 +8322,13 @@ console.log('window', window);
         },
 
         humanize : function (withSuffix) {
-            var difference = +this,
-                output = relativeTime(difference, !withSuffix, this.lang());
+            var output = relativeTime(this, !withSuffix, this.localeData());
 
             if (withSuffix) {
-                output = this.lang().pastFuture(difference, output);
+                output = this.localeData().pastFuture(+this, output);
             }
 
-            return this.lang().postformat(output);
+            return this.localeData().postformat(output);
         },
 
         add : function (input, val) {
@@ -6009,13 +8362,39 @@ console.log('window', window);
         },
 
         as : function (units) {
+            var days, months;
             units = normalizeUnits(units);
-            return this['as' + units.charAt(0).toUpperCase() + units.slice(1) + 's']();
+
+            days = this._days + this._milliseconds / 864e5;
+            if (units === 'month' || units === 'year') {
+                months = this._months + daysToYears(days) * 12;
+                return units === 'month' ? months : months / 12;
+            } else {
+                days += yearsToDays(this._months / 12);
+                switch (units) {
+                    case 'week': return days / 7;
+                    case 'day': return days;
+                    case 'hour': return days * 24;
+                    case 'minute': return days * 24 * 60;
+                    case 'second': return days * 24 * 60 * 60;
+                    case 'millisecond': return days * 24 * 60 * 60 * 1000;
+                    default: throw new Error('Unknown unit ' + units);
+                }
+            }
         },
 
         lang : moment.fn.lang,
+        locale : moment.fn.locale,
 
-        toIsoString : function () {
+        toIsoString : deprecate(
+            'toIsoString() is deprecated. Please use toISOString() instead ' +
+            '(notice the capitals)',
+            function () {
+                return this.toISOString();
+            }
+        ),
+
+        toISOString : function () {
             // inspired by https://github.com/dordille/moment-isoduration/blob/master/moment.isoduration.js
             var years = Math.abs(this.years()),
                 months = Math.abs(this.months()),
@@ -6039,8 +8418,14 @@ console.log('window', window);
                 (hours ? hours + 'H' : '') +
                 (minutes ? minutes + 'M' : '') +
                 (seconds ? seconds + 'S' : '');
+        },
+
+        localeData : function () {
+            return this._locale;
         }
     });
+
+    moment.duration.fn.toString = moment.duration.fn.toISOString;
 
     function makeDurationGetter(name) {
         moment.duration.fn[name] = function () {
@@ -6048,32 +8433,44 @@ console.log('window', window);
         };
     }
 
-    function makeDurationAsGetter(name, factor) {
-        moment.duration.fn['as' + name] = function () {
-            return +this / factor;
-        };
-    }
-
     for (i in unitMillisecondFactors) {
-        if (unitMillisecondFactors.hasOwnProperty(i)) {
-            makeDurationAsGetter(i, unitMillisecondFactors[i]);
+        if (hasOwnProp(unitMillisecondFactors, i)) {
             makeDurationGetter(i.toLowerCase());
         }
     }
 
-    makeDurationAsGetter('Weeks', 6048e5);
+    moment.duration.fn.asMilliseconds = function () {
+        return this.as('ms');
+    };
+    moment.duration.fn.asSeconds = function () {
+        return this.as('s');
+    };
+    moment.duration.fn.asMinutes = function () {
+        return this.as('m');
+    };
+    moment.duration.fn.asHours = function () {
+        return this.as('h');
+    };
+    moment.duration.fn.asDays = function () {
+        return this.as('d');
+    };
+    moment.duration.fn.asWeeks = function () {
+        return this.as('weeks');
+    };
     moment.duration.fn.asMonths = function () {
-        return (+this - this.years() * 31536e6) / 2592e6 + this.years() * 12;
+        return this.as('M');
+    };
+    moment.duration.fn.asYears = function () {
+        return this.as('y');
     };
 
-
     /************************************
-        Default Lang
+        Default Locale
     ************************************/
 
 
-    // Set default language, other languages will inherit from English.
-    moment.lang('en', {
+    // Set default locale, other locale will inherit from English.
+    moment.locale('en', {
         ordinal : function (number) {
             var b = number % 10,
                 output = (toInt(number % 100 / 10) === 1) ? 'th' :
@@ -6084,7 +8481,7 @@ console.log('window', window);
         }
     });
 
-    /* EMBED_LANGUAGES */
+    /* EMBED_LOCALES */
 
     /************************************
         Exposing Moment
@@ -6098,9 +8495,9 @@ console.log('window', window);
         oldGlobalMoment = globalScope.moment;
         if (shouldDeprecate) {
             globalScope.moment = deprecate(
-                    "Accessing Moment through the global scope is " +
-                    "deprecated, and will be removed in an upcoming " +
-                    "release.",
+                    'Accessing Moment through the global scope is ' +
+                    'deprecated, and will be removed in an upcoming ' +
+                    'release.',
                     moment);
         } else {
             globalScope.moment = moment;
@@ -6110,8 +8507,8 @@ console.log('window', window);
     // CommonJS module is defined
     if (hasModule) {
         module.exports = moment;
-    } else if (typeof define === "function" && define.amd) {
-        define("moment", function (require, exports, module) {
+    } else if (typeof define === 'function' && define.amd) {
+        define('moment', function (require, exports, module) {
             if (module.config && module.config() && module.config().noGlobal === true) {
                 // release the global variable
                 globalScope.moment = oldGlobalMoment;
@@ -6126,8 +8523,8 @@ console.log('window', window);
 }).call(this);
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],15:[function(require,module,exports){
-//     Underscore.js 1.6.0
+},{}],18:[function(require,module,exports){
+//     Underscore.js 1.7.0
 //     http://underscorejs.org
 //     (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 //     Underscore may be freely distributed under the MIT license.
@@ -6143,9 +8540,6 @@ console.log('window', window);
   // Save the previous value of the `_` variable.
   var previousUnderscore = root._;
 
-  // Establish the object that gets returned to break out of a loop iteration.
-  var breaker = {};
-
   // Save bytes in the minified (but not gzipped) version:
   var ArrayProto = Array.prototype, ObjProto = Object.prototype, FuncProto = Function.prototype;
 
@@ -6160,15 +8554,6 @@ console.log('window', window);
   // All **ECMAScript 5** native function implementations that we hope to use
   // are declared here.
   var
-    nativeForEach      = ArrayProto.forEach,
-    nativeMap          = ArrayProto.map,
-    nativeReduce       = ArrayProto.reduce,
-    nativeReduceRight  = ArrayProto.reduceRight,
-    nativeFilter       = ArrayProto.filter,
-    nativeEvery        = ArrayProto.every,
-    nativeSome         = ArrayProto.some,
-    nativeIndexOf      = ArrayProto.indexOf,
-    nativeLastIndexOf  = ArrayProto.lastIndexOf,
     nativeIsArray      = Array.isArray,
     nativeKeys         = Object.keys,
     nativeBind         = FuncProto.bind;
@@ -6182,8 +8567,7 @@ console.log('window', window);
 
   // Export the Underscore object for **Node.js**, with
   // backwards-compatibility for the old `require()` API. If we're in
-  // the browser, add `_` as a global object via a string identifier,
-  // for Closure Compiler "advanced" mode.
+  // the browser, add `_` as a global object.
   if (typeof exports !== 'undefined') {
     if (typeof module !== 'undefined' && module.exports) {
       exports = module.exports = _;
@@ -6194,98 +8578,125 @@ console.log('window', window);
   }
 
   // Current version.
-  _.VERSION = '1.6.0';
+  _.VERSION = '1.7.0';
+
+  // Internal function that returns an efficient (for current engines) version
+  // of the passed-in callback, to be repeatedly applied in other Underscore
+  // functions.
+  var createCallback = function(func, context, argCount) {
+    if (context === void 0) return func;
+    switch (argCount == null ? 3 : argCount) {
+      case 1: return function(value) {
+        return func.call(context, value);
+      };
+      case 2: return function(value, other) {
+        return func.call(context, value, other);
+      };
+      case 3: return function(value, index, collection) {
+        return func.call(context, value, index, collection);
+      };
+      case 4: return function(accumulator, value, index, collection) {
+        return func.call(context, accumulator, value, index, collection);
+      };
+    }
+    return function() {
+      return func.apply(context, arguments);
+    };
+  };
+
+  // A mostly-internal function to generate callbacks that can be applied
+  // to each element in a collection, returning the desired result — either
+  // identity, an arbitrary callback, a property matcher, or a property accessor.
+  _.iteratee = function(value, context, argCount) {
+    if (value == null) return _.identity;
+    if (_.isFunction(value)) return createCallback(value, context, argCount);
+    if (_.isObject(value)) return _.matches(value);
+    return _.property(value);
+  };
 
   // Collection Functions
   // --------------------
 
   // The cornerstone, an `each` implementation, aka `forEach`.
-  // Handles objects with the built-in `forEach`, arrays, and raw objects.
-  // Delegates to **ECMAScript 5**'s native `forEach` if available.
-  var each = _.each = _.forEach = function(obj, iterator, context) {
+  // Handles raw objects in addition to array-likes. Treats all
+  // sparse array-likes as if they were dense.
+  _.each = _.forEach = function(obj, iteratee, context) {
     if (obj == null) return obj;
-    if (nativeForEach && obj.forEach === nativeForEach) {
-      obj.forEach(iterator, context);
-    } else if (obj.length === +obj.length) {
-      for (var i = 0, length = obj.length; i < length; i++) {
-        if (iterator.call(context, obj[i], i, obj) === breaker) return;
+    iteratee = createCallback(iteratee, context);
+    var i, length = obj.length;
+    if (length === +length) {
+      for (i = 0; i < length; i++) {
+        iteratee(obj[i], i, obj);
       }
     } else {
       var keys = _.keys(obj);
-      for (var i = 0, length = keys.length; i < length; i++) {
-        if (iterator.call(context, obj[keys[i]], keys[i], obj) === breaker) return;
+      for (i = 0, length = keys.length; i < length; i++) {
+        iteratee(obj[keys[i]], keys[i], obj);
       }
     }
     return obj;
   };
 
-  // Return the results of applying the iterator to each element.
-  // Delegates to **ECMAScript 5**'s native `map` if available.
-  _.map = _.collect = function(obj, iterator, context) {
-    var results = [];
-    if (obj == null) return results;
-    if (nativeMap && obj.map === nativeMap) return obj.map(iterator, context);
-    each(obj, function(value, index, list) {
-      results.push(iterator.call(context, value, index, list));
-    });
+  // Return the results of applying the iteratee to each element.
+  _.map = _.collect = function(obj, iteratee, context) {
+    if (obj == null) return [];
+    iteratee = _.iteratee(iteratee, context);
+    var keys = obj.length !== +obj.length && _.keys(obj),
+        length = (keys || obj).length,
+        results = Array(length),
+        currentKey;
+    for (var index = 0; index < length; index++) {
+      currentKey = keys ? keys[index] : index;
+      results[index] = iteratee(obj[currentKey], currentKey, obj);
+    }
     return results;
   };
 
   var reduceError = 'Reduce of empty array with no initial value';
 
   // **Reduce** builds up a single result from a list of values, aka `inject`,
-  // or `foldl`. Delegates to **ECMAScript 5**'s native `reduce` if available.
-  _.reduce = _.foldl = _.inject = function(obj, iterator, memo, context) {
-    var initial = arguments.length > 2;
+  // or `foldl`.
+  _.reduce = _.foldl = _.inject = function(obj, iteratee, memo, context) {
     if (obj == null) obj = [];
-    if (nativeReduce && obj.reduce === nativeReduce) {
-      if (context) iterator = _.bind(iterator, context);
-      return initial ? obj.reduce(iterator, memo) : obj.reduce(iterator);
+    iteratee = createCallback(iteratee, context, 4);
+    var keys = obj.length !== +obj.length && _.keys(obj),
+        length = (keys || obj).length,
+        index = 0, currentKey;
+    if (arguments.length < 3) {
+      if (!length) throw new TypeError(reduceError);
+      memo = obj[keys ? keys[index++] : index++];
     }
-    each(obj, function(value, index, list) {
-      if (!initial) {
-        memo = value;
-        initial = true;
-      } else {
-        memo = iterator.call(context, memo, value, index, list);
-      }
-    });
-    if (!initial) throw new TypeError(reduceError);
+    for (; index < length; index++) {
+      currentKey = keys ? keys[index] : index;
+      memo = iteratee(memo, obj[currentKey], currentKey, obj);
+    }
     return memo;
   };
 
   // The right-associative version of reduce, also known as `foldr`.
-  // Delegates to **ECMAScript 5**'s native `reduceRight` if available.
-  _.reduceRight = _.foldr = function(obj, iterator, memo, context) {
-    var initial = arguments.length > 2;
+  _.reduceRight = _.foldr = function(obj, iteratee, memo, context) {
     if (obj == null) obj = [];
-    if (nativeReduceRight && obj.reduceRight === nativeReduceRight) {
-      if (context) iterator = _.bind(iterator, context);
-      return initial ? obj.reduceRight(iterator, memo) : obj.reduceRight(iterator);
+    iteratee = createCallback(iteratee, context, 4);
+    var keys = obj.length !== + obj.length && _.keys(obj),
+        index = (keys || obj).length,
+        currentKey;
+    if (arguments.length < 3) {
+      if (!index) throw new TypeError(reduceError);
+      memo = obj[keys ? keys[--index] : --index];
     }
-    var length = obj.length;
-    if (length !== +length) {
-      var keys = _.keys(obj);
-      length = keys.length;
+    while (index--) {
+      currentKey = keys ? keys[index] : index;
+      memo = iteratee(memo, obj[currentKey], currentKey, obj);
     }
-    each(obj, function(value, index, list) {
-      index = keys ? keys[--length] : --length;
-      if (!initial) {
-        memo = obj[index];
-        initial = true;
-      } else {
-        memo = iterator.call(context, memo, obj[index], index, list);
-      }
-    });
-    if (!initial) throw new TypeError(reduceError);
     return memo;
   };
 
   // Return the first value which passes a truth test. Aliased as `detect`.
   _.find = _.detect = function(obj, predicate, context) {
     var result;
-    any(obj, function(value, index, list) {
-      if (predicate.call(context, value, index, list)) {
+    predicate = _.iteratee(predicate, context);
+    _.some(obj, function(value, index, list) {
+      if (predicate(value, index, list)) {
         result = value;
         return true;
       }
@@ -6294,61 +8705,58 @@ console.log('window', window);
   };
 
   // Return all the elements that pass a truth test.
-  // Delegates to **ECMAScript 5**'s native `filter` if available.
   // Aliased as `select`.
   _.filter = _.select = function(obj, predicate, context) {
     var results = [];
     if (obj == null) return results;
-    if (nativeFilter && obj.filter === nativeFilter) return obj.filter(predicate, context);
-    each(obj, function(value, index, list) {
-      if (predicate.call(context, value, index, list)) results.push(value);
+    predicate = _.iteratee(predicate, context);
+    _.each(obj, function(value, index, list) {
+      if (predicate(value, index, list)) results.push(value);
     });
     return results;
   };
 
   // Return all the elements for which a truth test fails.
   _.reject = function(obj, predicate, context) {
-    return _.filter(obj, function(value, index, list) {
-      return !predicate.call(context, value, index, list);
-    }, context);
+    return _.filter(obj, _.negate(_.iteratee(predicate)), context);
   };
 
   // Determine whether all of the elements match a truth test.
-  // Delegates to **ECMAScript 5**'s native `every` if available.
   // Aliased as `all`.
   _.every = _.all = function(obj, predicate, context) {
-    predicate || (predicate = _.identity);
-    var result = true;
-    if (obj == null) return result;
-    if (nativeEvery && obj.every === nativeEvery) return obj.every(predicate, context);
-    each(obj, function(value, index, list) {
-      if (!(result = result && predicate.call(context, value, index, list))) return breaker;
-    });
-    return !!result;
+    if (obj == null) return true;
+    predicate = _.iteratee(predicate, context);
+    var keys = obj.length !== +obj.length && _.keys(obj),
+        length = (keys || obj).length,
+        index, currentKey;
+    for (index = 0; index < length; index++) {
+      currentKey = keys ? keys[index] : index;
+      if (!predicate(obj[currentKey], currentKey, obj)) return false;
+    }
+    return true;
   };
 
   // Determine if at least one element in the object matches a truth test.
-  // Delegates to **ECMAScript 5**'s native `some` if available.
   // Aliased as `any`.
-  var any = _.some = _.any = function(obj, predicate, context) {
-    predicate || (predicate = _.identity);
-    var result = false;
-    if (obj == null) return result;
-    if (nativeSome && obj.some === nativeSome) return obj.some(predicate, context);
-    each(obj, function(value, index, list) {
-      if (result || (result = predicate.call(context, value, index, list))) return breaker;
-    });
-    return !!result;
+  _.some = _.any = function(obj, predicate, context) {
+    if (obj == null) return false;
+    predicate = _.iteratee(predicate, context);
+    var keys = obj.length !== +obj.length && _.keys(obj),
+        length = (keys || obj).length,
+        index, currentKey;
+    for (index = 0; index < length; index++) {
+      currentKey = keys ? keys[index] : index;
+      if (predicate(obj[currentKey], currentKey, obj)) return true;
+    }
+    return false;
   };
 
   // Determine if the array or object contains a given value (using `===`).
   // Aliased as `include`.
   _.contains = _.include = function(obj, target) {
     if (obj == null) return false;
-    if (nativeIndexOf && obj.indexOf === nativeIndexOf) return obj.indexOf(target) != -1;
-    return any(obj, function(value) {
-      return value === target;
-    });
+    if (obj.length !== +obj.length) obj = _.values(obj);
+    return _.indexOf(obj, target) >= 0;
   };
 
   // Invoke a method (with arguments) on every item in a collection.
@@ -6377,51 +8785,67 @@ console.log('window', window);
     return _.find(obj, _.matches(attrs));
   };
 
-  // Return the maximum element or (element-based computation).
-  // Can't optimize arrays of integers longer than 65,535 elements.
-  // See [WebKit Bug 80797](https://bugs.webkit.org/show_bug.cgi?id=80797)
-  _.max = function(obj, iterator, context) {
-    if (!iterator && _.isArray(obj) && obj[0] === +obj[0] && obj.length < 65535) {
-      return Math.max.apply(Math, obj);
-    }
-    var result = -Infinity, lastComputed = -Infinity;
-    each(obj, function(value, index, list) {
-      var computed = iterator ? iterator.call(context, value, index, list) : value;
-      if (computed > lastComputed) {
-        result = value;
-        lastComputed = computed;
+  // Return the maximum element (or element-based computation).
+  _.max = function(obj, iteratee, context) {
+    var result = -Infinity, lastComputed = -Infinity,
+        value, computed;
+    if (iteratee == null && obj != null) {
+      obj = obj.length === +obj.length ? obj : _.values(obj);
+      for (var i = 0, length = obj.length; i < length; i++) {
+        value = obj[i];
+        if (value > result) {
+          result = value;
+        }
       }
-    });
+    } else {
+      iteratee = _.iteratee(iteratee, context);
+      _.each(obj, function(value, index, list) {
+        computed = iteratee(value, index, list);
+        if (computed > lastComputed || computed === -Infinity && result === -Infinity) {
+          result = value;
+          lastComputed = computed;
+        }
+      });
+    }
     return result;
   };
 
   // Return the minimum element (or element-based computation).
-  _.min = function(obj, iterator, context) {
-    if (!iterator && _.isArray(obj) && obj[0] === +obj[0] && obj.length < 65535) {
-      return Math.min.apply(Math, obj);
-    }
-    var result = Infinity, lastComputed = Infinity;
-    each(obj, function(value, index, list) {
-      var computed = iterator ? iterator.call(context, value, index, list) : value;
-      if (computed < lastComputed) {
-        result = value;
-        lastComputed = computed;
+  _.min = function(obj, iteratee, context) {
+    var result = Infinity, lastComputed = Infinity,
+        value, computed;
+    if (iteratee == null && obj != null) {
+      obj = obj.length === +obj.length ? obj : _.values(obj);
+      for (var i = 0, length = obj.length; i < length; i++) {
+        value = obj[i];
+        if (value < result) {
+          result = value;
+        }
       }
-    });
+    } else {
+      iteratee = _.iteratee(iteratee, context);
+      _.each(obj, function(value, index, list) {
+        computed = iteratee(value, index, list);
+        if (computed < lastComputed || computed === Infinity && result === Infinity) {
+          result = value;
+          lastComputed = computed;
+        }
+      });
+    }
     return result;
   };
 
-  // Shuffle an array, using the modern version of the
+  // Shuffle a collection, using the modern version of the
   // [Fisher-Yates shuffle](http://en.wikipedia.org/wiki/Fisher–Yates_shuffle).
   _.shuffle = function(obj) {
-    var rand;
-    var index = 0;
-    var shuffled = [];
-    each(obj, function(value) {
-      rand = _.random(index++);
-      shuffled[index - 1] = shuffled[rand];
-      shuffled[rand] = value;
-    });
+    var set = obj && obj.length === +obj.length ? obj : _.values(obj);
+    var length = set.length;
+    var shuffled = Array(length);
+    for (var index = 0, rand; index < length; index++) {
+      rand = _.random(0, index);
+      if (rand !== index) shuffled[index] = shuffled[rand];
+      shuffled[rand] = set[index];
+    }
     return shuffled;
   };
 
@@ -6436,21 +8860,14 @@ console.log('window', window);
     return _.shuffle(obj).slice(0, Math.max(0, n));
   };
 
-  // An internal function to generate lookup iterators.
-  var lookupIterator = function(value) {
-    if (value == null) return _.identity;
-    if (_.isFunction(value)) return value;
-    return _.property(value);
-  };
-
-  // Sort the object's values by a criterion produced by an iterator.
-  _.sortBy = function(obj, iterator, context) {
-    iterator = lookupIterator(iterator);
+  // Sort the object's values by a criterion produced by an iteratee.
+  _.sortBy = function(obj, iteratee, context) {
+    iteratee = _.iteratee(iteratee, context);
     return _.pluck(_.map(obj, function(value, index, list) {
       return {
         value: value,
         index: index,
-        criteria: iterator.call(context, value, index, list)
+        criteria: iteratee(value, index, list)
       };
     }).sort(function(left, right) {
       var a = left.criteria;
@@ -6465,12 +8882,12 @@ console.log('window', window);
 
   // An internal function used for aggregate "group by" operations.
   var group = function(behavior) {
-    return function(obj, iterator, context) {
+    return function(obj, iteratee, context) {
       var result = {};
-      iterator = lookupIterator(iterator);
-      each(obj, function(value, index) {
-        var key = iterator.call(context, value, index, obj);
-        behavior(result, key, value);
+      iteratee = _.iteratee(iteratee, context);
+      _.each(obj, function(value, index) {
+        var key = iteratee(value, index, obj);
+        behavior(result, value, key);
       });
       return result;
     };
@@ -6478,32 +8895,32 @@ console.log('window', window);
 
   // Groups the object's values by a criterion. Pass either a string attribute
   // to group by, or a function that returns the criterion.
-  _.groupBy = group(function(result, key, value) {
-    _.has(result, key) ? result[key].push(value) : result[key] = [value];
+  _.groupBy = group(function(result, value, key) {
+    if (_.has(result, key)) result[key].push(value); else result[key] = [value];
   });
 
   // Indexes the object's values by a criterion, similar to `groupBy`, but for
   // when you know that your index values will be unique.
-  _.indexBy = group(function(result, key, value) {
+  _.indexBy = group(function(result, value, key) {
     result[key] = value;
   });
 
   // Counts instances of an object that group by a certain criterion. Pass
   // either a string attribute to count by, or a function that returns the
   // criterion.
-  _.countBy = group(function(result, key) {
-    _.has(result, key) ? result[key]++ : result[key] = 1;
+  _.countBy = group(function(result, value, key) {
+    if (_.has(result, key)) result[key]++; else result[key] = 1;
   });
 
   // Use a comparator function to figure out the smallest index at which
   // an object should be inserted so as to maintain order. Uses binary search.
-  _.sortedIndex = function(array, obj, iterator, context) {
-    iterator = lookupIterator(iterator);
-    var value = iterator.call(context, obj);
+  _.sortedIndex = function(array, obj, iteratee, context) {
+    iteratee = _.iteratee(iteratee, context, 1);
+    var value = iteratee(obj);
     var low = 0, high = array.length;
     while (low < high) {
-      var mid = (low + high) >>> 1;
-      iterator.call(context, array[mid]) < value ? low = mid + 1 : high = mid;
+      var mid = low + high >>> 1;
+      if (iteratee(array[mid]) < value) low = mid + 1; else high = mid;
     }
     return low;
   };
@@ -6519,7 +8936,18 @@ console.log('window', window);
   // Return the number of elements in an object.
   _.size = function(obj) {
     if (obj == null) return 0;
-    return (obj.length === +obj.length) ? obj.length : _.keys(obj).length;
+    return obj.length === +obj.length ? obj.length : _.keys(obj).length;
+  };
+
+  // Split a collection into two arrays: one whose elements all satisfy the given
+  // predicate, and one whose elements all do not satisfy the predicate.
+  _.partition = function(obj, predicate, context) {
+    predicate = _.iteratee(predicate, context);
+    var pass = [], fail = [];
+    _.each(obj, function(value, key, obj) {
+      (predicate(value, key, obj) ? pass : fail).push(value);
+    });
+    return [pass, fail];
   };
 
   // Array Functions
@@ -6530,7 +8958,7 @@ console.log('window', window);
   // allows it to work with `_.map`.
   _.first = _.head = _.take = function(array, n, guard) {
     if (array == null) return void 0;
-    if ((n == null) || guard) return array[0];
+    if (n == null || guard) return array[0];
     if (n < 0) return [];
     return slice.call(array, 0, n);
   };
@@ -6540,14 +8968,14 @@ console.log('window', window);
   // the array, excluding the last N. The **guard** check allows it to work with
   // `_.map`.
   _.initial = function(array, n, guard) {
-    return slice.call(array, 0, array.length - ((n == null) || guard ? 1 : n));
+    return slice.call(array, 0, Math.max(0, array.length - (n == null || guard ? 1 : n)));
   };
 
   // Get the last element of an array. Passing **n** will return the last N
   // values in the array. The **guard** check allows it to work with `_.map`.
   _.last = function(array, n, guard) {
     if (array == null) return void 0;
-    if ((n == null) || guard) return array[array.length - 1];
+    if (n == null || guard) return array[array.length - 1];
     return slice.call(array, Math.max(array.length - n, 0));
   };
 
@@ -6556,7 +8984,7 @@ console.log('window', window);
   // the rest N values in the array. The **guard**
   // check allows it to work with `_.map`.
   _.rest = _.tail = _.drop = function(array, n, guard) {
-    return slice.call(array, (n == null) || guard ? 1 : n);
+    return slice.call(array, n == null || guard ? 1 : n);
   };
 
   // Trim out all falsy values from an array.
@@ -6565,23 +8993,26 @@ console.log('window', window);
   };
 
   // Internal implementation of a recursive `flatten` function.
-  var flatten = function(input, shallow, output) {
+  var flatten = function(input, shallow, strict, output) {
     if (shallow && _.every(input, _.isArray)) {
       return concat.apply(output, input);
     }
-    each(input, function(value) {
-      if (_.isArray(value) || _.isArguments(value)) {
-        shallow ? push.apply(output, value) : flatten(value, shallow, output);
+    for (var i = 0, length = input.length; i < length; i++) {
+      var value = input[i];
+      if (!_.isArray(value) && !_.isArguments(value)) {
+        if (!strict) output.push(value);
+      } else if (shallow) {
+        push.apply(output, value);
       } else {
-        output.push(value);
+        flatten(value, shallow, strict, output);
       }
-    });
+    }
     return output;
   };
 
   // Flatten out an array, either recursively (by default), or just one level.
   _.flatten = function(array, shallow) {
-    return flatten(array, shallow, []);
+    return flatten(array, shallow, false, []);
   };
 
   // Return a version of the array that does not contain the specified value(s).
@@ -6589,68 +9020,77 @@ console.log('window', window);
     return _.difference(array, slice.call(arguments, 1));
   };
 
-  // Split an array into two arrays: one whose elements all satisfy the given
-  // predicate, and one whose elements all do not satisfy the predicate.
-  _.partition = function(array, predicate) {
-    var pass = [], fail = [];
-    each(array, function(elem) {
-      (predicate(elem) ? pass : fail).push(elem);
-    });
-    return [pass, fail];
-  };
-
   // Produce a duplicate-free version of the array. If the array has already
   // been sorted, you have the option of using a faster algorithm.
   // Aliased as `unique`.
-  _.uniq = _.unique = function(array, isSorted, iterator, context) {
-    if (_.isFunction(isSorted)) {
-      context = iterator;
-      iterator = isSorted;
+  _.uniq = _.unique = function(array, isSorted, iteratee, context) {
+    if (array == null) return [];
+    if (!_.isBoolean(isSorted)) {
+      context = iteratee;
+      iteratee = isSorted;
       isSorted = false;
     }
-    var initial = iterator ? _.map(array, iterator, context) : array;
-    var results = [];
+    if (iteratee != null) iteratee = _.iteratee(iteratee, context);
+    var result = [];
     var seen = [];
-    each(initial, function(value, index) {
-      if (isSorted ? (!index || seen[seen.length - 1] !== value) : !_.contains(seen, value)) {
-        seen.push(value);
-        results.push(array[index]);
+    for (var i = 0, length = array.length; i < length; i++) {
+      var value = array[i];
+      if (isSorted) {
+        if (!i || seen !== value) result.push(value);
+        seen = value;
+      } else if (iteratee) {
+        var computed = iteratee(value, i, array);
+        if (_.indexOf(seen, computed) < 0) {
+          seen.push(computed);
+          result.push(value);
+        }
+      } else if (_.indexOf(result, value) < 0) {
+        result.push(value);
       }
-    });
-    return results;
+    }
+    return result;
   };
 
   // Produce an array that contains the union: each distinct element from all of
   // the passed-in arrays.
   _.union = function() {
-    return _.uniq(_.flatten(arguments, true));
+    return _.uniq(flatten(arguments, true, true, []));
   };
 
   // Produce an array that contains every item shared between all the
   // passed-in arrays.
   _.intersection = function(array) {
-    var rest = slice.call(arguments, 1);
-    return _.filter(_.uniq(array), function(item) {
-      return _.every(rest, function(other) {
-        return _.contains(other, item);
-      });
-    });
+    if (array == null) return [];
+    var result = [];
+    var argsLength = arguments.length;
+    for (var i = 0, length = array.length; i < length; i++) {
+      var item = array[i];
+      if (_.contains(result, item)) continue;
+      for (var j = 1; j < argsLength; j++) {
+        if (!_.contains(arguments[j], item)) break;
+      }
+      if (j === argsLength) result.push(item);
+    }
+    return result;
   };
 
   // Take the difference between one array and a number of other arrays.
   // Only the elements present in just the first array will remain.
   _.difference = function(array) {
-    var rest = concat.apply(ArrayProto, slice.call(arguments, 1));
-    return _.filter(array, function(value){ return !_.contains(rest, value); });
+    var rest = flatten(slice.call(arguments, 1), true, true, []);
+    return _.filter(array, function(value){
+      return !_.contains(rest, value);
+    });
   };
 
   // Zip together multiple lists into a single array -- elements that share
   // an index go together.
-  _.zip = function() {
-    var length = _.max(_.pluck(arguments, 'length').concat(0));
-    var results = new Array(length);
+  _.zip = function(array) {
+    if (array == null) return [];
+    var length = _.max(arguments, 'length').length;
+    var results = Array(length);
     for (var i = 0; i < length; i++) {
-      results[i] = _.pluck(arguments, '' + i);
+      results[i] = _.pluck(arguments, i);
     }
     return results;
   };
@@ -6671,10 +9111,8 @@ console.log('window', window);
     return result;
   };
 
-  // If the browser doesn't supply us with indexOf (I'm looking at you, **MSIE**),
-  // we need this function. Return the position of the first occurrence of an
-  // item in an array, or -1 if the item is not included in the array.
-  // Delegates to **ECMAScript 5**'s native `indexOf` if available.
+  // Return the position of the first occurrence of an item in an array,
+  // or -1 if the item is not included in the array.
   // If the array is large and already in sort order, pass `true`
   // for **isSorted** to use binary search.
   _.indexOf = function(array, item, isSorted) {
@@ -6682,26 +9120,23 @@ console.log('window', window);
     var i = 0, length = array.length;
     if (isSorted) {
       if (typeof isSorted == 'number') {
-        i = (isSorted < 0 ? Math.max(0, length + isSorted) : isSorted);
+        i = isSorted < 0 ? Math.max(0, length + isSorted) : isSorted;
       } else {
         i = _.sortedIndex(array, item);
         return array[i] === item ? i : -1;
       }
     }
-    if (nativeIndexOf && array.indexOf === nativeIndexOf) return array.indexOf(item, isSorted);
     for (; i < length; i++) if (array[i] === item) return i;
     return -1;
   };
 
-  // Delegates to **ECMAScript 5**'s native `lastIndexOf` if available.
   _.lastIndexOf = function(array, item, from) {
     if (array == null) return -1;
-    var hasIndex = from != null;
-    if (nativeLastIndexOf && array.lastIndexOf === nativeLastIndexOf) {
-      return hasIndex ? array.lastIndexOf(item, from) : array.lastIndexOf(item);
+    var idx = array.length;
+    if (typeof from == 'number') {
+      idx = from < 0 ? idx + from + 1 : Math.min(idx, from + 1);
     }
-    var i = (hasIndex ? from : array.length);
-    while (i--) if (array[i] === item) return i;
+    while (--idx >= 0) if (array[idx] === item) return idx;
     return -1;
   };
 
@@ -6713,15 +9148,13 @@ console.log('window', window);
       stop = start || 0;
       start = 0;
     }
-    step = arguments[2] || 1;
+    step = step || 1;
 
     var length = Math.max(Math.ceil((stop - start) / step), 0);
-    var idx = 0;
-    var range = new Array(length);
+    var range = Array(length);
 
-    while(idx < length) {
-      range[idx++] = start;
-      start += step;
+    for (var idx = 0; idx < length; idx++, start += step) {
+      range[idx] = start;
     }
 
     return range;
@@ -6731,7 +9164,7 @@ console.log('window', window);
   // ------------------
 
   // Reusable constructor function for prototype setting.
-  var ctor = function(){};
+  var Ctor = function(){};
 
   // Create a function bound to a given object (assigning `this`, and arguments,
   // optionally). Delegates to **ECMAScript 5**'s native `Function.bind` if
@@ -6739,17 +9172,18 @@ console.log('window', window);
   _.bind = function(func, context) {
     var args, bound;
     if (nativeBind && func.bind === nativeBind) return nativeBind.apply(func, slice.call(arguments, 1));
-    if (!_.isFunction(func)) throw new TypeError;
+    if (!_.isFunction(func)) throw new TypeError('Bind must be called on a function');
     args = slice.call(arguments, 2);
-    return bound = function() {
+    bound = function() {
       if (!(this instanceof bound)) return func.apply(context, args.concat(slice.call(arguments)));
-      ctor.prototype = func.prototype;
-      var self = new ctor;
-      ctor.prototype = null;
+      Ctor.prototype = func.prototype;
+      var self = new Ctor;
+      Ctor.prototype = null;
       var result = func.apply(self, args.concat(slice.call(arguments)));
-      if (Object(result) === result) return result;
+      if (_.isObject(result)) return result;
       return self;
     };
+    return bound;
   };
 
   // Partially apply a function by creating a version that has had some of its
@@ -6772,27 +9206,34 @@ console.log('window', window);
   // are the method names to be bound. Useful for ensuring that all callbacks
   // defined on an object belong to it.
   _.bindAll = function(obj) {
-    var funcs = slice.call(arguments, 1);
-    if (funcs.length === 0) throw new Error('bindAll must be passed function names');
-    each(funcs, function(f) { obj[f] = _.bind(obj[f], obj); });
+    var i, length = arguments.length, key;
+    if (length <= 1) throw new Error('bindAll must be passed function names');
+    for (i = 1; i < length; i++) {
+      key = arguments[i];
+      obj[key] = _.bind(obj[key], obj);
+    }
     return obj;
   };
 
   // Memoize an expensive function by storing its results.
   _.memoize = function(func, hasher) {
-    var memo = {};
-    hasher || (hasher = _.identity);
-    return function() {
-      var key = hasher.apply(this, arguments);
-      return _.has(memo, key) ? memo[key] : (memo[key] = func.apply(this, arguments));
+    var memoize = function(key) {
+      var cache = memoize.cache;
+      var address = hasher ? hasher.apply(this, arguments) : key;
+      if (!_.has(cache, address)) cache[address] = func.apply(this, arguments);
+      return cache[address];
     };
+    memoize.cache = {};
+    return memoize;
   };
 
   // Delays a function for the given number of milliseconds, and then calls
   // it with the arguments supplied.
   _.delay = function(func, wait) {
     var args = slice.call(arguments, 2);
-    return setTimeout(function(){ return func.apply(null, args); }, wait);
+    return setTimeout(function(){
+      return func.apply(null, args);
+    }, wait);
   };
 
   // Defers a function, scheduling it to run after the current call stack has
@@ -6810,12 +9251,12 @@ console.log('window', window);
     var context, args, result;
     var timeout = null;
     var previous = 0;
-    options || (options = {});
+    if (!options) options = {};
     var later = function() {
       previous = options.leading === false ? 0 : _.now();
       timeout = null;
       result = func.apply(context, args);
-      context = args = null;
+      if (!timeout) context = args = null;
     };
     return function() {
       var now = _.now();
@@ -6823,12 +9264,12 @@ console.log('window', window);
       var remaining = wait - (now - previous);
       context = this;
       args = arguments;
-      if (remaining <= 0) {
+      if (remaining <= 0 || remaining > wait) {
         clearTimeout(timeout);
         timeout = null;
         previous = now;
         result = func.apply(context, args);
-        context = args = null;
+        if (!timeout) context = args = null;
       } else if (!timeout && options.trailing !== false) {
         timeout = setTimeout(later, remaining);
       }
@@ -6845,13 +9286,14 @@ console.log('window', window);
 
     var later = function() {
       var last = _.now() - timestamp;
-      if (last < wait) {
+
+      if (last < wait && last > 0) {
         timeout = setTimeout(later, wait - last);
       } else {
         timeout = null;
         if (!immediate) {
           result = func.apply(context, args);
-          context = args = null;
+          if (!timeout) context = args = null;
         }
       }
     };
@@ -6861,28 +9303,13 @@ console.log('window', window);
       args = arguments;
       timestamp = _.now();
       var callNow = immediate && !timeout;
-      if (!timeout) {
-        timeout = setTimeout(later, wait);
-      }
+      if (!timeout) timeout = setTimeout(later, wait);
       if (callNow) {
         result = func.apply(context, args);
         context = args = null;
       }
 
       return result;
-    };
-  };
-
-  // Returns a function that will be executed at most one time, no matter how
-  // often you call it. Useful for lazy initialization.
-  _.once = function(func) {
-    var ran = false, memo;
-    return function() {
-      if (ran) return memo;
-      ran = true;
-      memo = func.apply(this, arguments);
-      func = null;
-      return memo;
     };
   };
 
@@ -6893,16 +9320,23 @@ console.log('window', window);
     return _.partial(wrapper, func);
   };
 
+  // Returns a negated version of the passed-in predicate.
+  _.negate = function(predicate) {
+    return function() {
+      return !predicate.apply(this, arguments);
+    };
+  };
+
   // Returns a function that is the composition of a list of functions, each
   // consuming the return value of the function that follows.
   _.compose = function() {
-    var funcs = arguments;
+    var args = arguments;
+    var start = args.length - 1;
     return function() {
-      var args = arguments;
-      for (var i = funcs.length - 1; i >= 0; i--) {
-        args = [funcs[i].apply(this, args)];
-      }
-      return args[0];
+      var i = start;
+      var result = args[start].apply(this, arguments);
+      while (i--) result = args[i].call(this, result);
+      return result;
     };
   };
 
@@ -6914,6 +9348,23 @@ console.log('window', window);
       }
     };
   };
+
+  // Returns a function that will only be executed before being called N times.
+  _.before = function(times, func) {
+    var memo;
+    return function() {
+      if (--times > 0) {
+        memo = func.apply(this, arguments);
+      } else {
+        func = null;
+      }
+      return memo;
+    };
+  };
+
+  // Returns a function that will be executed at most one time, no matter how
+  // often you call it. Useful for lazy initialization.
+  _.once = _.partial(_.before, 2);
 
   // Object Functions
   // ----------------
@@ -6932,7 +9383,7 @@ console.log('window', window);
   _.values = function(obj) {
     var keys = _.keys(obj);
     var length = keys.length;
-    var values = new Array(length);
+    var values = Array(length);
     for (var i = 0; i < length; i++) {
       values[i] = obj[keys[i]];
     }
@@ -6943,7 +9394,7 @@ console.log('window', window);
   _.pairs = function(obj) {
     var keys = _.keys(obj);
     var length = keys.length;
-    var pairs = new Array(length);
+    var pairs = Array(length);
     for (var i = 0; i < length; i++) {
       pairs[i] = [keys[i], obj[keys[i]]];
     }
@@ -6972,45 +9423,62 @@ console.log('window', window);
 
   // Extend a given object with all the properties in passed-in object(s).
   _.extend = function(obj) {
-    each(slice.call(arguments, 1), function(source) {
-      if (source) {
-        for (var prop in source) {
-          obj[prop] = source[prop];
+    if (!_.isObject(obj)) return obj;
+    var source, prop;
+    for (var i = 1, length = arguments.length; i < length; i++) {
+      source = arguments[i];
+      for (prop in source) {
+        if (hasOwnProperty.call(source, prop)) {
+            obj[prop] = source[prop];
         }
       }
-    });
+    }
     return obj;
   };
 
   // Return a copy of the object only containing the whitelisted properties.
-  _.pick = function(obj) {
-    var copy = {};
-    var keys = concat.apply(ArrayProto, slice.call(arguments, 1));
-    each(keys, function(key) {
-      if (key in obj) copy[key] = obj[key];
-    });
-    return copy;
+  _.pick = function(obj, iteratee, context) {
+    var result = {}, key;
+    if (obj == null) return result;
+    if (_.isFunction(iteratee)) {
+      iteratee = createCallback(iteratee, context);
+      for (key in obj) {
+        var value = obj[key];
+        if (iteratee(value, key, obj)) result[key] = value;
+      }
+    } else {
+      var keys = concat.apply([], slice.call(arguments, 1));
+      obj = new Object(obj);
+      for (var i = 0, length = keys.length; i < length; i++) {
+        key = keys[i];
+        if (key in obj) result[key] = obj[key];
+      }
+    }
+    return result;
   };
 
    // Return a copy of the object without the blacklisted properties.
-  _.omit = function(obj) {
-    var copy = {};
-    var keys = concat.apply(ArrayProto, slice.call(arguments, 1));
-    for (var key in obj) {
-      if (!_.contains(keys, key)) copy[key] = obj[key];
+  _.omit = function(obj, iteratee, context) {
+    if (_.isFunction(iteratee)) {
+      iteratee = _.negate(iteratee);
+    } else {
+      var keys = _.map(concat.apply([], slice.call(arguments, 1)), String);
+      iteratee = function(value, key) {
+        return !_.contains(keys, key);
+      };
     }
-    return copy;
+    return _.pick(obj, iteratee, context);
   };
 
   // Fill in a given object with default properties.
   _.defaults = function(obj) {
-    each(slice.call(arguments, 1), function(source) {
-      if (source) {
-        for (var prop in source) {
-          if (obj[prop] === void 0) obj[prop] = source[prop];
-        }
+    if (!_.isObject(obj)) return obj;
+    for (var i = 1, length = arguments.length; i < length; i++) {
+      var source = arguments[i];
+      for (var prop in source) {
+        if (obj[prop] === void 0) obj[prop] = source[prop];
       }
-    });
+    }
     return obj;
   };
 
@@ -7032,7 +9500,7 @@ console.log('window', window);
   var eq = function(a, b, aStack, bStack) {
     // Identical objects are equal. `0 === -0`, but they aren't identical.
     // See the [Harmony `egal` proposal](http://wiki.ecmascript.org/doku.php?id=harmony:egal).
-    if (a === b) return a !== 0 || 1 / a == 1 / b;
+    if (a === b) return a !== 0 || 1 / a === 1 / b;
     // A strict comparison is necessary because `null == undefined`.
     if (a == null || b == null) return a === b;
     // Unwrap any wrapped objects.
@@ -7040,29 +9508,27 @@ console.log('window', window);
     if (b instanceof _) b = b._wrapped;
     // Compare `[[Class]]` names.
     var className = toString.call(a);
-    if (className != toString.call(b)) return false;
+    if (className !== toString.call(b)) return false;
     switch (className) {
-      // Strings, numbers, dates, and booleans are compared by value.
+      // Strings, numbers, regular expressions, dates, and booleans are compared by value.
+      case '[object RegExp]':
+      // RegExps are coerced to strings for comparison (Note: '' + /a/i === '/a/i')
       case '[object String]':
         // Primitives and their corresponding object wrappers are equivalent; thus, `"5"` is
         // equivalent to `new String("5")`.
-        return a == String(b);
+        return '' + a === '' + b;
       case '[object Number]':
-        // `NaN`s are equivalent, but non-reflexive. An `egal` comparison is performed for
-        // other numeric values.
-        return a != +a ? b != +b : (a == 0 ? 1 / a == 1 / b : a == +b);
+        // `NaN`s are equivalent, but non-reflexive.
+        // Object(NaN) is equivalent to NaN
+        if (+a !== +a) return +b !== +b;
+        // An `egal` comparison is performed for other numeric values.
+        return +a === 0 ? 1 / +a === 1 / b : +a === +b;
       case '[object Date]':
       case '[object Boolean]':
         // Coerce dates and booleans to numeric primitive values. Dates are compared by their
         // millisecond representations. Note that invalid dates with millisecond representations
         // of `NaN` are not equivalent.
-        return +a == +b;
-      // RegExps are compared by their source patterns and flags.
-      case '[object RegExp]':
-        return a.source == b.source &&
-               a.global == b.global &&
-               a.multiline == b.multiline &&
-               a.ignoreCase == b.ignoreCase;
+        return +a === +b;
     }
     if (typeof a != 'object' || typeof b != 'object') return false;
     // Assume equality for cyclic structures. The algorithm for detecting cyclic
@@ -7071,25 +9537,29 @@ console.log('window', window);
     while (length--) {
       // Linear search. Performance is inversely proportional to the number of
       // unique nested structures.
-      if (aStack[length] == a) return bStack[length] == b;
+      if (aStack[length] === a) return bStack[length] === b;
     }
     // Objects with different constructors are not equivalent, but `Object`s
     // from different frames are.
     var aCtor = a.constructor, bCtor = b.constructor;
-    if (aCtor !== bCtor && !(_.isFunction(aCtor) && (aCtor instanceof aCtor) &&
-                             _.isFunction(bCtor) && (bCtor instanceof bCtor))
-                        && ('constructor' in a && 'constructor' in b)) {
+    if (
+      aCtor !== bCtor &&
+      // Handle Object.create(x) cases
+      'constructor' in a && 'constructor' in b &&
+      !(_.isFunction(aCtor) && aCtor instanceof aCtor &&
+        _.isFunction(bCtor) && bCtor instanceof bCtor)
+    ) {
       return false;
     }
     // Add the first object to the stack of traversed objects.
     aStack.push(a);
     bStack.push(b);
-    var size = 0, result = true;
+    var size, result;
     // Recursively compare objects and arrays.
-    if (className == '[object Array]') {
+    if (className === '[object Array]') {
       // Compare array lengths to determine if a deep comparison is necessary.
       size = a.length;
-      result = size == b.length;
+      result = size === b.length;
       if (result) {
         // Deep compare the contents, ignoring non-numeric properties.
         while (size--) {
@@ -7098,20 +9568,16 @@ console.log('window', window);
       }
     } else {
       // Deep compare objects.
-      for (var key in a) {
-        if (_.has(a, key)) {
-          // Count the expected number of properties.
-          size++;
-          // Deep compare each member.
+      var keys = _.keys(a), key;
+      size = keys.length;
+      // Ensure that both objects contain the same number of properties before comparing deep equality.
+      result = _.keys(b).length === size;
+      if (result) {
+        while (size--) {
+          // Deep compare each member
+          key = keys[size];
           if (!(result = _.has(b, key) && eq(a[key], b[key], aStack, bStack))) break;
         }
-      }
-      // Ensure that both objects contain the same number of properties.
-      if (result) {
-        for (key in b) {
-          if (_.has(b, key) && !(size--)) break;
-        }
-        result = !size;
       }
     }
     // Remove the first object from the stack of traversed objects.
@@ -7129,7 +9595,7 @@ console.log('window', window);
   // An "empty" object has no enumerable own-properties.
   _.isEmpty = function(obj) {
     if (obj == null) return true;
-    if (_.isArray(obj) || _.isString(obj)) return obj.length === 0;
+    if (_.isArray(obj) || _.isString(obj) || _.isArguments(obj)) return obj.length === 0;
     for (var key in obj) if (_.has(obj, key)) return false;
     return true;
   };
@@ -7142,18 +9608,19 @@ console.log('window', window);
   // Is a given value an array?
   // Delegates to ECMA5's native Array.isArray
   _.isArray = nativeIsArray || function(obj) {
-    return toString.call(obj) == '[object Array]';
+    return toString.call(obj) === '[object Array]';
   };
 
   // Is a given variable an object?
   _.isObject = function(obj) {
-    return obj === Object(obj);
+    var type = typeof obj;
+    return type === 'function' || type === 'object' && !!obj;
   };
 
   // Add some isType methods: isArguments, isFunction, isString, isNumber, isDate, isRegExp.
-  each(['Arguments', 'Function', 'String', 'Number', 'Date', 'RegExp'], function(name) {
+  _.each(['Arguments', 'Function', 'String', 'Number', 'Date', 'RegExp'], function(name) {
     _['is' + name] = function(obj) {
-      return toString.call(obj) == '[object ' + name + ']';
+      return toString.call(obj) === '[object ' + name + ']';
     };
   });
 
@@ -7161,14 +9628,14 @@ console.log('window', window);
   // there isn't any inspectable "Arguments" type.
   if (!_.isArguments(arguments)) {
     _.isArguments = function(obj) {
-      return !!(obj && _.has(obj, 'callee'));
+      return _.has(obj, 'callee');
     };
   }
 
-  // Optimize `isFunction` if appropriate.
-  if (typeof (/./) !== 'function') {
+  // Optimize `isFunction` if appropriate. Work around an IE 11 bug.
+  if (typeof /./ !== 'function') {
     _.isFunction = function(obj) {
-      return typeof obj === 'function';
+      return typeof obj == 'function' || false;
     };
   }
 
@@ -7179,12 +9646,12 @@ console.log('window', window);
 
   // Is the given value `NaN`? (NaN is the only number which does not equal itself).
   _.isNaN = function(obj) {
-    return _.isNumber(obj) && obj != +obj;
+    return _.isNumber(obj) && obj !== +obj;
   };
 
   // Is a given value a boolean?
   _.isBoolean = function(obj) {
-    return obj === true || obj === false || toString.call(obj) == '[object Boolean]';
+    return obj === true || obj === false || toString.call(obj) === '[object Boolean]';
   };
 
   // Is a given value equal to null?
@@ -7200,7 +9667,7 @@ console.log('window', window);
   // Shortcut function for checking if an object has a given property directly
   // on itself (in other words, not on a prototype).
   _.has = function(obj, key) {
-    return hasOwnProperty.call(obj, key);
+    return obj != null && hasOwnProperty.call(obj, key);
   };
 
   // Utility Functions
@@ -7213,16 +9680,18 @@ console.log('window', window);
     return this;
   };
 
-  // Keep the identity function around for default iterators.
+  // Keep the identity function around for default iteratees.
   _.identity = function(value) {
     return value;
   };
 
   _.constant = function(value) {
-    return function () {
+    return function() {
       return value;
     };
   };
+
+  _.noop = function(){};
 
   _.property = function(key) {
     return function(obj) {
@@ -7232,20 +9701,23 @@ console.log('window', window);
 
   // Returns a predicate for checking whether an object has a given set of `key:value` pairs.
   _.matches = function(attrs) {
+    var pairs = _.pairs(attrs), length = pairs.length;
     return function(obj) {
-      if (obj === attrs) return true; //avoid comparing an object to itself.
-      for (var key in attrs) {
-        if (attrs[key] !== obj[key])
-          return false;
+      if (obj == null) return !length;
+      obj = new Object(obj);
+      for (var i = 0; i < length; i++) {
+        var pair = pairs[i], key = pair[0];
+        if (pair[1] !== obj[key] || !(key in obj)) return false;
       }
       return true;
-    }
+    };
   };
 
   // Run a function **n** times.
-  _.times = function(n, iterator, context) {
+  _.times = function(n, iteratee, context) {
     var accum = Array(Math.max(0, n));
-    for (var i = 0; i < n; i++) accum[i] = iterator.call(context, i);
+    iteratee = createCallback(iteratee, context, 1);
+    for (var i = 0; i < n; i++) accum[i] = iteratee(i);
     return accum;
   };
 
@@ -7259,54 +9731,44 @@ console.log('window', window);
   };
 
   // A (possibly faster) way to get the current timestamp as an integer.
-  _.now = Date.now || function() { return new Date().getTime(); };
-
-  // List of HTML entities for escaping.
-  var entityMap = {
-    escape: {
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      '"': '&quot;',
-      "'": '&#x27;'
-    }
+  _.now = Date.now || function() {
+    return new Date().getTime();
   };
-  entityMap.unescape = _.invert(entityMap.escape);
 
-  // Regexes containing the keys and values listed immediately above.
-  var entityRegexes = {
-    escape:   new RegExp('[' + _.keys(entityMap.escape).join('') + ']', 'g'),
-    unescape: new RegExp('(' + _.keys(entityMap.unescape).join('|') + ')', 'g')
+   // List of HTML entities for escaping.
+  var escapeMap = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#x27;',
+    '`': '&#x60;'
   };
+  var unescapeMap = _.invert(escapeMap);
 
   // Functions for escaping and unescaping strings to/from HTML interpolation.
-  _.each(['escape', 'unescape'], function(method) {
-    _[method] = function(string) {
-      if (string == null) return '';
-      return ('' + string).replace(entityRegexes[method], function(match) {
-        return entityMap[method][match];
-      });
+  var createEscaper = function(map) {
+    var escaper = function(match) {
+      return map[match];
     };
-  });
+    // Regexes for identifying a key that needs to be escaped
+    var source = '(?:' + _.keys(map).join('|') + ')';
+    var testRegexp = RegExp(source);
+    var replaceRegexp = RegExp(source, 'g');
+    return function(string) {
+      string = string == null ? '' : '' + string;
+      return testRegexp.test(string) ? string.replace(replaceRegexp, escaper) : string;
+    };
+  };
+  _.escape = createEscaper(escapeMap);
+  _.unescape = createEscaper(unescapeMap);
 
   // If the value of the named `property` is a function then invoke it with the
   // `object` as context; otherwise, return it.
   _.result = function(object, property) {
     if (object == null) return void 0;
     var value = object[property];
-    return _.isFunction(value) ? value.call(object) : value;
-  };
-
-  // Add your own custom functions to the Underscore object.
-  _.mixin = function(obj) {
-    each(_.functions(obj), function(name) {
-      var func = _[name] = obj[name];
-      _.prototype[name] = function() {
-        var args = [this._wrapped];
-        push.apply(args, arguments);
-        return result.call(this, func.apply(_, args));
-      };
-    });
+    return _.isFunction(value) ? object[property]() : value;
   };
 
   // Generate a unique integer id (unique within the entire client session).
@@ -7337,22 +9799,26 @@ console.log('window', window);
     '\\':     '\\',
     '\r':     'r',
     '\n':     'n',
-    '\t':     't',
     '\u2028': 'u2028',
     '\u2029': 'u2029'
   };
 
-  var escaper = /\\|'|\r|\n|\t|\u2028|\u2029/g;
+  var escaper = /\\|'|\r|\n|\u2028|\u2029/g;
+
+  var escapeChar = function(match) {
+    return '\\' + escapes[match];
+  };
 
   // JavaScript micro-templating, similar to John Resig's implementation.
   // Underscore templating handles arbitrary delimiters, preserves whitespace,
   // and correctly escapes quotes within interpolated code.
-  _.template = function(text, data, settings) {
-    var render;
+  // NB: `oldSettings` only exists for backwards compatibility.
+  _.template = function(text, settings, oldSettings) {
+    if (!settings && oldSettings) settings = oldSettings;
     settings = _.defaults({}, settings, _.templateSettings);
 
     // Combine delimiters into one regular expression via alternation.
-    var matcher = new RegExp([
+    var matcher = RegExp([
       (settings.escape || noMatch).source,
       (settings.interpolate || noMatch).source,
       (settings.evaluate || noMatch).source
@@ -7362,19 +9828,18 @@ console.log('window', window);
     var index = 0;
     var source = "__p+='";
     text.replace(matcher, function(match, escape, interpolate, evaluate, offset) {
-      source += text.slice(index, offset)
-        .replace(escaper, function(match) { return '\\' + escapes[match]; });
+      source += text.slice(index, offset).replace(escaper, escapeChar);
+      index = offset + match.length;
 
       if (escape) {
         source += "'+\n((__t=(" + escape + "))==null?'':_.escape(__t))+\n'";
-      }
-      if (interpolate) {
+      } else if (interpolate) {
         source += "'+\n((__t=(" + interpolate + "))==null?'':__t)+\n'";
-      }
-      if (evaluate) {
+      } else if (evaluate) {
         source += "';\n" + evaluate + "\n__p+='";
       }
-      index = offset + match.length;
+
+      // Adobe VMs need the match returned to produce the correct offest.
       return match;
     });
     source += "';\n";
@@ -7384,29 +9849,31 @@ console.log('window', window);
 
     source = "var __t,__p='',__j=Array.prototype.join," +
       "print=function(){__p+=__j.call(arguments,'');};\n" +
-      source + "return __p;\n";
+      source + 'return __p;\n';
 
     try {
-      render = new Function(settings.variable || 'obj', '_', source);
+      var render = new Function(settings.variable || 'obj', '_', source);
     } catch (e) {
       e.source = source;
       throw e;
     }
 
-    if (data) return render(data, _);
     var template = function(data) {
       return render.call(this, data, _);
     };
 
-    // Provide the compiled function source as a convenience for precompilation.
-    template.source = 'function(' + (settings.variable || 'obj') + '){\n' + source + '}';
+    // Provide the compiled source as a convenience for precompilation.
+    var argument = settings.variable || 'obj';
+    template.source = 'function(' + argument + '){\n' + source + '}';
 
     return template;
   };
 
-  // Add a "chain" function, which will delegate to the wrapper.
+  // Add a "chain" function. Start chaining a wrapped Underscore object.
   _.chain = function(obj) {
-    return _(obj).chain();
+    var instance = _(obj);
+    instance._chain = true;
+    return instance;
   };
 
   // OOP
@@ -7420,42 +9887,44 @@ console.log('window', window);
     return this._chain ? _(obj).chain() : obj;
   };
 
+  // Add your own custom functions to the Underscore object.
+  _.mixin = function(obj) {
+    _.each(_.functions(obj), function(name) {
+      var func = _[name] = obj[name];
+      _.prototype[name] = function() {
+        var args = [this._wrapped];
+        push.apply(args, arguments);
+        return result.call(this, func.apply(_, args));
+      };
+    });
+  };
+
   // Add all of the Underscore functions to the wrapper object.
   _.mixin(_);
 
   // Add all mutator Array functions to the wrapper.
-  each(['pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift'], function(name) {
+  _.each(['pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift'], function(name) {
     var method = ArrayProto[name];
     _.prototype[name] = function() {
       var obj = this._wrapped;
       method.apply(obj, arguments);
-      if ((name == 'shift' || name == 'splice') && obj.length === 0) delete obj[0];
+      if ((name === 'shift' || name === 'splice') && obj.length === 0) delete obj[0];
       return result.call(this, obj);
     };
   });
 
   // Add all accessor Array functions to the wrapper.
-  each(['concat', 'join', 'slice'], function(name) {
+  _.each(['concat', 'join', 'slice'], function(name) {
     var method = ArrayProto[name];
     _.prototype[name] = function() {
       return result.call(this, method.apply(this._wrapped, arguments));
     };
   });
 
-  _.extend(_.prototype, {
-
-    // Start chaining a wrapped Underscore object.
-    chain: function() {
-      this._chain = true;
-      return this;
-    },
-
-    // Extracts the result from a wrapped and chained object.
-    value: function() {
-      return this._wrapped;
-    }
-
-  });
+  // Extracts the result from a wrapped and chained object.
+  _.prototype.value = function() {
+    return this._wrapped;
+  };
 
   // AMD registration happens at the end for compatibility with AMD loaders
   // that may not enforce next-turn semantics on modules. Even though general
@@ -7469,6 +9938,6 @@ console.log('window', window);
       return _;
     });
   }
-}).call(this);
+}.call(this));
 
-},{}]},{},[13]);
+},{}]},{},[16]);

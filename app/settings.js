@@ -9,6 +9,11 @@ settings.system = {};
 settings.select_registry = [];
 settings.value_registry = [];
 
+
+
+
+
+
 var system = settings.system;
 system.wire_config_num = 5;
 system.DC = {};
@@ -347,6 +352,28 @@ size.general_notes.h = 100;
 loc.general_notes = {};
 loc.general_notes.x = size.general_notes.w/2 + 30;
 loc.general_notes.y = size.general_notes.h/2 + 30;
+
+
+
+
+
+settings.page = {};
+settings.page.letter = {
+    units: 'inches',
+    w: 11.0,
+    h: 8.5,
+}
+
+var x_scale = settings.page.letter.w / settings.drawing.size.drawing.w;
+var y_scale = settings.page.letter.h / settings.drawing.size.drawing.h; 
+if( x_scale < y_scale ) {
+    settings.page.letter.scale = x_scale;
+} else {
+    settings.page.letter.scale = y_scale;
+}
+
+
+
 
 
 /////////////////////
