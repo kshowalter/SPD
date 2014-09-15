@@ -1141,12 +1141,24 @@ module.exports = mk_drawing;
 //var settings = require('./settings.js');
 //var snapsvg = require('snapsvg');
 //log(settings);
+function hexToRgb(hex) {
+    var bigint = parseInt(hex, 16);
+    var r = (bigint >> 16) & 255;
+    var g = (bigint >> 8) & 255;
+    var b = bigint & 255;
+
+    return [r, g, b];
+}
 
 var saveAs = require("../lib/FileSaver");
 console.log(saveAs);
 window.saveAs = saveAs;
 
 var jsPDF = require("../lib/jspdf");
+
+jsPDF.API.mytext = function(){
+
+}
 
 //var $ = require("jquery");
 var $ = require('../lib/k/k_DOM');
@@ -1200,6 +1212,19 @@ var mk_pdf = function(settings){
     });
 
     function show_elem_array(elem, offset){
+        if( elem.layer_name !== undefined ){
+            var layer_attr = l_attr[elem.layer_name];
+            if( layer_attr.stroke !== undefined ) {
+                var hex = layer_attr.stroke;
+                if( hex.substring(0,1) ) hex = hex.substring(1);
+                var color = hexToRgb(hex)
+                //console.log(color)
+            } else {
+                console.log("no stroke")
+            }
+        } 
+
+
         var x,y;
         offset = offset || {x:0,y:0};
         if( typeof elem.x !== 'undefined' ) { x = elem.x + offset.x; } 
@@ -1219,6 +1244,7 @@ var mk_pdf = function(settings){
             
         } else if( elem.type === 'line') {
             var px,py,px_last,py_last;
+            if( color !== undefined ) { doc.setDrawColor( color[0], color[1], color[2] ); }
             doc.setLineWidth(0.005);
             elem.points.forEach( function(point){
                 if( ! isNaN(point[0]) && ! isNaN(point[1]) ){
@@ -1246,7 +1272,7 @@ var mk_pdf = function(settings){
         } else if( elem.type === 'text') {
             x = x * scale;
             y = y * scale;
-            //var font = fonts[elem.font];
+            var font = fonts[elem.font];
 
             //var t = document.createElementNS("http://www.w3.org/2000/svg", 'text');
             //t.setAttribute('x', x);
@@ -1260,14 +1286,26 @@ var mk_pdf = function(settings){
             //for( var i2 in font ){
             //    t.setAttribute( i2, font[i2] );
             //}
-            //for( var i2 in elem.strings ){
+            for( var i2 in elem.strings ){
+                var text = elem.strings[i2];
+                //var w = text.length * font['font-size']*1;
+// temporary line centering aproximation
+                var w = text.length * font['font-size']*0.66 * scale;
+
+                var line_spacing = (font['font-size']*1.5*i2)*scale;
+                //var w = doc.getStringUnitWidth(text);
             //    var tspan = document.createElementNS("http://www.w3.org/2000/svg", 'tspan');
             //    tspan.setAttribute('dy', font['font-size']*1.5*i2 );
             //    tspan.setAttribute('x', x);
             //    tspan.innerHTML = elem.strings[i2];
             //    t.appendChild(tspan);
-            //}
+                doc.setFontSize(font['font-size']);
+                //doc.text(text, x, y+(font['font-size']*1.5*i2), {align: "center"} );
+                doc.text(text, x-w/2, y+line_spacing );
+            }
             //svg_elem.appendChild(t);
+
+
         } else if( elem.type === 'circ') {
             x = x * scale;
             y = y * scale;
