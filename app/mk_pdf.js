@@ -21,6 +21,10 @@ jsPDF.API.mytext = function(){
 
 }
 
+
+var PDFDocument = require('pdfkit');
+
+
 //var $ = require("jquery");
 var $ = require('../lib/k/k_DOM');
 
@@ -45,13 +49,22 @@ var mk_pdf = function(settings){
 
     //doc = new PDFDocument;
     //var doc = new PDFDocument;
-    var doc = new jsPDF('l', 'in', 'letter');
+    var doc = new(PDFDocument);
+    //var doc = new jsPDF('l', 'in', 'letter');
+
+    console.log(doc)
 
 
-    doc.setProperties({
-        title: title,
-        creator: 'FSEC'
-    });
+    doc.info.Title = title;
+    doc.info.Creator = 'FSEC';
+
+    doc.rotate(-90).text('test',1,1);
+
+
+//    doc.setProperties({
+//        title: title,
+//        creator: 'FSEC'
+//    });
 //    var x = 1;
 //    var y = 2;
 //    var width = 1.5;
@@ -65,7 +78,7 @@ var mk_pdf = function(settings){
 
 
 
-
+    /*
 
     // Loop through all the drawing contents, call the function below.
     elements.forEach( function(elem,id) {
@@ -192,6 +205,7 @@ var mk_pdf = function(settings){
         }
     }
 
+    */
 
     console.log(doc);
     //doc.save("drawing.pdf");
