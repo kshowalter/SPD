@@ -357,19 +357,20 @@ loc.general_notes.y = size.general_notes.h/2 + 30;
 
 
 
-settings.page = {};
-settings.page.letter = {
+settings.pages = {};
+settings.pages.letter = {
     units: 'inches',
     w: 11.0,
     h: 8.5,
 }
+settings.page = settings.pages.letter;
 
-var x_scale = settings.page.letter.w / settings.drawing.size.drawing.w;
-var y_scale = settings.page.letter.h / settings.drawing.size.drawing.h; 
+var x_scale = settings.page.w * 72 / settings.drawing.size.drawing.w;
+var y_scale = settings.page.h * 72 / settings.drawing.size.drawing.h; 
 if( x_scale < y_scale ) {
-    settings.page.letter.scale = x_scale;
+    settings.page.scale = x_scale;
 } else {
-    settings.page.letter.scale = y_scale;
+    settings.page.scale = y_scale;
 }
 
 

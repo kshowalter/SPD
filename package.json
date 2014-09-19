@@ -10,10 +10,11 @@
     "dependencies": {
         "underscore": "latest",
         "moment": "latest",
+        "jquery": "latest",
         "snapsvg": "latest",
         "brfs": "1.0.2",
         "pdfkit": "latest",
-        "jquery": "latest"
+        "blob-stream": "latest"
     },
     "devDependencies": {
         "browserify": "^5.11.0",

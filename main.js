@@ -108,6 +108,13 @@ function show_hide_selections(page_sections, active_section_name){
     }
 }
 
+function setDownloadLink(settings){
+
+    if( settings.PDF && settings.PDF.url ){
+        var link = $('a').attr('href', settings.PDF.url ).html('download..');
+        $('#download').html('').append(link);
+    }
+}
 
 function update(){
     console.log('updating');
@@ -137,10 +144,15 @@ function update(){
     console.log(svg_wrapper)
     $("#drawing").append($(svg));
 
-    var pdf_download = mk_pdf(settings);
-    pdf_download.html("Download PDF");
-    console.log(pdf_download);
-    $('#download').append(pdf_download);
+    //var pdf_download = mk_pdf(settings, setDownloadLink);
+    mk_pdf(settings, setDownloadLink);
+    //pdf_download.html("Download PDF");
+    //console.log(pdf_download);
+    //if( settings.PDF && settings.PDF.url ){
+    //    var link = $('a').attr('href', settings.PDF.url ).html('download..');
+    //    $('#download').append(link);
+    //}
+
 
     show_hide_params(page_sections_params);
     show_hide_selections(page_sections_config, settings.status.active_section)

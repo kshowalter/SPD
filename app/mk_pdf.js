@@ -23,6 +23,7 @@ jsPDF.API.mytext = function(){
 
 
 var PDFDocument = require('pdfkit');
+var blobStream  = require('blob-stream');
 
 
 //var $ = require("jquery");
@@ -33,13 +34,19 @@ var $ = require('../lib/k/k_DOM');
 //window.saveAs = require("../lib/FileSaver.js");
 //require("../lib/svgToPdf.js");
 //console.log(svgElementToPdf)
+//
+var lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam in suscipit purus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vivamus nec hendrerit felis. Morbi aliquam facilisis risus eu lacinia. Sed eu leo in turpis fringilla hendrerit. Ut nec accumsan nisl. Suspendisse rhoncus nisl posuere tortor tempus et dapibus elit porta. Cras leo neque, elementum a rhoncus ut, vestibulum non nibh. Phasellus pretium justo turpis. Etiam vulputate, odio vitae tincidunt ultricies, eros odio dapibus nisi, ut tincidunt lacus arcu eu elit.  Aenean velit erat, vehicula eget lacinia ut, dignissim non tellus.  Aliquam nec lacus mi, sed vestibulum nunc. Suspendisse potenti. Curabitur vitae sem turpis.  Vestibulum sed neque eget dolor dapibus porttitor at sit amet sem.  Fusce a turpis lorem. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Mauris at ante tellus.  Vestibulum a metus lectus. Praesent tempor purus a lacus blandit eget gravida ante hendrerit. Cras et eros metus. Sed commodo malesuada eros, vitae interdum augue semper quis. Fusce id magna nunc.  Curabitur sollicitudin placerat semper. Cras et mi neque, a dignissim risus. Nulla venenatis porta lacus, vel rhoncus lectus tempor vitae. Duis sagittis venenatis rutrum. Curabitur tempor massa"; 
 
 
-var mk_pdf = function(settings){
+
+
+
+
+var mk_pdf = function(settings, callback){
     console.log('Making PDF');
     var title = settings.system.inverter.make + " " + settings.system.inverter.model + " Inverter System"; 
 
-    var scale = settings.page.letter.scale;                        
+    var scale = settings.page.scale;                        
 
     var l_attr = settings.drawing.l_attr;
     var fonts = settings.drawing.fonts;
@@ -49,16 +56,33 @@ var mk_pdf = function(settings){
 
     //doc = new PDFDocument;
     //var doc = new PDFDocument;
-    var doc = new(PDFDocument);
+    //var doc = new PDFDocument( {size: [settings.page.w, settings.page.h], info:{Title: title, Creator: 'FSEC'}});
+    //var doc = new PDFDocument( {size: [settings.page.w, settings.page.h]} );
+    var doc = new PDFDocument();
+    var stream = doc.pipe(blobStream());
+
     //var doc = new jsPDF('l', 'in', 'letter');
 
+
+
+
     console.log(doc)
+    //doc.rotate(-90, [72, 72]).text('test',72*1,72*1);
+    //doc.text('test',72*2,72*2);
+    //doc.text('test',72*3,72*3).rotate(-90, [72*3, 72*3]);
 
-
-    doc.info.Title = title;
-    doc.info.Creator = 'FSEC';
-
-    doc.rotate(-90).text('test',1,1);
+    //doc.rotate(20)
+    //    .text('wrapped text...', 100, 300)
+    //    .font('Times-Roman', 13)
+    //    .moveDown()
+    //    .text(lorem, {
+    //        width: 412,
+    //        align: 'justify',
+    //        indent: 30,
+    //        columns: 2,
+    //        height: 300,
+    //        ellipsis: true
+    //    });
 
 
 //    doc.setProperties({
@@ -78,7 +102,6 @@ var mk_pdf = function(settings){
 
 
 
-    /*
 
     // Loop through all the drawing contents, call the function below.
     elements.forEach( function(elem,id) {
@@ -89,9 +112,7 @@ var mk_pdf = function(settings){
         if( elem.layer_name !== undefined ){
             var layer_attr = l_attr[elem.layer_name];
             if( layer_attr.stroke !== undefined ) {
-                var hex = layer_attr.stroke;
-                if( hex.substring(0,1) ) hex = hex.substring(1);
-                var color = hexToRgb(hex)
+                var color = layer_attr.stroke;
                 //console.log(color)
             } else {
                 console.log("no stroke")
@@ -111,21 +132,23 @@ var mk_pdf = function(settings){
             var h = elem.h * scale;
 
             //Draw Rectangle
-            doc.setLineWidth(0.005);
-            doc.setDrawColor(0);
-            doc.rect(x-w/2, y-h/2, w, h, 'D')
+            doc.lineWidth(0.005)
+                .strokeColor(layer_attr.stroke)
+                .rect(x-w/2, y-h/2, w, h, 'D')
+                .stroke()
 
             
         } else if( elem.type === 'line') {
             var px,py,px_last,py_last;
-            if( color !== undefined ) { doc.setDrawColor( color[0], color[1], color[2] ); }
-            doc.setLineWidth(0.005);
+            if( color !== undefined ) { doc.strokeColor( color[0], color[1], color[2] ); }
+            doc.lineWidth(1);
             elem.points.forEach( function(point){
                 if( ! isNaN(point[0]) && ! isNaN(point[1]) ){
                     px = (point[0]+offset.x)*scale;
                     py = (point[1]+offset.y)*scale;
                     if( px_last !== undefined ){
-                        doc.line(px_last, py_last, px, py);
+                        doc.moveTo(px_last, py_last);
+                        doc.lineTo(px, py);
                     }
                     px_last = px;
                     py_last = py;
@@ -148,34 +171,14 @@ var mk_pdf = function(settings){
             y = y * scale;
             var font = fonts[elem.font];
 
-            //var t = document.createElementNS("http://www.w3.org/2000/svg", 'text');
-            //t.setAttribute('x', x);
-            //t.setAttribute('y', y );
-            //if(elem.rotated){
-            //    t.setAttribute('transform', "rotate(" + elem.rotated + " " + x + " " + y + ")" );
-            //}
-            //for( var i2 in l_attr[elem.layer_name] ){
-            //    t.setAttribute( i2, l_attr[elem.layer_name][i2] );
-            //}
-            //for( var i2 in font ){
-            //    t.setAttribute( i2, font[i2] );
-            //}
+            doc.moveTo( x, y );
+            doc.fontSize(font['font-size']);
+
             for( var i2 in elem.strings ){
                 var text = elem.strings[i2];
-                //var w = text.length * font['font-size']*1;
-// temporary line centering aproximation
-                var w = text.length * font['font-size']*0.66 * scale;
-
-                var line_spacing = (font['font-size']*1.5*i2)*scale;
-                //var w = doc.getStringUnitWidth(text);
-            //    var tspan = document.createElementNS("http://www.w3.org/2000/svg", 'tspan');
-            //    tspan.setAttribute('dy', font['font-size']*1.5*i2 );
-            //    tspan.setAttribute('x', x);
-            //    tspan.innerHTML = elem.strings[i2];
-            //    t.appendChild(tspan);
-                doc.setFontSize(font['font-size']);
                 //doc.text(text, x, y+(font['font-size']*1.5*i2), {align: "center"} );
-                doc.text(text, x-w/2, y+line_spacing );
+                doc.text( text );
+                doc.moveDown();
             }
             //svg_elem.appendChild(t);
 
@@ -184,8 +187,8 @@ var mk_pdf = function(settings){
             x = x * scale;
             y = y * scale;
             var d = elem.d * scale;
-            doc.setLineWidth(0.005);
-            doc.setDrawColor(0);
+            doc.lineWidth(0.005);
+            doc.strokeColor(0);
             doc.circle(x, y, d/2, 'D');
             //var c = document.createElementNS("http://www.w3.org/2000/svg", 'ellipse');
             //c.setAttribute('rx', elem.d/2);
@@ -205,18 +208,36 @@ var mk_pdf = function(settings){
         }
     }
 
-    */
-
-    console.log(doc);
+    //console.log(doc);
     //doc.save("drawing.pdf");
     //doc.output('datauri');
-    var url = doc.output('datauristring');
-    console.log(url);
+    //var url = doc.output('datauristring');
+    //console.log(url);
     
-    var link = $('a').href('Download').href(url);
-    console.log(link)
+    //var link = $('a').href('Download').href(url);
+    //console.log(link)
     
-    return link;
+    //return link;
+
+
+
+
+
+    doc.end();
+    stream.on('finish', function(){
+        // get a blob you can do whatever you like with
+        var blob = stream.toBlob('application/pdf')
+
+        // or get a blob URL for display in the browser
+        var url = stream.toBlobURL('application/pdf')
+        //iframe.src = url
+        settings.PDF = {};
+        settings.PDF.url = url;
+        
+        callback(settings);
+    });
+
+
 };
 
 
