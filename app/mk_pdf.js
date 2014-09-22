@@ -58,7 +58,16 @@ var mk_pdf = function(settings, callback){
     //var doc = new PDFDocument;
     //var doc = new PDFDocument( {size: [settings.page.w, settings.page.h], info:{Title: title, Creator: 'FSEC'}});
     //var doc = new PDFDocument( {size: [settings.page.w, settings.page.h]} );
-    var doc = new PDFDocument();
+
+    var doc_options = {
+        size: 'letter',
+        layout: 'landscape',
+        info: {
+            Title: 'PV drawing',
+            Author: 'FSEC',
+        }
+    }
+    var doc = new PDFDocument(doc_options);
     var stream = doc.pipe(blobStream());
 
     //var doc = new jsPDF('l', 'in', 'letter');
