@@ -47,6 +47,7 @@ var update_system = function(settings) {
         //system.DC.string_modules = settings.system.string_modules;
         //if( settings.config_options.modules !== undefined ){
 
+        var old_active_section = settings.status.active_section;
 
         // Modules
         if( settings.status.sections.modules.ready){
@@ -158,6 +159,9 @@ var update_system = function(settings) {
         }
 
 
+        if( settings.status.sections.AC.set){
+                settings.status.active_section = old_active_section;
+        }
 
 
 

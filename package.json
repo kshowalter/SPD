@@ -7,7 +7,8 @@
     "dependencies": {
         "underscore": "latest",
         "moment": "latest",
-        "snapsvg": "latest"
+        "snapsvg": "latest",
+        "jquery": "latest"
     },
 
     "build": "browserify main.js -o index.js",
