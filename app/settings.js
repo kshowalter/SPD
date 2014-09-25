@@ -365,12 +365,20 @@ settings.pages.letter = {
 }
 settings.page = settings.pages.letter;
 
-var x_scale = settings.page.w * 72 / settings.drawing.size.drawing.w;
-var y_scale = settings.page.h * 72 / settings.drawing.size.drawing.h; 
-if( x_scale < y_scale ) {
-    settings.page.scale = x_scale;
+settings.pages.PDF = {
+    w: settings.page.w * 72,
+    h: settings.page.h * 72,
+}
+
+settings.pages.PDF.scale = {
+    x: settings.pages.PDF.w / settings.drawing.size.drawing.w,
+    y: settings.pages.PDF.h / settings.drawing.size.drawing.h, 
+}
+
+if( settings.pages.PDF.scale.x < settings.pages.PDF.scale.y ) {
+    settings.page.scale = settings.pages.PDF.scale.x;
 } else {
-    settings.page.scale = y_scale;
+    settings.page.scale = settings.pages.PDF.scale.y;
 }
 
 

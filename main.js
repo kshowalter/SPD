@@ -111,7 +111,7 @@ function show_hide_selections(page_sections, active_section_name){
 function setDownloadLink(settings){
 
     if( settings.PDF && settings.PDF.url ){
-        var link = $('a').attr('href', settings.PDF.url ).html('download..');
+        var link = $('a').attr('href', settings.PDF.url ).attr('download', 'PV_drawing.pdf').html('Download Drawing');
         $('#download').html('').append(link);
     }
 }

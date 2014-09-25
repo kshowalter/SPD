@@ -35,8 +35,6 @@ var $ = require('../lib/k/k_DOM');
 //require("../lib/svgToPdf.js");
 //console.log(svgElementToPdf)
 //
-var lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam in suscipit purus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vivamus nec hendrerit felis. Morbi aliquam facilisis risus eu lacinia. Sed eu leo in turpis fringilla hendrerit. Ut nec accumsan nisl. Suspendisse rhoncus nisl posuere tortor tempus et dapibus elit porta. Cras leo neque, elementum a rhoncus ut, vestibulum non nibh. Phasellus pretium justo turpis. Etiam vulputate, odio vitae tincidunt ultricies, eros odio dapibus nisi, ut tincidunt lacus arcu eu elit.  Aenean velit erat, vehicula eget lacinia ut, dignissim non tellus.  Aliquam nec lacus mi, sed vestibulum nunc. Suspendisse potenti. Curabitur vitae sem turpis.  Vestibulum sed neque eget dolor dapibus porttitor at sit amet sem.  Fusce a turpis lorem. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Mauris at ante tellus.  Vestibulum a metus lectus. Praesent tempor purus a lacus blandit eget gravida ante hendrerit. Cras et eros metus. Sed commodo malesuada eros, vitae interdum augue semper quis. Fusce id magna nunc.  Curabitur sollicitudin placerat semper. Cras et mi neque, a dignissim risus. Nulla venenatis porta lacus, vel rhoncus lectus tempor vitae. Duis sagittis venenatis rutrum. Curabitur tempor massa"; 
-
 
 
 
@@ -70,14 +68,14 @@ var mk_pdf = function(settings, callback){
     var doc = new PDFDocument(doc_options);
     var stream = doc.pipe(blobStream());
 
+    for( var id = 0; id<=90; id++){
+
+    }
     //var doc = new jsPDF('l', 'in', 'letter');
 
 
 
-
-    console.log(doc)
     //doc.rotate(-90, [72, 72]).text('test',72*1,72*1);
-    //doc.text('test',72*2,72*2);
     //doc.text('test',72*3,72*3).rotate(-90, [72*3, 72*3]);
 
     //doc.rotate(20)
@@ -113,11 +111,11 @@ var mk_pdf = function(settings, callback){
 
 
     // Loop through all the drawing contents, call the function below.
-    elements.forEach( function(elem,id) {
-        show_elem_array(elem);
+    elements.forEach( function(elem,i) {
+        show_elem_array(elem, null, i);
     });
 
-    function show_elem_array(elem, offset){
+    function show_elem_array(elem, offset, i){
         if( elem.layer_name !== undefined ){
             var layer_attr = l_attr[elem.layer_name];
             if( layer_attr.stroke !== undefined ) {
@@ -128,6 +126,7 @@ var mk_pdf = function(settings, callback){
             }
         } 
 
+        //console.log(i)
 
         var x,y;
         offset = offset || {x:0,y:0};
@@ -141,16 +140,16 @@ var mk_pdf = function(settings, callback){
             var h = elem.h * scale;
 
             //Draw Rectangle
-            doc.lineWidth(0.005)
-                .strokeColor(layer_attr.stroke)
+            doc.lineWidth(0.5)
+                .strokeColor(color)
                 .rect(x-w/2, y-h/2, w, h, 'D')
                 .stroke()
-
             
         } else if( elem.type === 'line') {
             var px,py,px_last,py_last;
-            if( color !== undefined ) { doc.strokeColor( color[0], color[1], color[2] ); }
-            doc.lineWidth(1);
+            doc.lineWidth(0.05)
+            doc.strokeColor(color);
+            doc.lineCap('round')
             elem.points.forEach( function(point){
                 if( ! isNaN(point[0]) && ! isNaN(point[1]) ){
                     px = (point[0]+offset.x)*scale;
@@ -166,31 +165,34 @@ var mk_pdf = function(settings, callback){
                 }
             });
 
-            //var l = document.createElementNS("http://www.w3.org/2000/svg", 'polyline');
-            //l.setAttribute( 'points', points2.join(' ') );
-            //var attr = l_attr[elem.layer_name];
-            //for( var i2 in attr ){
-            //    l.setAttribute(i2, attr[i2]);
-            //}
-            //svg_elem.appendChild(l);
-            //Adding a Line
+            doc.stroke();
             
         } else if( elem.type === 'text') {
-            x = x * scale;
-            y = y * scale;
+            var textList = elem.strings.slice(0);
+
+            x = Number( (x * scale).toFixed(0) );
+            y = Number( (y * scale).toFixed(0) );
             var font = fonts[elem.font];
 
-            doc.moveTo( x, y );
             doc.fontSize(font['font-size']);
 
-            for( var i2 in elem.strings ){
-                var text = elem.strings[i2];
-                //doc.text(text, x, y+(font['font-size']*1.5*i2), {align: "center"} );
-                doc.text( text );
-                doc.moveDown();
-            }
-            //svg_elem.appendChild(t);
+            if( x>=(settings.pages.PDF.w*0.8) ) x = 200;
+            //if( x>=500 ) x = 200;
+            if( y>=(settings.pages.PDF.h*0.8) ) y = 200;
+            //if( y>=500 ) y = 200;
+            //doc.moveTo( x, y );
+            //console.log(textList);
+            //doc.text( 'test', x,y);
+            doc.text( textList.pop(), x, y);
+            //for( var i2 in textList ){
+            //    var text = textList[i2];
+            //    doc.text( text, x, y);
+            //    doc.moveDown();
+            //}
+            //doc.stroke()
 
+            //console.log( textList.pop(), 72*2+i, 10*i, x, y );
+            //doc.text('test '+i+' b', 72*2+i, 10*i);
 
         } else if( elem.type === 'circ') {
             x = x * scale;
@@ -198,7 +200,9 @@ var mk_pdf = function(settings, callback){
             var d = elem.d * scale;
             doc.lineWidth(0.005);
             doc.strokeColor(0);
+            doc.fillColor(color);
             doc.circle(x, y, d/2, 'D');
+            doc.stroke()
             //var c = document.createElementNS("http://www.w3.org/2000/svg", 'ellipse');
             //c.setAttribute('rx', elem.d/2);
             //c.setAttribute('ry', elem.d/2);
@@ -212,7 +216,7 @@ var mk_pdf = function(settings, callback){
         } else if(elem.type === 'block') {
             // if it is a block, run this function through each element.
             elem.elements.forEach( function(block_elem,id){
-                show_elem_array(block_elem, {x:x, y:y}) 
+                show_elem_array(block_elem, {x:x, y:y} ) 
             });
         }
     }
@@ -242,7 +246,7 @@ var mk_pdf = function(settings, callback){
         //iframe.src = url
         settings.PDF = {};
         settings.PDF.url = url;
-        
+        console.log(url) 
         callback(settings);
     });
 
