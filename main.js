@@ -17,7 +17,7 @@ var loadModules = require('./app/settings_functions').loadModules;
 var loadComponents = require('./app/settings_functions').loadComponents;
 var mk_drawing = require('./app/mk_drawing.js');
 var mk_svg= require('./app/mk_svg.js');
-var mk_pdf = require('./app/mk_pdf.js');
+//var mk_pdf = require('./app/mk_pdf.js');
 var update_system = require('./app/update_system');
 
 var components = settings.components;
@@ -116,13 +116,13 @@ function show_hide_selections(page_sections, active_section_name){
     }
 }
 
-function setDownloadLink(settings){
-
-    if( settings.PDF && settings.PDF.url ){
-        var link = $('a').attr('href', settings.PDF.url ).attr('download', 'PV_drawing.pdf').html('Download Drawing');
-        $('#download').html('').append(link);
-    }
-}
+//function setDownloadLink(settings){
+//
+//    if( settings.PDF && settings.PDF.url ){
+//        var link = $('a').attr('href', settings.PDF.url ).attr('download', 'PV_drawing.pdf').html('Download Drawing');
+//        $('#download').html('').append(link);
+//    }
+//}
 
 function update(){
     console.log('updating');
@@ -153,7 +153,7 @@ function update(){
     $("#drawing").html('').append($(svg));
 
     //var pdf_download = mk_pdf(settings, setDownloadLink);
-    mk_pdf(settings, setDownloadLink);
+    //mk_pdf(settings, setDownloadLink);
     //pdf_download.html("Download PDF");
     //console.log(pdf_download);
     //if( settings.PDF && settings.PDF.url ){
@@ -402,7 +402,7 @@ var page_selector = k$('selector').setOptionsRef( 'config_options.page_options' 
 kelem_setup(page_selector);
 //console.log(page_selector)
 
-k$('span').attr('id', 'download').attr('class', 'float_right').appendTo(drawing);
+//k$('span').attr('id', 'download').attr('class', 'float_right').appendTo(drawing);
 
 var svg_container_object = k$('div').attr('id', 'drawing').attr('class', 'drawing').style('clear', 'both').appendTo(drawing);
 //svg_container_object.style('width', settings.drawing.size.drawing.w+"px" )
