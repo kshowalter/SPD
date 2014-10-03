@@ -7,18 +7,19 @@ body {
     margin: 10px;
 }
 
-#system_container {
+#system_frame {
     float: left;
     margin-right: 25px;
     width: 700px;
 }
 
-#config_container {
+#config_frame {
     height: 100px;
 }
 
-#drawing {
+#drawing_frame {
     float: left;
+    background: WhiteSmoke;
 }
 
 .section_title {
@@ -81,4 +82,11 @@ body {
 .drawing {
     margin: 10px;
     background: white;
+}
+
+
+
+.float_right {
+    float: right;
+    padding: 4px;
 }

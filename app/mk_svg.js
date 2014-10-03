@@ -5,13 +5,12 @@
 
 
 
-var display_svg = function(settings, container){
+var display_svg = function(settings){
     console.log('displaying svg');
     var l_attr = settings.drawing.l_attr;
     var fonts = settings.drawing.fonts;
     var elements = settings.elements;
     //console.log('elements: ', elements);
-    container.innerHTML = '';
     //container.empty()
 
     //var svg_elem = document.getElementById('SvgjsSvg1000')
@@ -19,7 +18,6 @@ var display_svg = function(settings, container){
     svg_elem.setAttribute('id','svg_drawing');
     svg_elem.setAttribute('width', settings.drawing.size.drawing.w);
     svg_elem.setAttribute('height', settings.drawing.size.drawing.h);
-    container.appendChild(svg_elem);
     //var svg = snapsvg(svg_elem).size(size.drawing.w, size.drawing.h);
     //var svg = snapsvg('#svg_drawing');
 
@@ -130,6 +128,7 @@ var display_svg = function(settings, container){
             });
         }
     }
+    return svg_elem;
 };
 
 

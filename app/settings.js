@@ -9,6 +9,11 @@ settings.system = {};
 settings.select_registry = [];
 settings.value_registry = [];
 
+
+
+
+
+
 var system = settings.system;
 system.wire_config_num = 5;
 system.DC = {};
@@ -55,82 +60,10 @@ config_options.inverters = {};
 config_options.page_options = ['Page 1 of 1'];
 status.active_page = config_options.page_options[0];
 
-//config_options.inverters['SMA'] = {};
-//config_options.inverters['SMA']['SI3000'] = {
-//    make:'SMA',
-//    model:'3000',
-//
-//    DC_voltageWindow_low: 150,
-//    DC_voltageWindow_high: 350,
-//    max_power: 3300,
-//
-//    AC_options: ['240','208'],
-//
-//};
-
-//config_options.inverters['SMA']['SI2500'] = {
-//    make:'SMA',
-//    model:'2500',
-//
-//    DC_voltageWindow_low: 150,
-//    DC_voltageWindow_high: 350,
-//    max_power: 2900,
-//
-//    AC_options: ['240','208'],
-//
-//};
-
-
-
-
-
 system.inverter = {};
-
 
 // Drawing specific
 settings.drawing = {};
-
-/*
-var l_attr = settings.drawing.l_attr = {};
-
-l_attr.base = {
-    'fill': 'none',
-    'stroke':'#000000',
-    'stroke-width':'1px',
-    'stroke-linecap':'butt',
-    'stroke-linejoin':'miter',
-    'stroke-opacity':1,
-
-};
-l_attr.block = Object.create(l_attr.base);
-l_attr.frame = Object.create(l_attr.base);
-l_attr.frame.stroke = '#000042';
-l_attr.table = Object.create(l_attr.base);
-l_attr.table.stroke = '#000042';
-
-l_attr.DC_pos = Object.create(l_attr.base);
-l_attr.DC_pos.stroke = '#ff0000';
-l_attr.DC_neg = Object.create(l_attr.base);
-l_attr.DC_neg.stroke = '#000000';
-l_attr.DC_ground = Object.create(l_attr.base);
-l_attr.DC_ground.stroke = '#006600';
-l_attr.module = Object.create(l_attr.base);
-l_attr.box = Object.create(l_attr.base);
-l_attr.text = Object.create(l_attr.base);
-l_attr.text.stroke = '#0000ff';
-l_attr.terminal = Object.create(l_attr.base);
-
-l_attr.AC_ground = Object.create(l_attr.base);
-l_attr.AC_ground.stroke = 'Green';
-l_attr.AC_neutral = Object.create(l_attr.base);
-l_attr.AC_neutral.stroke = 'Gray';
-l_attr.AC_L1 = Object.create(l_attr.base);
-l_attr.AC_L1.stroke = 'Black';
-l_attr.AC_L2 = Object.create(l_attr.base);
-l_attr.AC_L2.stroke = 'Red';
-l_attr.AC_L3 = Object.create(l_attr.base);
-l_attr.AC_L3.stroke = 'Blue';
-*/
 
 ///////////////
 // fonts
@@ -210,10 +143,6 @@ size.terminal_diam = 5;
 size.fuse = {};
 size.fuse.w = 15;
 size.fuse.h = 4;
-
-
-
-
 
 
 // Inverter
@@ -347,6 +276,37 @@ size.general_notes.h = 100;
 loc.general_notes = {};
 loc.general_notes.x = size.general_notes.w/2 + 30;
 loc.general_notes.y = size.general_notes.h/2 + 30;
+
+
+
+
+
+settings.pages = {};
+settings.pages.letter = {
+    units: 'inches',
+    w: 11.0,
+    h: 8.5,
+}
+settings.page = settings.pages.letter;
+
+settings.pages.PDF = {
+    w: settings.page.w * 72,
+    h: settings.page.h * 72,
+}
+
+settings.pages.PDF.scale = {
+    x: settings.pages.PDF.w / settings.drawing.size.drawing.w,
+    y: settings.pages.PDF.h / settings.drawing.size.drawing.h, 
+}
+
+if( settings.pages.PDF.scale.x < settings.pages.PDF.scale.y ) {
+    settings.page.scale = settings.pages.PDF.scale.x;
+} else {
+    settings.page.scale = settings.pages.PDF.scale.y;
+}
+
+
+
 
 
 /////////////////////

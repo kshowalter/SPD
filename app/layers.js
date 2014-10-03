@@ -28,15 +28,15 @@ l_attr.text.stroke = '#0000ff';
 l_attr.terminal = Object.create(l_attr.base);
 
 l_attr.AC_ground = Object.create(l_attr.base);
-l_attr.AC_ground.stroke = 'Green';
+l_attr.AC_ground.stroke = '#009900';
 l_attr.AC_neutral = Object.create(l_attr.base);
-l_attr.AC_neutral.stroke = 'Gray';
+l_attr.AC_neutral.stroke = '#999797';
 l_attr.AC_L1 = Object.create(l_attr.base);
-l_attr.AC_L1.stroke = 'Black';
+l_attr.AC_L1.stroke = '#000000';
 l_attr.AC_L2 = Object.create(l_attr.base);
-l_attr.AC_L2.stroke = 'Red';
+l_attr.AC_L2.stroke = '#FF0000';
 l_attr.AC_L3 = Object.create(l_attr.base);
-l_attr.AC_L3.stroke = 'Blue';
+l_attr.AC_L3.stroke = '#0000FF';
 
 
 module.exports = l_attr;
