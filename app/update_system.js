@@ -10,9 +10,10 @@ var update_system = function(settings) {
     var system = settings.system;
     var loc = settings.drawing.loc;
     var size = settings.drawing.size;
+    var status = settings.status;
 
     //var show_defaults = false;
-    if( settings.status.version_string === 'Dev'){
+    if( status.version_string === 'Dev'){
         //show_defaults = true;
         console.log('Dev mode - defaults on')
 
@@ -22,7 +23,7 @@ var update_system = function(settings) {
         system.inverter.model = system.inverter.model || 'SI3000'; 
         system.AC_type = system.AC_type || '480V Delta';
 
-        if( settings.status.data_loaded ){
+        if( status.data_loaded ){
             system.DC.module.make = system.DC.module.make || Object.keys( settings.config_options.modules )[0];
             if( system.DC.module.make) settings.config_options.moduleModelArray = k.objIdArray(settings.config_options.modules[system.DC.module.make]);
             system.DC.module.model = system.DC.module.model || Object.keys( settings.config_options.modules[system.DC.module.make] )[0];
@@ -41,38 +42,35 @@ var update_system = function(settings) {
         }
     }
 
-    if( settings.status.data_loaded ){
+    if( status.data_loaded ){
 
         //system.DC.string_num = settings.system.string_num; 
         //system.DC.string_modules = settings.system.string_modules;
         //if( settings.config_options.modules !== undefined ){
 
-        var old_active_section = settings.status.active_section;
+        var old_active_section = status.active_section;
 
         // Modules
-        if( settings.status.sections.modules.ready){
-
+        if( status.sections.modules.ready){
             settings.config_options.moduleMakeArray = k.objIdArray(settings.config_options.modules);
             if( system.DC.module.make ) settings.config_options.moduleModelArray = k.objIdArray(settings.config_options.modules[system.DC.module.make]);
             if( system.DC.module.model ) system.DC.module.specs = settings.config_options.modules[system.DC.module.make][system.DC.module.model];
 
-            //if( system.DC.module.make !== '' && system.DC.module.model !== '' ){
             if( system.DC.module.make && system.DC.module.model ){
-                settings.status.sections.modules.set = true;
-                settings.status.sections.array.ready = true;
-                settings.status.active_section = 'array';
+                status.sections.modules.set = true;
+                status.sections.array.ready = true;
+                status.active_section = 'array';
             };
         }
 
         // Array
-        if( settings.status.sections.array.ready){
-            
+        if( status.sections.array.ready){
             if( system.DC.string_num && system.DC.string_modules ){
-                settings.status.sections.array.set = true;
+                status.sections.array.set = true;
             };
         }
 
-        if( settings.status.sections.array.set){
+        if( status.sections.array.set){
             //system.module = settings.config_options.modules[settings.misc.module];
             if( system.DC.module.specs ){
                 system.DC.array = {};
@@ -86,13 +84,13 @@ var update_system = function(settings) {
 
 
             if( system.DC.array !== undefined ){
-                settings.status.sections.DC.ready = true;
-                settings.status.active_section = 'DC';
+                status.sections.DC.ready = true;
+                status.active_section = 'DC';
             };
         }
 
         // DC
-        if( settings.status.sections.DC.ready ){
+        if( status.sections.DC.ready ){
 
             config_options.DC_homerun_lengths = config_options.DC_homerun_lengths || [25,50,75,100];
             config_options.DC_homerun_AWG_options = config_options.DC_homerun_AWG_options || k.objIdArray( config_options.NEC_tables["Ch 9 Table 8 Conductor Properties"] );
@@ -100,19 +98,19 @@ var update_system = function(settings) {
             //if( system.DC.homerun.length !== '' && system.DC.homerun.AWG !== '' ){
             if( system.DC.homerun.length && system.DC.homerun.AWG ){
                 //console.log( '-homerun. length: ', system.DC.homerun.length, ' AWG: ', system.DC.homerun.AWG )
-                settings.status.sections.DC.set = true;
+                status.sections.DC.set = true;
             };
         }
 
-        if( settings.status.sections.DC.set ){
+        if( status.sections.DC.set ){
             
             system.DC.homerun.resistance = config_options.NEC_tables["Ch 9 Table 8 Conductor Properties"][system.DC.homerun.AWG];
-            settings.status.sections.inverter.ready = true;
-            settings.status.active_section = 'inverter';
+            status.sections.inverter.ready = true;
+            status.active_section = 'inverter';
         }
         
         // Inverter
-        if( settings.status.sections.inverter.ready){
+        if( status.sections.inverter.ready){
 
             settings.config_options.inverterMakeArray = k.objIdArray(settings.config_options.inverters);
             if( system.inverter.make ) settings.config_options.inverterModelArray = k.objIdArray(settings.config_options.inverters[system.inverter.make]);
@@ -120,22 +118,22 @@ var update_system = function(settings) {
 
 
             if( system.inverter.specs !== undefined ){
-                settings.status.sections.inverter.set = true;
+                status.sections.inverter.set = true;
             };
         }
-        if( settings.status.sections.inverter.set ){
+        if( status.sections.inverter.set ){
 
 
 
             if( true ){
-                settings.status.sections.AC.ready = true;
-                settings.status.active_section = 'AC';
+                status.sections.AC.ready = true;
+                status.active_section = 'AC';
             };
         }
 
 
         // AC
-        if( settings.status.sections.AC.ready){
+        if( status.sections.AC.ready){
 
             if( system.AC_loadcenter_type ) {
 
@@ -154,13 +152,13 @@ var update_system = function(settings) {
 
 
             if( system.AC_loadcenter_type && system.AC_type ){
-                settings.status.sections.AC.set = true;
+                status.sections.AC.set = true;
             };
         }
 
 
-        if( settings.status.sections.AC.set){
-                settings.status.active_section = old_active_section;
+        if( status.sections.AC.set){
+                status.active_section = old_active_section;
         }
 
 

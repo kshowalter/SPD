@@ -5,6 +5,7 @@ var version_string = "Dev";
 var _ = require('underscore');
 var moment = require('moment');
 var $ = require('jquery');
+var yaml = require('js-yaml');
 
 var k = require('./lib/k/k.js');
 var k_data = require('./lib/k/k_data.js');
@@ -178,6 +179,7 @@ k.AJAX( 'data/inverters.csv', ready, {type:'inverters'});
 
 
 
+
 var ready_count = 0;
 function ready(input, config){
 
@@ -201,10 +203,12 @@ function ready(input, config){
     }
 }
 
+console.log("starting yaml import");
+k.AJAX( 'data/settings.yml', importYAML, {type:'settings'});
 
-
-
-
+function importYAML(input){
+   console.log( yaml.safeLoad(input) ); 
+}
 
 var page_sections_config = {
     modules: [

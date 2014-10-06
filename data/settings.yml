@@ -1,0 +1,13 @@
+module:
+    make: sdf
+    model: e200
+    pmax: 200
+      
+array:
+    num_module:
+    num_strings:
+    home_run:
+inverter:
+    make: SMA
+    model: SB3000
+    Vrange: [124, 250]
