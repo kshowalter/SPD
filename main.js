@@ -11,8 +11,7 @@ var k = require('./lib/k/k.js');
 var k_data = require('./lib/k/k_data.js');
 var k$ = require('./lib/k/k_DOM');
 
-
-var settings = require('./app/settings.js');
+var misc = require('./app/misc');
 var loadTables = require('./app/settings_functions').loadTables;
 var loadModules = require('./app/settings_functions').loadModules;
 var loadComponents = require('./app/settings_functions').loadComponents;
@@ -21,10 +20,17 @@ var mk_svg= require('./app/mk_svg.js');
 //var mk_pdf = require('./app/mk_pdf.js');
 var update_system = require('./app/update_system');
 
-var components = settings.components;
-var system = settings.system;
+var fs = require('fs');
+var settingsYAML = fs.readFileSync('./data/settings.yml');
+var settings = yaml.safeLoad(settingsYAML);
+console.log(settings);
+var calculateSettings = require('./app/calculateSettings.js');
+settings = calculateSettings(settings);
 
 settings.status.version_string = version_string;
+
+var components = settings.components;
+var system = settings.system;
 
 /*
 function lookupLocation(position){
@@ -166,7 +172,10 @@ function update(){
     show_hide_params(page_sections_params);
     show_hide_selections(page_sections_config, settings.status.active_section)
 
-    console.log('settings', settings)
+    console.log('settings', settings);
+    
+    console.log( misc.objectDefined(settings.status) );
+
 }
 
 
@@ -195,7 +204,7 @@ function ready(input, config){
         settings.config_options.inverters = loadComponents(input);
         ready_count++;
     }
-
+    
     if( ready_count === 3 ){
         console.log('ready');
         settings.status.data_loaded = true;
@@ -203,12 +212,15 @@ function ready(input, config){
     }
 }
 
-console.log("starting yaml import");
-k.AJAX( 'data/settings.yml', importYAML, {type:'settings'});
+
 
 function importYAML(input){
    console.log( yaml.safeLoad(input) ); 
 }
+
+console.log("starting yaml import");
+//k.AJAX( 'data/settings.yml', importYAML, {type:'settings'});
+
 
 var page_sections_config = {
     modules: [

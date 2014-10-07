@@ -1,1 +1,1 @@
-browserify main.js -o index.js
+browserify -t brfs main.js -o index.js

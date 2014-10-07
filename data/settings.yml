@@ -11,3 +11,103 @@ inverter:
     make: SMA
     model: SB3000
     Vrange: [124, 250]
+
+select_registry: []
+value_registry:  []
+
+system:
+  wire_config_num: 5
+  DC:
+    module:
+    homerun:
+  inverter:
+
+status:
+  sections:
+    modules:
+    array:
+    DC:
+    inverter:
+    AC:
+    active_section: 'modules'
+
+config_options:
+  string_num_options: [1,2,3,4,5,6]
+  string_modules_options: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+  AC_loadcenter_types:
+    240V: ['240V', '120V']
+    208/120V: ['208V', '120V']
+    480/277V: ['480V Wye', '480V Delta', '277V']
+  AC_types:
+    120V: ['ground', 'neutral', 'L1' ]
+    240V: ['ground', 'neutral', 'L1', 'L2' ]
+    208V: ['ground', 'neutral', 'L1', 'L2' ]
+    277V: ['ground', 'neutral', 'L1' ]
+    480V Wye: ['ground', 'neutral', 'L1', 'L2', 'L3' ]
+    480V Delta: ['ground', 'L1', 'L2', 'L3' ]
+
+  inverters:
+  page_options: ['Page 1 of 1']
+
+drawing:
+  fonts:
+    signs:
+      font-family: monospace
+      font-size: 5
+      text-anchor: middle
+    label:
+      font-family: monospace
+      font-size: 12
+      text-anchor: middle
+    title1:
+      font-family: monospace
+      font-size: 14
+      text-anchor: left
+    title2:
+      font-family: monospace
+      font-size: 12
+      text-anchor: left
+    page:
+      font-family: monospace
+      font-size: 20
+      text-anchor: left
+    table:
+      font-family: monospace
+      font-size: 6
+      text-anchor: middle
+  size:
+    w: 1000
+    h: 780
+    frame_padding: 5
+    titlebox: 50
+
+size:
+  module:
+    frame:
+      w: 10
+      h: 30
+
+  wire_offset:
+    base: 7
+    gap: size.module.w
+    min: 7
+
+  string: {}
+
+  terminal_diam: 5
+
+  fuse:
+    w: 15
+    h: 4
+
+  inverter:
+    w: 250
+    h: 150
+    text_gap: 15
+    symbol_w: 50
+    symbol_h: 25
+
+loc:
+  inverter:
+    bottom_right:
+

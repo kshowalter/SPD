@@ -1,6 +1,7 @@
 "use strict";
 
 var k = require('../lib/k/k.js');
+var misc = require('./misc');
 //var mk_drawing = require('./mk_drawing');
 //var display_svg = require('./display_svg');
 
@@ -52,6 +53,10 @@ var update_system = function(settings) {
 
         // Modules
         if( status.sections.modules.ready){
+            
+
+            misc.objectDefined(system.DC.module);
+
             settings.config_options.moduleMakeArray = k.objIdArray(settings.config_options.modules);
             if( system.DC.module.make ) settings.config_options.moduleModelArray = k.objIdArray(settings.config_options.modules[system.DC.module.make]);
             if( system.DC.module.model ) system.DC.module.specs = settings.config_options.modules[system.DC.module.make][system.DC.module.model];
