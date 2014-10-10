@@ -11,5 +11,17 @@ misc.objectDefined = function(object){
     return output;
 }
 
+misc.nullToObject = function nullToObject(object){
+    for( var key in object ){
+        if( object.hasOwnProperty(key) ){
+	    if( object[key] === null ){
+		object[key] = {};
+	    } else if( typeof object[key] === 'object' ) {
+		object[key] = nullToObject(object[key]);
+	    }
+	}
+    }
+    return object;
+}
 
 module.exports = misc;

@@ -141,8 +141,8 @@ function calculateSettings(settings){
     size.wire_table.row_h = 10;
     size.wire_table.h = (system.wire_config_num+3) * size.wire_table.row_h;
     loc.wire_table = {
-        x: size.drawing.w - size.drawing.titlebox - size.drawing.frame_padding*3 - size.wire_table.w/2 - 25,
-        y: size.drawing.frame_padding*3 + size.wire_table.h/2,
+        x: drawing.size.w - drawing.size.titlebox - drawing.size.frame_padding*3 - size.wire_table.w/2 - 25,
+        y: drawing.size.frame_padding*3 + size.wire_table.h/2,
     };
     loc.wire_table.top = loc.wire_table.y - size.wire_table.h/2;
     loc.wire_table.bottom = loc.wire_table.y + size.wire_table.h/2;
@@ -153,8 +153,8 @@ function calculateSettings(settings){
     size.volt_drop_table.w = 150;
     size.volt_drop_table.h = 100;
     loc.volt_drop_table = {};
-    loc.volt_drop_table.x = size.drawing.w - size.volt_drop_table.w/2 - 90;
-    loc.volt_drop_table.y = size.drawing.h - size.volt_drop_table.h/2 - 30;
+    loc.volt_drop_table.x = drawing.size.w - size.volt_drop_table.w/2 - 90;
+    loc.volt_drop_table.y = drawing.size.h - size.volt_drop_table.h/2 - 30;
     
     
     // voltage drop table
@@ -183,8 +183,8 @@ function calculateSettings(settings){
     }
     
     settings.pages.PDF.scale = {
-        x: settings.pages.PDF.w / settings.drawing.size.drawing.w,
-        y: settings.pages.PDF.h / settings.drawing.size.drawing.h, 
+        x: settings.pages.PDF.w / settings.drawing.size.w,
+        y: settings.pages.PDF.h / settings.drawing.size.h, 
     }
     
     if( settings.pages.PDF.scale.x < settings.pages.PDF.scale.y ) {

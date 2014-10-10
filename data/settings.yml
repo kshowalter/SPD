@@ -1,16 +1,16 @@
 module:
-    make: sdf
-    model: e200
-    pmax: 200
+  make: 
+  model:
+  pmax:
       
 array:
-    num_module:
-    num_strings:
-    home_run:
+  num_module:
+  num_strings:
+  home_run:
 inverter:
-    make: SMA
-    model: SB3000
-    Vrange: [124, 250]
+  make: SMA
+  model: SB3000
+  Vrange: [124, 250]
 
 select_registry: []
 value_registry:  []
@@ -19,8 +19,8 @@ system:
   wire_config_num: 5
   DC:
     module:
-    homerun:
-  inverter:
+    homerun: 
+  inverter: 
 
 status:
   sections:
@@ -92,7 +92,7 @@ size:
     gap: size.module.w
     min: 7
 
-  string: {}
+  string:
 
   terminal_diam: 5
 

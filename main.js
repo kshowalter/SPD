@@ -23,6 +23,7 @@ var update_system = require('./app/update_system');
 var fs = require('fs');
 var settingsYAML = fs.readFileSync('./data/settings.yml');
 var settings = yaml.safeLoad(settingsYAML);
+settings = misc.nullToObject(settings);
 console.log(settings);
 var calculateSettings = require('./app/calculateSettings.js');
 settings = calculateSettings(settings);
