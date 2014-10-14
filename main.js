@@ -25,8 +25,12 @@ var settingsYAML = fs.readFileSync('./data/settings.yml');
 var settings = yaml.safeLoad(settingsYAML);
 settings = misc.nullToObject(settings);
 console.log(settings);
-var calculateSettings = require('./app/calculateSettings.js');
-settings = calculateSettings(settings);
+var settingsCalculated = require('./app/settingsCalculated.js');
+settings = settingsCalculated(settings);
+var settingsLayers = require('./app/settingsLayers.js');
+settings.layers = settingsLayers;
+var settingsDrawing = require('./app/settingsDrawing.js');
+settings = settingsDrawing(settings);
 
 settings.status.version_string = version_string;
 
@@ -43,7 +47,7 @@ function showLocation(location_json){
     location.results[0].address_components.forEach( function(component){
         if( component.types[0] === "locality" ) {
             system.city = component.long_name ;
-            //console.log('city ', system.city) 
+            //console.log('city ', system.city)
         } else if( component.types[0] === "administrative_area_level_2" ){
             system.county = component.long_name ;
             //console.log('county ', system.county)
@@ -57,7 +61,7 @@ function kelem_setup(kelem){
         kelem.setRefObj(settings);
         kelem.setUpdate(update);
         settings.select_registry.push(kelem);
-        kelem.update(); 
+        kelem.update();
     } else if( kelem.type === 'value' ){
         kelem.setRefObj(settings);
         //kelem.setUpdate(update_system);
@@ -141,13 +145,13 @@ function update(){
 
     settings.select_registry.forEach(function(item){
         //console.log(item)
-        item.update(); 
+        item.update();
     });
 
     //update_system(settings);
 
     settings.value_registry.forEach(function(item){
-        item.update(); 
+        item.update();
     });
 
     // Make drawing
@@ -174,7 +178,7 @@ function update(){
     show_hide_selections(page_sections_config, settings.status.active_section)
 
     console.log('settings', settings);
-    
+
     console.log( misc.objectDefined(settings.status) );
 
 }
@@ -205,7 +209,7 @@ function ready(input, config){
         settings.config_options.inverters = loadComponents(input);
         ready_count++;
     }
-    
+
     if( ready_count === 3 ){
         console.log('ready');
         settings.status.data_loaded = true;
@@ -216,7 +220,7 @@ function ready(input, config){
 
 
 function importYAML(input){
-   console.log( yaml.safeLoad(input) ); 
+   console.log( yaml.safeLoad(input) );
 }
 
 console.log("starting yaml import");
@@ -228,8 +232,8 @@ var page_sections_config = {
         k$('span').html('Module').attr('class', 'category_title'),
         k$('span').html(' | '),
         k$('span').html('Module make: '),
-        //k$('selector') .setOptionsRef( 'components.moduleMakeArray' ) .setRef('system.pv_make'),
-        k$('selector') .setOptionsRef( 'config_options.moduleMakeArray' ) .setRef('system.DC.module.make'),
+        //k$('selector') .setOptionsRef( 'components.moduleMakeArray' ).setRef('system.pv_make'),
+        k$('selector') .setOptionsRef( 'config_options.moduleMakeArray' ).setRef('system.DC.module.make'),
         k$('span').html(' | '),
         k$('span').html('Module model: '),
         //k$('selector').setOptionsRef( 'components.moduleModelArray' ).setRef('system.pv_model'),
@@ -283,7 +287,7 @@ var page_sections_config = {
         k$('br'),
 
     ],
-    
+
 }
 var page_sections_params = {
     modules_params: [
