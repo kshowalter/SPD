@@ -5,7 +5,7 @@ var k = require('../lib/k/k.js');
 //var l_attr = settings.drawing.l_attr;
 var _ = require('underscore');
 // setup drawing containers
-var l_attr = require('./layers');
+var l_attr = require('./settingsLayers');
 
 var elements = [];
 
@@ -42,7 +42,7 @@ var block_active = false;
 var layer_active = false;
 
 var layer = function(name){ // set current layer
-    if( typeof name === 'undefined' ){ // if no layer name given, reset to default 
+    if( typeof name === 'undefined' ){ // if no layer name given, reset to default
         layer_active = false;
     } else if ( ! (name in l_attr) ) {
         console.log('Error: unknown layer, using base');
@@ -100,11 +100,11 @@ var block_end = function() {
 
 
 
-// clear drawing 
+// clear drawing
 var clear_drawing = function() {
     for( var id in blocks ){
         if( blocks.hasOwnProperty(id)){
-            delete blocks[id]; 
+            delete blocks[id];
         }
     }
     elements.length = 0;
@@ -145,10 +145,10 @@ SvgElem.rotate = function(deg){
 
 var add = function(type, points, layer_name) {
 
-    if( typeof layer_name === 'undefined' ) { layer_name = layer_active; } 
-    if( ! (layer_name in l_attr) ) { 
+    if( typeof layer_name === 'undefined' ) { layer_name = layer_active; }
+    if( ! (layer_name in l_attr) ) {
         console.log('Error: Layer name not found, using base');
-        layer_name = 'base'; 
+        layer_name = 'base';
     }
 
     if( typeof points == 'string') {
@@ -167,15 +167,15 @@ var add = function(type, points, layer_name) {
     if( type === 'line' ) {
         elem.points = points;
     } else if( typeof points[0].x === 'undefined') {
-        elem.x = points[0][0]; 
-        elem.y = points[0][1]; 
+        elem.x = points[0][0];
+        elem.y = points[0][1];
     } else {
         elem.x = points[0].x;
-        elem.y = points[0].y; 
+        elem.y = points[0].y;
     }
 
-    
-    if(block_active) { 
+
+    if(block_active) {
         blocks[block_active].add(elem);
     } else {
         elements.push(elem);
@@ -240,7 +240,7 @@ var block = function(name) {// set current block
     blk.x = x;
     blk.y = y;
 
-    if(block_active){ 
+    if(block_active){
         blocks[block_active].add(blk);
     } else {
         elements.push(blk);
@@ -327,9 +327,9 @@ var mk_drawing = function(settings){
     x = 0;
     y = 0;
 
-    y += size.module.lead; 
+    y += size.module.lead;
 
-    //TODO: add loop to jump over negative return wires 
+    //TODO: add loop to jump over negative return wires
     layer('DC_ground');
     line([
         [x-size.module.frame.w*3/4, y+size.module.frame.h/2],
@@ -424,13 +424,13 @@ var mk_drawing = function(settings){
 
     w = size.drawing.w;
     h = size.drawing.h;
-    var padding = size.drawing.frame_padding; 
+    var padding = size.drawing.frame_padding;
 
     layer('frame');
 
     //border
     rect( [w/2 , h/2], [w - padding*2, h - padding*2 ] );
-    
+
     x = w - padding * 3;
     y = padding * 3;
 
@@ -439,12 +439,12 @@ var mk_drawing = function(settings){
 
     // box top-right
     rect( [x-w/2, y+h/2], [w,h] );
-    
-    y += h + padding; 
+
+    y += h + padding;
 
     w = size.drawing.titlebox;
     h = size.drawing.h - padding*8 - size.drawing.titlebox*2.5;
-    
+
     //title box
     rect( [x-w/2, y+h/2], [w,h] );
 
@@ -457,9 +457,9 @@ var mk_drawing = function(settings){
 
     // box bottom-right
     h = size.drawing.titlebox * 1.5;
-    y = title.bottom + padding; 
+    y = title.bottom + padding;
     rect( [x-w/2, y+h/2], [w,h] );
-    
+
     var page = {};
     page.right = title.right;
     page.left = title.left;
@@ -471,18 +471,18 @@ var mk_drawing = function(settings){
     y = title.bottom - padding;
 
     x += 10;
-    text([x,y], 
+    text([x,y],
          [ system.inverter.make + " " + system.inverter.model + " Inverter System" ],
         'title1', 'text').rotate(-90);
 
     x += 14;
     if( typeof system.DC.module.specs !== 'undefined' ){
         text([x,y], [
-            system.DC.module.specs.Make + " " + system.DC.module.specs.Model + 
+            system.DC.module.specs.Make + " " + system.DC.module.specs.Model +
                 " (" + system.DC.string_num  + " strings of " + system.DC.string_modules + " modules )"
         ], 'title2', 'text').rotate(-90);
     }
-        
+
     x = page.left + padding;
     y = page.top + padding;
     y += size.drawing.titlebox * 1.5 * 3/4;
@@ -504,7 +504,7 @@ var mk_drawing = function(settings){
         for( var i in _.range(system.DC.string_num)) {
             //var offset = i * size.wire_offset.base
             var offset_wire = size.wire_offset.min + ( size.wire_offset.base * i );
-            
+
             block('string', [x,y]);
             // positive home run
             layer('DC_pos');
@@ -533,8 +533,8 @@ var mk_drawing = function(settings){
     //        [ (loc.array.right+loc.array.left)/2, (loc.array.lower+loc.array.upper)/2 ],
     //        [ loc.array.right-loc.array.left, loc.array.lower-loc.array.upper ],
     //        'DC_pos');
-    //    
-        
+    //
+
         layer('DC_ground');
         line([
             //[ loc.array.left , loc.array.lower + size.wire_offset.ground ],
@@ -546,7 +546,7 @@ var mk_drawing = function(settings){
 
         layer();
 
-        
+
     }
 
 ///////////////////////////////
@@ -673,7 +673,7 @@ var mk_drawing = function(settings){
                 [ x+offset_max, y-size.terminal_diam-size.terminal_diam*3],
             ], 'DC_neg');
         }
-        
+
         // Inverter conection
         //line([
         //    [ x-offset_min, y-size.terminal_diam-size.terminal_diam*3],
@@ -714,7 +714,7 @@ var mk_drawing = function(settings){
             x: x+offset,
             y: loc.inverter.y+size.inverter.h/2-size.terminal_diam,
         });
-    
+
     }
 
 
@@ -724,7 +724,7 @@ var mk_drawing = function(settings){
 //#inverter
 
     if( settings.status.sections.inverter.set){
-    
+
         x = loc.inverter.x;
         y = loc.inverter.y;
 
@@ -748,7 +748,7 @@ var mk_drawing = function(settings){
 
         x = loc.inverter.x;
         y = loc.inverter.y;
-        
+
         var w = size.inverter.symbol_w;
         var h = size.inverter.symbol_h;
 
@@ -766,55 +766,55 @@ var mk_drawing = function(settings){
         line([
             [x-w/2, y+h/2],
             [x+w/2, y-h/2],
-        
+
         ]);
         // DC
         line([
-            [x - w/2 + space, 
+            [x - w/2 + space,
                 y - h/2 + space],
-            [x - w/2 + space*6, 
+            [x - w/2 + space*6,
                 y - h/2 + space],
         ]);
         line([
-            [x - w/2 + space, 
+            [x - w/2 + space,
                 y - h/2 + space*2],
-            [x - w/2 + space*2, 
-                y - h/2 + space*2],
-        ]);
-        line([
-            [x - w/2 + space*3, 
-                y - h/2 + space*2],
-            [x - w/2 + space*4, 
+            [x - w/2 + space*2,
                 y - h/2 + space*2],
         ]);
         line([
-            [x - w/2 + space*5, 
+            [x - w/2 + space*3,
                 y - h/2 + space*2],
-            [x - w/2 + space*6, 
+            [x - w/2 + space*4,
+                y - h/2 + space*2],
+        ]);
+        line([
+            [x - w/2 + space*5,
+                y - h/2 + space*2],
+            [x - w/2 + space*6,
                 y - h/2 + space*2],
         ]);
 
         // AC
         line([
-            [x + w/2 - space, 
+            [x + w/2 - space,
                 y + h/2 - space*1.5],
-            [x + w/2 - space*2, 
-                y + h/2 - space*1.5],
-        ]);
-        line([
-            [x + w/2 - space*3, 
-                y + h/2 - space*1.5],
-            [x + w/2 - space*4, 
+            [x + w/2 - space*2,
                 y + h/2 - space*1.5],
         ]);
         line([
-            [x + w/2 - space*5, 
+            [x + w/2 - space*3,
                 y + h/2 - space*1.5],
-            [x + w/2 - space*6, 
+            [x + w/2 - space*4,
+                y + h/2 - space*1.5],
+        ]);
+        line([
+            [x + w/2 - space*5,
+                y + h/2 - space*1.5],
+            [x + w/2 - space*6,
                 y + h/2 - space*1.5],
         ]);
         layer();
-            
+
 
 
 
@@ -880,7 +880,7 @@ var mk_drawing = function(settings){
         }
 
         var s, l;
-        
+
         l = loc.AC_loadcenter.neutralbar;
         s = size.AC_loadcenter.neutralbar;
         rect([l.x,l.y], [s.w,s.h], 'AC_neutral' );
@@ -900,7 +900,7 @@ var mk_drawing = function(settings){
         x -= size.terminal_diam * (system.AC_conductors.length+1);
         y -= size.terminal_diam;
 
-        var conduit_y = loc.AC_conduit.y;    
+        var conduit_y = loc.AC_conduit.y;
         padding = size.terminal_diam;
         //var AC_layer_names = ['AC_ground', 'AC_neutral', 'AC_L1', 'AC_L2', 'AC_L2'];
 
@@ -943,12 +943,12 @@ var mk_drawing = function(settings){
                 [ x+padding*3*2, y ],
                 [ x+padding*3*2, conduit_y + breaker_spacing*1 ],
                 [ loc.AC_loadcenter.neutralbar.x, conduit_y + breaker_spacing*1 ],
-                [ loc.AC_loadcenter.neutralbar.x, 
+                [ loc.AC_loadcenter.neutralbar.x,
                     loc.AC_loadcenter.neutralbar.y-size.AC_loadcenter.neutralbar.h/2 ],
             ]);
         }
-            
-        
+
+
 
         for( var i=1; i <= 3; i++ ) {
             if( system.AC_conductors.indexOf('L'+i)+1 ) {
@@ -1004,7 +1004,7 @@ var mk_drawing = function(settings){
     ]);
 
     for( var r=2; r<system.wire_config_num+3; r++ ) {
-    
+
         line([
             [x-w/2 , y-h/2+(r*row_h)],
             [x+w/2 , y-h/2+(r*row_h)],
@@ -1058,7 +1058,7 @@ var mk_drawing = function(settings){
 
     layer('table');
     rect( [x,y], [w,h] );
-    
+
     y -= h/2;
     y += 10
 
@@ -1073,7 +1073,7 @@ var mk_drawing = function(settings){
 
     layer('table');
     rect( [x,y], [w,h] );
-    
+
     y -= h/2;
     y += 10
 

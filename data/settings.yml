@@ -1,21 +1,3 @@
-input:
-  module:
-    make: 
-    model:
-  array:
-    num_module:
-    num_strings:
-  DC:
-    home_run_length:
-  inverter:
-    make: SMA
-    model: SB3000
-    Vrange: [124, 250]
-  AC:
-    type:
-    loadcenter:
-    distance_to_loadcenter:
-    
 input_options:
   module:
     make: 

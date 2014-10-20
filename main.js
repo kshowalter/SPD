@@ -24,11 +24,11 @@ var fs = require('fs');
 var settingsYAML = fs.readFileSync('./data/settings.yml');
 var settings = yaml.safeLoad(settingsYAML);
 settings = misc.nullToObject(settings);
+settings.input = misc.blankCopy(settings.input_options);
 console.log(settings);
 var settingsCalculated = require('./app/settingsCalculated.js');
 settings = settingsCalculated(settings);
-var settingsLayers = require('./app/settingsLayers.js');
-settings.layers = settingsLayers;
+settings.layers = require('./app/settingsLayers.js');
 var settingsDrawing = require('./app/settingsDrawing.js');
 settings = settingsDrawing(settings);
 
