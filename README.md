@@ -1,10 +1,14 @@
-#PV system drawing automatic generation
+# PV system drawing automatic generation
 
-##Goal
+## Goal
 
 To generate a selection of FSEC pre-approved PV system drawings that will cover a majority of Florida installations.
 
-##Status
+## Links
+* [kshowalter/pv_draw](http://fsec.ucf.edu/~kshowalter/pv_draw)
+* [kshowalter/pv_draw_dev](http://fsec.ucf.edu/~kshowalter/pv_draw_dev)
+
+## Status
 A basic drawing is generated, and some aspects of the system can be configured.
 
 ##Current focus
