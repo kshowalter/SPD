@@ -5,24 +5,20 @@ Updated: 2014-10-23
 To generate a selection of FSEC pre-approved PV system drawings that will cover a majority of Florida installations.
 
 ## Links
+These are temporary.
 * [kshowalter/pv_draw](http://fsec.ucf.edu/~kshowalter/pv_draw)
 * [kshowalter/pv_draw_dev](http://fsec.ucf.edu/~kshowalter/pv_draw_dev)
 
 ## The process
-* A user visits the "plans machine" app on the FSEC website
-* The plans machine collects input from the user/customer/installer, calculates system specs., and displays a sample drawing
-* Once the system is configured, the configuration code is sent to the server
-* The user pays for the permit package
-* The user receives a private purchase code, and a public confirmation code
-    * The private purchase code is used to download the permit package
-    * The public confirmation code is used to verify that the permit package is issued by FSEC
+* A user visits the "plans machine" application on the FSEC website
+* The plans machine:
+    * Collects input from the user ( a customer, usually an installer)
+    * Calculates system specifications
+    * Displays a sample drawing
+* Once the system is configured, the configuration is sent to the server
+* The server must verify the configuration, and repeat the drawing generation
+* The user pays for the permit package, and receives the PDF in a secure manor
 * The user sends the permit package to the AHJ
-
-## Browser application functions
-* Allows user to select system components and specifications (ex: number of modules, wire length)
-* Calculates the rest of the system specifications
-* Displays a sample of the drawing
-* Sents the specified configuration to the server
 
 ## Server functions
 
@@ -32,8 +28,8 @@ To generate a selection of FSEC pre-approved PV system drawings that will cover 
     * Modules
     * Inverters
 * Provides interface to allow FSEC employees to keep database updated.
-* Recieves system configuration from server
-* Vefies the congiguration as valid
+* Receives system configuration from server
+* Verifies the configuration as valid
 * Generates a PDF that is sent back to the user via the web app.
 
 ### Longterm
@@ -43,28 +39,29 @@ The longterm plans are to add:
 * Login system for customers (installers)
 * Login system for component manufacturers to maintain the component database
 
-
 ## Settings
-Many of the settings for the application are stored in JSON formated files.
+Many of the settings for the application will be stored in JSON formated files.
 These are what is commonly called configuration files. The settings define what input is requested from the user, and hopefully most of the calculations for the PV system. Some aspects of the drawing may be specified in the settings files.
 
-The JSON format is not unreasonable for a non-programer to edit in a text editor, and can still be imported directly into the application.
-A graphical interface to edit and download the latest version of the setting will be provided.
+The JSON format is not unreasonable for a non-programer to edit in a text editor, but a graphical interface to edit and download the latest version of the setting will be provided. The advantage over other formats is that JSON can be imported directly into the application.
 Examples are shown below.
 
+![JSON sample](doc/img/JSON_sample.png)
+
+*Figure 1: JSON sample*
+
 ![JSON editor](doc/img/JSON_GUI.png)
-JSON editor
 
-![JSON sample.](doc/img/JSON_sample.png)
-JSON sample
-
+*Figure 2: JSON editor*
 
 There are other format options for configuration files that might be easier to edit, but would would comprimise the deepth of settings that could be easily specified.
 
 ## Development Phases
 
 ### Feature phase
-Maintain a list of features, issue fixes, and improvements that will be added to the program up to the end of the phase. Features that do not make it in by the end of the phase, are put aside for future development.
+The core engine of the application will be developed.
+Features will be added to the application up to the end of the phase.
+Features that do not make it in by the end of the phase, are put aside for future development.
 
 ### Cleanup phase
 Continue to fix issues, improve existing features, and prepare for release.
