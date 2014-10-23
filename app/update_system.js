@@ -1,10 +1,9 @@
-"use strict";
+'use strict';
 
 var k = require('../lib/k/k.js');
 var misc = require('./misc');
 //var mk_drawing = require('./mk_drawing');
 //var display_svg = require('./display_svg');
-
 
 var objectDefined = misc.objectDefined;
 
@@ -45,7 +44,7 @@ var update_system = function(settings) {
             system.DC.module.model = system.DC.module.model || Object.keys( settings.config_options.modules[system.DC.module.make] )[0];
 
 
-            config_options.DC_homerun_AWG_options = k.objIdArray( config_options.NEC_tables["Ch 9 Table 8 Conductor Properties"] );
+            config_options.DC_homerun_AWG_options = k.objIdArray( config_options.NEC_tables['Ch 9 Table 8 Conductor Properties'] );
             system.DC.homerun.AWG = system.DC.homerun.AWG || config_options.DC_homerun_AWG_options[config_options.DC_homerun_AWG_options.length-1];
 
             settings.config_options.inverterMakeArray = k.objIdArray(settings.config_options.inverters);
@@ -93,7 +92,7 @@ var update_system = function(settings) {
         // DC
         if( objectDefined(input.DC) ) {
 
-            system.DC.homerun.resistance = config_options.NEC_tables["Ch 9 Table 8 Conductor Properties"][system.DC.homerun.AWG];
+            system.DC.homerun.resistance = config_options.NEC_tables['Ch 9 Table 8 Conductor Properties'][system.DC.homerun.AWG];
             status.sections.inverter.ready = true;
             status.active_section = 'inverter';
         }

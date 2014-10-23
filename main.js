@@ -70,6 +70,22 @@ function kelem_setup(kelem){
     return kelem;
 }
 
+/*
+function add_sections(sections, parent_container, display_type){
+    display_type = display_type || 'none';
+    for( section in sections ){
+        var selection_container = k$('div').attr('class', 'section').appendTo(parent_container);
+        selection_container.attr('id', section );
+        //selection_container.elem.style.width = settings.drawing.size.drawing.w.toString() + 'px';
+        selection_container.elem.style.display = display_type;
+        sections[section].forEach( function(kelem){
+            kelem.appendTo(selection_container);
+            kelem_setup(kelem);
+        });
+    }
+}
+*/
+
 function add_sections(sections, parent_container, display_type){
     display_type = display_type || 'none';
     for( section in sections ){

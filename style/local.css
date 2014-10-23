@@ -71,9 +71,9 @@ body {
 
 .corner_title {
     float: left;
-	background: WhiteSmoke ;
-    padding: 0px 2px 2px 0px;  
-    margin: 0px 4px 4px 0px;  
+    background: WhiteSmoke;
+    padding: 0px 2px 2px 0px;
+    margin: 0px 4px 4px 0px;
     border-bottom-width: 1px;
     border-bottom-style: solid;
     border-bottom-color: grey;
@@ -98,4 +98,8 @@ body {
 .float_right {
     float: right;
     padding: 4px;
+}
+
+#jsoneditor {
+    background: WhiteSmoke;
 }
