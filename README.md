@@ -6,6 +6,7 @@ To generate a selection of FSEC pre-approved PV system drawings that will cover 
 
 ## Links
 These are temporary.
+
 * [kshowalter/pv_draw](http://fsec.ucf.edu/~kshowalter/pv_draw)
 * [kshowalter/pv_draw_dev](http://fsec.ucf.edu/~kshowalter/pv_draw_dev)
 
@@ -34,6 +35,7 @@ These are temporary.
 
 ### Longterm
 The longterm plans are to add:
+
 * Payment processing
 * System verification page for AHJs
 * Login system for customers (installers)
@@ -46,13 +48,9 @@ These are what is commonly called configuration files. The settings define what 
 The JSON format is not unreasonable for a non-programer to edit in a text editor, but a graphical interface to edit and download the latest version of the setting will be provided. The advantage over other formats is that JSON can be imported directly into the application.
 Examples are shown below.
 
-![JSON sample](doc/img/JSON_sample.png)
+![Figure 1: JSON sample](doc/img/JSON_sample.png)
 
-*Figure 1: JSON sample*
-
-![JSON editor](doc/img/JSON_GUI.png)
-
-*Figure 2: JSON editor*
+![Figure 2: JSON editor](doc/img/JSON_GUI.png)
 
 There are other format options for configuration files that might be easier to edit, but would would comprimise the deepth of settings that could be easily specified.
 
