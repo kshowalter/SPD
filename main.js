@@ -20,9 +20,8 @@ var mk_svg= require('./app/mk_svg.js');
 //var mk_pdf = require('./app/mk_pdf.js');
 var update_system = require('./app/update_system');
 
-var fs = require('fs');
-var settingsYAML = fs.readFileSync('./data/settings.yml');
-var settings = yaml.safeLoad(settingsYAML);
+var settings = require('./data/settings.json');
+
 settings = misc.nullToObject(settings);
 settings.input = misc.blankCopy(settings.input_options);
 console.log(settings);
