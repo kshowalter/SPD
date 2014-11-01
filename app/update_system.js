@@ -7,7 +7,6 @@ var misc = require('./misc');
 
 var objectDefined = misc.objectDefined;
 
-
 var update_system = function(settings) {
     var input = settings.input;
 
@@ -22,7 +21,7 @@ var update_system = function(settings) {
     var sections = k.objIdArray(settings.input);
     console.log(sections);
     sections.forEach(function(sectionName,id){
-       console.log( sectionName, misc.objectDefined(settings.input[sectionName]) );
+        console.log( sectionName, misc.objectDefined(settings.input[sectionName]) );
     });
 
 
@@ -30,7 +29,7 @@ var update_system = function(settings) {
     //var show_defaults = false;
     if( status.version_string === 'Dev'){
         //show_defaults = true;
-        console.log('Dev mode - defaults on')
+        console.log('Dev mode - defaults on');
 
         system.DC.string_num = system.DC.string_num || 4;
         system.DC.string_modules = system.DC.string_modules || 6;
@@ -56,7 +55,7 @@ var update_system = function(settings) {
         }
     }
 
-    if( status.data_loaded ){
+    if( status.data_loaded ) {
 
         //system.DC.string_num = settings.system.string_num;
         //system.DC.string_modules = settings.system.string_modules;
@@ -65,7 +64,7 @@ var update_system = function(settings) {
         var old_active_section = status.active_section;
 
         // Modules
-        if( TRUE ){
+        if( true ){
             misc.objectDefined(system.DC.module);
 
             settings.config_options.moduleMakeArray = k.objIdArray(settings.config_options.modules);
@@ -86,60 +85,59 @@ var update_system = function(settings) {
                 system.DC.array.Vmp = system.DC.module.specs.Vmp * system.DC.string_modules;
                 system.DC.array.Pmp = system.DC.array.Vmp * system.DC.array.Imp;
 
-            status.active_section = 'DC';
-        }
-
-        // DC
-        if( objectDefined(input.DC) ) {
-
-            system.DC.homerun.resistance = config_options.NEC_tables['Ch 9 Table 8 Conductor Properties'][system.DC.homerun.AWG];
-            status.sections.inverter.ready = true;
-            status.active_section = 'inverter';
-        }
-
-        // Inverter
-        if( objectDefined(input.DC) ) {
-
-            settings.config_options.inverterMakeArray = k.objIdArray(settings.config_options.inverters);
-            if( system.inverter.make ) settings.config_options.inverterModelArray = k.objIdArray(settings.config_options.inverters[system.inverter.make]);
-            if( system.inverter.model ) system.inverter.specs = settings.config_options.inverters[system.inverter.make][system.inverter.model];
-
-            status.active_section = 'AC';
-        }
-
-        // AC
-        if( objectDefined(input.inverter) ) {
-            if( system.AC_loadcenter_type ) {
-
-                system.AC_types_availible = config_options.AC_loadcenter_types[system.AC_loadcenter_type];
-
-                config_options.AC_type_options.forEach( function( elem, id ){
-                    if( ! elem in system.AC_types_availible ) {
-                        config_options.AC_type_options.splice(id, 1);
-                    }
-
-                })
-
-                //system.AC_type = settings.system.AC_type;
-                system.AC_conductors = settings.config_options.AC_types[system.AC_type];
+                status.active_section = 'DC';
             }
-        }
+
+            // DC
+            if( objectDefined(input.DC) ) {
+
+                system.DC.homerun.resistance = config_options.NEC_tables['Ch 9 Table 8 Conductor Properties'][system.DC.homerun.AWG];
+                status.sections.inverter.ready = true;
+                status.active_section = 'inverter';
+            }
+
+            // Inverter
+            if( objectDefined(input.DC) ) {
+
+                settings.config_options.inverterMakeArray = k.objIdArray(settings.config_options.inverters);
+                if( system.inverter.make ) settings.config_options.inverterModelArray = k.objIdArray(settings.config_options.inverters[system.inverter.make]);
+                if( system.inverter.model ) system.inverter.specs = settings.config_options.inverters[system.inverter.make][system.inverter.model];
+
+                status.active_section = 'AC';
+            }
+
+            // AC
+            if( objectDefined(input.inverter) ) {
+                if( system.AC_loadcenter_type ) {
+
+                    system.AC_types_availible = config_options.AC_loadcenter_types[system.AC_loadcenter_type];
+
+                    config_options.AC_type_options.forEach( function( elem, id ){
+                        if( ! elem in system.AC_types_availible ) {
+                            config_options.AC_type_options.splice(id, 1);
+                        }
+
+                    });
+
+                    //system.AC_type = settings.system.AC_type;
+                    system.AC_conductors = settings.config_options.AC_types[system.AC_type];
+                }
+            }
 
 
-        if( objectDefined(input.AC) ) {
+            if( objectDefined(input.AC) ) {
                 status.active_section = old_active_section;
+            }
+
+            size.wire_offset.max = size.wire_offset.min + system.DC.string_num * size.wire_offset.base;
+            size.wire_offset.ground = size.wire_offset.max + size.wire_offset.base*1;
+
+            loc.array.left = loc.array.right - ( size.string.w * system.DC.string_num ) - ( size.module.frame.w*3/4 ) ;
+
+            //return settings;
         }
-
-        size.wire_offset.max = size.wire_offset.min + system.DC.string_num * size.wire_offset.base;
-        size.wire_offset.ground = size.wire_offset.max + size.wire_offset.base*1;
-
-        loc.array.left = loc.array.right - ( size.string.w * system.DC.string_num ) - ( size.module.frame.w*3/4 ) ;
-
-        //return settings;
     }
 };
-
-
 
 
 module.exports = update_system;
