@@ -14,7 +14,7 @@ function calculateSettings(settings){
     system.DC.module = {};
     system.DC.homerun = {};
 
-    var config_options = settings.config_options = {};
+    var config_options = settings.config_options = settings.config_options || {};
 
     var status = settings.status = {};
     settings.status.sections = {
