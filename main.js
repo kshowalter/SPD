@@ -24,6 +24,13 @@ var settings = require('./data/settings.json');
 
 settings = misc.nullToObject(settings);
 settings.input = misc.blankCopy(settings.input_options);
+
+settings.config_options = {};
+settings.config_options.NEC_tables = require('./data/tables.json');
+console.log(settings.config_options.NEC_tables);
+settings.config_options.modules = require('./data/modules.json');
+settings.config_options.inverters = require('./data/inverters.json');
+
 console.log(settings);
 var settingsCalculated = require('./app/settingsCalculated.js');
 settings = settingsCalculated(settings);
@@ -31,10 +38,11 @@ settings.layers = require('./app/settingsLayers.js');
 var settingsDrawing = require('./app/settingsDrawing.js');
 settings = settingsDrawing(settings);
 
-settings.status.version_string = version_string;
+//settings.status.version_string = version_string;
 
 var components = settings.components;
 var system = settings.system;
+
 
 /*
 function lookupLocation(position){
@@ -85,17 +93,19 @@ function add_sections(sections, parent_container, display_type){
 }
 */
 
-function add_sections(sections, parent_container, display_type){
+function add_sections(settings, parent_container, display_type){
     display_type = display_type || 'none';
-    for( section in sections ){
-        var selection_container = k$('div').attr('class', 'section').appendTo(parent_container);
-        selection_container.attr('id', section );
-        //selection_container.elem.style.width = settings.drawing.size.drawing.w.toString() + 'px';
+    for( var section_name in settings.input_options ){
+        var selection_container = $('<div>').attr('class', 'section').appendTo(parent_container);
         selection_container.elem.style.display = display_type;
-        sections[section].forEach( function(kelem){
-            kelem.appendTo(selection_container);
-            kelem_setup(kelem);
-        });
+        $('<span>').html(section_name).attr('class', 'category_title').appendTo(selection_container);
+        $('<span>').html(' | ').appendTo(selection_container);
+        for( var input_name in settings.input_options[section_name] ){
+            $('<span>').html('Module make: ').appendTo(selection_container);
+            var selector = k$('selector') .setOptionsRef( 'input_options.' + section_name + '.' + input_name ).setRef( 'input.' + section_name + '.' + input_name ).appendTo(selection_container);
+            kelem_setup(selector);
+        }
+        $('<br>').appendTo(selection_container);
     }
 }
 
@@ -199,111 +209,12 @@ function update(){
 }
 
 
-//k.AJAX('data/tables.txt', loadTables, settings);
-k.AJAX('data/tables.txt', ready, {type:'loadTables'});
-
-//k.AJAX( 'data/modules.csv', loadModules, settings );
-k.AJAX( 'data/modules.csv', ready, {type:'loadModules'});
-k.AJAX( 'data/inverters.csv', ready, {type:'inverters'});
 
 
 
 
-var ready_count = 0;
-function ready(input, config){
-
-    if( config.type === 'loadTables'){
-        settings.config_options.NEC_tables = loadTables(input);
-        ready_count++;
-    }
-    if( config.type === 'loadModules'){
-        settings.config_options.modules = loadComponents(input);
-        ready_count++;
-    }
-    if( config.type === 'inverters'){
-        settings.config_options.inverters = loadComponents(input);
-        ready_count++;
-    }
-
-    if( ready_count === 3 ){
-        console.log('ready');
-        settings.status.data_loaded = true;
-        update();
-    }
-}
 
 
-
-function importYAML(input){
-   console.log( yaml.safeLoad(input) );
-}
-
-console.log("starting yaml import");
-//k.AJAX( 'data/settings.yml', importYAML, {type:'settings'});
-
-
-var page_sections_config = {
-    modules: [
-        k$('span').html('Module').attr('class', 'category_title'),
-        k$('span').html(' | '),
-        k$('span').html('Module make: '),
-        //k$('selector') .setOptionsRef( 'components.moduleMakeArray' ).setRef('system.pv_make'),
-        k$('selector') .setOptionsRef( 'config_options.moduleMakeArray' ).setRef('system.DC.module.make'),
-        k$('span').html(' | '),
-        k$('span').html('Module model: '),
-        //k$('selector').setOptionsRef( 'components.moduleModelArray' ).setRef('system.pv_model'),
-        k$('selector').setOptionsRef( 'config_options.moduleModelArray' ).setRef('system.DC.module.model'),
-        k$('br'),
-
-    ],
-    array: [
-        k$('span').html('Array').attr('class', 'category_title'),
-        k$('span').html(' | '),
-
-        k$('span').html('Number of strings: '),
-        k$('selector').setOptionsRef( 'config_options.string_num_options').setRef('system.DC.string_num'),
-        k$('span').html(' | '),
-        k$('span').html('Number of modules per string: '),
-        k$('selector').setOptionsRef( 'config_options.string_modules_options').setRef('system.DC.string_modules'),
-        //k$('span').html(' | '),
-    ],
-    DC: [
-        k$('span').html('DC').attr('class', 'category_title'),
-        k$('span').html(' | '),
-        k$('span').html('DC home run length (ft): '),
-        k$('selector').setOptionsRef('config_options.DC_homerun_lengths').setRef('system.DC.homerun.length'),
-        k$('span').html(' | '),
-        k$('span').html('DC home run AWG: '),
-        k$('selector').setOptionsRef('config_options.DC_homerun_AWG_options').setRef('system.DC.homerun.AWG'),
-
-    ],
-    inverter: [
-        k$('span').html('Inverter').attr('class', 'category_title'),
-        k$('span').html(' | '),
-
-        k$('span').html('Inverter make: '),
-        //k$('selector') .setOptionsRef( 'components.moduleMakeArray' ) .setRef('system.pv_make'),
-        k$('selector') .setOptionsRef( 'config_options.inverterMakeArray' ) .setRef('system.inverter.make'),
-        k$('span').html(' | '),
-        k$('span').html('Inverter model: '),
-        //k$('selector').setOptionsRef( 'components.moduleModelArray' ).setRef('snecisaryystem.pv_model'),
-        k$('selector').setOptionsRef( 'config_options.inverterModelArray' ).setRef('system.inverter.model'),
-
-    ],
-    AC: [
-        k$('span').html('AC').attr('class', 'category_title'),
-        k$('span').html(' | '),
-
-        k$('span').html('AC Load Center type: '),
-        k$('selector').setOptionsRef( 'config_options.AC_loadcenter_type_options').setRef('system.AC_loadcenter_type'),
-        k$('span').html('AC type: '),
-        //k$('selector').setOptionsRef( 'config_options.AC_type_options').setRef('system.AC_type'),
-        k$('selector').setOptionsRef( 'system.AC_types_availible').setRef('system.AC_type'),
-        k$('br'),
-
-    ],
-
-}
 var page_sections_params = {
     modules_params: [
         k$('span').html(' | '),
@@ -402,8 +313,8 @@ k$('a').attr('href', 'javascript:window.location.reload()').html('clear selectio
 
 
 // System setup
-k$('div').html('System Setup').attr('class', 'section_title').appendTo(system_frame);
-var config_frame = k$('div').attr('id', 'config_frame').attr('class', 'section').appendTo(system_frame);
+$('<div>').html('System Setup').attr('class', 'section_title').appendTo(system_frame);
+var config_frame = $('<div>').attr('id', 'config_frame').attr('class', 'section').appendTo(system_frame);
 
 
 
@@ -422,7 +333,7 @@ section_selector.change(function(event){
 
 
 //console.log(section_selector);
-add_sections(page_sections_config, config_frame);
+add_sections(settings, config_frame);
 
 // Parameters and specifications
 k$('div').html('System Parameters').attr('class', 'section_title').appendTo(system_frame);
