@@ -97,7 +97,8 @@ function add_sections(settings, parent_container, display_type){
     display_type = display_type || 'none';
     for( var section_name in settings.input_options ){
         var selection_container = $('<div>').attr('class', 'section').appendTo(parent_container);
-        selection_container.elem.style.display = display_type;
+        selection_container.get(0).style.display = display_type;
+        selection_container.attr('id', section_name );
         $('<span>').html(section_name).attr('class', 'category_title').appendTo(selection_container);
         $('<span>').html(' | ').appendTo(selection_container);
         for( var input_name in settings.input_options[section_name] ){
@@ -142,9 +143,9 @@ function show_hide_params(page_sections){
     }
 }
 
-function show_hide_selections(page_sections, active_section_name){
+function show_hide_selections(settings, active_section_name){
     $('#sectionSelector').val(active_section_name);
-    for( var list_name in page_sections ){
+    for( var list_name in settings.input ){
         var id = '#'+list_name;
         var section_name = list_name.split('_')[0];
         var section = k$(id);
@@ -297,12 +298,12 @@ var title = 'PV drawing test';
 
 k.setup_body(title);
 
-var page = k$('div').attr('class', 'page').appendTo(k$(document.body));
+var page = $('<div>').attr('class', 'page').appendTo($(document.body));
 //page.style('width', (settings.drawing.size.drawing.w+20).toString() + "px" )
 
 
 
-var system_frame = k$('div').attr('id', system_frame_id).appendTo(page);
+var system_frame = $('<div>').attr('id', system_frame_id).appendTo(page);
 
 
 var header_container = k$('div').appendTo(system_frame);
@@ -316,14 +317,13 @@ k$('a').attr('href', 'javascript:window.location.reload()').html('clear selectio
 $('<div>').html('System Setup').attr('class', 'section_title').appendTo(system_frame);
 var config_frame = $('<div>').attr('id', 'config_frame').attr('class', 'section').appendTo(system_frame);
 
-
-
-
-var section_selector = $('<select>').attr('id', 'sectionSelector').appendTo(config_frame.elem);
-addOptions( section_selector, settings.config_options.section_options );
+var section_selector = $('<select>').attr('id', 'sectionSelector').appendTo(config_frame.get(0));
+//addOptions( section_selector, settings.config_options.section_options );
+addOptions( section_selector, k.objIdArray(settings.input) );
 section_selector.change(function(event){
     settings.status.active_section = event.target.selectedOptions[0].value
-    show_hide_selections(page_sections_config, settings.status.active_section)
+    console.log(settings.status.active_section)
+    show_hide_selections(settings, settings.status.active_section)
     //update()
 })
 //var section_selector = k$('selector').setOptionsRef( 'config_options.section_options' ).setRef('status.active_section').attr('class', 'corner_title').appendTo(config_frame);
@@ -336,34 +336,38 @@ section_selector.change(function(event){
 add_sections(settings, config_frame);
 
 // Parameters and specifications
-k$('div').html('System Parameters').attr('class', 'section_title').appendTo(system_frame);
-var params_container = k$('div').attr('class', 'section').style('height', '150px').appendTo(system_frame);
+$('<div>').html('System Parameters').attr('class', 'section_title').appendTo(system_frame);
+var params_container = $('<div>').attr('class', 'section')
+params_container.css('height', '150px').appendTo(system_frame);
 add_params(page_sections_params, params_container);
 
 // drawing
 //var drawing = $('div').attr('id', 'drawing_frame').attr('class', 'section').appendTo(page);
-var drawing = k$('div').attr('id', 'drawing_frame').appendTo(page);
-drawing.style('width', (settings.drawing.size.drawing.w+20).toString() + "px" )
-k$('div').html('Drawing').attr('class', 'section_title').appendTo(drawing);
+var drawing = $('<div>').attr('id', 'drawing_frame').appendTo(page);
+drawing.css('width', (settings.drawing.size.drawing.w+20).toString() + "px" )
+$('<div>').html('Drawing').attr('class', 'section_title').appendTo(drawing);
 var page_selector = k$('selector').setOptionsRef( 'config_options.page_options' ).setRef('status.active_page').attr('class', 'corner_title').appendTo(drawing);
 kelem_setup(page_selector);
 //console.log(page_selector)
 
 //k$('span').attr('id', 'download').attr('class', 'float_right').appendTo(drawing);
 
-var svg_container_object = k$('div').attr('id', 'drawing').attr('class', 'drawing').style('clear', 'both').appendTo(drawing);
+var svg_container_object = k$('div').attr('id', 'drawing').attr('class', 'drawing').css('clear', 'both').appendTo(drawing);
 //svg_container_object.style('width', settings.drawing.size.drawing.w+"px" )
 var svg_container = svg_container_object.elem;
-k$('br').appendTo(drawing);
+$('<br>').appendTo(drawing);
 
 ///////////////////
-k$('div').html(' ').attr('class', 'section_title').appendTo(drawing);
+$('<div>').html(' ').attr('class', 'section_title').appendTo(drawing);
 
 
 
 var boot_time = moment();
 var status_id = "status";
 setInterval(function(){ k.update_status_page(status_id, boot_time, version_string);},1000);
+
+
+update();
 
 console.log('settings', settings);
 console.log('window', window);
