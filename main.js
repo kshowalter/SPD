@@ -43,26 +43,6 @@ settings = settingsDrawing(settings);
 var components = settings.components;
 var system = settings.system;
 
-
-/*
-function lookupLocation(position){
-    var url = 'http://maps.googleapis.com/maps/api/geocode/json?latlng='+position.coords.latitude+','+position.coords.longitude+'&sensor=true';
-    k.AJAX(url, showLocation);
-}
-function showLocation(location_json){
-    var location = JSON.parse(location_json);
-    location.results[0].address_components.forEach( function(component){
-        if( component.types[0] === "locality" ) {
-            system.city = component.long_name ;
-            //console.log('city ', system.city)
-        } else if( component.types[0] === "administrative_area_level_2" ){
-            system.county = component.long_name ;
-            //console.log('county ', system.county)
-        }
-    });
-    update_system(settings);
-}
-*/
 function kelem_setup(kelem){
     if( kelem.type === 'selector' ){
         kelem.setRefObj(settings);
@@ -77,41 +57,38 @@ function kelem_setup(kelem){
     return kelem;
 }
 
-/*
-function add_sections(sections, parent_container, display_type){
-    display_type = display_type || 'none';
-    for( section in sections ){
-        var selection_container = k$('div').attr('class', 'section').appendTo(parent_container);
-        selection_container.attr('id', section );
-        //selection_container.elem.style.width = settings.drawing.size.drawing.w.toString() + 'px';
-        selection_container.elem.style.display = display_type;
-        sections[section].forEach( function(kelem){
-            kelem.appendTo(selection_container);
-            kelem_setup(kelem);
-        });
-    }
-}
-*/
 
-function add_sections(settings, parent_container, display_type){
-    display_type = display_type || 'none';
+function add_sections(settings, parent_container){
     for( var section_name in settings.input_options ){
-        var selection_container = $('<div>').attr('class', 'section').appendTo(parent_container);
-        selection_container.get(0).style.display = display_type;
-        selection_container.attr('id', section_name );
-        $('<span>').html(section_name).attr('class', 'category_title').appendTo(selection_container);
-        $('<span>').html(' | ').appendTo(selection_container);
+        var selection_container = $('<div>').attr('class', 'input_section').attr('id', section_name ).appendTo(parent_container);
+        //selection_container.get(0).style.display = display_type;
+        var system_div = $('<div>').attr('class', 'title_bar')
+            .appendTo(selection_container)
+            /* jshint -W083 */
+            .click(function(){
+                $(this).parent().children('.drawer').children('.drawer_content').slideToggle('fast');
+            });
+        var system_title = $('<a>')
+            .attr('class', 'title_bar_text')
+            .attr('href', '#')
+            .text(section_name)
+            .appendTo(system_div);
+        $(this).trigger('click');
+        var drawer = $('<div>').attr('class', 'drawer').appendTo(selection_container);
+        var drawer_content = $('<div>').attr('class', 'drawer_content').appendTo(drawer);
         for( var input_name in settings.input_options[section_name] ){
-            $('<span>').html('Module make: ').appendTo(selection_container);
-            var selector = k$('selector') .setOptionsRef( 'input_options.' + section_name + '.' + input_name ).setRef( 'input.' + section_name + '.' + input_name ).appendTo(selection_container);
+            $('<span>').html(input_name + ': ').appendTo(drawer_content);
+            var selector = k$('selector')
+                .setOptionsRef( 'input_options.' + section_name + '.' + input_name )
+                .setRef( 'input.' + section_name + '.' + input_name )
+                .appendTo(drawer_content);
             kelem_setup(selector);
         }
-        $('<br>').appendTo(selection_container);
     }
 }
 
 function add_params(sections, parent_container){
-    for( section in sections ){
+    for( var section in sections ){
         var title = section.split('_')[0];
         var section_container = k$('div').attr('class', 'param_section').appendTo(parent_container);
         k$('span').html(title).attr('class', 'category_title').appendTo(section_container);
@@ -187,7 +164,7 @@ function update(){
     var svg = mk_svg(settings);
     console.log(svg);
     var svg_wrapper = $(svg);
-    console.log(svg_wrapper)
+    console.log(svg_wrapper);
     $("#drawing").html('').append($(svg));
 
     //var pdf_download = mk_pdf(settings, setDownloadLink);
@@ -201,7 +178,7 @@ function update(){
 
 
     show_hide_params(page_sections_params);
-    show_hide_selections(page_sections_config, settings.status.active_section)
+    show_hide_selections(page_sections_config, settings.status.active_section);
 
     console.log('settings', settings);
 
@@ -270,7 +247,7 @@ var page_sections_params = {
         k$('span').html('AC params'),
         k$('span').html(' | '),
     ],
-}
+};
 
 
 
@@ -280,7 +257,7 @@ if( version_string === 'Dev' && true ){
     for( var section in settings.status.sections ){
         settings.status.sections[section].ready = true;
         settings.status.sections[section].set = true;
-    };
+    }
 } else {
     settings.status.sections.modules.ready = true;
 }
@@ -289,83 +266,79 @@ if( version_string === 'Dev' && true ){
 
 
 
+function page_setup(settings){
+    var system_frame_id = 'system_frame';
+    var title = 'PV drawing test';
 
-// # Page setup
-//var svg_container_id = 'svg_container';
-var system_frame_id = 'system_frame';
-var title = 'PV drawing test';
+    k.setup_body(title);
 
+    var page = $('<div>').attr('class', 'page').appendTo($(document.body));
+    //page.style('width', (settings.drawing.size.drawing.w+20).toString() + "px" )
 
-k.setup_body(title);
-
-var page = $('<div>').attr('class', 'page').appendTo($(document.body));
-//page.style('width', (settings.drawing.size.drawing.w+20).toString() + "px" )
-
+    var system_frame = $('<div>').attr('id', system_frame_id).appendTo(page);
 
 
-var system_frame = $('<div>').attr('id', system_frame_id).appendTo(page);
+    var header_container = k$('div').appendTo(system_frame);
+    k$('span').html('Please select your system spec below').attr('class', 'category_title').appendTo(header_container);
+    k$('span').html(' | ').appendTo(header_container);
+    //k$('input').attr('type', 'button').attr('value', 'clear selections').click(window.location.reload),
+    k$('a').attr('href', 'javascript:window.location.reload()').html('clear selections').appendTo(header_container);
 
 
-var header_container = k$('div').appendTo(system_frame);
-k$('span').html('Please select your system spec below').attr('class', 'category_title').appendTo(header_container);
-k$('span').html(' | ').appendTo(header_container);
-//k$('input').attr('type', 'button').attr('value', 'clear selections').click(window.location.reload),
-k$('a').attr('href', 'javascript:window.location.reload()').html('clear selections').appendTo(header_container);
+    // System setup
+    $('<div>').html('System Setup').attr('class', 'section_title').appendTo(system_frame);
+    var config_frame = $('<div>').attr('id', 'config_frame').appendTo(system_frame);
+
+    /*
+    var section_selector = $('<select>').attr('id', 'sectionSelector').appendTo(config_frame.get(0));
+    addOptions( section_selector, settings.config_options.section_options );
+    addOptions( section_selector, k.objIdArray(settings.input) );
+    section_selector.change(function(event){
+        settings.status.active_section = event.target.selectedOptions[0].value;
+        console.log(settings.status.active_section);
+        show_hide_selections(settings, settings.status.active_section);
+        //update()
+    });
+    //*/
+    //var section_selector = k$('selector').setOptionsRef( 'config_options.section_options' ).setRef('status.active_section').attr('class', 'corner_title').appendTo(config_frame);
+    //kelem_setup(section_selector);
 
 
-// System setup
-$('<div>').html('System Setup').attr('class', 'section_title').appendTo(system_frame);
-var config_frame = $('<div>').attr('id', 'config_frame').attr('class', 'section').appendTo(system_frame);
+    //console.log(section_selector);
+    add_sections(settings, config_frame);
 
-var section_selector = $('<select>').attr('id', 'sectionSelector').appendTo(config_frame.get(0));
-//addOptions( section_selector, settings.config_options.section_options );
-addOptions( section_selector, k.objIdArray(settings.input) );
-section_selector.change(function(event){
-    settings.status.active_section = event.target.selectedOptions[0].value
-    console.log(settings.status.active_section)
-    show_hide_selections(settings, settings.status.active_section)
-    //update()
-})
-//var section_selector = k$('selector').setOptionsRef( 'config_options.section_options' ).setRef('status.active_section').attr('class', 'corner_title').appendTo(config_frame);
-//kelem_setup(section_selector);
+    // Parameters and specifications
+    $('<div>').html('System Parameters').attr('class', 'section_title').appendTo(system_frame);
+    var params_container = $('<div>').attr('class', 'section');
+    params_container.css('height', '150px').appendTo(system_frame);
+    add_params(page_sections_params, params_container);
 
+    // drawing
+    //var drawing = $('div').attr('id', 'drawing_frame').attr('class', 'section').appendTo(page);
+    var drawing = $('<div>').attr('id', 'drawing_frame').appendTo(page);
+    drawing.css('width', (settings.drawing.size.drawing.w+20).toString() + "px" );
+    $('<div>').html('Drawing').attr('class', 'section_title').appendTo(drawing);
+    var page_selector = k$('selector').setOptionsRef( 'config_options.page_options' ).setRef('status.active_page').attr('class', 'corner_title').appendTo(drawing);
+    kelem_setup(page_selector);
+    //console.log(page_selector)
 
+    //k$('span').attr('id', 'download').attr('class', 'float_right').appendTo(drawing);
 
+    var svg_container_object = k$('div').attr('id', 'drawing').attr('class', 'drawing').css('clear', 'both').appendTo(drawing);
+    //svg_container_object.style('width', settings.drawing.size.drawing.w+"px" )
+    var svg_container = svg_container_object.elem;
+    $('<br>').appendTo(drawing);
 
-//console.log(section_selector);
-add_sections(settings, config_frame);
+    ///////////////////
+    $('<div>').html(' ').attr('class', 'section_title').appendTo(drawing);
 
-// Parameters and specifications
-$('<div>').html('System Parameters').attr('class', 'section_title').appendTo(system_frame);
-var params_container = $('<div>').attr('class', 'section')
-params_container.css('height', '150px').appendTo(system_frame);
-add_params(page_sections_params, params_container);
+}
 
-// drawing
-//var drawing = $('div').attr('id', 'drawing_frame').attr('class', 'section').appendTo(page);
-var drawing = $('<div>').attr('id', 'drawing_frame').appendTo(page);
-drawing.css('width', (settings.drawing.size.drawing.w+20).toString() + "px" )
-$('<div>').html('Drawing').attr('class', 'section_title').appendTo(drawing);
-var page_selector = k$('selector').setOptionsRef( 'config_options.page_options' ).setRef('status.active_page').attr('class', 'corner_title').appendTo(drawing);
-kelem_setup(page_selector);
-//console.log(page_selector)
-
-//k$('span').attr('id', 'download').attr('class', 'float_right').appendTo(drawing);
-
-var svg_container_object = k$('div').attr('id', 'drawing').attr('class', 'drawing').css('clear', 'both').appendTo(drawing);
-//svg_container_object.style('width', settings.drawing.size.drawing.w+"px" )
-var svg_container = svg_container_object.elem;
-$('<br>').appendTo(drawing);
-
-///////////////////
-$('<div>').html(' ').attr('class', 'section_title').appendTo(drawing);
-
-
+page_setup(settings);
 
 var boot_time = moment();
 var status_id = "status";
 setInterval(function(){ k.update_status_page(status_id, boot_time, version_string);},1000);
-
 
 update();
 

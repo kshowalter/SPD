@@ -12,7 +12,7 @@ body {
 }
 
 .page {
-    background: WhiteSmoke;
+    /*background: WhiteSmoke;*/
     margin: 10px;
 }
 
@@ -23,7 +23,7 @@ body {
 }
 
 #config_frame {
-    height: 100px;
+    /*height: 100px;*/
 }
 
 #drawing_frame {
@@ -93,8 +93,6 @@ body {
     background: white;
 }
 
-
-
 .float_right {
     float: right;
     padding: 4px;
@@ -102,4 +100,45 @@ body {
 
 #jsoneditor {
     background: WhiteSmoke;
+}
+
+
+
+
+
+
+.input_section {
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.title_bar {
+    font-weight: bold;
+    background: #bbc3e4;
+    color: #424242;
+    border: 1px solid grey;
+    padding: 2px;
+}
+
+.title_bar_text {
+    font-weight: bold;
+    color: #424242;
+
+}
+
+.drawer {
+    padding: 2px;
+    background: WhiteSmoke;
+    margin-bottom: 0px;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: grey;
+    margin-right: 5px;
+    border-right-width: 1px;
+    border-right-style: solid;
+    border-right-color: grey;
+    margin-left: 5px;
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-left-color: grey;
 }
