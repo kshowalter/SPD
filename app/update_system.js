@@ -24,7 +24,7 @@ var update_system = function(settings) {
     var sections = k.objIdArray(settings.input);
     console.log(sections);
     sections.forEach(function(sectionName,id){
-        console.log( sectionName, misc.objectDefined(settings.input[sectionName]) );
+        //console.log( sectionName, misc.objectDefined(settings.input[sectionName]) );
     });
 
 
