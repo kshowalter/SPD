@@ -8,6 +8,11 @@
 }
 
 body {
+    /*
+    font-family: 'Roboto', sans-serif;
+    */
+    font-family: 'Open Sans', sans-serif;
+
     background: #DFDFDF;
 }
 
@@ -141,4 +146,296 @@ body {
     border-left-width: 1px;
     border-left-style: solid;
     border-left-color: grey;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+th, td
+{
+ text-align: left;
+
+}
+
+h1, h2, h3, h4, h5, h6, th, td, caption { font-weight:normal; }
+
+img { border: 0; }
+
+.selector_menu {
+    text-decoration: none;
+    font-size: 0.8em;
+    margin: 5px;
+    color: black;
+    background: #C1BFFF;
+}
+
+.selector, .selector_option {
+    margin: 0px;
+    padding: 1px 3px 1px 3px;
+}
+
+.selector {
+
+
+}
+
+.selector_option {
+    /*
+    background-color: #7396FF;
+    */
+    border-width: 0px;
+    border-left: 1px;
+    border-right: 1px;
+    border-color: 'black';
+    border-style: dotted;
+
+
+}
+
+
+
+.svg_drawing {
+    height: 600;
+
+}
+
+
+
+
+
+
+
+
+
+/*
+http://stackoverflow.com/questions/4918018/eliminate-padding-margin-around-pics-in-td-elements
+Finally, I add this line, which removes that stupid spacing which appears all the time, the one that isn't padding, margin or anything.
+*/
+table, tr, td, th, tbody, thead{vertical-align:baseline}
+
+
+#status {
+    padding:2px;
+    margin:0;
+    background: Lavender;
+    border-color: black;
+    border-width: 0.1em;
+    border-bottom-style: solid;
+
+
+}
+
+
+.title {
+    background: grey;
+    margin: 0;
+    padding: 0.1em;
+    font-size: 1.5em
+
+}
+
+
+
+
+
+.data table {
+    empty-cells:show;
+    border-collapse:collapse;
+
+}
+.data table, th, td {
+    border:1px solid #d3d3d3;
+    padding:2px;
+    margin:0;
+    white-space: nowrap;
+    vertical-align: top;
+}
+.data td {
+    text-align: right
+
+}
+
+.sparkline_line {
+    padding: 0;
+    margin: 0;
+
+}
+
+.data th {
+    text-align: center;
+    font-weight:bold;
+}
+
+
+
+
+
+
+
+.slidder {
+    width: 10em;
+/*	height: 50px;*/
+
+
+    /*
+    background: Lavender;
+    border-color: #808080;
+    border-width: 0.25em;
+    border-style: solid;
+    */
+}
+
+
+
+
+input[type=range], ::-moz-range-track, ::-ms-track {
+    -webkit-appearance: none;
+    background-color: 3f91e5;
+    width: 250px;
+    height:20px;
+}
+
+
+
+
+
+
+
+.clock_bars erogress {
+    width: 50px;
+    height: 2px;
+}
+
+
+.status_bar progress {
+    width: 50px;
+    height: 2px;
+}
+
+
+meter {
+    background-color: grey;
+    border: 1px;
+    height: 10px;
+    margin: 2px;
+}
+
+
+
+
+
+.progressbar{
+    width: 100%;
+    height: 8px;
+    margin: 1px;
+    background: #eaeaea;
+    border: 1px solid #a0a0a0;
+    display: inline-block;
+}
+
+.progressbar > div{
+    height: 100%;
+    background: #ea0d0d;
+}
+
+
+
+
+
+
+.box {
+    margin: 0.25em;
+    padding: 0.5em;
+    background-color: #d3deff;
+/*    border: 1px;*/
+    border-color: #808080;
+    border-width: 0.05em;
+    border-style: solid;
+
+    -moz-border-radius: 0.5em;
+    border-radius: 0.5em;
+}
+
+
+
+
+
+
+/*http://odyniec.net/articles/turning-lists-into-trees/*/
+
+ul.tree, ul.tree ul {
+    list-style-type: none;
+    background: url(../images/vline.png) repeat-y;
+    margin: 0; padding: 0;
+}
+
+ul.tree ul {
+    margin-left: 10px;
+}
+
+ul.tree li {
+    margin: 0;
+    padding: 0 12px;
+    line-height: 20px;
+    background: url(../images/node.png) no-repeat;
+/*    color: #369; */
+/*    font-weight: bold; */
+}
+
+
+ul.tree li.last {
+    background: #d3deff url(../images/lastnode.png) no-repeat; /* must be same color as container background */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* tell the SVG path to be a thin blue line without any area fill */
+path {
+    stroke: steelblue;
+    stroke-width: 1;
+    fill: none;
+}
+
+
+
+
+svg {
+    border-color: #690000;
+    border-width: 0.05em;
+    border-style: solid;
+
 }
