@@ -1,5 +1,5 @@
 {
-  "input_options": {
+  "input": {
     "module": {
       "make": null,
       "model": null
@@ -34,9 +34,9 @@
       "distance_to_loadcenter": null
     }
   },
-    
 
-  "to_calculate": {
+
+  "calculated": {
     "module": {
       "pmp": null,
       "vmp": null,

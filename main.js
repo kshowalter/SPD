@@ -1,6 +1,7 @@
 "use strict";
 var version_string = "Dev";
 //var version_string = "Alpha20140924";
+var database_json_URL = "http://10.173.64.204:8000/temporary/";
 
 var _ = require('underscore');
 var moment = require('moment');
@@ -22,8 +23,11 @@ var update_system = require('./app/update_system');
 
 var settings = require('./data/settings.json');
 
-settings = misc.nullToObject(settings);
+//settings = misc.nullToObject(settings);
+settings.input_options = settings.input;
 settings.input = misc.blankCopy(settings.input_options);
+settings.calculated_formulas = settings.calculated;
+settings.calculated = misc.blankCopy(settings.calculated_formulas);
 
 settings.config_options = {};
 settings.config_options.NEC_tables = require('./data/tables.json');
@@ -42,6 +46,18 @@ settings = settingsDrawing(settings);
 
 var components = settings.components;
 var system = settings.system;
+
+
+/* TODO: fix cross-origin
+k.AJAX( database_json_URL, load_database, {type:''});
+
+function load_database(json, config){
+    settings.database = json;
+    console.log('database loaded', settings);
+}
+//*/
+
+
 
 function kelem_setup(kelem){
     if( kelem.type === 'selector' ){
@@ -158,15 +174,15 @@ function update(){
     });
 
     // Make drawing
-    settings.elements = mk_drawing(settings);
+//    settings.elements = mk_drawing(settings);
 
     // Add drawing elements to SVG on screen
-    var svg = mk_svg(settings);
+/*    var svg = mk_svg(settings);
     console.log(svg);
     var svg_wrapper = $(svg);
     console.log(svg_wrapper);
     $("#drawing").html('').append($(svg));
-
+//*/
     //var pdf_download = mk_pdf(settings, setDownloadLink);
     //mk_pdf(settings, setDownloadLink);
     //pdf_download.html("Download PDF");
@@ -178,7 +194,7 @@ function update(){
 
 
     show_hide_params(page_sections_params);
-    show_hide_selections(page_sections_config, settings.status.active_section);
+//    show_hide_selections(page_sections_config, settings.status.active_section);
 
     console.log('settings', settings);
 

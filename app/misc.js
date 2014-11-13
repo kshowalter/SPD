@@ -3,13 +3,13 @@
 var misc = {};
 
 misc.objectDefined = function(object){
-    var output = true
+    var output = true;
     for( var key in object ){
-        output &= object.hasOwnProperty(key)
-        console.log( key, object.hasOwnProperty(key) )
+        output &= object.hasOwnProperty(key);
+        console.log( key, object.hasOwnProperty(key) );
     }
     return output;
-}
+};
 
 misc.nullToObject = function nullToObject(object){
     for( var key in object ){
@@ -22,7 +22,7 @@ misc.nullToObject = function nullToObject(object){
 	    }
     }
     return object;
-}
+};
 
 misc.blankCopy = function blankCopy(object){
     var newObject = {};
@@ -31,9 +31,9 @@ misc.blankCopy = function blankCopy(object){
 	        if( typeof object[key] === 'object' ) {
                 var section = {};
                 newObject[key] = section;
-                for( var key in object ){
+                for( var key2 in object ){
                     if( object.hasOwnProperty(key) ){
-                        section[key] = false;
+                        section[key2] = false;
                     }
                 }
 	        } else {
@@ -42,6 +42,6 @@ misc.blankCopy = function blankCopy(object){
 	    }
     }
     return newObject;
-}
+};
 
 module.exports = misc;

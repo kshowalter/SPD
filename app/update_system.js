@@ -8,8 +8,6 @@ var misc = require('./misc');
 var objectDefined = misc.objectDefined;
 
 var update_system = function(settings) {
-    var input = settings.input;
-
 
     //console.log('---settings---', settings);
     var config_options = settings.config_options;
@@ -17,6 +15,11 @@ var update_system = function(settings) {
     var loc = settings.drawing.loc;
     var size = settings.drawing.size;
     var status = settings.status;
+
+    var calculated = settings.calculated;
+    var calculated_formulas = settings.calculated_formulas;
+    var input = settings.input;
+    var input_options = settings.input_options;
 
     var sections = k.objIdArray(settings.input);
     console.log(sections);
@@ -54,6 +57,21 @@ var update_system = function(settings) {
 
         }
     }
+
+    for( var section_name in calculated_formulas ){
+        if( status.data_loaded && misc.objectDefined(input[section_name]) ){
+            status.active_section = section_name;
+            for( var calc_name in calculated_formulas[section_name]){
+                // eval is only being used on strings defined in the settings.json file that is built into the application
+                /* jshint evil:true */
+                calculated[section_name][calc_name] = eval(calculated_formulas[section_name][calc_name]);
+                /* jshint evil:false */
+            }
+        }
+
+    }
+
+
 
     if( status.data_loaded ) {
 
@@ -113,7 +131,7 @@ var update_system = function(settings) {
                     system.AC_types_availible = config_options.AC_loadcenter_types[system.AC_loadcenter_type];
 
                     config_options.AC_type_options.forEach( function( elem, id ){
-                        if( ! elem in system.AC_types_availible ) {
+                        if( ! (elem in system.AC_types_availible) ) {
                             config_options.AC_type_options.splice(id, 1);
                         }
 
