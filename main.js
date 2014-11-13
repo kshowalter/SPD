@@ -48,12 +48,12 @@ var components = settings.components;
 var system = settings.system;
 
 
-/* TODO: fix cross-origin
+//* TODO: fix cross-origin
 k.AJAX( database_json_URL, load_database, {type:''});
 
 function load_database(json, config){
-    settings.database = json;
-    console.log('database loaded', settings);
+    settings.database = JSON.parse(json);
+    console.log('database loaded', settings.database);
 }
 //*/
 
