@@ -130,7 +130,7 @@ function settingsDrawing(settings){
     loc.discbox = {
         x: loc.inverter.x - size.inverter.w/2 + size.discbox.w/2,
         y: loc.inverter.y + size.inverter.h/2 + size.discbox.h/2 + 10,
-    }
+    };
 
     // AC diconect
     size.AC_disc = { w: 80, h: 125 };
@@ -224,18 +224,18 @@ function settingsDrawing(settings){
         units: 'inches',
         w: 11.0,
         h: 8.5,
-    }
+    };
     settings.page = settings.pages.letter;
 
     settings.pages.PDF = {
         w: settings.page.w * 72,
         h: settings.page.h * 72,
-    }
+    };
 
     settings.pages.PDF.scale = {
         x: settings.pages.PDF.w / settings.drawing.size.drawing.w,
         y: settings.pages.PDF.h / settings.drawing.size.drawing.h,
-    }
+    };
 
     if( settings.pages.PDF.scale.x < settings.pages.PDF.scale.y ) {
         settings.page.scale = settings.pages.PDF.scale.x;

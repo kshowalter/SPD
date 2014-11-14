@@ -1,9 +1,14 @@
 "use strict";
-
-var k = require('../lib/k/k.js')
+var f = require('./functions');
+var k = require('../lib/k/k.js');
 
 function calculateSettings(settings){
 
+    //settings = f.nullToObject(settings);
+    settings.input_options = settings.input;
+    settings.input = f.blankCopy(settings.input_options);
+    settings.calculated_formulas = settings.calculated;
+    settings.calculated = f.blankCopy(settings.calculated_formulas);
 
     settings.select_registry = [];
     settings.value_registry = [];
@@ -39,7 +44,9 @@ function calculateSettings(settings){
 
 
     config_options.DC_homerun_lengths = config_options.DC_homerun_lengths || [25,50,75,100];
-    config_options.DC_homerun_AWG_options = config_options.DC_homerun_AWG_options || k.objIdArray( config_options.NEC_tables["Ch 9 Table 8 Conductor Properties"] );
+    config_options.DC_homerun_AWG_options = 
+        config_options.DC_homerun_AWG_options ||
+        k.objIdArray( config_options.NEC_tables["Ch 9 Table 8 Conductor Properties"] );
 
 
     return settings;

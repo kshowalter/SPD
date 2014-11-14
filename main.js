@@ -1,33 +1,31 @@
 "use strict";
 var version_string = "Dev";
 //var version_string = "Alpha20140924";
-var database_json_URL = "http://10.173.64.204:8000/temporary/";
+
 
 var _ = require('underscore');
 var moment = require('moment');
 var $ = require('jquery');
-var yaml = require('js-yaml');
 
 var k = require('./lib/k/k.js');
-var k_data = require('./lib/k/k_data.js');
+var k_data = require('./lib/k/k_data');
 var k$ = require('./lib/k/k_DOM');
 
-var misc = require('./app/misc');
-var loadTables = require('./app/settings_functions').loadTables;
-var loadModules = require('./app/settings_functions').loadModules;
-var loadComponents = require('./app/settings_functions').loadComponents;
+var f = require('./app/functions');
+
 var mk_drawing = require('./app/mk_drawing.js');
 var mk_svg= require('./app/mk_svg.js');
 //var mk_pdf = require('./app/mk_pdf.js');
 var update_system = require('./app/update_system');
 
-var settings = require('./data/settings.json');
+/*
+var settingsCalculated = require('./app/settingsCalculated.js');
+var settingsDrawing = require('./app/settingsDrawing.js');
 
-//settings = misc.nullToObject(settings);
-settings.input_options = settings.input;
-settings.input = misc.blankCopy(settings.input_options);
-settings.calculated_formulas = settings.calculated;
-settings.calculated = misc.blankCopy(settings.calculated_formulas);
+var settings = require('./data/settings.json');
+settings = settingsCalculated(settings);
+settings.layers = require('./app/settingsLayers.js');
+
 
 settings.config_options = {};
 settings.config_options.NEC_tables = require('./data/tables.json');
@@ -36,131 +34,28 @@ settings.config_options.modules = require('./data/modules.json');
 settings.config_options.inverters = require('./data/inverters.json');
 
 console.log(settings);
-var settingsCalculated = require('./app/settingsCalculated.js');
-settings = settingsCalculated(settings);
-settings.layers = require('./app/settingsLayers.js');
-var settingsDrawing = require('./app/settingsDrawing.js');
 settings = settingsDrawing(settings);
 
-//settings.status.version_string = version_string;
+//settings.state.version_string = version_string;
+
+//*/
+var settings = require('./app/settings');
+
+var database_json_URL = "http://10.173.64.204:8000/temporary/";
 
 var components = settings.components;
 var system = settings.system;
 
 
 //* TODO: fix cross-origin
-k.AJAX( database_json_URL, load_database, {type:''});
-
-function load_database(json, config){
-    settings.database = JSON.parse(json);
-    console.log('database loaded', settings.database);
-}
-//*/
-
-
-
-function kelem_setup(kelem){
-    if( kelem.type === 'selector' ){
-        kelem.setRefObj(settings);
-        kelem.setUpdate(update);
-        settings.select_registry.push(kelem);
-        kelem.update();
-    } else if( kelem.type === 'value' ){
-        kelem.setRefObj(settings);
-        //kelem.setUpdate(update_system);
-        settings.value_registry.push(kelem);
-    }
-    return kelem;
-}
-
-
-function add_sections(settings, parent_container){
-    for( var section_name in settings.input_options ){
-        var selection_container = $('<div>').attr('class', 'input_section').attr('id', section_name ).appendTo(parent_container);
-        //selection_container.get(0).style.display = display_type;
-        var system_div = $('<div>').attr('class', 'title_bar')
-            .appendTo(selection_container)
-            /* jshint -W083 */
-            .click(function(){
-                $(this).parent().children('.drawer').children('.drawer_content').slideToggle('fast');
-            });
-        var system_title = $('<a>')
-            .attr('class', 'title_bar_text')
-            .attr('href', '#')
-            .text(section_name)
-            .appendTo(system_div);
-        $(this).trigger('click');
-        var drawer = $('<div>').attr('class', 'drawer').appendTo(selection_container);
-        var drawer_content = $('<div>').attr('class', 'drawer_content').appendTo(drawer);
-        for( var input_name in settings.input_options[section_name] ){
-            $('<span>').html(input_name + ': ').appendTo(drawer_content);
-            var selector = k$('selector')
-                .setOptionsRef( 'input_options.' + section_name + '.' + input_name )
-                .setRef( 'input.' + section_name + '.' + input_name )
-                .appendTo(drawer_content);
-            kelem_setup(selector);
-        }
-    }
-}
-
-function add_params(sections, parent_container){
-    for( var section in sections ){
-        var title = section.split('_')[0];
-        var section_container = k$('div').attr('class', 'param_section').appendTo(parent_container);
-        k$('span').html(title).attr('class', 'category_title').appendTo(section_container);
-        var selection_container = k$('span').appendTo(section_container);
-        selection_container.attr('id', section );
-        //selection_container.elem.style.width = settings.drawing.size.drawing.w.toString() + 'px';
-        selection_container.elem.style.display = 'none';
-        sections[section].forEach( function(kelem){
-            kelem_setup(kelem);
-            kelem.appendTo(selection_container);
-        });
-    }
-}
-
-function addOptions(select, array){
-    array.forEach( function(option){
-        $('<option>').attr( 'value', option ).text(option).appendTo(select);
-    });
-}
-
-
-function show_hide_params(page_sections){
-    for( var list_name in page_sections ){
-        var id = '#'+list_name;
-        var section_name = list_name.split('_')[0];
-        var section = k$(id);
-        if( settings.status.sections[section_name].set ) section.show();
-        else section.hide();
-    }
-}
-
-function show_hide_selections(settings, active_section_name){
-    $('#sectionSelector').val(active_section_name);
-    for( var list_name in settings.input ){
-        var id = '#'+list_name;
-        var section_name = list_name.split('_')[0];
-        var section = k$(id);
-        if( section_name === active_section_name ) section.show();
-        else section.hide();
-    }
-}
-
-//function setDownloadLink(settings){
-//
-//    if( settings.PDF && settings.PDF.url ){
-//        var link = $('a').attr('href', settings.PDF.url ).attr('download', 'PV_drawing.pdf').html('Download Drawing');
-//        $('#download').html('').append(link);
-//    }
-//}
+k.AJAX( database_json_URL, k.load_database, settings);
 
 function update(){
     console.log('updating');
-    //console.log('-section', settings.status.active_section);
+    //console.log('-section', settings.state.active_section);
 
-    update_system(settings);
-    //console.log('-section', settings.status.active_section);
+    f.update_system(settings);
+    //console.log('-section', settings.state.active_section);
 
     settings.select_registry.forEach(function(item){
         //console.log(item)
@@ -193,12 +88,12 @@ function update(){
     //}
 
 
-    show_hide_params(page_sections_params);
-//    show_hide_selections(page_sections_config, settings.status.active_section);
+    k.show_hide_params(page_sections_params, settings);
+//    show_hide_selections(page_sections_config, settings.state.active_section);
 
     console.log('settings', settings);
 
-    console.log( misc.objectDefined(settings.status) );
+    console.log( f.objectDefined(settings.state) );
 
 }
 
@@ -270,12 +165,12 @@ var page_sections_params = {
 
 // Dev settings
 if( version_string === 'Dev' && true ){
-    for( var section in settings.status.sections ){
-        settings.status.sections[section].ready = true;
-        settings.status.sections[section].set = true;
+    for( var section in settings.state.sections ){
+        settings.state.sections[section].ready = true;
+        settings.state.sections[section].set = true;
     }
 } else {
-    settings.status.sections.modules.ready = true;
+    settings.state.sections.modules.ready = true;
 }
 ////////
 
@@ -310,32 +205,36 @@ function page_setup(settings){
     addOptions( section_selector, settings.config_options.section_options );
     addOptions( section_selector, k.objIdArray(settings.input) );
     section_selector.change(function(event){
-        settings.status.active_section = event.target.selectedOptions[0].value;
-        console.log(settings.status.active_section);
-        show_hide_selections(settings, settings.status.active_section);
+        settings.state.active_section = event.target.selectedOptions[0].value;
+        console.log(settings.state.active_section);
+        show_hide_selections(settings, settings.state.active_section);
         //update()
     });
     //*/
-    //var section_selector = k$('selector').setOptionsRef( 'config_options.section_options' ).setRef('status.active_section').attr('class', 'corner_title').appendTo(config_frame);
+    //var section_selector = k$('selector').setOptionsRef( 'config_options.section_options' ).setRef('state.active_section').attr('class', 'corner_title').appendTo(config_frame);
     //kelem_setup(section_selector);
 
 
     //console.log(section_selector);
-    add_sections(settings, config_frame);
+    f.add_sections(settings, config_frame);
 
     // Parameters and specifications
     $('<div>').html('System Parameters').attr('class', 'section_title').appendTo(system_frame);
     var params_container = $('<div>').attr('class', 'section');
     params_container.css('height', '150px').appendTo(system_frame);
-    add_params(page_sections_params, params_container);
+    f.add_params(page_sections_params, params_container);
 
     // drawing
     //var drawing = $('div').attr('id', 'drawing_frame').attr('class', 'section').appendTo(page);
     var drawing = $('<div>').attr('id', 'drawing_frame').appendTo(page);
     drawing.css('width', (settings.drawing.size.drawing.w+20).toString() + "px" );
     $('<div>').html('Drawing').attr('class', 'section_title').appendTo(drawing);
-    var page_selector = k$('selector').setOptionsRef( 'config_options.page_options' ).setRef('status.active_page').attr('class', 'corner_title').appendTo(drawing);
-    kelem_setup(page_selector);
+    var page_selector = k$('selector')
+        .setOptionsRef( 'config_options.page_options' )
+        .setRef('state.active_page')
+        .attr('class', 'corner_title')
+        .appendTo(drawing);
+    f.kelem_setup(page_selector, settings, update);
     //console.log(page_selector)
 
     //k$('span').attr('id', 'download').attr('class', 'float_right').appendTo(drawing);
