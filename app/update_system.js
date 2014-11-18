@@ -1,11 +1,11 @@
 'use strict';
 
 var k = require('../lib/k/k.js');
-var misc = require('./misc');
+var f = require('./functions');
 //var mk_drawing = require('./mk_drawing');
 //var display_svg = require('./display_svg');
 
-var objectDefined = misc.objectDefined;
+var objectDefined = f.objectDefined;
 
 var update_system = function(settings) {
 
@@ -14,7 +14,7 @@ var update_system = function(settings) {
     var system = settings.system;
     var loc = settings.drawing.loc;
     var size = settings.drawing.size;
-    var status = settings.status;
+    var state = settings.state;
 
     var calculated = settings.calculated;
     var calculated_formulas = settings.calculated_formulas;
@@ -22,32 +22,32 @@ var update_system = function(settings) {
     var input_options = settings.input_options;
 
     var sections = k.objIdArray(settings.input);
-    console.log(sections);
+    //console.log(sections);
     sections.forEach(function(sectionName,id){
-        //console.log( sectionName, misc.objectDefined(settings.input[sectionName]) );
+        //console.log( sectionName, f.objectDefined(settings.input[sectionName]) );
     });
 
 
 
     //var show_defaults = false;
-    if( status.version_string === 'Dev'){
+    if( state.version_string === 'Dev'){
         //show_defaults = true;
         console.log('Dev mode - defaults on');
 
-        system.DC.string_num = system.DC.string_num || 4;
-        system.DC.string_modules = system.DC.string_modules || 6;
-        system.DC.homerun.length = system.DC.homerun.length || 50;
+        system.array.num_strings = system.array.num_strings || 4;
+        system.array.num_module = system.array.num_module || 6;
+        system.DC.home_run_length = system.DC.home_run_length || 50;
         system.inverter.model = system.inverter.model || 'SI3000';
         system.AC_type = system.AC_type || '480V Delta';
 
-        if( status.data_loaded ){
-            system.DC.module.make = system.DC.module.make || Object.keys( settings.config_options.modules )[0];
-            if( system.DC.module.make) settings.config_options.moduleModelArray = k.objIdArray(settings.config_options.modules[system.DC.module.make]);
-            system.DC.module.model = system.DC.module.model || Object.keys( settings.config_options.modules[system.DC.module.make] )[0];
+        if( state.data_loaded ){
+            system.module.make = system.module.make || Object.keys( settings.config_options.modules )[0];
+            if( system.module.make) settings.config_options.moduleModelArray = k.objIdArray(settings.config_options.modules[system.module.make]);
+            system.module.model = system.module.model || Object.keys( settings.config_options.modules[system.module.make] )[0];
 
 
             config_options.DC_homerun_AWG_options = k.objIdArray( config_options.NEC_tables['Ch 9 Table 8 Conductor Properties'] );
-            system.DC.homerun.AWG = system.DC.homerun.AWG || config_options.DC_homerun_AWG_options[config_options.DC_homerun_AWG_options.length-1];
+            system.array.homerun.AWG = system.array.homerun.AWG || config_options.DC_homerun_AWG_options[config_options.DC_homerun_AWG_options.length-1];
 
             settings.config_options.inverterMakeArray = k.objIdArray(settings.config_options.inverters);
             system.inverter.make = system.inverter.make || Object.keys( settings.config_options.inverters )[0];
@@ -58,70 +58,89 @@ var update_system = function(settings) {
         }
     }
 
-    for( var section_name in calculated_formulas ){
-        if( status.data_loaded && misc.objectDefined(input[section_name]) ){
-            status.active_section = section_name;
-            for( var calc_name in calculated_formulas[section_name]){
+
+    settings.input_options.module.make = k.obj_names(settings.components.modules);
+    if( settings.input.module.make ) settings.input_options.module.model = k.obj_names(settings.components.modules[settings.input.module.make]);
+    if( settings.input.module.model ) system.module.specs = settings.components.modules[settings.input.module.make][settings.input.module.model];
+
+    settings.input_options.inverter.make = k.obj_names(settings.components.inverters);
+    if( settings.input.inverter.make ) settings.input_options.inverter.model = k.obj_names(settings.components.inverters[settings.input.inverter.make]);
+
+
+    for( var section_name in settings.input_options ){
+        for( var input_name in settings.input_options[section_name] ){
+            if( typeof settings.input_options[section_name][input_name] === 'string' ){
+                console.log( settings.input_options[section_name][input_name] );
+                console.log( k.obj_names(
+                    f.get_ref(settings.input_options[section_name][input_name], settings)
+                ));
+
+                var to_eval = "k.obj_names(setttings." + settings.input_options[section_name][input_name] + ")";
+                console.log(to_eval);
                 // eval is only being used on strings defined in the settings.json file that is built into the application
                 /* jshint evil:true */
-                calculated[section_name][calc_name] = eval(calculated_formulas[section_name][calc_name]);
+                settings.input_options[section_name][input_name] = eval(to_eval);
                 /* jshint evil:false */
             }
         }
-
     }
 
 
+};
 
-    if( status.data_loaded ) {
+/*
 
-        //system.DC.string_num = settings.system.string_num;
-        //system.DC.string_modules = settings.system.string_modules;
+    if( state.data_loaded ) {
+
+        //system.DC.num_strings = settings.system.num_strings;
+        //system.DC.num_module = settings.system.num_module;
         //if( settings.config_options.modules !== undefined ){
 
-        var old_active_section = status.active_section;
+        var old_active_section = state.active_section;
 
         // Modules
         if( true ){
-            misc.objectDefined(system.DC.module);
+            f.objectDefined(system.DC.module);
 
             settings.config_options.moduleMakeArray = k.objIdArray(settings.config_options.modules);
             if( system.DC.module.make ) settings.config_options.moduleModelArray = k.objIdArray(settings.config_options.modules[system.DC.module.make]);
             if( system.DC.module.model ) system.DC.module.specs = settings.config_options.modules[system.DC.module.make][system.DC.module.model];
 
-            status.active_section = 'array';
+            state.active_section = 'array';
         }
 
         // Array
         if( objectDefined(input.module) ) {
-            //system.module = settings.config_options.modules[settings.misc.module];
+            //system.module = settings.config_options.modules[settings.f.module];
             if( system.DC.module.specs ){
                 system.DC.array = {};
-                system.DC.array.Isc = system.DC.module.specs.Isc * system.DC.string_num;
+                system.DC.array.Isc = system.DC.module.specs.Isc * system.DC.num_strings;
                 system.DC.array.Voc = system.DC.module.specs.Voc * system.DC.string_modules;
-                system.DC.array.Imp = system.DC.module.specs.Imp * system.DC.string_num;
+                system.DC.array.Imp = system.DC.module.specs.Imp * system.DC.num_strings;
                 system.DC.array.Vmp = system.DC.module.specs.Vmp * system.DC.string_modules;
                 system.DC.array.Pmp = system.DC.array.Vmp * system.DC.array.Imp;
 
-                status.active_section = 'DC';
+                state.active_section = 'DC';
             }
 
             // DC
             if( objectDefined(input.DC) ) {
 
                 system.DC.homerun.resistance = config_options.NEC_tables['Ch 9 Table 8 Conductor Properties'][system.DC.homerun.AWG];
-                status.sections.inverter.ready = true;
-                status.active_section = 'inverter';
+                state.sections.inverter.ready = true;
+                state.active_section = 'inverter';
             }
 
             // Inverter
             if( objectDefined(input.DC) ) {
 
                 settings.config_options.inverterMakeArray = k.objIdArray(settings.config_options.inverters);
-                if( system.inverter.make ) settings.config_options.inverterModelArray = k.objIdArray(settings.config_options.inverters[system.inverter.make]);
+                if( system.inverter.make ) {
+                    settings.config_options.inverterModelArray = k.objIdArray(settings.config_options.inverters[system.inverter.make]);
+                }
                 if( system.inverter.model ) system.inverter.specs = settings.config_options.inverters[system.inverter.make][system.inverter.model];
 
-                status.active_section = 'AC';
+                state.active_section = 'AC';
             }
 
             // AC
@@ -144,18 +163,20 @@ var update_system = function(settings) {
 
 
             if( objectDefined(input.AC) ) {
-                status.active_section = old_active_section;
+                state.active_section = old_active_section;
             }
 
-            size.wire_offset.max = size.wire_offset.min + system.DC.string_num * size.wire_offset.base;
+            size.wire_offset.max = size.wire_offset.min + system.DC.num_strings * size.wire_offset.base;
             size.wire_offset.ground = size.wire_offset.max + size.wire_offset.base*1;
 
-            loc.array.left = loc.array.right - ( size.string.w * system.DC.string_num ) - ( size.module.frame.w*3/4 ) ;
+            loc.array.left = loc.array.right - ( size.string.w * system.DC.num_strings ) - ( size.module.frame.w*3/4 ) ;
 
             //return settings;
+
         }
     }
 };
 
+//*/
 
 module.exports = update_system;

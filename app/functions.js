@@ -27,7 +27,7 @@ f.nullToObject = function(object){
     return object;
 };
 
-f.blankCopy = function(object){
+f.blank_copy = function(object){
     var newObject = {};
     for( var key in object ){
         if( object.hasOwnProperty(key) ){
@@ -47,20 +47,47 @@ f.blankCopy = function(object){
     return newObject;
 };
 
-
-
-f.load_database = function(json, settings){
-    settings.database = JSON.parse(json);
-    console.log('database loaded', settings.database);
+f.merge_objects = function(object1, object2){
+    for( var key in object1 ){
+        if( object1.hasOwnProperty(key) ){
+            if( typeof object1[key] === 'object' ) {
+                if( object2[key] === undefined ) object2[key] = {};
+            } else {
+                if( object2[key] === undefined ) object2[key] = null;
+            }
+        }
+    }
 };
-//*/
+
+f.lowercase_names = function(object){
+    var new_object = {};
+    for( var key in object ){
+        if( object.hasOwnProperty(key) ){
+            new_object[key.toLowerCase()] = object[key];
+        }
+    }
+    return new_object;
+};
+
+f.titlecase_names = function(object){
+    var new_object = {};
+    for( var key in object ){
+        if( object.hasOwnProperty(key) ){
+            var new_key = key.charAt(0).toUpperCase() + key.slice(1).toLowerCase();
+            new_object[new_key] = object[key];
+        }
+    }
+    return new_object;
+};
 
 
 
-f.kelem_setup = function(kelem, settings, update){
+
+f.kelem_setup = function(kelem, settings){
+    if( !settings) console.log(settings);
     if( kelem.type === 'selector' ){
         kelem.setRefObj(settings);
-        kelem.setUpdate(update);
+        kelem.setUpdate(settings.update);
         settings.select_registry.push(kelem);
         kelem.update();
     } else if( kelem.type === 'value' ){
@@ -94,14 +121,14 @@ f.add_sections = function(settings, parent_container){
             $('<span>').html(input_name + ': ').appendTo(drawer_content);
             var selector = k$('selector')
                 .setOptionsRef( 'input_options.' + section_name + '.' + input_name )
-                .setRef( 'input.' + section_name + '.' + input_name )
+                .setRef( 'system.' + section_name + '.' + input_name )
                 .appendTo(drawer_content);
-            f.kelem_setup(selector);
+            f.kelem_setup(selector, settings);
         }
     }
 };
 
-f.add_params = function(sections, parent_container){
+f.add_params = function(sections, parent_container, settings){
     for( var section in sections ){
         var title = section.split('_')[0];
         var section_container = k$('div').attr('class', 'param_section').appendTo(parent_container);
@@ -111,7 +138,7 @@ f.add_params = function(sections, parent_container){
         //selection_container.elem.style.width = settings.drawing.size.drawing.w.toString() + 'px';
         selection_container.elem.style.display = 'none';
         sections[section].forEach( function(kelem){
-            f.kelem_setup(kelem);
+            f.kelem_setup(kelem, settings);
             kelem.appendTo(selection_container);
         });
     }
@@ -215,6 +242,35 @@ f.loadComponents = function(string){
         object[component.Make][component.Model] = component;
     }
     return object;
+};
+
+
+
+
+f.load_database = function(FSEC_database_JSON, settings){
+    settings.components.inverters = {};
+    FSEC_database_JSON.inverters.forEach(function(component){
+        if( settings.components.inverters[component.MAKE] === undefined ) settings.components.inverters[component.MAKE] = {};
+        settings.components.inverters[component.MAKE][component.MODEL] = f.titlecase_names(component);
+    });
+    settings.components.modules = {};
+    FSEC_database_JSON.modules.forEach(function(component){
+        if( settings.components.modules[component.MAKE] === undefined ) settings.components.modules[component.MAKE] = {};
+        settings.components.modules[component.MAKE][component.MODEL] = f.titlecase_names(component);
+    });
+};
+
+
+f.get_ref = function(string, object){
+    var ref_array = string.split('.');
+    var level = object;
+    ref_array.forEach(function(level_name,i){
+        if( typeof level[level_name] === 'undefined' ) {
+            return false;
+        }
+        level = level[level_name];
+    });
+    return level;
 };
 
 

@@ -3,7 +3,7 @@ var version_string = "Dev";
 //var version_string = "Alpha20140924";
 
 
-var _ = require('underscore');
+//var _ = require('underscore');
 var moment = require('moment');
 var $ = require('jquery');
 
@@ -36,25 +36,38 @@ settings.config_options.inverters = require('./data/inverters.json');
 console.log(settings);
 settings = settingsDrawing(settings);
 
-//settings.state.version_string = version_string;
 
 //*/
 var settings = require('./app/settings');
+settings.state.version_string = version_string;
+console.log(settings);
 
-var database_json_URL = "http://10.173.64.204:8000/temporary/";
+
+//var database_json_URL = "http://10.173.64.204:8000/temporary/";
+var database_json_URL = "data/fsec_copy.json";
 
 var components = settings.components;
 var system = settings.system;
 
 
 //* TODO: fix cross-origin
-k.AJAX( database_json_URL, k.load_database, settings);
+//k.AJAX( database_json_URL, f.load_database, settings);
+$.getJSON( database_json_URL)
+    .done(function(json){
+        settings.database = json;
+        console.log('database loaded', settings.database);
+        f.load_database(json, settings);
+        update();
+    });
 
-function update(){
+
+
+var update = settings.update = function(){
+
     console.log('updating');
     //console.log('-section', settings.state.active_section);
 
-    f.update_system(settings);
+    update_system(settings);
     //console.log('-section', settings.state.active_section);
 
     settings.select_registry.forEach(function(item){
@@ -62,7 +75,7 @@ function update(){
         item.update();
     });
 
-    //update_system(settings);
+    update_system(settings);
 
     settings.value_registry.forEach(function(item){
         item.update();
@@ -222,7 +235,7 @@ function page_setup(settings){
     $('<div>').html('System Parameters').attr('class', 'section_title').appendTo(system_frame);
     var params_container = $('<div>').attr('class', 'section');
     params_container.css('height', '150px').appendTo(system_frame);
-    f.add_params(page_sections_params, params_container);
+    f.add_params(page_sections_params, params_container, settings);
 
     // drawing
     //var drawing = $('div').attr('id', 'drawing_frame').attr('class', 'section').appendTo(page);
@@ -234,7 +247,7 @@ function page_setup(settings){
         .setRef('state.active_page')
         .attr('class', 'corner_title')
         .appendTo(drawing);
-    f.kelem_setup(page_selector, settings, update);
+    f.kelem_setup(page_selector, settings);
     //console.log(page_selector)
 
     //k$('span').attr('id', 'download').attr('class', 'float_right').appendTo(drawing);
