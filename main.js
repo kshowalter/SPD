@@ -20,11 +20,11 @@ var update_system = require('./app/update_system');
 
 /*
 var settingsCalculated = require('./app/settingsCalculated.js');
-var settingsDrawing = require('./app/settingsDrawing.js');
+var settings_drawing = require('./app/settings_drawing.js');
 
 var settings = require('./data/settings.json');
 settings = settingsCalculated(settings);
-settings.layers = require('./app/settingsLayers.js');
+settings.layers = require('./app/settings_layers.js');
 
 
 settings.config_options = {};
@@ -34,7 +34,7 @@ settings.config_options.modules = require('./data/modules.json');
 settings.config_options.inverters = require('./data/inverters.json');
 
 console.log(settings);
-settings = settingsDrawing(settings);
+settings = settings_drawing(settings);
 
 
 //*/
@@ -186,12 +186,14 @@ function page_setup(settings){
     var drawing = $('<div>').attr('id', 'drawing_frame').appendTo(page);
     drawing.css('width', (settings.drawing.size.drawing.w+20).toString() + "px" );
     $('<div>').html('Drawing').attr('class', 'section_title').appendTo(drawing);
+    /*
     var page_selector = k$('selector')
         .setOptionsRef( 'config_options.page_options' )
         .setRef('state.active_page')
         .attr('class', 'corner_title')
         .appendTo(drawing);
-    f.kelem_setup(page_selector, settings);
+    //f.kelem_setup(page_selector, settings);
+    //*/
     //console.log(page_selector)
 
     //k$('span').attr('id', 'download').attr('class', 'float_right').appendTo(drawing);

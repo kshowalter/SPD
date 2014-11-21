@@ -156,8 +156,8 @@ f.add_selectors = function(settings, parent_container){
 f.update_selectors = function(settings){
     settings.select_registry.forEach(function(select){
         console.log( select );
-        console.log( select.elem.options );
-        console.log( select.elem.selectedIndex );
+//        console.log( select.elem.options );
+//        console.log( select.elem.selectedIndex );
         if( select.elem.selectedIndex >= 0 ) {
             select.value = select.elem.options[select.elem.selectedIndex].value;
         }
@@ -165,11 +165,11 @@ f.update_selectors = function(settings){
         $('<option>').attr('selected',true).attr('disabled',true).attr('hidden',true).appendTo(select.elem);
 
         var list = select.list_ref.get();
-        console.log( Object.prototype.toString.call( list ) );
+        //console.log( Object.prototype.toString.call( list ) );
         //if( Object.prototype.toString.call( list ) === '[object Array]' ){
         if( list instanceof Array ){
             list.forEach(function(opt_name){
-                console.log(opt_name);
+                //console.log(opt_name);
                 var o = document.createElement('option');
                 o.value = opt_name;
                 if( select.value ){
