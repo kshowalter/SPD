@@ -9,8 +9,8 @@ var settings = require('../data/settings.json');
 settings.input_options = settings.input; // copy input reference with options to input_options
 settings.input = f.blank_copy(settings.input_options); // make input section blank
 settings.system_formulas = settings.system; // copy system reference to system_formulas
-settings.system = f.blank_copy(settings.system_formulas); // make system section blank
-f.merge_objects(settings.input, settings.system);
+//settings.system = f.blank_copy(settings.system_formulas); // make system section blank
+//f.merge_objects( settings.input, settings.system );
 
 settings.config_options = {};
 settings.config_options.NEC_tables = require('../data/tables.json');
@@ -23,7 +23,6 @@ settings.layers = require('./settingsLayers.js');
 // TODO Fix settingsDrawing with new variable locations
 var settingsDrawing = require('./settingsDrawing.js');
 settings = settingsDrawing(settings);
-
 
 //settings.state_app.version_string = version_string;
 

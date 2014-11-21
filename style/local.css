@@ -87,11 +87,6 @@ body {
     border-right-color: grey;
 }
 
-.param_section {
-    margin: 4px;
-
-
-}
 
 .drawing {
     margin: 10px;
@@ -123,6 +118,7 @@ body {
     color: #424242;
     border: 1px solid grey;
     padding: 2px;
+    padding-left: 6px;
 }
 
 .title_bar_text {
@@ -151,12 +147,31 @@ body {
 
 
 
+.param_section {
+    margin: 0px;
+    padding: 0px;
+}
 
+.title_line {
+    font-weight: bold;
+    background: #d5d9e8;
+    color: #424242;
+    padding: 2px;
+    padding-left: 6px;
+    margin: 0px;
+}
 
+.title_line_text {
+    font-weight: bold;
+    color: #424242;
 
+}
 
-
-
+.param_section_content {
+    padding: 2px;
+    background: WhiteSmoke;
+    margin-bottom: 0px;
+}
 
 
 

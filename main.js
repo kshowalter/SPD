@@ -63,6 +63,8 @@ $.getJSON( database_json_URL)
 
 
 var update = settings.update = function(){
+    f.update_values(settings);
+    f.update_selectors(settings);
 
     console.log('updating');
     //console.log('-section', settings.state.active_section);
@@ -101,12 +103,12 @@ var update = settings.update = function(){
     //}
 
 
-    k.show_hide_params(page_sections_params, settings);
+    //k.show_hide_params(page_sections_params, settings);
 //    show_hide_selections(page_sections_config, settings.state.active_section);
 
     console.log('settings', settings);
 
-    console.log( f.objectDefined(settings.state) );
+    console.log( f.object_defined(settings.state) );
 
 }
 
@@ -114,64 +116,6 @@ var update = settings.update = function(){
 
 
 
-
-
-
-var page_sections_params = {
-    modules_params: [
-        k$('span').html(' | '),
-        k$('span').html('Pmp: '),
-        k$('value').setRef('system.DC.module.specs.Pmp').setDecimals(1),
-        k$('span').html(' | '),
-        k$('span').html('Isc: '),
-        k$('value').setRef('system.DC.module.specs.Isc').setDecimals(2),
-        k$('span').html(' | '),
-        k$('span').html('Voc: '),
-        k$('value').setRef('system.DC.module.specs.Voc').setDecimals(1),
-        k$('span').html(' | '),
-        k$('span').html('Imp: '),
-        k$('value').setRef('system.DC.module.specs.Imp').setDecimals(2),
-        k$('span').html(' | '),
-        k$('span').html('Vmp: '),
-        k$('value').setRef('system.DC.module.specs.Vmp').setDecimals(1),
-    ],
-    array_params: [
-        k$('span').html(' | '),
-        k$('span').html('Pmp: '),
-        k$('value').setRef('system.DC.array.Pmp').setDecimals(1),
-        k$('span').html(' | '),
-        k$('span').html('Isc: '),
-        k$('value').setRef('system.DC.array.Isc').setDecimals(2),
-        k$('span').html(' | '),
-        k$('span').html('Voc: '),
-        k$('value').setRef('system.DC.array.Voc').setMax(600).attr('id', 'DC_volt').setDecimals(1),
-        k$('span').html(' | '),
-        k$('span').html('Imp: '),
-        k$('value').setRef('system.DC.array.Imp').setDecimals(2),
-        k$('span').html(' | '),
-        k$('span').html('Vmp: '),
-        k$('value').setRef('system.DC.array.Vmp').setDecimals(1),
-    ],
-    DC_params: [
-        k$('span').html(' | '),
-        k$('span').html('Resistance: '),
-        k$('value').setRef('system.DC.homerun.resistance'),
-        k$('span').html(' | '),
-//        k$('span').html('Vmp: '),
-//        k$('value').setRef('system.DC.homerun.'),
-//        k$('span').html(' | '),
-    ],
-    inverter_params: [
-        k$('span').html(' | '),
-        k$('span').html('Inverter specs'),
-        k$('span').html(' | '),
-    ],
-    AC_params: [
-        k$('span').html(' | '),
-        k$('span').html('AC params'),
-        k$('span').html(' | '),
-    ],
-};
 
 
 
@@ -229,13 +173,13 @@ function page_setup(settings){
 
 
     //console.log(section_selector);
-    f.add_sections(settings, config_frame);
+    f.add_selectors(settings, config_frame);
 
     // Parameters and specifications
     $('<div>').html('System Parameters').attr('class', 'section_title').appendTo(system_frame);
     var params_container = $('<div>').attr('class', 'section');
-    params_container.css('height', '150px').appendTo(system_frame);
-    f.add_params(page_sections_params, params_container, settings);
+    params_container.appendTo(system_frame);
+    f.add_params( settings, params_container );
 
     // drawing
     //var drawing = $('div').attr('id', 'drawing_frame').attr('class', 'section').appendTo(page);

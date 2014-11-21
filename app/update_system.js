@@ -5,7 +5,7 @@ var f = require('./functions');
 //var mk_drawing = require('./mk_drawing');
 //var display_svg = require('./display_svg');
 
-var objectDefined = f.objectDefined;
+var object_defined = f.object_defined;
 
 var update_system = function(settings) {
 
@@ -24,7 +24,7 @@ var update_system = function(settings) {
     var sections = k.objIdArray(settings.input);
     //console.log(sections);
     sections.forEach(function(sectionName,id){
-        //console.log( sectionName, f.objectDefined(settings.input[sectionName]) );
+        //console.log( sectionName, f.object_defined(settings.input[sectionName]) );
     });
 
 
@@ -38,7 +38,7 @@ var update_system = function(settings) {
         system.array.num_module = system.array.num_module || 6;
         system.DC.home_run_length = system.DC.home_run_length || 50;
         system.inverter.model = system.inverter.model || 'SI3000';
-        system.AC_type = system.AC_type || '480V Delta';
+        system.AC.type = system.AC.type || '480V Delta';
 
         if( state.data_loaded ){
             system.module.make = system.module.make || Object.keys( settings.config_options.modules )[0];
@@ -79,7 +79,10 @@ var update_system = function(settings) {
                 console.log(to_eval);
                 // eval is only being used on strings defined in the settings.json file that is built into the application
                 /* jshint evil:true */
-                settings.input_options[section_name][input_name] = eval(to_eval);
+                // TODO: Look for alternative solutions that is more universal.
+                // http://perfectionkills.com/global-eval-what-are-the-options/#indirect_eval_call_examples
+                var e = eval; // This allows eval to be called indirectly, triggering a global call in modern browsers.
+                settings.input_options[section_name][input_name] = e(to_eval);
                 /* jshint evil:false */
             }
         }
@@ -100,7 +103,7 @@ var update_system = function(settings) {
 
         // Modules
         if( true ){
-            f.objectDefined(system.DC.module);
+            f.object_defined(system.DC.module);
 
             settings.config_options.moduleMakeArray = k.objIdArray(settings.config_options.modules);
             if( system.DC.module.make ) settings.config_options.moduleModelArray = k.objIdArray(settings.config_options.modules[system.DC.module.make]);
@@ -110,7 +113,7 @@ var update_system = function(settings) {
         }
 
         // Array
-        if( objectDefined(input.module) ) {
+        if( object_defined(input.module) ) {
             //system.module = settings.config_options.modules[settings.f.module];
             if( system.DC.module.specs ){
                 system.DC.array = {};
@@ -124,7 +127,7 @@ var update_system = function(settings) {
             }
 
             // DC
-            if( objectDefined(input.DC) ) {
+            if( object_defined(input.DC) ) {
 
                 system.DC.homerun.resistance = config_options.NEC_tables['Ch 9 Table 8 Conductor Properties'][system.DC.homerun.AWG];
                 state.sections.inverter.ready = true;
@@ -132,7 +135,7 @@ var update_system = function(settings) {
             }
 
             // Inverter
-            if( objectDefined(input.DC) ) {
+            if( object_defined(input.DC) ) {
 
                 settings.config_options.inverterMakeArray = k.objIdArray(settings.config_options.inverters);
                 if( system.inverter.make ) {
@@ -144,7 +147,7 @@ var update_system = function(settings) {
             }
 
             // AC
-            if( objectDefined(input.inverter) ) {
+            if( object_defined(input.inverter) ) {
                 if( system.AC_loadcenter_type ) {
 
                     system.AC_types_availible = config_options.AC_loadcenter_types[system.AC_loadcenter_type];
@@ -156,13 +159,13 @@ var update_system = function(settings) {
 
                     });
 
-                    //system.AC_type = settings.system.AC_type;
+                    //system.AC.type = settings.system.AC_type;
                     system.AC_conductors = settings.config_options.AC_types[system.AC_type];
                 }
             }
 
 
-            if( objectDefined(input.AC) ) {
+            if( object_defined(input.AC) ) {
                 state.active_section = old_active_section;
             }
 
