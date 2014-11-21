@@ -28,8 +28,8 @@ var display_svg = function(settings){
 
     function show_elem_array(elem, offset){
         offset = offset || {x:0,y:0};
-        if( typeof elem.x !== 'undefined' ) { var x = elem.x + offset.x; } 
-        if( typeof elem.y !== 'undefined' ) { var y = elem.y + offset.y; } 
+        if( typeof elem.x !== 'undefined' ) { var x = elem.x + offset.x; }
+        if( typeof elem.y !== 'undefined' ) { var y = elem.y + offset.y; }
 
         if( elem.type === 'rect') {
             //svg.rect( elem.w, elem.h ).move( x-elem.w/2, y-elem.h/2 ).attr( l_attr[elem.layer_name] );
@@ -58,7 +58,7 @@ var display_svg = function(settings){
                 if( ! isNaN(point[0]) && ! isNaN(point[1]) ){
                     points2.push([ point[0]+offset.x, point[1]+offset.y ]);
                 } else {
-                    console.log('error: elem not fully defined', elem)
+                    console.log('error: elem not fully defined', elem);
                 }
             });
             //svg.polyline( points2 ).attr( l_attr[elem.layer_name] );
@@ -73,7 +73,7 @@ var display_svg = function(settings){
         } else if( elem.type === 'text') {
             //var t = svg.text( elem.strings ).move( elem.points[0][0], elem.points[0][1] ).attr( l_attr[elem.layer_name] )
             var font = fonts[elem.font];
-            
+
             var t = document.createElementNS("http://www.w3.org/2000/svg", 'text');
             t.setAttribute('x', x);
             //t.setAttribute('y', y + font['font-size']/2 );
@@ -124,7 +124,7 @@ var display_svg = function(settings){
         } else if(elem.type === 'block') {
             // if it is a block, run this function through each element.
             elem.elements.forEach( function(block_elem,id){
-                show_elem_array(block_elem, {x:x, y:y}) 
+                show_elem_array(block_elem, {x:x, y:y});
             });
         }
     }
@@ -133,4 +133,3 @@ var display_svg = function(settings){
 
 
 module.exports = display_svg;
-

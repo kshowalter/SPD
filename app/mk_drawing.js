@@ -71,10 +71,11 @@ var block_start = function(name) {
     if( typeof name === 'undefined' ){ // if name argument is submitted
         console.log('Error: name required');
     } else {
+        var blk;
         // TODO: What if the same name is submitted twice? throw error or fix?
         block_active = name;
         if( typeof blocks[block_active] !== 'object'){
-            var blk = Object.create(Blk);
+            blk = Object.create(Blk);
             //blk.name = name; // block name
             blocks[block_active] = blk;
         }
@@ -152,11 +153,11 @@ var add = function(type, points, layer_name) {
     }
 
     if( typeof points == 'string') {
-        var points = points.split(' ');
-        for( var i in points ) {
-            points[i] = points[i].split(',');
-            for( var c in points[i] ) {
-                points[i][c] = Number(points[i][c]);
+        var points_a = points.split(' ');
+        for( var i in points_a ) {
+            points_a[i] = points_a[i].split(',');
+            for( var c in points_a[i] ) {
+                points_a[i][c] = Number(points_a[i][c]);
             }
         }
     }
@@ -222,17 +223,18 @@ var text = function(loc, strings, font, layer){
 };
 
 var block = function(name) {// set current block
+    var x,y;
     if( arguments.length === 2 ){ // if coor is passed
         if( typeof arguments[1].x !== 'undefined' ){
-            var x = arguments[1].x;
-            var y = arguments[1].y;
+            x = arguments[1].x;
+            y = arguments[1].y;
         } else {
-            var x = arguments[1][0];
-            var y = arguments[1][1];
+            x = arguments[1][0];
+            y = arguments[1][1];
         }
     } else if( arguments.length === 3 ){ // if x,y is passed
-        var x = arguments[1];
-        var y = arguments[2];
+        x = arguments[1];
+        y = arguments[2];
     }
 
     // TODO: what if block does not exist? print list of blocks?
@@ -266,7 +268,7 @@ var mk_drawing = function(settings){
     clear_drawing();
 
     var x, y, h, w;
-
+    var offset;
 
 // Define blocks
 // module block
@@ -395,26 +397,26 @@ var mk_drawing = function(settings){
     x = 0;
     y = 0;
 
-    layer('AC_ground')
+    layer('AC_ground');
     line([
         [x,y],
         [x,y+40],
-    ])
+    ]);
     y += 25;
     line([
         [x-7.5,y],
         [x+7.5,y],
-    ])
+    ]);
     y += 5;
     line([
         [x-5,y],
         [x+5,y],
-    ])
+    ]);
     y += 5;
     line([
         [x-2.5,y],
         [x+2.5,y],
-    ])
+    ]);
     layer();
 
     block_end();
@@ -568,7 +570,7 @@ var mk_drawing = function(settings){
         y = loc.array.y;
 
         for( var i in _.range(system.DC.string_num)) {
-            var offset = size.wire_offset.min + ( size.wire_offset.base * i );
+            offset = size.wire_offset.min + ( size.wire_offset.base * i );
 
             layer('DC_pos');
             line([
@@ -687,7 +689,7 @@ var mk_drawing = function(settings){
         line([
             [ x+offset, y-size.terminal_diam-size.terminal_diam*3],
             [ x+offset, loc.inverter.y+size.inverter.h/2-size.terminal_diam ],
-        ],'DC_neg')
+        ],'DC_neg');
         block( 'terminal', {
             x: x+offset,
             y: loc.inverter.y+size.inverter.h/2-size.terminal_diam,
@@ -697,7 +699,7 @@ var mk_drawing = function(settings){
         line([
             [ x-offset, y-size.terminal_diam-size.terminal_diam*3],
             [ x-offset, loc.inverter.y+size.inverter.h/2-size.terminal_diam ],
-        ],'DC_pos')
+        ],'DC_pos');
         block( 'terminal', {
             x: x-offset,
             y: loc.inverter.y+size.inverter.h/2-size.terminal_diam,
@@ -709,7 +711,7 @@ var mk_drawing = function(settings){
         line([
             [ x+offset, y-size.terminal_diam-size.terminal_diam*3],
             [ x+offset, loc.inverter.y+size.inverter.h/2-size.terminal_diam ],
-        ],'DC_ground')
+        ],'DC_ground');
         block( 'terminal', {
             x: x+offset,
             y: loc.inverter.y+size.inverter.h/2-size.terminal_diam,
@@ -749,8 +751,8 @@ var mk_drawing = function(settings){
         x = loc.inverter.x;
         y = loc.inverter.y;
 
-        var w = size.inverter.symbol_w;
-        var h = size.inverter.symbol_h;
+        w = size.inverter.symbol_w;
+        h = size.inverter.symbol_h;
 
         var space = w*1/12;
 
@@ -1060,7 +1062,7 @@ var mk_drawing = function(settings){
     rect( [x,y], [w,h] );
 
     y -= h/2;
-    y += 10
+    y += 10;
 
     text( [x,y], 'Voltage Drop', 'table', 'text');
 
@@ -1075,7 +1077,7 @@ var mk_drawing = function(settings){
     rect( [x,y], [w,h] );
 
     y -= h/2;
-    y += 10
+    y += 10;
 
     text( [x,y], 'General Notes', 'table', 'text');
 
