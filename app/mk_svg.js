@@ -28,8 +28,9 @@ var display_svg = function(settings){
 
     function show_elem_array(elem, offset){
         offset = offset || {x:0,y:0};
-        if( typeof elem.x !== 'undefined' ) { var x = elem.x + offset.x; }
-        if( typeof elem.y !== 'undefined' ) { var y = elem.y + offset.y; }
+        var x,y,attr;
+        if( typeof elem.x !== 'undefined' ) { x = elem.x + offset.x; }
+        if( typeof elem.y !== 'undefined' ) { y = elem.y + offset.y; }
 
         if( elem.type === 'rect') {
             //svg.rect( elem.w, elem.h ).move( x-elem.w/2, y-elem.h/2 ).attr( l_attr[elem.layer_name] );
@@ -47,7 +48,7 @@ var display_svg = function(settings){
             r.setAttribute('height', elem.h);
             r.setAttribute('x', x-elem.w/2);
             r.setAttribute('y', y-elem.h/2);
-            var attr = l_attr[elem.layer_name];
+            attr = l_attr[elem.layer_name];
             for( var i2 in attr ){
                 r.setAttribute(i2, attr[i2]);
             }
@@ -65,7 +66,7 @@ var display_svg = function(settings){
 
             var l = document.createElementNS("http://www.w3.org/2000/svg", 'polyline');
             l.setAttribute( 'points', points2.join(' ') );
-            var attr = l_attr[elem.layer_name];
+            attr = l_attr[elem.layer_name];
             for( var i2 in attr ){
                 l.setAttribute(i2, attr[i2]);
             }
@@ -102,7 +103,7 @@ var display_svg = function(settings){
             c.setAttribute('ry', elem.d/2);
             c.setAttribute('cx', x);
             c.setAttribute('cy', y);
-            var attr = l_attr[elem.layer_name];
+            attr = l_attr[elem.layer_name];
             for( var i2 in attr ){
                 c.setAttribute(i2, attr[i2]);
             }

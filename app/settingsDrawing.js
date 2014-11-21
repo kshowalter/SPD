@@ -37,7 +37,7 @@ function settingsDrawing(settings){
         'font-family': 'monospace',
         'font-size':     20,
         'text-anchor':   'left',
-    }
+    };
     fonts['table'] = {
         'font-family': 'monospace',
         'font-size':     6,

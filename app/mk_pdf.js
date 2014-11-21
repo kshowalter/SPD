@@ -19,7 +19,7 @@ var jsPDF = require("../lib/jspdf");
 
 jsPDF.API.mytext = function(){
 
-}
+};
 
 
 var PDFDocument = require('pdfkit');
@@ -42,9 +42,9 @@ var $ = require('../lib/k/k_DOM');
 
 var mk_pdf = function(settings, callback){
     console.log('Making PDF');
-    var title = settings.system.inverter.make + " " + settings.system.inverter.model + " Inverter System"; 
+    var title = settings.system.inverter.make + " " + settings.system.inverter.model + " Inverter System";
 
-    var scale = settings.page.scale;                        
+    var scale = settings.page.scale;
 
     var l_attr = settings.drawing.l_attr;
     var fonts = settings.drawing.fonts;
@@ -64,7 +64,7 @@ var mk_pdf = function(settings, callback){
             Title: 'PV drawing',
             Author: 'FSEC',
         }
-    }
+    };
     var doc = new PDFDocument(doc_options);
     var stream = doc.pipe(blobStream());
 
@@ -105,7 +105,7 @@ var mk_pdf = function(settings, callback){
 //    var c = doc.circle(5, 5, 1)
 //    //c.fill("#6600FF");
 //
-    
+
 
 
 
@@ -122,16 +122,16 @@ var mk_pdf = function(settings, callback){
                 var color = layer_attr.stroke;
                 //console.log(color)
             } else {
-                console.log("no stroke")
+                console.log("no stroke");
             }
-        } 
+        }
 
         //console.log(i)
 
         var x,y;
         offset = offset || {x:0,y:0};
-        if( typeof elem.x !== 'undefined' ) { x = elem.x + offset.x; } 
-        if( typeof elem.y !== 'undefined' ) { y = elem.y + offset.y; } 
+        if( typeof elem.x !== 'undefined' ) { x = elem.x + offset.x; }
+        if( typeof elem.y !== 'undefined' ) { y = elem.y + offset.y; }
 
         if( elem.type === 'rect') {
             x = x * scale;
@@ -143,13 +143,13 @@ var mk_pdf = function(settings, callback){
             doc.lineWidth(0.5)
                 .strokeColor(color)
                 .rect(x-w/2, y-h/2, w, h, 'D')
-                .stroke()
-            
+                .stroke();
+
         } else if( elem.type === 'line') {
             var px,py,px_last,py_last;
-            doc.lineWidth(0.05)
+            doc.lineWidth(0.05);
             doc.strokeColor(color);
-            doc.lineCap('round')
+            doc.lineCap('round');
             elem.points.forEach( function(point){
                 if( ! isNaN(point[0]) && ! isNaN(point[1]) ){
                     px = (point[0]+offset.x)*scale;
@@ -161,12 +161,12 @@ var mk_pdf = function(settings, callback){
                     px_last = px;
                     py_last = py;
                 } else {
-                    console.log('error: elem not fully defined', elem)
+                    console.log('error: elem not fully defined', elem);
                 }
             });
 
             doc.stroke();
-            
+
         } else if( elem.type === 'text') {
             var textList = elem.strings.slice(0);
 
@@ -202,7 +202,7 @@ var mk_pdf = function(settings, callback){
             doc.strokeColor(0);
             doc.fillColor(color);
             doc.circle(x, y, d/2, 'D');
-            doc.stroke()
+            doc.stroke();
             //var c = document.createElementNS("http://www.w3.org/2000/svg", 'ellipse');
             //c.setAttribute('rx', elem.d/2);
             //c.setAttribute('ry', elem.d/2);
@@ -216,7 +216,7 @@ var mk_pdf = function(settings, callback){
         } else if(elem.type === 'block') {
             // if it is a block, run this function through each element.
             elem.elements.forEach( function(block_elem,id){
-                show_elem_array(block_elem, {x:x, y:y} ) 
+                show_elem_array(block_elem, {x:x, y:y} );
             });
         }
     }
@@ -226,10 +226,10 @@ var mk_pdf = function(settings, callback){
     //doc.output('datauri');
     //var url = doc.output('datauristring');
     //console.log(url);
-    
+
     //var link = $('a').href('Download').href(url);
     //console.log(link)
-    
+
     //return link;
 
 
@@ -239,14 +239,14 @@ var mk_pdf = function(settings, callback){
     doc.end();
     stream.on('finish', function(){
         // get a blob you can do whatever you like with
-        var blob = stream.toBlob('application/pdf')
+        var blob = stream.toBlob('application/pdf');
 
         // or get a blob URL for display in the browser
-        var url = stream.toBlobURL('application/pdf')
+        var url = stream.toBlobURL('application/pdf');
         //iframe.src = url
         settings.PDF = {};
         settings.PDF.url = url;
-        console.log(url) 
+        console.log(url);
         callback(settings);
     });
 
