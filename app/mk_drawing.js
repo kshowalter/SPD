@@ -5,7 +5,7 @@ var k = require('../lib/k/k.js');
 //var l_attr = settings.drawing.l_attr;
 var _ = require('underscore');
 // setup drawing containers
-var l_attr = require('./settingsLayers');
+var l_attr = require('./settings_layers');
 
 var elements = [];
 

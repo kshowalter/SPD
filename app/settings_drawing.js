@@ -1,6 +1,6 @@
 "use strict";
 
-function settingsDrawing(settings){
+function settings_drawing(settings){
 
     var system = settings.system;
     var status = settings.status;
@@ -248,4 +248,4 @@ function settingsDrawing(settings){
 }
 
 
-module.exports = settingsDrawing;
+module.exports = settings_drawing;

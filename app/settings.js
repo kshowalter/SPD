@@ -17,12 +17,12 @@ settings.config_options.NEC_tables = require('../data/tables.json');
 //console.log(settings.config_options.NEC_tables);
 
 // load layers
-settings.layers = require('./settingsLayers.js');
+settings.layers = require('./settings_layers.js');
 
 // Load drawing specific settings
-// TODO Fix settingsDrawing with new variable locations
-var settingsDrawing = require('./settingsDrawing.js');
-settings = settingsDrawing(settings);
+// TODO Fix settings_drawing with new variable locations
+var settings_drawing = require('./settings_drawing.js');
+settings = settings_drawing(settings);
 
 //settings.state_app.version_string = version_string;
 
