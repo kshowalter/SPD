@@ -1,25 +1,12 @@
 {
-    "input": {
-        "module": {
-            "make": "defined in code",
-            "model": "defined in code"
-        },
-        "array": {
-            "num_module": [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 ],
-            "num_strings": [ 1, 2, 3, 4, 5, 6 ]
-        },
-        "DC": {
-            "home_run_length": [ 25, 50, 75, 100, 125, 150 ]
-        },
-        "inverter": {
-            "make": "defined in code",
-            "model": "defined in code",
-            "AC_loadcenter_types": {
+    "options":{
+        "AC": {
+            "loadcenter_types": {
                 "240V": [ "240V", "120V" ],
                 "208/120V": [ "208V", "120V" ],
                 "480/277V": [ "480V Wye", "480V Delta", "277V" ]
             },
-            "AC_types": {
+            "types": {
                 "120V": [ "ground", "neutral", "L1" ],
                 "240V": [ "ground", "neutral", "L1", "L2" ],
                 "208V": [ "ground", "neutral", "L1", "L2" ],
@@ -27,9 +14,29 @@
                 "480V Wye": [ "ground", "neutral", "L1", "L2", "L3" ],
                 "480V Delta": [ "ground", "L1", "L2", "L3" ]
             }
+        }
+    },
+
+    "input": {
+        "module": {
+            "make": null,
+            "model": null
+        },
+        "array": {
+            "num_module": [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 ],
+            "num_strings": [ 1, 2, 3, 4, 5, 6 ]
+        },
+        "DC": {
+            "home_run_length": [ 25, 50, 75, 100, 125, 150 ],
+            "wire_size": null
+        },
+        "inverter": {
+            "make": null,
+            "model": null
         },
         "AC": {
-            "type": null,
+            "loadcenter_type": ["240V", "208/120V", "480/277V"],
+            "type": "settings.options.AC.loadcenter_types[settings.system.AC.loadcenter_type]",
             "loadcenter": null,
             "distance_to_loadcenter": null
         }
@@ -38,11 +45,11 @@
 
     "system": {
         "module": {
-            "pmp": "defined in code",
-            "vmp": "defined in code",
-            "imp": "defined in code",
-            "voc": "defined in code",
-            "isc": "defined in code"
+            "pmp": null,
+            "vmp": null,
+            "imp": null,
+            "voc": null,
+            "isc": null
         },
         "array": {
             "isc": "system.module.isc * input.array.num_strings",
@@ -52,10 +59,10 @@
             "pmp": "system.array.vmp  * system.array.array.imp"
         },
         "DC": {
-            "wire_size": null
+
         },
         "inverter": {
-            "vrange": null
+
         },
         "AC": {
             "AWG": null,
