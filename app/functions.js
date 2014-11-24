@@ -47,11 +47,12 @@ f.blank_copy = function(object){
     return newObject;
 };
 
-f.merge_objects = function(object1, object2){
+f.merge_objects = function merge_objects(object1, object2){
     for( var key in object1 ){
         if( object1.hasOwnProperty(key) ){
             if( typeof object1[key] === 'object' ) {
                 if( object2[key] === undefined ) object2[key] = {};
+                merge_objects( object1[key], object2[key] );
             } else {
                 if( object2[key] === undefined ) object2[key] = null;
             }
@@ -155,7 +156,7 @@ f.add_selectors = function(settings, parent_container){
 
 f.update_selectors = function(settings){
     settings.select_registry.forEach(function(select){
-        console.log( select );
+//        console.log( select );
 //        console.log( select.elem.options );
 //        console.log( select.elem.selectedIndex );
         if( select.elem.selectedIndex >= 0 ) {
