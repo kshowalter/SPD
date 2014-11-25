@@ -6,27 +6,32 @@ var json = JSON.parse(json_text);
 
 var output = [];
 
+var reg = /\/|\ /;
+
 function convert( obj, assign, output){
     for( var name in obj){
         var output_value;
         var item = obj[name];
-        var new_assign = assign +"."+ name;
+        var new_assign;
+        if( ! name.match(reg) && ! name[0].match(/\d/) ) new_assign = assign +"."+ name;
+        else new_assign = assign + '["' + name + '"]';
 
         if( item instanceof Array ) {
-            output_value = "["+ item.toString() +"]";
-            output.push( new_assign +" = "+ output_value );
+            //output_value = "["+ item.toString() +"]";
+            output_value = JSON.stringify(item);
+            output.push( new_assign +" = "+ output_value + ";" );
         }
         else if( item === null || item === undefined ){
             output_value = item;
-            output.push( new_assign +" = "+ output_value );
+            output.push( new_assign +" = "+ output_value + ";" );
         }
         else if( typeof item === 'object' ) {
-            output.push( new_assign + " = {}" );
+            output.push( new_assign + " = " + new_assign + " || {};" );
             output = convert( item, new_assign, output );
         }
         else {
             output_value = item;
-            output.push( new_assign +" = "+ output_value );
+            output.push( new_assign +" = "+ output_value + ";" );
         }
 
     }
@@ -34,12 +39,18 @@ function convert( obj, assign, output){
     return output;
 }
 
+var output = ['e = {};'];
+for( var name in json ){
+    var item = json[name];
+    output.push( 'e.' + name + ' = function(settings){' );
+    output = convert( item, '    settings', output );
+    output.push( '};' );
+
+}
+output.push( 'module.exports = e;' );
 
 
-output = convert( json, 'settings', ['settings = {}']);
-
-var output_string = output.join(';\n');
-output_string += ';';
+var output_string = output.join('\n');
 
 //console.log(output);
 //console.log(output_string);
