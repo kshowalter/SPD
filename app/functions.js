@@ -144,7 +144,10 @@ f.add_selectors = function(settings, parent_container){
             settings.select_registry.push({
                 elem: $elem.get()[0],
                 set_ref: set_kontainer,
-                list_ref: list_kontainer
+                list_ref: list_kontainer,
+                onchange: function(){
+                    
+                }
             });
             $('</br>').appendTo(drawer_content);
 
@@ -369,7 +372,8 @@ f.loadComponents = function(string){
 
 
 
-f.load_database = function(FSEC_database_JSON, settings){
+f.load_database = function(FSEC_database_JSON){
+    var settings = f.settings;
     settings.components.inverters = {};
     FSEC_database_JSON.inverters.forEach(function(component){
         if( settings.components.inverters[component.MAKE] === undefined ) settings.components.inverters[component.MAKE] = {};

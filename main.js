@@ -11,37 +11,18 @@ var k = require('./lib/k/k.js');
 var k_data = require('./lib/k/k_data');
 var k$ = require('./lib/k/k_DOM');
 
-var f = require('./app/functions');
 
 var mk_drawing = require('./app/mk_drawing.js');
 var mk_svg= require('./app/mk_svg.js');
 //var mk_pdf = require('./app/mk_pdf.js');
 var update_system = require('./app/update_system');
 
-/*
-var settingsCalculated = require('./app/settingsCalculated.js');
-var settings_drawing = require('./app/settings_drawing.js');
-
-var settings = require('./data/settings.json');
-settings = settingsCalculated(settings);
-settings.layers = require('./app/settings_layers.js');
-
-
-settings.config_options = {};
-settings.config_options.NEC_tables = require('./data/tables.json');
-console.log(settings.config_options.NEC_tables);
-settings.config_options.modules = require('./data/modules.json');
-settings.config_options.inverters = require('./data/inverters.json');
-
-console.log(settings);
-settings = settings_drawing(settings);
-
-
-//*/
 var settings = require('./app/settings');
 settings.state.version_string = version_string;
 console.log(settings);
 
+var f = require('./app/functions');
+f.settings = settings;
 
 //var database_json_URL = "http://10.173.64.204:8000/temporary/";
 var database_json_URL = "data/fsec_copy.json";
@@ -50,13 +31,13 @@ var components = settings.components;
 var system = settings.system;
 
 
-//* TODO: fix cross-origin
-//k.AJAX( database_json_URL, f.load_database, settings);
+
+
 $.getJSON( database_json_URL)
     .done(function(json){
         settings.database = json;
         console.log('database loaded', settings.database);
-        f.load_database(json, settings);
+        f.load_database(json);
         update();
     });
 
@@ -110,7 +91,7 @@ var update = settings.update = function(){
 
     console.log( f.object_defined(settings.state) );
 
-}
+};
 
 
 
@@ -180,6 +161,9 @@ function page_setup(settings){
     var params_container = $('<div>').attr('class', 'section');
     params_container.appendTo(system_frame);
     f.add_params( settings, params_container );
+
+    //TODO: add svg display of modules
+    // http://quote.snapnrack.com/ui/o100.php#step-2
 
     // drawing
     //var drawing = $('div').attr('id', 'drawing_frame').attr('class', 'section').appendTo(page);
