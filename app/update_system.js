@@ -18,13 +18,13 @@ var update_system = function(settings) {
 
     var calculated = settings.calculated;
     var calculated_formulas = settings.calculated_formulas;
-    var input = settings.input;
+    var inputs = settings.inputs;
     var input_options = settings.input_options;
 
-    var sections = k.objIdArray(settings.input);
+    var sections = k.objIdArray(settings.inputs);
     //console.log(sections);
     sections.forEach(function(sectionName,id){
-        //console.log( sectionName, f.object_defined(settings.input[sectionName]) );
+        //console.log( sectionName, f.object_defined(settings.inputs[sectionName]) );
     });
 
 
@@ -60,11 +60,11 @@ var update_system = function(settings) {
 
 
     settings.input_options.module.make = k.obj_names(settings.components.modules);
-    if( settings.input.module.make ) settings.input_options.module.model = k.obj_names(settings.components.modules[settings.input.module.make]);
-    if( settings.input.module.model ) system.module.specs = settings.components.modules[settings.input.module.make][settings.input.module.model];
+    if( settings.inputs.module.make ) settings.input_options.module.model = k.obj_names(settings.components.modules[settings.inputs.module.make]);
+    if( settings.inputs.module.model ) system.module.specs = settings.components.modules[settings.inputs.module.make][settings.inputs.module.model];
 
     settings.input_options.inverter.make = k.obj_names(settings.components.inverters);
-    if( settings.input.inverter.make ) settings.input_options.inverter.model = k.obj_names(settings.components.inverters[settings.input.inverter.make]);
+    if( settings.inputs.inverter.make ) settings.input_options.inverter.model = k.obj_names(settings.components.inverters[settings.inputs.inverter.make]);
 
 
     for( var section_name in settings.input_options ){
@@ -127,7 +127,7 @@ var update_system = function(settings) {
             }
 
             // DC
-            if( object_defined(input.DC) ) {
+            if( object_defined(inputs.DC) ) {
 
                 system.DC.homerun.resistance = config_options.NEC_tables['Ch 9 Table 8 Conductor Properties'][system.DC.homerun.AWG];
                 state.sections.inverter.ready = true;
@@ -135,7 +135,7 @@ var update_system = function(settings) {
             }
 
             // Inverter
-            if( object_defined(input.DC) ) {
+            if( object_defined(inputs.DC) ) {
 
                 settings.config_options.inverterMakeArray = k.objIdArray(settings.config_options.inverters);
                 if( system.inverter.make ) {
@@ -147,7 +147,7 @@ var update_system = function(settings) {
             }
 
             // AC
-            if( object_defined(input.inverter) ) {
+            if( object_defined(inputs.inverter) ) {
                 if( system.AC_loadcenter_type ) {
 
                     system.AC_types_availible = config_options.AC_loadcenter_types[system.AC_loadcenter_type];
@@ -165,7 +165,7 @@ var update_system = function(settings) {
             }
 
 
-            if( object_defined(input.AC) ) {
+            if( object_defined(inputs.AC) ) {
                 state.active_section = old_active_section;
             }
 

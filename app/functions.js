@@ -70,15 +70,30 @@ f.lowercase_names = function(object){
     return new_object;
 };
 
+f.titlecase_name = function(name){
+    return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+};
+
 f.titlecase_names = function(object){
     var new_object = {};
     for( var key in object ){
         if( object.hasOwnProperty(key) ){
-            var new_key = key.charAt(0).toUpperCase() + key.slice(1).toLowerCase();
+            var new_key = f.titlecase_name(key);
             new_object[new_key] = object[key];
         }
     }
     return new_object;
+};
+
+
+f.pretty_name = function(name){
+    var l = name.split('_');
+    l.forEach(function(name_seqment,i){
+        l[i] = f.titlecase_name(name_seqment);
+    });
+    var pretty = l.join(' ');
+
+    return pretty;
 };
 
 
@@ -118,13 +133,13 @@ f.add_selectors = function(settings, parent_container){
         var system_title = $('<a>')
             .attr('class', 'title_bar_text')
             .attr('href', '#')
-            .text(section_name)
+            .text(f.titlecase_name(section_name))
             .appendTo(system_div);
         $(this).trigger('click');
         var drawer = $('<div>').attr('class', 'drawer').appendTo(selection_container);
         var drawer_content = $('<div>').attr('class', 'drawer_content').appendTo(drawer);
         for( var input_name in settings.input_options[section_name] ){
-            $('<span>').html(input_name + ': ').appendTo(drawer_content);
+            $('<span>').html(f.pretty_name(input_name) + ': ').appendTo(drawer_content);
             /*
             var selector = k$('selector')
                 .setOptionsRef( 'input_options.' + section_name + '.' + input_name )
@@ -141,14 +156,21 @@ f.add_selectors = function(settings, parent_container){
             var $elem = $('<select>')
                 .attr('class', 'selector')
                 .appendTo(drawer_content);
-            settings.select_registry.push({
+            var selector = {
                 elem: $elem.get()[0],
                 set_ref: set_kontainer,
                 list_ref: list_kontainer,
-                onchange: function(){
-                    
-                }
+                value: false
+            };
+            $elem.change(function(event){
+                //console.log(event);
+                selector.value = event.target.options[event.target.selectedIndex].value;
+                selector.set_ref.set(selector.value);
+                console.log(selector.set_ref.refString);
+                //console.log(selector.value);
+                settings.f.update();
             });
+            settings.select_registry.push(selector);
             $('</br>').appendTo(drawer_content);
 
         }
@@ -166,6 +188,7 @@ f.update_selectors = function(settings){
             select.value = select.elem.options[select.elem.selectedIndex].value;
         }
 
+        select.elem.innerHTML = "";
         $('<option>').attr('selected',true).attr('disabled',true).attr('hidden',true).appendTo(select.elem);
 
         var list = select.list_ref.get();
@@ -177,11 +200,11 @@ f.update_selectors = function(settings){
                 var o = document.createElement('option');
                 o.value = opt_name;
                 if( select.value ){
-                    if( opt_name.toString() === select.elem.value.toString() ) {
-                        //console.log('found it:', value);
+                    if( opt_name.toString() === select.value.toString() ) {
+                        //console.log('found it:', opt_name);
                         o.selected = "selected";
                     } else {
-                        //console.log('does not match: ', value, this.value)
+                        //console.log('does not match: ', opt_name, select.value );
                     }
                     //o.setAttribute('class', 'selector_option');
                 } else {
@@ -190,6 +213,8 @@ f.update_selectors = function(settings){
                 o.innerHTML = opt_name;
                 select.elem.appendChild(o);
             });
+        } else {
+            //console.log('list not a list', list, select);
         }
     });
 };
@@ -199,8 +224,6 @@ f.add_options = function(select, array){
         $('<option>').attr( 'value', option ).text(option).appendTo(select);
     });
 };
-
-
 
 
 f.add_params = function(settings, parent_container){
@@ -218,13 +241,13 @@ f.add_params = function(settings, parent_container){
             var system_title = $('<a>')
                 .attr('class', 'title_line_text')
                 .attr('href', '#')
-                .text(section_name)
+                .text(f.titlecase_name(section_name))
                 .appendTo(system_div);
             $(this).trigger('click');
             var drawer = $('<div>').attr('class', '').appendTo(selection_container);
             var drawer_content = $('<div>').attr('class', 'param_section_content').appendTo(drawer);
             for( var input_name in settings.system[section_name] ){
-                $('<span>').html(input_name + ': ').appendTo(drawer_content);
+                $('<span>').html(f.pretty_name(input_name) + ': ').appendTo(drawer_content);
                 /*
                 var selector = k$('value')
                     //.setOptionsRef( 'input_options.' + section_name + '.' + input_name )
@@ -409,6 +432,23 @@ f.set_ref = function( object, ref_string, value ){
     });
 
     return level;
+};
+
+
+
+f.set_AWG = function(settings){
+    //console.log( settings.config_options.NEC_tables );
+    console.log( k.obj_names(settings.config_options.NEC_tables['Ch 9 Table 8 Conductor Properties']) );
+    settings.options = settings.options || {};
+    settings.options.DC = settings.options.DC || {};
+    settings.options.DC.AWG = k.obj_names(settings.config_options.NEC_tables['Ch 9 Table 8 Conductor Properties']);
+
+};
+
+f.log_if_database_loaded = function(e){
+    if(f.settings.state.database_loaded) {
+        console.log(e);
+    }
 };
 
 module.exports = f;

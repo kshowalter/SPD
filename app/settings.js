@@ -8,20 +8,26 @@ var k = require('../lib/k/k.js');
 var mk_settings = require('../data/settings.json.js');
 
 var settings = {};
-settings = mk_settings.options(settings);
-settings = mk_settings.input(settings);
-settings = mk_settings.system(settings);
-
-
-settings.input_options = settings.input; // copy input reference with options to input_options
-settings.input = f.blank_copy(settings.input_options); // make input section blank
-settings.system_formulas = settings.system; // copy system reference to system_formulas
-settings.system = f.blank_copy(settings.system_formulas); // make system section blank
-f.merge_objects( settings.input, settings.system );
 
 settings.config_options = {};
 settings.config_options.NEC_tables = require('../data/tables.json');
 //console.log(settings.config_options.NEC_tables);
+f.set_AWG(settings);
+
+settings.state = settings.state || {};
+settings.state.database_loaded = false;
+
+settings = mk_settings.options(settings);
+settings = mk_settings.inputs(settings);
+settings = mk_settings.system(settings);
+
+
+settings.input_options = settings.inputs; // copy input reference with options to input_options
+settings.inputs = f.blank_copy(settings.input_options); // make input section blank
+settings.system_formulas = settings.system; // copy system reference to system_formulas
+settings.system = f.blank_copy(settings.system_formulas); // make system section blank
+f.merge_objects( settings.inputs, settings.system );
+
 
 // load layers
 settings.layers = require('./settings_layers.js');
@@ -42,7 +48,7 @@ var system = settings.system;
 
 //var config_options = settings.config_options = settings.config_options || {};
 
-var state = settings.state = {};
+
 
 
 settings.components = {};

@@ -19,10 +19,12 @@ var update_system = require('./app/update_system');
 
 var settings = require('./app/settings');
 settings.state.version_string = version_string;
-console.log(settings);
+console.log('settings', settings);
 
 var f = require('./app/functions');
+
 f.settings = settings;
+settings.f = f;
 
 //var database_json_URL = "http://10.173.64.204:8000/temporary/";
 var database_json_URL = "data/fsec_copy.json";
@@ -36,33 +38,39 @@ var system = settings.system;
 $.getJSON( database_json_URL)
     .done(function(json){
         settings.database = json;
-        console.log('database loaded', settings.database);
+        //console.log('database loaded', settings.database);
         f.load_database(json);
+        settings.state.database_loaded = true;
         update();
     });
 
 
 
 var update = settings.update = function(){
+    console.log('/--- begin update');
+
     f.update_values(settings);
     f.update_selectors(settings);
 
-    console.log('updating');
     //console.log('-section', settings.state.active_section);
+
+    f.update_selectors(settings);
+    f.update_values(settings);
 
     update_system(settings);
     //console.log('-section', settings.state.active_section);
 
+    /*
     settings.select_registry.forEach(function(item){
         //console.log(item)
         item.update();
     });
-
     update_system(settings);
 
     settings.value_registry.forEach(function(item){
         item.update();
     });
+    //*/
 
     // Make drawing
 //    settings.elements = mk_drawing(settings);
@@ -87,11 +95,13 @@ var update = settings.update = function(){
     //k.show_hide_params(page_sections_params, settings);
 //    show_hide_selections(page_sections_config, settings.state.active_section);
 
-    console.log('settings', settings);
+    //console.log('settings', settings);
 
-    console.log( f.object_defined(settings.state) );
+    //console.log( f.object_defined(settings.state) );
 
+    console.log('\\--- end update');
 };
+f.update = update;
 
 
 
@@ -201,4 +211,4 @@ setInterval(function(){ k.update_status_page(status_id, boot_time, version_strin
 update();
 
 console.log('settings', settings);
-console.log('window', window);
+//console.log('window', window);
