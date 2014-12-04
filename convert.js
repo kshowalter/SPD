@@ -26,7 +26,7 @@ function convert( obj, assign, output){
         }
         else if( item === null || item === undefined ){
             output_value = item;
-            line = new_assign +" = "+ output_value;
+            line = new_assign +" = "+ new_assign +' || '+ output_value;
         }
         else if( typeof item === 'object' ) {
             line = new_assign + " = " + new_assign + " || {}";

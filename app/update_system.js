@@ -30,7 +30,8 @@ var update_system = function(settings) {
 
 
     //var show_defaults = false;
-    if( state.version_string === 'Dev'){
+    /*
+    if( false && state.version_string === 'Dev'){
         //show_defaults = true;
         console.log('Dev mode - defaults on');
 
@@ -47,7 +48,8 @@ var update_system = function(settings) {
 
 
             config_options.DC_homerun_AWG_options = k.objIdArray( config_options.NEC_tables['Ch 9 Table 8 Conductor Properties'] );
-            system.array.homerun.AWG = system.array.homerun.AWG || config_options.DC_homerun_AWG_options[config_options.DC_homerun_AWG_options.length-1];
+            system.array.homerun.AWG = system.array.homerun.AWG ||
+                          config_options.DC_homerun_AWG_options[config_options.DC_homerun_AWG_options.length-1];
 
             settings.config_options.inverterMakeArray = k.objIdArray(settings.config_options.inverters);
             system.inverter.make = system.inverter.make || Object.keys( settings.config_options.inverters )[0];
@@ -57,15 +59,21 @@ var update_system = function(settings) {
 
         }
     }
+    //*/
 
+    console.log(settings.system.module.make);
 
     settings.input_options.module.make = k.obj_names(settings.components.modules);
-    if( settings.inputs.module.make ) settings.input_options.module.model = k.obj_names(settings.components.modules[settings.inputs.module.make]);
-    if( settings.inputs.module.model ) system.module.specs = settings.components.modules[settings.inputs.module.make][settings.inputs.module.model];
-
+    if( settings.system.module.make ) {
+        settings.input_options.module.model  = k.obj_names( settings.components.modules[settings.system.module.make] );
+    }
+    if( settings.system.module.model ) {
+        system.module.specs = settings.components.modules[settings.inputs.module.make][settings.system.module.model];
+    }
     settings.input_options.inverter.make = k.obj_names(settings.components.inverters);
-    if( settings.inputs.inverter.make ) settings.input_options.inverter.model = k.obj_names(settings.components.inverters[settings.inputs.inverter.make]);
-
+    if( settings.inputs.inverter.make ) {
+        settings.input_options.inverter.model = k.obj_names( settings.components.inverters[settings.system.inverter.make] );
+    }
 
     for( var section_name in settings.input_options ){
         for( var input_name in settings.input_options[section_name] ){

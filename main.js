@@ -2,7 +2,6 @@
 var version_string = "Dev";
 //var version_string = "Alpha20140924";
 
-
 //var _ = require('underscore');
 var moment = require('moment');
 var $ = require('jquery');
@@ -10,7 +9,6 @@ var $ = require('jquery');
 var k = require('./lib/k/k.js');
 var k_data = require('./lib/k/k_data');
 var k$ = require('./lib/k/k_DOM');
-
 
 var mk_drawing = require('./app/mk_drawing.js');
 var mk_svg= require('./app/mk_svg.js');
@@ -34,7 +32,6 @@ var system = settings.system;
 
 
 
-
 $.getJSON( database_json_URL)
     .done(function(json){
         settings.database = json;
@@ -49,15 +46,15 @@ $.getJSON( database_json_URL)
 var update = settings.update = function(){
     console.log('/--- begin update');
 
-    f.update_values(settings);
-    f.update_selectors(settings);
-
-    //console.log('-section', settings.state.active_section);
-
-    f.update_selectors(settings);
-    f.update_values(settings);
+    // Secondary selectors update
 
     update_system(settings);
+
+    // Update page
+    f.update_selectors(settings);
+    f.update_values(settings);
+
+
     //console.log('-section', settings.state.active_section);
 
     /*
@@ -112,6 +109,7 @@ f.update = update;
 
 
 // Dev settings
+/*
 if( version_string === 'Dev' && true ){
     for( var section in settings.state.sections ){
         settings.state.sections[section].ready = true;
@@ -120,6 +118,7 @@ if( version_string === 'Dev' && true ){
 } else {
     settings.state.sections.modules.ready = true;
 }
+//*/
 ////////
 
 

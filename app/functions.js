@@ -50,7 +50,9 @@ f.blank_copy = function(object){
 f.merge_objects = function merge_objects(object1, object2){
     for( var key in object1 ){
         if( object1.hasOwnProperty(key) ){
-            if( typeof object1[key] === 'object' ) {
+            //if( key === 'make' ) console.log(key, object1, typeof object1[key], typeof object2[key]);
+            //console.log(key, object1, typeof object1[key], typeof object2[key]);
+            if( object1[key] && object1[key].constructor === Object ) {
                 if( object2[key] === undefined ) object2[key] = {};
                 merge_objects( object1[key], object2[key] );
             } else {
@@ -407,6 +409,8 @@ f.load_database = function(FSEC_database_JSON){
         if( settings.components.modules[component.MAKE] === undefined ) settings.components.modules[component.MAKE] = {};
         settings.components.modules[component.MAKE][component.MODEL] = f.titlecase_names(component);
     });
+
+    f.update();
 };
 
 
@@ -437,11 +441,10 @@ f.set_ref = function( object, ref_string, value ){
 
 
 f.set_AWG = function(settings){
-    //console.log( settings.config_options.NEC_tables );
-    console.log( k.obj_names(settings.config_options.NEC_tables['Ch 9 Table 8 Conductor Properties']) );
+    var list = k.obj_names(settings.config_options.NEC_tables['Ch 9 Table 8 Conductor Properties']);
     settings.options = settings.options || {};
     settings.options.DC = settings.options.DC || {};
-    settings.options.DC.AWG = k.obj_names(settings.config_options.NEC_tables['Ch 9 Table 8 Conductor Properties']);
+    settings.options.DC.AWG = list;
 
 };
 
