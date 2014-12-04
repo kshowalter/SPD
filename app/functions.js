@@ -62,42 +62,31 @@ f.merge_objects = function merge_objects(object1, object2){
     }
 };
 
-f.lowercase_names = function(object){
-    var new_object = {};
-    for( var key in object ){
-        if( object.hasOwnProperty(key) ){
-            new_object[key.toLowerCase()] = object[key];
-        }
-    }
-    return new_object;
-};
 
-f.titlecase_name = function(name){
-    return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+f.pretty_word = function(name){
+    return name.charAt(0).toUpperCase() + name.slice(1);
 };
-
-f.titlecase_names = function(object){
-    var new_object = {};
-    for( var key in object ){
-        if( object.hasOwnProperty(key) ){
-            var new_key = f.titlecase_name(key);
-            new_object[new_key] = object[key];
-        }
-    }
-    return new_object;
-};
-
 
 f.pretty_name = function(name){
     var l = name.split('_');
     l.forEach(function(name_seqment,i){
-        l[i] = f.titlecase_name(name_seqment);
+        l[i] = f.pretty_word(name_seqment);
     });
     var pretty = l.join(' ');
 
     return pretty;
 };
 
+f.pretty_names = function(object){
+    var new_object = {};
+    for( var key in object ){
+        if( object.hasOwnProperty(key) ){
+            var new_key = f.pretty_name(key);
+            new_object[new_key] = object[key];
+        }
+    }
+    return new_object;
+};
 
 
 
@@ -135,7 +124,7 @@ f.add_selectors = function(settings, parent_container){
         var system_title = $('<a>')
             .attr('class', 'title_bar_text')
             .attr('href', '#')
-            .text(f.titlecase_name(section_name))
+            .text(f.pretty_name(section_name))
             .appendTo(system_div);
         $(this).trigger('click');
         var drawer = $('<div>').attr('class', 'drawer').appendTo(selection_container);
@@ -162,16 +151,22 @@ f.add_selectors = function(settings, parent_container){
                 elem: $elem.get()[0],
                 set_ref: set_kontainer,
                 list_ref: list_kontainer,
-                value: false
+                value: function(){
+                    //console.log( this.set_ref.refString, this.elem.selectedIndex );
+                    //console.log( this.elem.options[this.elem.selectedIndex] );
+                    if( this.elem.selectedIndex > 0) return this.elem.options[this.elem.selectedIndex].value;
+                    else return false;
+                }
             };
             $elem.change(function(event){
                 //console.log(event);
-                selector.value = event.target.options[event.target.selectedIndex].value;
-                selector.set_ref.set(selector.value);
-                console.log(selector.set_ref.refString);
+                //selector.value = event.target.options[event.target.selectedIndex].value;
+                //selector.set_ref.set(selector.value);
+                //console.log(selector.set_ref.refString);
                 //console.log(selector.value);
                 settings.f.update();
             });
+            f.selector_add_options(selector);
             settings.select_registry.push(selector);
             $('</br>').appendTo(drawer_content);
 
@@ -179,45 +174,62 @@ f.add_selectors = function(settings, parent_container){
     }
 };
 
+f.selector_add_options = function(selector){
+    var list = selector.list_ref.get();
+    selector.elem.innerHTML = "";
+    if( list instanceof Array ){
+        //var current_value = selector.value();
+        var current_value = selector.set_ref.get();
+        //if(current_value) console.log(current_value);
+        //console.log(current_value);
 
+        if( !current_value ) {
+            $('<option>').attr('selected',true).attr('disabled',true).attr('hidden',true).appendTo(selector.elem);
+        } else {
+            //console.log(selector.list_ref.refString);
+        }
+
+        list.forEach(function(opt_name){
+            //console.log(opt_name);
+            var o = document.createElement('option');
+            o.value = opt_name;
+            if( current_value ){
+                if( opt_name.toString() === current_value.toString() ) {
+                    //console.log('found it:', opt_name);
+                    o.selected = "selected";
+                } else {
+                    //console.log('does not match: ', opt_name, ",",  current_value, "." );
+                }
+                //o.setAttribute('class', 'selector_option');
+            } else {
+                //console.log('no current value')
+            }
+            o.innerHTML = opt_name;
+            selector.elem.appendChild(o);
+        });
+
+    } else {
+        //console.log('list not a list', list, select);
+    }
+};
 
 f.update_selectors = function(settings){
     settings.select_registry.forEach(function(select){
-//        console.log( select );
-//        console.log( select.elem.options );
-//        console.log( select.elem.selectedIndex );
+        //console.log( select );
+        //console.log( select.elem.options );
+        //console.log( select.elem.selectedIndex );
+        /*
         if( select.elem.selectedIndex >= 0 ) {
             select.value = select.elem.options[select.elem.selectedIndex].value;
         }
+        //*/
 
         select.elem.innerHTML = "";
-        $('<option>').attr('selected',true).attr('disabled',true).attr('hidden',true).appendTo(select.elem);
 
         var list = select.list_ref.get();
         //console.log( Object.prototype.toString.call( list ) );
         //if( Object.prototype.toString.call( list ) === '[object Array]' ){
-        if( list instanceof Array ){
-            list.forEach(function(opt_name){
-                //console.log(opt_name);
-                var o = document.createElement('option');
-                o.value = opt_name;
-                if( select.value ){
-                    if( opt_name.toString() === select.value.toString() ) {
-                        //console.log('found it:', opt_name);
-                        o.selected = "selected";
-                    } else {
-                        //console.log('does not match: ', opt_name, select.value );
-                    }
-                    //o.setAttribute('class', 'selector_option');
-                } else {
-                    //console.log('no current value')
-                }
-                o.innerHTML = opt_name;
-                select.elem.appendChild(o);
-            });
-        } else {
-            //console.log('list not a list', list, select);
-        }
+
     });
 };
 
@@ -243,7 +255,7 @@ f.add_params = function(settings, parent_container){
             var system_title = $('<a>')
                 .attr('class', 'title_line_text')
                 .attr('href', '#')
-                .text(f.titlecase_name(section_name))
+                .text(f.pretty_name(section_name))
                 .appendTo(system_div);
             $(this).trigger('click');
             var drawer = $('<div>').attr('class', '').appendTo(selection_container);
@@ -402,12 +414,12 @@ f.load_database = function(FSEC_database_JSON){
     settings.components.inverters = {};
     FSEC_database_JSON.inverters.forEach(function(component){
         if( settings.components.inverters[component.MAKE] === undefined ) settings.components.inverters[component.MAKE] = {};
-        settings.components.inverters[component.MAKE][component.MODEL] = f.titlecase_names(component);
+        settings.components.inverters[component.MAKE][component.MODEL] = f.pretty_names(component);
     });
     settings.components.modules = {};
     FSEC_database_JSON.modules.forEach(function(component){
         if( settings.components.modules[component.MAKE] === undefined ) settings.components.modules[component.MAKE] = {};
-        settings.components.modules[component.MAKE][component.MODEL] = f.titlecase_names(component);
+        settings.components.modules[component.MAKE][component.MODEL] = f.pretty_names(component);
     });
 
     f.update();

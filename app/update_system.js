@@ -61,12 +61,14 @@ var update_system = function(settings) {
     }
     //*/
 
-    console.log(settings.system.module.make);
+    //console.log("update_system");
+    //console.log(settings.system.module.make);
 
     settings.input_options.module.make = k.obj_names(settings.components.modules);
     if( settings.system.module.make ) {
         settings.input_options.module.model  = k.obj_names( settings.components.modules[settings.system.module.make] );
     }
+    /*
     if( settings.system.module.model ) {
         system.module.specs = settings.components.modules[settings.inputs.module.make][settings.system.module.model];
     }
@@ -86,16 +88,19 @@ var update_system = function(settings) {
                 var to_eval = "k.obj_names(setttings." + settings.input_options[section_name][input_name] + ")";
                 console.log(to_eval);
                 // eval is only being used on strings defined in the settings.json file that is built into the application
-                /* jshint evil:true */
+                /* jshint evil:true //*/
                 // TODO: Look for alternative solutions that is more universal.
                 // http://perfectionkills.com/global-eval-what-are-the-options/#indirect_eval_call_examples
+                /*
                 var e = eval; // This allows eval to be called indirectly, triggering a global call in modern browsers.
                 settings.input_options[section_name][input_name] = e(to_eval);
-                /* jshint evil:false */
+                /* jshint evil:false //*/
+                /*
             }
         }
     }
 
+    //*/
 
 };
 

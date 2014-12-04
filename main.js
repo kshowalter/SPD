@@ -46,13 +46,24 @@ $.getJSON( database_json_URL)
 var update = settings.update = function(){
     console.log('/--- begin update');
 
-    // Secondary selectors update
+    settings.select_registry.forEach(function(selector){
+        //console.log(selector.value());
+        selector.set_ref.set(selector.value());
+
+    });
 
     update_system(settings);
 
+    settings.select_registry.forEach(function(selector){
+        f.selector_add_options(selector);
+    });
+
+    // Secondary selectors update
+
+
     // Update page
-    f.update_selectors(settings);
-    f.update_values(settings);
+    //f.update_selectors(settings);
+    //f.update_values(settings);
 
 
     //console.log('-section', settings.state.active_section);
