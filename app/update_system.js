@@ -72,10 +72,12 @@ var update_system = function(settings) {
     if( settings.system.module.model ) {
         system.module.specs = settings.components.modules[settings.inputs.module.make][settings.system.module.model];
     }
+    */
     settings.input_options.inverter.make = k.obj_names(settings.components.inverters);
     if( settings.inputs.inverter.make ) {
         settings.input_options.inverter.model = k.obj_names( settings.components.inverters[settings.system.inverter.make] );
     }
+    /*
 
     for( var section_name in settings.input_options ){
         for( var input_name in settings.input_options[section_name] ){

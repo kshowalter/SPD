@@ -89,7 +89,7 @@ f.pretty_names = function(object){
 };
 
 
-
+/*
 f.kelem_setup = function(kelem, settings){
     if( !settings) console.log(settings);
     if( kelem.type === 'selector' ){
@@ -104,7 +104,7 @@ f.kelem_setup = function(kelem, settings){
     }
     return kelem;
 };
-
+*/
 
 
 
@@ -151,19 +151,16 @@ f.add_selectors = function(settings, parent_container){
                 elem: $elem.get()[0],
                 set_ref: set_kontainer,
                 list_ref: list_kontainer,
+                interacted: false,
                 value: function(){
                     //console.log( this.set_ref.refString, this.elem.selectedIndex );
                     //console.log( this.elem.options[this.elem.selectedIndex] );
-                    if( this.elem.selectedIndex > 0) return this.elem.options[this.elem.selectedIndex].value;
+                    //if( this.interacted )
+                    if( this.elem.selectedIndex >= 0) return this.elem.options[this.elem.selectedIndex].value;
                     else return false;
                 }
             };
             $elem.change(function(event){
-                //console.log(event);
-                //selector.value = event.target.options[event.target.selectedIndex].value;
-                //selector.set_ref.set(selector.value);
-                //console.log(selector.set_ref.refString);
-                //console.log(selector.value);
                 settings.f.update();
             });
             f.selector_add_options(selector);
@@ -178,16 +175,8 @@ f.selector_add_options = function(selector){
     var list = selector.list_ref.get();
     selector.elem.innerHTML = "";
     if( list instanceof Array ){
-        //var current_value = selector.value();
         var current_value = selector.set_ref.get();
-        //if(current_value) console.log(current_value);
-        //console.log(current_value);
-
-        if( !current_value ) {
-            $('<option>').attr('selected',true).attr('disabled',true).attr('hidden',true).appendTo(selector.elem);
-        } else {
-            //console.log(selector.list_ref.refString);
-        }
+        $('<option>').attr('selected',true).attr('disabled',true).attr('hidden',true).appendTo(selector.elem);
 
         list.forEach(function(opt_name){
             //console.log(opt_name);
@@ -213,25 +202,9 @@ f.selector_add_options = function(selector){
     }
 };
 
-f.update_selectors = function(settings){
-    settings.select_registry.forEach(function(select){
-        //console.log( select );
-        //console.log( select.elem.options );
-        //console.log( select.elem.selectedIndex );
-        /*
-        if( select.elem.selectedIndex >= 0 ) {
-            select.value = select.elem.options[select.elem.selectedIndex].value;
-        }
-        //*/
 
-        select.elem.innerHTML = "";
 
-        var list = select.list_ref.get();
-        //console.log( Object.prototype.toString.call( list ) );
-        //if( Object.prototype.toString.call( list ) === '[object Array]' ){
 
-    });
-};
 
 f.add_options = function(select, array){
     array.forEach( function(option){

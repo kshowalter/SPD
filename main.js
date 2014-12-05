@@ -48,7 +48,8 @@ var update = settings.update = function(){
 
     settings.select_registry.forEach(function(selector){
         //console.log(selector.value());
-        selector.set_ref.set(selector.value());
+        if(selector.value()) selector.set_ref.set(selector.value());
+        //console.log(selector.set_ref.refString, selector.value(), selector.set_ref.get());
 
     });
 
