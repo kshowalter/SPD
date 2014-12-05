@@ -1,33 +1,33 @@
 e = {};
-e.options = function(settings){
-    settings.options = settings.options || {};
-    try { settings.options.AC = settings.options.AC || {};}
+e.input_options = function(settings){
+    settings.input_options = settings.input_options || {};
+    try { settings.input_options.AC = settings.input_options.AC || {};}
     catch(e) { if(settings.state.database_loaded) console.log(e); }
-    try { settings.options.AC.loadcenter_types = settings.options.AC.loadcenter_types || {};}
+    try { settings.input_options.AC.loadcenter_types = settings.input_options.AC.loadcenter_types || {};}
     catch(e) { if(settings.state.database_loaded) console.log(e); }
-    try { settings.options.AC.loadcenter_types["240V"] = ["240V","120V"];}
+    try { settings.input_options.AC.loadcenter_types["240V"] = ["240V","120V"];}
     catch(e) { if(settings.state.database_loaded) console.log(e); }
-    try { settings.options.AC.loadcenter_types["208/120V"] = ["208V","120V"];}
+    try { settings.input_options.AC.loadcenter_types["208/120V"] = ["208V","120V"];}
     catch(e) { if(settings.state.database_loaded) console.log(e); }
-    try { settings.options.AC.loadcenter_types["480/277V"] = ["480V Wye","480V Delta","277V"];}
+    try { settings.input_options.AC.loadcenter_types["480/277V"] = ["480V Wye","480V Delta","277V"];}
     catch(e) { if(settings.state.database_loaded) console.log(e); }
-    try { settings.options.AC.types = settings.options.AC.types || {};}
+    try { settings.input_options.AC.types = settings.input_options.AC.types || {};}
     catch(e) { if(settings.state.database_loaded) console.log(e); }
-    try { settings.options.AC.types["120V"] = ["ground","neutral","L1"];}
+    try { settings.input_options.AC.types["120V"] = ["ground","neutral","L1"];}
     catch(e) { if(settings.state.database_loaded) console.log(e); }
-    try { settings.options.AC.types["240V"] = ["ground","neutral","L1","L2"];}
+    try { settings.input_options.AC.types["240V"] = ["ground","neutral","L1","L2"];}
     catch(e) { if(settings.state.database_loaded) console.log(e); }
-    try { settings.options.AC.types["208V"] = ["ground","neutral","L1","L2"];}
+    try { settings.input_options.AC.types["208V"] = ["ground","neutral","L1","L2"];}
     catch(e) { if(settings.state.database_loaded) console.log(e); }
-    try { settings.options.AC.types["277V"] = ["ground","neutral","L1"];}
+    try { settings.input_options.AC.types["277V"] = ["ground","neutral","L1"];}
     catch(e) { if(settings.state.database_loaded) console.log(e); }
-    try { settings.options.AC.types["480V Wye"] = ["ground","neutral","L1","L2","L3"];}
+    try { settings.input_options.AC.types["480V Wye"] = ["ground","neutral","L1","L2","L3"];}
     catch(e) { if(settings.state.database_loaded) console.log(e); }
-    try { settings.options.AC.types["480V Delta"] = ["ground","L1","L2","L3"];}
+    try { settings.input_options.AC.types["480V Delta"] = ["ground","L1","L2","L3"];}
     catch(e) { if(settings.state.database_loaded) console.log(e); }
-    try { settings.options.DC = settings.options.DC || {};}
+    try { settings.input_options.DC = settings.input_options.DC || {};}
     catch(e) { if(settings.state.database_loaded) console.log(e); }
-    try { settings.options.DC.AWG = settings.options.DC.AWG || null;}
+    try { settings.input_options.DC.AWG = settings.input_options.DC.AWG || null;}
     catch(e) { if(settings.state.database_loaded) console.log(e); }
     return settings;
 };

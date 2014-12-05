@@ -64,30 +64,9 @@ var update = settings.update = function(){
     });
 
 
-    // Secondary selectors update
-
-
-    // Update page
-    //f.update_selectors(settings);
-    //f.update_values(settings);
-
-
-    //console.log('-section', settings.state.active_section);
-
-    /*
-    settings.select_registry.forEach(function(item){
-        //console.log(item)
-        item.update();
-    });
-    update_system(settings);
-
-    settings.value_registry.forEach(function(item){
-        item.update();
-    });
-    //*/
 
     // Make drawing
-//    settings.elements = mk_drawing(settings);
+    //settings.elements = mk_drawing(settings);
 
     // Add drawing elements to SVG on screen
 /*    var svg = mk_svg(settings);
@@ -108,8 +87,6 @@ var update = settings.update = function(){
 
     //k.show_hide_params(page_sections_params, settings);
 //    show_hide_selections(page_sections_config, settings.state.active_section);
-
-    //console.log('settings', settings);
 
     //console.log( f.object_defined(settings.state) );
 
@@ -163,21 +140,6 @@ function page_setup(settings){
     // System setup
     $('<div>').html('System Setup').attr('class', 'section_title').appendTo(system_frame);
     var config_frame = $('<div>').attr('id', 'config_frame').appendTo(system_frame);
-
-    /*
-    var section_selector = $('<select>').attr('id', 'sectionSelector').appendTo(config_frame.get(0));
-    addOptions( section_selector, settings.config_options.section_options );
-    addOptions( section_selector, k.objIdArray(settings.input) );
-    section_selector.change(function(event){
-        settings.state.active_section = event.target.selectedOptions[0].value;
-        console.log(settings.state.active_section);
-        show_hide_selections(settings, settings.state.active_section);
-        //update()
-    });
-    //*/
-    //var section_selector = k$('selector').setOptionsRef( 'config_options.section_options' ).setRef('state.active_section').attr('class', 'corner_title').appendTo(config_frame);
-    //kelem_setup(section_selector);
-
 
     //console.log(section_selector);
     f.add_selectors(settings, config_frame);

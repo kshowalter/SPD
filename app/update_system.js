@@ -27,7 +27,12 @@ var update_system = function(settings) {
         //console.log( sectionName, f.object_defined(settings.inputs[sectionName]) );
     });
 
+    f.mk_settings.system(settings);
 
+    for( var section in settings.system_formulas ){
+
+
+    }
 
     //var show_defaults = false;
     /*

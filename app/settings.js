@@ -6,6 +6,7 @@ var k = require('../lib/k/k.js');
 
 // Load 'user' defined settings
 var mk_settings = require('../data/settings.json.js');
+f.mk_settings = mk_settings;
 
 var settings = {};
 
@@ -17,7 +18,7 @@ f.set_AWG(settings);
 settings.state = settings.state || {};
 settings.state.database_loaded = false;
 
-settings = mk_settings.options(settings);
+settings = mk_settings.input_options(settings);
 settings = mk_settings.inputs(settings);
 settings = mk_settings.system(settings);
 
