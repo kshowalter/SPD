@@ -213,6 +213,8 @@ f.add_options = function(select, array){
 };
 
 
+
+
 f.add_params = function(settings, parent_container){
     for( var section_name in settings.system ){
         if( true || f.object_defined(settings.system[section_name]) ){
@@ -249,10 +251,11 @@ f.add_params = function(settings, parent_container){
                     .attr('class', '')
                     .appendTo(drawer_content)
                     .text(value_kontainer.get());
-                settings.value_registry.push({
+                var value = {
                     elem: $elem.get()[0],
                     value_ref: value_kontainer
-                });
+                };
+                settings.value_registry.push(value);
                 $('</br>').appendTo(drawer_content);
             }
         }
@@ -267,6 +270,7 @@ f.update_values = function(settings){
         if(value_item.elem.selectedIndex){
             value_item.value = value_item.elem.options[value_item.elem.selectedIndex].value;
             value_item.kontainer.set(value_item.value);
+
         }
     });
 };

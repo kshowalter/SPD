@@ -74,7 +74,7 @@ var update_system = function(settings) {
     }
     */
     settings.input_options.inverter.make = k.obj_names(settings.components.inverters);
-    if( settings.inputs.inverter.make ) {
+    if( settings.system.inverter.make ) {
         settings.input_options.inverter.model = k.obj_names( settings.components.inverters[settings.system.inverter.make] );
     }
     /*

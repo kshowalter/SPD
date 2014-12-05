@@ -59,6 +59,11 @@ var update = settings.update = function(){
         f.selector_add_options(selector);
     });
 
+    settings.value_registry.forEach(function(value_item){
+        value_item.elem.innerHTML = value_item.value_ref.get();
+    });
+
+
     // Secondary selectors update
 
 
