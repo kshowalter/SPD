@@ -130,12 +130,13 @@ f.add_selectors = function(settings, parent_container){
         var drawer = $('<div>').attr('class', 'drawer').appendTo(selection_container);
         var drawer_content = $('<div>').attr('class', 'drawer_content').appendTo(drawer);
         for( var input_name in settings.input_options[section_name] ){
-            $('<span>').html(f.pretty_name(input_name) + ': ').appendTo(drawer_content);
+            var selector_set = $('<span>').attr('class', 'selector_set').appendTo(drawer_content);
+            $('<span>').html(f.pretty_name(input_name) + ': ').appendTo(selector_set);
             /*
             var selector = k$('selector')
                 .setOptionsRef( 'input_options.' + section_name + '.' + input_name )
                 .setRef( 'system.' + section_name + '.' + input_name )
-                .appendTo(drawer_content);
+                .appendTo(selector_set);
             f.kelem_setup(selector, settings);
             //*/
             var set_kontainer = Object.create(kontainer)
@@ -146,7 +147,7 @@ f.add_selectors = function(settings, parent_container){
                 .ref('input_options.' + section_name + '.' + input_name);
             var $elem = $('<select>')
                 .attr('class', 'selector')
-                .appendTo(drawer_content);
+                .appendTo(selector_set);
             var selector = {
                 elem: $elem.get()[0],
                 set_ref: set_kontainer,
@@ -165,7 +166,7 @@ f.add_selectors = function(settings, parent_container){
             });
             f.selector_add_options(selector);
             settings.select_registry.push(selector);
-            $('</br>').appendTo(drawer_content);
+            //$('</br>').appendTo(drawer_content);
 
         }
     }

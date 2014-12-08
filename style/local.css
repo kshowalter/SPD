@@ -176,7 +176,22 @@ body {
 
 
 
+.selector_set {
+    background: #d9dce6;
+    padding: 3px;
+    margin: 2px;
+}
 
+
+
+.selector_set select {
+    background: transparent;
+    padding: 5px;
+    line-height: 1;
+    border: 0;
+    border-radius: 0;
+    height: 34px;
+}
 
 
 

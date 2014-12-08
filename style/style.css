@@ -25,14 +25,14 @@ a {
 /*
 html, body, div, form, fieldset, legend, label, img
 {
- margin: 0;
- padding: 0;
+	margin: 0;
+	padding: 0;
 }
 */
 
 
 table
 {
- border-collapse: collapse;
- border-spacing: 0;
+	border-collapse: collapse;
+	border-spacing: 0;
 }
