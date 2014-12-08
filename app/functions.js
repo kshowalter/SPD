@@ -7,12 +7,14 @@ var kontainer = require('../lib/k/kontainer');
 var f = {};
 
 f.object_defined = function(object){
-    var output = true;
     for( var key in object ){
-        output &= object.hasOwnProperty(key);
-        //console.log( key, object.hasOwnProperty(key) );
+        if( object[key] !== null || object[key] !== undefined ) return false;
     }
-    return output;
+    return true;
+};
+
+f.section_defined = function(section_name){
+    return f.object_defined(f.settings.inputs[section_name] );
 };
 
 f.nullToObject = function(object){
@@ -132,19 +134,14 @@ f.add_selectors = function(settings, parent_container){
                 .appendTo(selector_set);
             f.kelem_setup(selector, settings);
             //*/
-            var set_kontainer = Object.create(kontainer)
-                .obj(settings)
-                .ref('system.' + section_name + '.' + input_name);
-            var list_kontainer = Object.create(kontainer)
-                .obj(settings)
-                .ref('input_options.' + section_name + '.' + input_name);
             var $elem = $('<select>')
                 .attr('class', 'selector')
                 .appendTo(selector_set);
             var selector = {
                 elem: $elem.get()[0],
-                set_ref: set_kontainer,
-                list_ref: list_kontainer,
+                system_ref: Object.create(kontainer).obj(settings).ref('system.' + section_name + '.' + input_name),
+                input_ref: Object.create(kontainer).obj(settings).ref('inputs.' + section_name + '.' + input_name),
+                list_ref: Object.create(kontainer).obj(settings).ref('input_options.' + section_name + '.' + input_name),
                 interacted: false,
                 value: function(){
                     //console.log( this.set_ref.refString, this.elem.selectedIndex );
@@ -169,7 +166,7 @@ f.selector_add_options = function(selector){
     var list = selector.list_ref.get();
     selector.elem.innerHTML = "";
     if( list instanceof Array ){
-        var current_value = selector.set_ref.get();
+        var current_value = selector.system_ref.get();
         $('<option>').attr('selected',true).attr('disabled',true).attr('hidden',true).appendTo(selector.elem);
 
         list.forEach(function(opt_name){
@@ -362,13 +359,13 @@ f.load_database = function(FSEC_database_JSON){
     FSEC_database_JSON.inverters.forEach(function(component){
         if( settings.components.inverters[component.make] === undefined ) settings.components.inverters[component.make] = {};
         //settings.components.inverters[component.make][component.make] = f.pretty_names(component);
-        settings.components.inverters[component.make][component.make] = component;
+        settings.components.inverters[component.make][component.model] = component;
     });
     settings.components.modules = {};
     FSEC_database_JSON.modules.forEach(function(component){
         if( settings.components.modules[component.make] === undefined ) settings.components.modules[component.make] = {};
         //settings.components.modules[component.make][component.make] = f.pretty_names(component);
-        settings.components.modules[component.make][component.make] = component;
+        settings.components.modules[component.make][component.model] = component;
     });
 
     f.update();
@@ -403,9 +400,9 @@ f.set_ref = function( object, ref_string, value ){
 
 f.set_AWG = function(settings){
     var list = k.obj_names(settings.config_options.NEC_tables['Ch 9 Table 8 Conductor Properties']);
-    settings.options = settings.options || {};
-    settings.options.DC = settings.options.DC || {};
-    settings.options.DC.AWG = list;
+    settings.input_options = settings.input_options || {};
+    settings.input_options.DC = settings.input_options.DC || {};
+    settings.input_options.DC.AWG = list;
 
 };
 

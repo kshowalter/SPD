@@ -41,6 +41,9 @@ $.getJSON( database_json_URL)
         f.load_database(json);
         settings.state.database_loaded = true;
         update();
+        //console.log( 'system', JSON.stringify(settings.system, null, 4));
+        //console.log( 'inputs', JSON.stringify(settings.inputs, null, 4));
+        //console.log( 'drawing', JSON.stringify(settings.drawing, null, 4));
     });
 
 
@@ -50,7 +53,8 @@ var update = settings.update = function(){
 
     settings.select_registry.forEach(function(selector){
         //console.log(selector.value());
-        if(selector.value()) selector.set_ref.set(selector.value());
+        if(selector.value()) selector.system_ref.set(selector.value());
+        if(selector.value()) selector.input_ref.set(selector.value());
         //console.log(selector.set_ref.refString, selector.value(), selector.set_ref.get());
 
     });
@@ -71,12 +75,13 @@ var update = settings.update = function(){
     settings.elements = mk_drawing(settings);
 
     // Add drawing elements to SVG on screen
-/*    var svg = mk_svg(settings);
-    console.log(svg);
+    /*
+    var svg = mk_svg(settings);
+    //    console.log(svg);
     var svg_wrapper = $(svg);
-    console.log(svg_wrapper);
+    //    console.log(svg_wrapper);
     $("#drawing").html('').append($(svg));
-//*/
+    //*/
     //var pdf_download = mk_pdf(settings, setDownloadLink);
     //mk_pdf(settings, setDownloadLink);
     //pdf_download.html("Download PDF");
@@ -191,4 +196,5 @@ setInterval(function(){ k.update_status_page(status_id, boot_time, version_strin
 update();
 
 console.log('settings', settings);
+
 //console.log('window', window);

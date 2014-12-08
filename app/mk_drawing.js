@@ -1,6 +1,7 @@
 'use strict';
 
 var k = require('../lib/k/k.js');
+var f = require('./functions.js');
 //var settings = require('./settings.js');
 //var l_attr = settings.drawing.l_attr;
 var _ = require('underscore');
@@ -480,7 +481,7 @@ var mk_drawing = function(settings){
     x += 14;
     if( system.module.specs !== undefined && system.module.specs !== null  ){
         text([x,y], [
-            system.DC.module.specs.make + " " + system.DC.module.specs.model +
+            system.module.make + " " + system.module.model +
                 " (" + system.DC.string_num  + " strings of " + system.DC.string_modules + " modules )"
         ], 'title2', 'text').rotate(-90);
     }
@@ -496,7 +497,7 @@ var mk_drawing = function(settings){
 
 ////////////////////////////////////////
 //#array
-    if( settings.status.sections.array.set ){
+    if( f.section_defined('array') ){
 
         x = loc.array.right - size.string.w;
         y = loc.array.y;
@@ -554,8 +555,7 @@ var mk_drawing = function(settings){
 ///////////////////////////////
 // combiner box
 
-    if( settings.status.sections.DC.set ){
-
+    if( f.section_defined('DC') ){
 
         x = loc.jb_box.x;
         y = loc.jb_box.y;
@@ -724,8 +724,7 @@ var mk_drawing = function(settings){
 
 ///////////////////////////////
 //#inverter
-
-    if( settings.status.sections.inverter.set){
+    if( f.section_defined('inverter') ){
 
         x = loc.inverter.x;
         y = loc.inverter.y;
@@ -828,11 +827,7 @@ var mk_drawing = function(settings){
 
 
 //#AC_discconect
-
-    if( settings.status.sections.AC.set ){
-
-
-
+    if( f.section_defined('AC') ){
 
         x = loc.AC_disc.x;
         y = loc.AC_disc.y;

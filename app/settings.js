@@ -22,13 +22,11 @@ settings = mk_settings.input_options(settings);
 settings = mk_settings.inputs(settings);
 settings = mk_settings.system(settings);
 
-
 settings.input_options = settings.inputs; // copy input reference with options to input_options
 settings.inputs = f.blank_copy(settings.input_options); // make input section blank
 settings.system_formulas = settings.system; // copy system reference to system_formulas
 settings.system = f.blank_copy(settings.system_formulas); // make system section blank
 f.merge_objects( settings.inputs, settings.system );
-
 
 // load layers
 settings.layers = require('./settings_layers.js');
