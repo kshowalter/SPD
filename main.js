@@ -2,9 +2,10 @@
 var version_string = "Dev";
 //var version_string = "Alpha20140924";
 
+// Moved to index.html
 //var _ = require('underscore');
-var moment = require('moment');
-var $ = require('jquery');
+//var moment = require('moment');
+//var $ = require('jquery');
 
 var k = require('./lib/k/k.js');
 var k_data = require('./lib/k/k_data');

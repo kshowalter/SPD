@@ -1,5 +1,5 @@
 'use strict';
-var $ = require('jquery');
+//var $ = require('jquery');
 var k$ = require('../lib/k/k_DOM');
 var k = require('../lib/k/k');
 var kontainer = require('../lib/k/kontainer');
