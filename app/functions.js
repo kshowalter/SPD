@@ -32,7 +32,7 @@ f.blank_copy = function(object){
     var newObject = {};
     for( var key in object ){
         if( object.hasOwnProperty(key) ){
-            if( typeof object[key] === 'object' ) {
+            if( object[key].constructor === Object ) {
                 newObject[key] = {};
                 for( var key2 in object[key] ){
                     if( object[key].hasOwnProperty(key2) ){
@@ -62,7 +62,6 @@ f.merge_objects = function merge_objects(object1, object2){
     }
 };
 
-
 f.pretty_word = function(name){
     return name.charAt(0).toUpperCase() + name.slice(1);
 };
@@ -88,7 +87,6 @@ f.pretty_names = function(object){
     return new_object;
 };
 
-
 /*
 f.kelem_setup = function(kelem, settings){
     if( !settings) console.log(settings);
@@ -105,11 +103,6 @@ f.kelem_setup = function(kelem, settings){
     return kelem;
 };
 */
-
-
-
-
-
 
 f.add_selectors = function(settings, parent_container){
     for( var section_name in settings.input_options ){
@@ -203,18 +196,11 @@ f.selector_add_options = function(selector){
     }
 };
 
-
-
-
-
 f.add_options = function(select, array){
     array.forEach( function(option){
         $('<option>').attr( 'value', option ).text(option).appendTo(select);
     });
 };
-
-
-
 
 f.add_params = function(settings, parent_container){
     for( var section_name in settings.system ){
@@ -276,21 +262,6 @@ f.update_values = function(settings){
     });
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 f.show_hide_params = function(page_sections, settings){
     for( var list_name in page_sections ){
         var id = '#'+list_name;
@@ -319,7 +290,6 @@ f.show_hide_selections = function(settings, active_section_name){
 //        $('#download').html('').append(link);
 //    }
 //}
-
 
 f.loadTables = function(string){
     var tables = {};
@@ -358,8 +328,6 @@ f.loadTables = function(string){
     return tables;
 };
 
-
-
 f.loadComponents = function(string){
     var db = k.parseCSV(string);
     var object = {};
@@ -388,16 +356,19 @@ f.loadComponents = function(string){
 
 
 f.load_database = function(FSEC_database_JSON){
+    FSEC_database_JSON = f.lowercase_properties(FSEC_database_JSON);
     var settings = f.settings;
     settings.components.inverters = {};
     FSEC_database_JSON.inverters.forEach(function(component){
-        if( settings.components.inverters[component.MAKE] === undefined ) settings.components.inverters[component.MAKE] = {};
-        settings.components.inverters[component.MAKE][component.MODEL] = f.pretty_names(component);
+        if( settings.components.inverters[component.make] === undefined ) settings.components.inverters[component.make] = {};
+        //settings.components.inverters[component.make][component.make] = f.pretty_names(component);
+        settings.components.inverters[component.make][component.make] = component;
     });
     settings.components.modules = {};
     FSEC_database_JSON.modules.forEach(function(component){
-        if( settings.components.modules[component.MAKE] === undefined ) settings.components.modules[component.MAKE] = {};
-        settings.components.modules[component.MAKE][component.MODEL] = f.pretty_names(component);
+        if( settings.components.modules[component.make] === undefined ) settings.components.modules[component.make] = {};
+        //settings.components.modules[component.make][component.make] = f.pretty_names(component);
+        settings.components.modules[component.make][component.make] = component;
     });
 
     f.update();
@@ -443,5 +414,24 @@ f.log_if_database_loaded = function(e){
         console.log(e);
     }
 };
+
+
+
+f.lowercase_properties = function lowercase_properties(obj) {
+    var new_object = new obj.constructor();
+    for( var old_name in obj ){
+        if (obj.hasOwnProperty(old_name)) {
+            var new_name = old_name.toLowerCase();
+            if( obj[old_name].constructor === Object || obj[old_name].constructor === Array ){
+                new_object[new_name] = lowercase_properties(obj[old_name]);
+            } else {
+                new_object[new_name] = obj[old_name];
+            }
+        }
+
+    }
+    return new_object;
+};
+
 
 module.exports = f;

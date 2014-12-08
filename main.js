@@ -3,6 +3,7 @@ var version_string = "Dev";
 //var version_string = "Alpha20140924";
 
 // Moved to index.html
+// TODO: look into ways to further reduce size. It seems way to big.
 //var _ = require('underscore');
 //var moment = require('moment');
 //var $ = require('jquery');
@@ -67,7 +68,7 @@ var update = settings.update = function(){
 
 
     // Make drawing
-    //settings.elements = mk_drawing(settings);
+    settings.elements = mk_drawing(settings);
 
     // Add drawing elements to SVG on screen
 /*    var svg = mk_svg(settings);

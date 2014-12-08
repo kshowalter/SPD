@@ -478,9 +478,9 @@ var mk_drawing = function(settings){
         'title1', 'text').rotate(-90);
 
     x += 14;
-    if( typeof system.DC.module.specs !== 'undefined' ){
+    if( system.module.specs !== undefined && system.module.specs !== null  ){
         text([x,y], [
-            system.DC.module.specs.Make + " " + system.DC.module.specs.Model +
+            system.DC.module.specs.make + " " + system.DC.module.specs.model +
                 " (" + system.DC.string_num  + " strings of " + system.DC.string_modules + " modules )"
         ], 'title2', 'text').rotate(-90);
     }

@@ -73,11 +73,11 @@ var update_system = function(settings) {
     if( settings.system.module.make ) {
         settings.input_options.module.model  = k.obj_names( settings.components.modules[settings.system.module.make] );
     }
-    /*
+
     if( settings.system.module.model ) {
-        system.module.specs = settings.components.modules[settings.inputs.module.make][settings.system.module.model];
+        system.module.specs = settings.components.modules[settings.system.module.make][settings.system.module.model];
     }
-    */
+
     settings.input_options.inverter.make = k.obj_names(settings.components.inverters);
     if( settings.system.inverter.make ) {
         settings.input_options.inverter.model = k.obj_names( settings.components.inverters[settings.system.inverter.make] );

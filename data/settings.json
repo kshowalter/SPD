@@ -48,11 +48,7 @@
 
     "system": {
         "module": {
-            "pmp": null,
-            "vmp": null,
-            "imp": null,
-            "voc": null,
-            "isc": null
+            "specs": null
         },
         "array": {
             "isc": "system.module.isc * inputs.array.num_strings",
