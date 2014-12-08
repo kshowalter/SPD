@@ -3,5 +3,10 @@
     "browser": true,
 
     "funcscope"     : true,     // true: Tolerate defining variables inside control statements
-    "sub"           : true      // true: Tolerate using `[]` notation when it can still be expressed in dot notation
+    "sub"           : true,     // true: Tolerate using `[]` notation when it can still be expressed in dot notation
+
+    "globals": {
+        "$": true,
+        "_": true
+    }
 }
