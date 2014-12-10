@@ -54,6 +54,17 @@ var layer = function(name){ // set current layer
     //*/
 };
 
+var section_active = false;
+
+var section = function(name){ // set current section
+    if( typeof name === 'undefined' ){ // if no section name given, reset to default
+        section_active = false;
+    } else { // finaly activate requested section
+        section_active = name;
+    }
+    //*/
+};
+
 /*
 var block = function(name) {// set current block
     // if current block has been used, save it before creating a new one.
@@ -166,6 +177,7 @@ var add = function(type, points, layer_name) {
     var elem = Object.create(SvgElem);
     elem.type = type;
     elem.layer_name = layer_name;
+    elem.section_name = section_active;
     if( type === 'line' ) {
         elem.points = points;
     } else if( typeof points[0].x === 'undefined') {
@@ -176,8 +188,8 @@ var add = function(type, points, layer_name) {
         elem.y = points[0].y;
     }
 
-
     if(block_active) {
+        elem.block_name = block_active;
         blocks[block_active].add(elem);
     } else {
         elements.push(elem);
@@ -254,9 +266,28 @@ var block = function(name) {// set current block
     return blk;
 };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /////////////////////////////////
 
 var mk_drawing = function(settings){
+
     settings.drawing.l_attr = l_attr;
     //var components = settings.components;
     //var system = settings.system;
@@ -422,8 +453,17 @@ var mk_drawing = function(settings){
 
     block_end();
 
+
+
+
+
+
+
+
+
 ////////////////////////////////////////
 // Frame
+    section('Frame');
 
     w = size.drawing.w;
     h = size.drawing.h;
@@ -482,7 +522,7 @@ var mk_drawing = function(settings){
     if( system.module.specs !== undefined && system.module.specs !== null  ){
         text([x,y], [
             system.module.make + " " + system.module.model +
-                " (" + system.DC.string_num  + " strings of " + system.DC.string_modules + " modules )"
+                " (" + system.array.num_strings  + " strings of " + system.array.num_modules + " modules )"
         ], 'title2', 'text').rotate(-90);
     }
 
@@ -495,16 +535,28 @@ var mk_drawing = function(settings){
         ['PV1'],
         'page', 'text');
 
+
+
+
+
+
+
+
+
 ////////////////////////////////////////
 //#array
-    if( f.section_defined('array') ){
+    if( f.section_defined('module') && f.section_defined('array') ){
+        section('array');
+
+        console.log("Drawing: adding array");
 
         x = loc.array.right - size.string.w;
         y = loc.array.y;
         y -= size.string.h/2;
 
+
         //for( var i=0; i<system.DC.string_num; i++ ) {
-        for( var i in _.range(system.DC.string_num)) {
+        for( var i in _.range(system.array.num_strings)) {
             //var offset = i * size.wire_offset.base
             var offset_wire = size.wire_offset.min + ( size.wire_offset.base * i );
 
@@ -539,6 +591,7 @@ var mk_drawing = function(settings){
     //
 
         layer('DC_ground');
+        console.log(loc,size);
         line([
             //[ loc.array.left , loc.array.lower + size.wire_offset.ground ],
             [ loc.array.left, loc.array.lower + size.wire_offset.ground ],
@@ -550,12 +603,15 @@ var mk_drawing = function(settings){
         layer();
 
 
-    }
+    }// else { console.log("Drawing: array not ready")}
 
 ///////////////////////////////
 // combiner box
 
     if( f.section_defined('DC') ){
+        console.log("Drawing: adding DC");
+
+        section("combiner");
 
         x = loc.jb_box.x;
         y = loc.jb_box.y;
@@ -652,6 +708,9 @@ var mk_drawing = function(settings){
 
     ///////////////////////////////
         // DC disconect
+        section("DC diconect");
+
+
         rect(
             [loc.discbox.x, loc.discbox.y],
             [size.discbox.w,size.discbox.h],
@@ -663,9 +722,9 @@ var mk_drawing = function(settings){
         x = loc.discbox.x;
         y = loc.discbox.y + size.discbox.h/2;
 
-        if( system.DC.string_num > 1){
+        if( system.array.num_string > 1){
             var offset_min = size.wire_offset.min;
-            var offset_max = size.wire_offset.min + ( (system.DC.string_num-1) * size.wire_offset.base );
+            var offset_max = size.wire_offset.min + ( (system.array.num_string -1) * size.wire_offset.base );
             line([
                 [ x-offset_min, y-size.terminal_diam-size.terminal_diam*3],
                 [ x-offset_max, y-size.terminal_diam-size.terminal_diam*3],
@@ -726,6 +785,9 @@ var mk_drawing = function(settings){
 //#inverter
     if( f.section_defined('inverter') ){
 
+        section("inverter");
+
+
         x = loc.inverter.x;
         y = loc.inverter.y;
 
@@ -746,6 +808,7 @@ var mk_drawing = function(settings){
         layer();
 
     //#inverter symbol
+        section("inverter symbol");
 
         x = loc.inverter.x;
         y = loc.inverter.y;
@@ -828,6 +891,7 @@ var mk_drawing = function(settings){
 
 //#AC_discconect
     if( f.section_defined('AC') ){
+        section("AC_discconect");
 
         x = loc.AC_disc.x;
         y = loc.AC_disc.y;
@@ -846,6 +910,8 @@ var mk_drawing = function(settings){
 
 
     //#AC load center
+        section("AC load center");
+
         var breaker_spacing = size.AC_loadcenter.breakers.spacing;
 
         x = loc.AC_loadcenter.x;
@@ -891,19 +957,20 @@ var mk_drawing = function(settings){
 
 
     // AC lines
+        section("AC lines");
 
         x = loc.inverter.bottom_right.x;
         y = loc.inverter.bottom_right.y;
-        x -= size.terminal_diam * (system.AC_conductors.length+1);
+        x -= size.terminal_diam * (system.AC.num_conductors.length+1);
         y -= size.terminal_diam;
 
         var conduit_y = loc.AC_conduit.y;
         padding = size.terminal_diam;
         //var AC_layer_names = ['AC_ground', 'AC_neutral', 'AC_L1', 'AC_L2', 'AC_L2'];
 
-        for( var i=0; i < system.AC_conductors.length; i++ ){
+        for( var i=0; i < system.AC.num_conductors; i++ ){
             block('terminal', [x,y] );
-            layer('AC_'+system.AC_conductors[i]);
+            layer('AC_'+system.AC.conductors[i]);
             line([
                 [x, y],
                 [x, loc.AC_disc.bottom - padding*2 - padding*i  ],
@@ -917,7 +984,7 @@ var mk_drawing = function(settings){
         y = loc.AC_disc.y + size.AC_disc.h/2;
         y -= padding*2;
 
-        if( system.AC_conductors.indexOf('ground')+1 ) {
+        if( system.AC.conductors.indexOf('ground')+1 ) {
             layer('AC_ground');
             line([
                 [ x-size.AC_disc.w/2, y ],
@@ -932,7 +999,7 @@ var mk_drawing = function(settings){
             ]);
         }
 
-        if( system.AC_conductors.indexOf('neutral')+1 ) {
+        if( system.AC.conductors.indexOf('neutral')+1 ) {
             y -= padding;
             layer('AC_neutral');
             line([
@@ -948,7 +1015,7 @@ var mk_drawing = function(settings){
 
 
         for( var i=1; i <= 3; i++ ) {
-            if( system.AC_conductors.indexOf('L'+i)+1 ) {
+            if( system.AC.conductors.indexOf('L'+i)+1 ) {
                 y -= padding;
                 layer('AC_L'+i);
                 line([
@@ -976,6 +1043,7 @@ var mk_drawing = function(settings){
 
 
 // Wire table
+    section("Wire table");
 
     x = loc.wire_table.x;
     y = loc.wire_table.y;
@@ -1000,7 +1068,7 @@ var mk_drawing = function(settings){
         [x+w/2 , y-h/2+(1*row_h)],
     ]);
 
-    for( var r=2; r<system.wire_config_num+3; r++ ) {
+    for( var r=2; r<system.AC.num_conductors+3; r++ ) {
 
         line([
             [x-w/2 , y-h/2+(r*row_h)],
@@ -1048,6 +1116,9 @@ var mk_drawing = function(settings){
 
 
 // voltage drop
+    section("voltage drop");
+
+
     x = loc.volt_drop_table.x;
     y = loc.volt_drop_table.y;
     w = size.volt_drop_table.w;
@@ -1063,6 +1134,8 @@ var mk_drawing = function(settings){
 
 
 // general notes
+    section("general notes");
+
     x = loc.general_notes.x;
     y = loc.general_notes.y;
     w = size.general_notes.w;
@@ -1077,9 +1150,7 @@ var mk_drawing = function(settings){
     text( [x,y], 'General Notes', 'table', 'text');
 
 
-
-
-
+    section();
 
     return elements;
 };

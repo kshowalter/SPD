@@ -190,7 +190,7 @@ function settings_drawing(settings){
     size.wire_table = {};
     size.wire_table.w = 200;
     size.wire_table.row_h = 10;
-    size.wire_table.h = (system.wire_config_num+3) * size.wire_table.row_h;
+    size.wire_table.h = (5+3) * size.wire_table.row_h; // 5 max wires, updated in update_system.js
     loc.wire_table = {
         x: size.drawing.w - size.drawing.titlebox - size.drawing.frame_padding*3 - size.wire_table.w/2 - 25,
         y: size.drawing.frame_padding*3 + size.wire_table.h/2,

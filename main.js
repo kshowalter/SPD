@@ -41,6 +41,7 @@ $.getJSON( database_json_URL)
         f.load_database(json);
         settings.state.database_loaded = true;
         update();
+        console.log( 'settings.elements', JSON.stringify(settings.elements, null, 4));
         //console.log( 'system', JSON.stringify(settings.system, null, 4));
         //console.log( 'inputs', JSON.stringify(settings.inputs, null, 4));
         //console.log( 'drawing', JSON.stringify(settings.drawing, null, 4));
@@ -59,6 +60,10 @@ var update = settings.update = function(){
 
     });
 
+
+    //copy inputs from settings.input to settings.system.
+
+
     update_system(settings);
 
     settings.select_registry.forEach(function(selector){
@@ -74,13 +79,22 @@ var update = settings.update = function(){
     // Make drawing
     settings.elements = mk_drawing(settings);
 
+    //f.nan_check(settings.elements, "settings.elements");
+
+
+
+
     // Add drawing elements to SVG on screen
-    /*
+    ///*
     var svg = mk_svg(settings);
     //    console.log(svg);
     var svg_wrapper = $(svg);
     //    console.log(svg_wrapper);
-    $("#drawing").html('').append($(svg));
+    $("#drawing").html('')
+        .append($("<p>Page 1</p>"))
+        .append($(svg))
+        .append($("<p>Page 2</p>"))
+        .append($(mk_svg(settings)));
     //*/
     //var pdf_download = mk_pdf(settings, setDownloadLink);
     //mk_pdf(settings, setDownloadLink);
@@ -96,6 +110,10 @@ var update = settings.update = function(){
 //    show_hide_selections(page_sections_config, settings.state.active_section);
 
     //console.log( f.object_defined(settings.state) );
+
+    //console.log( 'system', JSON.stringify(settings.system, null, 4));
+    //console.log( 'inputs', JSON.stringify(settings.inputs, null, 4));
+    //console.log( 'drawing', JSON.stringify(settings.drawing, null, 4));
 
     console.log('\\--- end update');
 };

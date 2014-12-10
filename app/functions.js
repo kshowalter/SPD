@@ -6,14 +6,31 @@ var kontainer = require('../lib/k/kontainer');
 
 var f = {};
 
+f.obj_names = function( object ) {
+    if( object !== undefined ) {
+        var a = [];
+        for( var id in object ) {
+            if( object.hasOwnProperty(id) )  {
+                a.push(id);
+            }
+        }
+        return a;
+    }
+};
+
 f.object_defined = function(object){
+    //console.log(object);
     for( var key in object ){
-        if( object[key] !== null || object[key] !== undefined ) return false;
+        if( object.hasOwnProperty(key) ){
+            //console.log(key);
+            if( object[key] === null || object[key] === undefined ) return false;
+        }
     }
     return true;
 };
 
 f.section_defined = function(section_name){
+    //console.log("-"+section_name);
     return f.object_defined(f.settings.inputs[section_name] );
 };
 
@@ -63,6 +80,39 @@ f.merge_objects = function merge_objects(object1, object2){
         }
     }
 };
+
+f.array_to_object = function(arr) {
+    var r = {};
+    for (var i = 0; i < arr.length; ++i)
+        r[i] = arr[i];
+    return r;
+};
+
+f.nan_check = function nan_check(object, path){
+    if( path === undefined ) path = "";
+    path = path+".";
+    for( var key in object ){
+        //console.log( "NaNcheck: "+path+key );
+
+        if( object[key] && object[key].constructor === Array ) object[key] = f.array_to_object(object[key]);
+
+
+        if(  object[key] && ( object.hasOwnProperty(key) || object[key] !== null )){
+            if( object[key].constructor === Object ){
+                //console.log( "  Object: "+path+key );
+                nan_check( object[key], path+key );
+            } else if( object[key] === NaN || object[key] === null ){
+                console.log( "NaN: "+path+key );
+            } else {
+                //console.log( "Defined: "+path+key, object[key]);
+
+            }
+        }
+
+    }
+};
+
+
 
 f.pretty_word = function(name){
     return name.charAt(0).toUpperCase() + name.slice(1);
@@ -164,6 +214,10 @@ f.add_selectors = function(settings, parent_container){
 
 f.selector_add_options = function(selector){
     var list = selector.list_ref.get();
+    if( list && list.constructor === Object ) {
+        //console.log('"list"', list);
+        list = f.obj_names(list);
+    }
     selector.elem.innerHTML = "";
     if( list instanceof Array ){
         var current_value = selector.system_ref.get();
@@ -398,13 +452,6 @@ f.set_ref = function( object, ref_string, value ){
 
 
 
-f.set_AWG = function(settings){
-    var list = k.obj_names(settings.config_options.NEC_tables['Ch 9 Table 8 Conductor Properties']);
-    settings.input_options = settings.input_options || {};
-    settings.input_options.DC = settings.input_options.DC || {};
-    settings.input_options.DC.AWG = list;
-
-};
 
 f.log_if_database_loaded = function(e){
     if(f.settings.state.database_loaded) {

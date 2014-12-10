@@ -1,33 +1,21 @@
 e = {};
-e.input_options = function(settings){
-    settings.input_options = settings.input_options || {};
-    try { settings.input_options.AC = settings.input_options.AC || {};}
+e.i_options = function(settings){
+    settings.i_options = settings.i_options || {};
+    try { settings.i_options.AC = settings.i_options.AC || {};}
     catch(e) { if(settings.state.database_loaded) console.log(e); }
-    try { settings.input_options.AC.loadcenter_types = settings.input_options.AC.loadcenter_types || {};}
+    try { settings.i_options.AC.types = settings.i_options.AC.types || {};}
     catch(e) { if(settings.state.database_loaded) console.log(e); }
-    try { settings.input_options.AC.loadcenter_types["240V"] = ["240V","120V"];}
+    try { settings.i_options.AC.types["120V"] = ["ground","neutral","L1"];}
     catch(e) { if(settings.state.database_loaded) console.log(e); }
-    try { settings.input_options.AC.loadcenter_types["208/120V"] = ["208V","120V"];}
+    try { settings.i_options.AC.types["240V"] = ["ground","neutral","L1","L2"];}
     catch(e) { if(settings.state.database_loaded) console.log(e); }
-    try { settings.input_options.AC.loadcenter_types["480/277V"] = ["480V Wye","480V Delta","277V"];}
+    try { settings.i_options.AC.types["208V"] = ["ground","neutral","L1","L2"];}
     catch(e) { if(settings.state.database_loaded) console.log(e); }
-    try { settings.input_options.AC.types = settings.input_options.AC.types || {};}
+    try { settings.i_options.AC.types["277V"] = ["ground","neutral","L1"];}
     catch(e) { if(settings.state.database_loaded) console.log(e); }
-    try { settings.input_options.AC.types["120V"] = ["ground","neutral","L1"];}
+    try { settings.i_options.AC.types["480V Wye"] = ["ground","neutral","L1","L2","L3"];}
     catch(e) { if(settings.state.database_loaded) console.log(e); }
-    try { settings.input_options.AC.types["240V"] = ["ground","neutral","L1","L2"];}
-    catch(e) { if(settings.state.database_loaded) console.log(e); }
-    try { settings.input_options.AC.types["208V"] = ["ground","neutral","L1","L2"];}
-    catch(e) { if(settings.state.database_loaded) console.log(e); }
-    try { settings.input_options.AC.types["277V"] = ["ground","neutral","L1"];}
-    catch(e) { if(settings.state.database_loaded) console.log(e); }
-    try { settings.input_options.AC.types["480V Wye"] = ["ground","neutral","L1","L2","L3"];}
-    catch(e) { if(settings.state.database_loaded) console.log(e); }
-    try { settings.input_options.AC.types["480V Delta"] = ["ground","L1","L2","L3"];}
-    catch(e) { if(settings.state.database_loaded) console.log(e); }
-    try { settings.input_options.DC = settings.input_options.DC || {};}
-    catch(e) { if(settings.state.database_loaded) console.log(e); }
-    try { settings.input_options.DC.AWG = settings.input_options.DC.AWG || null;}
+    try { settings.i_options.AC.types["480V Delta"] = ["ground","L1","L2","L3"];}
     catch(e) { if(settings.state.database_loaded) console.log(e); }
     return settings;
 };
@@ -41,15 +29,17 @@ e.inputs = function(settings){
     catch(e) { if(settings.state.database_loaded) console.log(e); }
     try { settings.inputs.array = settings.inputs.array || {};}
     catch(e) { if(settings.state.database_loaded) console.log(e); }
-    try { settings.inputs.array.num_module = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];}
+    try { settings.inputs.array.num_modules = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];}
     catch(e) { if(settings.state.database_loaded) console.log(e); }
     try { settings.inputs.array.num_strings = [1,2,3,4,5,6];}
     catch(e) { if(settings.state.database_loaded) console.log(e); }
     try { settings.inputs.DC = settings.inputs.DC || {};}
     catch(e) { if(settings.state.database_loaded) console.log(e); }
+    try { settings.inputs.DC.AWG = settings.inputs.DC.AWG || null;}
+    catch(e) { if(settings.state.database_loaded) console.log(e); }
     try { settings.inputs.DC.home_run_length = [25,50,75,100,125,150];}
     catch(e) { if(settings.state.database_loaded) console.log(e); }
-    try { settings.inputs.DC.wire_size = settings.options.DC.AWG;}
+    try { settings.inputs.DC.wire_size = settings.input_options.DC.AWG;}
     catch(e) { if(settings.state.database_loaded) console.log(e); }
     try { settings.inputs.inverter = settings.inputs.inverter || {};}
     catch(e) { if(settings.state.database_loaded) console.log(e); }
@@ -59,13 +49,17 @@ e.inputs = function(settings){
     catch(e) { if(settings.state.database_loaded) console.log(e); }
     try { settings.inputs.AC = settings.inputs.AC || {};}
     catch(e) { if(settings.state.database_loaded) console.log(e); }
-    try { settings.inputs.AC.loadcenter_type = ["240V","208/120V","480/277V"];}
+    try { settings.inputs.AC.loadcenter_types = settings.inputs.AC.loadcenter_types || {};}
     catch(e) { if(settings.state.database_loaded) console.log(e); }
-    try { settings.inputs.AC.type = settings.options.AC.loadcenter_types[settings.system.AC.loadcenter_type] || null;}
+    try { settings.inputs.AC.loadcenter_types["240V"] = ["240V","120V"];}
     catch(e) { if(settings.state.database_loaded) console.log(e); }
-    try { settings.inputs.AC.loadcenter = settings.inputs.AC.loadcenter || null;}
+    try { settings.inputs.AC.loadcenter_types["208/120V"] = ["208V","120V"];}
     catch(e) { if(settings.state.database_loaded) console.log(e); }
-    try { settings.inputs.AC.distance_to_loadcenter = settings.inputs.AC.distance_to_loadcenter || null;}
+    try { settings.inputs.AC.loadcenter_types["480/277V"] = ["480V Wye","480V Delta","277V"];}
+    catch(e) { if(settings.state.database_loaded) console.log(e); }
+    try { settings.inputs.AC.type = settings.inputs.AC.type || null;}
+    catch(e) { if(settings.state.database_loaded) console.log(e); }
+    try { settings.inputs.AC.distance_to_loadcenter = [3,5,10,15,20,30];}
     catch(e) { if(settings.state.database_loaded) console.log(e); }
     return settings;
 };
@@ -73,15 +67,7 @@ e.system = function(settings){
     settings.system = settings.system || {};
     try { settings.system.module = settings.system.module || {};}
     catch(e) { if(settings.state.database_loaded) console.log(e); }
-    try { settings.system.module.pmp = settings.system.module.pmp || null;}
-    catch(e) { if(settings.state.database_loaded) console.log(e); }
-    try { settings.system.module.vmp = settings.system.module.vmp || null;}
-    catch(e) { if(settings.state.database_loaded) console.log(e); }
-    try { settings.system.module.imp = settings.system.module.imp || null;}
-    catch(e) { if(settings.state.database_loaded) console.log(e); }
-    try { settings.system.module.voc = settings.system.module.voc || null;}
-    catch(e) { if(settings.state.database_loaded) console.log(e); }
-    try { settings.system.module.isc = settings.system.module.isc || null;}
+    try { settings.system.module.specs = settings.system.module.specs || null;}
     catch(e) { if(settings.state.database_loaded) console.log(e); }
     try { settings.system.array = settings.system.array || {};}
     catch(e) { if(settings.state.database_loaded) console.log(e); }

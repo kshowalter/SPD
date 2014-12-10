@@ -13,12 +13,11 @@ var settings = {};
 settings.config_options = {};
 settings.config_options.NEC_tables = require('../data/tables.json');
 //console.log(settings.config_options.NEC_tables);
-f.set_AWG(settings);
 
 settings.state = settings.state || {};
 settings.state.database_loaded = false;
 
-settings = mk_settings.input_options(settings);
+settings = mk_settings.i_options(settings);
 settings = mk_settings.inputs(settings);
 settings = mk_settings.system(settings);
 
@@ -28,6 +27,8 @@ settings.system_formulas = settings.system; // copy system reference to system_f
 settings.system = f.blank_copy(settings.system_formulas); // make system section blank
 f.merge_objects( settings.inputs, settings.system );
 
+settings.input_options.DC = settings.input_options.DC || {};
+settings.input_options.DC.AWG = k.obj_names(settings.config_options.NEC_tables['Ch 9 Table 8 Conductor Properties']);
 // load layers
 settings.layers = require('./settings_layers.js');
 
