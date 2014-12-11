@@ -1,0 +1,176 @@
+{
+    "modules": [
+        {
+            "MODULE_ID": "1",
+            "MAKE": "Suniva",
+            "MODEL": "255-60-4-1B0",
+            "PMP": 255,
+            "ISC": 8.96,
+            "VOC": 38.1,
+            "IMP": 8.45,
+            "VMP": 30.2
+        },
+        {
+            "MODULE_ID": "2",
+            "MAKE": "Suniva",
+            "MODEL": "260-60-4-1B0",
+            "PMP": 260,
+            "ISC": 9.01,
+            "VOC": 38.300000000000004,
+            "IMP": 8.52,
+            "VMP": 30.5
+        },
+        {
+            "MODULE_ID": "3",
+            "MAKE": "Suniva",
+            "MODEL": "265-60-4-1B0",
+            "PMP": 265,
+            "ISC": 9.120000000000001,
+            "VOC": 38.300000000000004,
+            "IMP": 8.64,
+            "VMP": 30.7
+        },
+        {
+            "MODULE_ID": "4",
+            "MAKE": "Suniva",
+            "MODEL": "270-60-4-1B0",
+            "PMP": 270,
+            "ISC": 9.18,
+            "VOC": 38.4,
+            "IMP": 8.700000000000001,
+            "VMP": 31
+        },
+        {
+            "MODULE_ID": "5",
+            "MAKE": "Suniva",
+            "MODEL": "260-60-4-100",
+            "PMP": 260,
+            "ISC": 9.08,
+            "VOC": 38.1,
+            "IMP": 8.6,
+            "VMP": 30.2
+        },
+        {
+            "MODULE_ID": "6",
+            "MAKE": "Suniva",
+            "MODEL": "265-60-4-100",
+            "PMP": 265,
+            "ISC": 9.120000000000001,
+            "VOC": 38.300000000000004,
+            "IMP": 8.64,
+            "VMP": 30.7
+        },
+        {
+            "MODULE_ID": "7",
+            "MAKE": "Suniva",
+            "MODEL": "270-60-4-100",
+            "PMP": 270,
+            "ISC": 9.15,
+            "VOC": 38.5,
+            "IMP": 8.68,
+            "VMP": 31.1
+        },
+        {
+            "MODULE_ID": "8",
+            "MAKE": "Suniva",
+            "MODEL": "310-72-4-100",
+            "PMP": 310,
+            "ISC": 9.06,
+            "VOC": 45.7,
+            "IMP": 8.56,
+            "VMP": 36.2
+        },
+        {
+            "MODULE_ID": "9",
+            "MAKE": "Suniva",
+            "MODEL": "315-72-4-100",
+            "PMP": 315,
+            "ISC": 9.1,
+            "VOC": 45.9,
+            "IMP": 8.620000000000001,
+            "VMP": 36.5
+        },
+        {
+            "MODULE_ID": "10",
+            "MAKE": "Suniva",
+            "MODEL": "320-72-4-100",
+            "PMP": 320,
+            "ISC": 9.200000000000001,
+            "VOC": 46.1,
+            "IMP": 8.69,
+            "VMP": 36.800000000000004
+        },
+        {
+            "MODULE_ID": "11",
+            "MAKE": "Suniva",
+            "MODEL": "325-72-4-100",
+            "PMP": 325,
+            "ISC": 9.27,
+            "VOC": 46.300000000000004,
+            "IMP": 8.77,
+            "VMP": 37
+        },
+        {
+            "MODULE_ID": "12",
+            "MAKE": "Sunmodule",
+            "MODEL": "Protect SW 265 mono",
+            "PMP": 265,
+            "ISC": 9.31,
+            "VOC": 39,
+            "IMP": 8.69,
+            "VMP": 30.8
+        },
+        {
+            "MODULE_ID": "13",
+            "MAKE": "Sunmodule",
+            "MODEL": "Protect SW 270 mono",
+            "PMP": 270,
+            "ISC": 9.44,
+            "VOC": 39.2,
+            "IMP": 8.81,
+            "VMP": 30.900000000000002
+        },
+        {
+            "MODULE_ID": "14",
+            "MAKE": "Sunmodule",
+            "MODEL": "Protect SW 275 mono",
+            "PMP": 275,
+            "ISC": 9.58,
+            "VOC": 39.4,
+            "IMP": 8.94,
+            "VMP": 31
+        }
+    ],
+    "inverters": [
+        {
+            "INVERTER_ID": "1",
+            "MAKE": "SMA",
+            "MODEL": "SI3000",
+            "DC_MAX_POWER": 3300,
+            "DC_VOLTS_LOW": 150,
+            "DC_VOLTS_HIGH": 350,
+            "AC_VOLTS_LOW": 180,
+            "AC_VOLTS_HIGH": 250
+        },
+        {
+            "INVERTER_ID": "2",
+            "MAKE": "SMA",
+            "MODEL": "SI3500",
+            "DC_MAX_POWER": 3800,
+            "DC_VOLTS_LOW": 150,
+            "DC_VOLTS_HIGH": 450,
+            "AC_VOLTS_LOW": 180,
+            "AC_VOLTS_HIGH": 250
+        },
+        {
+            "INVERTER_ID": "3",
+            "MAKE": "SMA",
+            "MODEL": "SI5000",
+            "DC_MAX_POWER": 5500,
+            "DC_VOLTS_LOW": 400,
+            "DC_VOLTS_HIGH": 600,
+            "AC_VOLTS_LOW": 400,
+            "AC_VOLTS_HIGH": 500
+        }
+    ]
+}

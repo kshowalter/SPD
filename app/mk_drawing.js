@@ -1,11 +1,12 @@
 'use strict';
 
 var k = require('../lib/k/k.js');
+var f = require('./functions.js');
 //var settings = require('./settings.js');
 //var l_attr = settings.drawing.l_attr;
 var _ = require('underscore');
 // setup drawing containers
-var l_attr = require('./layers');
+var l_attr = require('./settings_layers');
 
 var elements = [];
 
@@ -42,13 +43,24 @@ var block_active = false;
 var layer_active = false;
 
 var layer = function(name){ // set current layer
-    if( typeof name === 'undefined' ){ // if no layer name given, reset to default 
+    if( typeof name === 'undefined' ){ // if no layer name given, reset to default
         layer_active = false;
     } else if ( ! (name in l_attr) ) {
         console.log('Error: unknown layer, using base');
         layer_active = 'base' ;
     } else { // finaly activate requested layer
         layer_active = name;
+    }
+    //*/
+};
+
+var section_active = false;
+
+var section = function(name){ // set current section
+    if( typeof name === 'undefined' ){ // if no section name given, reset to default
+        section_active = false;
+    } else { // finaly activate requested section
+        section_active = name;
     }
     //*/
 };
@@ -71,10 +83,11 @@ var block_start = function(name) {
     if( typeof name === 'undefined' ){ // if name argument is submitted
         console.log('Error: name required');
     } else {
+        var blk;
         // TODO: What if the same name is submitted twice? throw error or fix?
         block_active = name;
         if( typeof blocks[block_active] !== 'object'){
-            var blk = Object.create(Blk);
+            blk = Object.create(Blk);
             //blk.name = name; // block name
             blocks[block_active] = blk;
         }
@@ -100,11 +113,11 @@ var block_end = function() {
 
 
 
-// clear drawing 
+// clear drawing
 var clear_drawing = function() {
     for( var id in blocks ){
         if( blocks.hasOwnProperty(id)){
-            delete blocks[id]; 
+            delete blocks[id];
         }
     }
     elements.length = 0;
@@ -145,18 +158,18 @@ SvgElem.rotate = function(deg){
 
 var add = function(type, points, layer_name) {
 
-    if( typeof layer_name === 'undefined' ) { layer_name = layer_active; } 
-    if( ! (layer_name in l_attr) ) { 
+    if( typeof layer_name === 'undefined' ) { layer_name = layer_active; }
+    if( ! (layer_name in l_attr) ) {
         console.log('Error: Layer name not found, using base');
-        layer_name = 'base'; 
+        layer_name = 'base';
     }
 
     if( typeof points == 'string') {
-        var points = points.split(' ');
-        for( var i in points ) {
-            points[i] = points[i].split(',');
-            for( var c in points[i] ) {
-                points[i][c] = Number(points[i][c]);
+        var points_a = points.split(' ');
+        for( var i in points_a ) {
+            points_a[i] = points_a[i].split(',');
+            for( var c in points_a[i] ) {
+                points_a[i][c] = Number(points_a[i][c]);
             }
         }
     }
@@ -164,18 +177,19 @@ var add = function(type, points, layer_name) {
     var elem = Object.create(SvgElem);
     elem.type = type;
     elem.layer_name = layer_name;
+    elem.section_name = section_active;
     if( type === 'line' ) {
         elem.points = points;
     } else if( typeof points[0].x === 'undefined') {
-        elem.x = points[0][0]; 
-        elem.y = points[0][1]; 
+        elem.x = points[0][0];
+        elem.y = points[0][1];
     } else {
         elem.x = points[0].x;
-        elem.y = points[0].y; 
+        elem.y = points[0].y;
     }
 
-    
-    if(block_active) { 
+    if(block_active) {
+        elem.block_name = block_active;
         blocks[block_active].add(elem);
     } else {
         elements.push(elem);
@@ -222,17 +236,18 @@ var text = function(loc, strings, font, layer){
 };
 
 var block = function(name) {// set current block
+    var x,y;
     if( arguments.length === 2 ){ // if coor is passed
         if( typeof arguments[1].x !== 'undefined' ){
-            var x = arguments[1].x;
-            var y = arguments[1].y;
+            x = arguments[1].x;
+            y = arguments[1].y;
         } else {
-            var x = arguments[1][0];
-            var y = arguments[1][1];
+            x = arguments[1][0];
+            y = arguments[1][1];
         }
     } else if( arguments.length === 3 ){ // if x,y is passed
-        var x = arguments[1];
-        var y = arguments[2];
+        x = arguments[1];
+        y = arguments[2];
     }
 
     // TODO: what if block does not exist? print list of blocks?
@@ -240,7 +255,7 @@ var block = function(name) {// set current block
     blk.x = x;
     blk.y = y;
 
-    if(block_active){ 
+    if(block_active){
         blocks[block_active].add(blk);
     } else {
         elements.push(blk);
@@ -251,9 +266,28 @@ var block = function(name) {// set current block
     return blk;
 };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /////////////////////////////////
 
 var mk_drawing = function(settings){
+
     settings.drawing.l_attr = l_attr;
     //var components = settings.components;
     //var system = settings.system;
@@ -266,7 +300,7 @@ var mk_drawing = function(settings){
     clear_drawing();
 
     var x, y, h, w;
-
+    var offset;
 
 // Define blocks
 // module block
@@ -327,9 +361,9 @@ var mk_drawing = function(settings){
     x = 0;
     y = 0;
 
-    y += size.module.lead; 
+    y += size.module.lead;
 
-    //TODO: add loop to jump over negative return wires 
+    //TODO: add loop to jump over negative return wires
     layer('DC_ground');
     line([
         [x-size.module.frame.w*3/4, y+size.module.frame.h/2],
@@ -395,42 +429,51 @@ var mk_drawing = function(settings){
     x = 0;
     y = 0;
 
-    layer('AC_ground')
+    layer('AC_ground');
     line([
         [x,y],
         [x,y+40],
-    ])
+    ]);
     y += 25;
     line([
         [x-7.5,y],
         [x+7.5,y],
-    ])
+    ]);
     y += 5;
     line([
         [x-5,y],
         [x+5,y],
-    ])
+    ]);
     y += 5;
     line([
         [x-2.5,y],
         [x+2.5,y],
-    ])
+    ]);
     layer();
 
     block_end();
 
+
+
+
+
+
+
+
+
 ////////////////////////////////////////
 // Frame
+    section('Frame');
 
     w = size.drawing.w;
     h = size.drawing.h;
-    var padding = size.drawing.frame_padding; 
+    var padding = size.drawing.frame_padding;
 
     layer('frame');
 
     //border
     rect( [w/2 , h/2], [w - padding*2, h - padding*2 ] );
-    
+
     x = w - padding * 3;
     y = padding * 3;
 
@@ -439,12 +482,12 @@ var mk_drawing = function(settings){
 
     // box top-right
     rect( [x-w/2, y+h/2], [w,h] );
-    
-    y += h + padding; 
+
+    y += h + padding;
 
     w = size.drawing.titlebox;
     h = size.drawing.h - padding*8 - size.drawing.titlebox*2.5;
-    
+
     //title box
     rect( [x-w/2, y+h/2], [w,h] );
 
@@ -457,9 +500,9 @@ var mk_drawing = function(settings){
 
     // box bottom-right
     h = size.drawing.titlebox * 1.5;
-    y = title.bottom + padding; 
+    y = title.bottom + padding;
     rect( [x-w/2, y+h/2], [w,h] );
-    
+
     var page = {};
     page.right = title.right;
     page.left = title.left;
@@ -471,18 +514,18 @@ var mk_drawing = function(settings){
     y = title.bottom - padding;
 
     x += 10;
-    text([x,y], 
+    text([x,y],
          [ system.inverter.make + " " + system.inverter.model + " Inverter System" ],
         'title1', 'text').rotate(-90);
 
     x += 14;
-    if( typeof system.DC.module.specs !== 'undefined' ){
+    if( system.module.specs !== undefined && system.module.specs !== null  ){
         text([x,y], [
-            system.DC.module.specs.Make + " " + system.DC.module.specs.Model + 
-                " (" + system.DC.string_num  + " strings of " + system.DC.string_modules + " modules )"
+            system.module.make + " " + system.module.model +
+                " (" + system.array.num_strings  + " strings of " + system.array.num_modules + " modules )"
         ], 'title2', 'text').rotate(-90);
     }
-        
+
     x = page.left + padding;
     y = page.top + padding;
     y += size.drawing.titlebox * 1.5 * 3/4;
@@ -492,19 +535,31 @@ var mk_drawing = function(settings){
         ['PV1'],
         'page', 'text');
 
+
+
+
+
+
+
+
+
 ////////////////////////////////////////
 //#array
-    if( settings.status.sections.array.set ){
+    if( f.section_defined('module') && f.section_defined('array') ){
+        section('array');
+
+        console.log("Drawing: adding array");
 
         x = loc.array.right - size.string.w;
         y = loc.array.y;
         y -= size.string.h/2;
 
+
         //for( var i=0; i<system.DC.string_num; i++ ) {
-        for( var i in _.range(system.DC.string_num)) {
+        for( var i in _.range(system.array.num_strings)) {
             //var offset = i * size.wire_offset.base
             var offset_wire = size.wire_offset.min + ( size.wire_offset.base * i );
-            
+
             block('string', [x,y]);
             // positive home run
             layer('DC_pos');
@@ -533,8 +588,8 @@ var mk_drawing = function(settings){
     //        [ (loc.array.right+loc.array.left)/2, (loc.array.lower+loc.array.upper)/2 ],
     //        [ loc.array.right-loc.array.left, loc.array.lower-loc.array.upper ],
     //        'DC_pos');
-    //    
-        
+    //
+
         layer('DC_ground');
         line([
             //[ loc.array.left , loc.array.lower + size.wire_offset.ground ],
@@ -546,14 +601,15 @@ var mk_drawing = function(settings){
 
         layer();
 
-        
-    }
+
+    }// else { console.log("Drawing: array not ready")}
 
 ///////////////////////////////
 // combiner box
 
-    if( settings.status.sections.DC.set ){
+    if( f.section_defined('DC') ){
 
+        section("combiner");
 
         x = loc.jb_box.x;
         y = loc.jb_box.y;
@@ -567,8 +623,8 @@ var mk_drawing = function(settings){
         x = loc.array.x;
         y = loc.array.y;
 
-        for( var i in _.range(system.DC.string_num)) {
-            var offset = size.wire_offset.min + ( size.wire_offset.base * i );
+        for( var i in _.range(system.array.num_strings)) {
+            offset = size.wire_offset.min + ( size.wire_offset.base * i );
 
             layer('DC_pos');
             line([
@@ -650,6 +706,9 @@ var mk_drawing = function(settings){
 
     ///////////////////////////////
         // DC disconect
+        section("DC diconect");
+
+
         rect(
             [loc.discbox.x, loc.discbox.y],
             [size.discbox.w,size.discbox.h],
@@ -661,9 +720,9 @@ var mk_drawing = function(settings){
         x = loc.discbox.x;
         y = loc.discbox.y + size.discbox.h/2;
 
-        if( system.DC.string_num > 1){
+        if( system.array.num_strings > 1){
             var offset_min = size.wire_offset.min;
-            var offset_max = size.wire_offset.min + ( (system.DC.string_num-1) * size.wire_offset.base );
+            var offset_max = size.wire_offset.min + ( (system.array.num_strings -1) * size.wire_offset.base );
             line([
                 [ x-offset_min, y-size.terminal_diam-size.terminal_diam*3],
                 [ x-offset_max, y-size.terminal_diam-size.terminal_diam*3],
@@ -673,7 +732,7 @@ var mk_drawing = function(settings){
                 [ x+offset_max, y-size.terminal_diam-size.terminal_diam*3],
             ], 'DC_neg');
         }
-        
+
         // Inverter conection
         //line([
         //    [ x-offset_min, y-size.terminal_diam-size.terminal_diam*3],
@@ -687,7 +746,7 @@ var mk_drawing = function(settings){
         line([
             [ x+offset, y-size.terminal_diam-size.terminal_diam*3],
             [ x+offset, loc.inverter.y+size.inverter.h/2-size.terminal_diam ],
-        ],'DC_neg')
+        ],'DC_neg');
         block( 'terminal', {
             x: x+offset,
             y: loc.inverter.y+size.inverter.h/2-size.terminal_diam,
@@ -697,7 +756,7 @@ var mk_drawing = function(settings){
         line([
             [ x-offset, y-size.terminal_diam-size.terminal_diam*3],
             [ x-offset, loc.inverter.y+size.inverter.h/2-size.terminal_diam ],
-        ],'DC_pos')
+        ],'DC_pos');
         block( 'terminal', {
             x: x-offset,
             y: loc.inverter.y+size.inverter.h/2-size.terminal_diam,
@@ -709,12 +768,12 @@ var mk_drawing = function(settings){
         line([
             [ x+offset, y-size.terminal_diam-size.terminal_diam*3],
             [ x+offset, loc.inverter.y+size.inverter.h/2-size.terminal_diam ],
-        ],'DC_ground')
+        ],'DC_ground');
         block( 'terminal', {
             x: x+offset,
             y: loc.inverter.y+size.inverter.h/2-size.terminal_diam,
         });
-    
+
     }
 
 
@@ -722,9 +781,11 @@ var mk_drawing = function(settings){
 
 ///////////////////////////////
 //#inverter
+    if( f.section_defined('inverter') ){
 
-    if( settings.status.sections.inverter.set){
-    
+        section("inverter");
+
+
         x = loc.inverter.x;
         y = loc.inverter.y;
 
@@ -745,12 +806,13 @@ var mk_drawing = function(settings){
         layer();
 
     //#inverter symbol
+        section("inverter symbol");
 
         x = loc.inverter.x;
         y = loc.inverter.y;
-        
-        var w = size.inverter.symbol_w;
-        var h = size.inverter.symbol_h;
+
+        w = size.inverter.symbol_w;
+        h = size.inverter.symbol_h;
 
         var space = w*1/12;
 
@@ -766,55 +828,55 @@ var mk_drawing = function(settings){
         line([
             [x-w/2, y+h/2],
             [x+w/2, y-h/2],
-        
+
         ]);
         // DC
         line([
-            [x - w/2 + space, 
+            [x - w/2 + space,
                 y - h/2 + space],
-            [x - w/2 + space*6, 
+            [x - w/2 + space*6,
                 y - h/2 + space],
         ]);
         line([
-            [x - w/2 + space, 
+            [x - w/2 + space,
                 y - h/2 + space*2],
-            [x - w/2 + space*2, 
-                y - h/2 + space*2],
-        ]);
-        line([
-            [x - w/2 + space*3, 
-                y - h/2 + space*2],
-            [x - w/2 + space*4, 
+            [x - w/2 + space*2,
                 y - h/2 + space*2],
         ]);
         line([
-            [x - w/2 + space*5, 
+            [x - w/2 + space*3,
                 y - h/2 + space*2],
-            [x - w/2 + space*6, 
+            [x - w/2 + space*4,
+                y - h/2 + space*2],
+        ]);
+        line([
+            [x - w/2 + space*5,
+                y - h/2 + space*2],
+            [x - w/2 + space*6,
                 y - h/2 + space*2],
         ]);
 
         // AC
         line([
-            [x + w/2 - space, 
+            [x + w/2 - space,
                 y + h/2 - space*1.5],
-            [x + w/2 - space*2, 
-                y + h/2 - space*1.5],
-        ]);
-        line([
-            [x + w/2 - space*3, 
-                y + h/2 - space*1.5],
-            [x + w/2 - space*4, 
+            [x + w/2 - space*2,
                 y + h/2 - space*1.5],
         ]);
         line([
-            [x + w/2 - space*5, 
+            [x + w/2 - space*3,
                 y + h/2 - space*1.5],
-            [x + w/2 - space*6, 
+            [x + w/2 - space*4,
+                y + h/2 - space*1.5],
+        ]);
+        line([
+            [x + w/2 - space*5,
+                y + h/2 - space*1.5],
+            [x + w/2 - space*6,
                 y + h/2 - space*1.5],
         ]);
         layer();
-            
+
 
 
 
@@ -826,11 +888,8 @@ var mk_drawing = function(settings){
 
 
 //#AC_discconect
-
-    if( settings.status.sections.AC.set ){
-
-
-
+    if( f.section_defined('AC') ){
+        section("AC_discconect");
 
         x = loc.AC_disc.x;
         y = loc.AC_disc.y;
@@ -849,6 +908,8 @@ var mk_drawing = function(settings){
 
 
     //#AC load center
+        section("AC load center");
+
         var breaker_spacing = size.AC_loadcenter.breakers.spacing;
 
         x = loc.AC_loadcenter.x;
@@ -862,7 +923,7 @@ var mk_drawing = function(settings){
         );
 
         text([x,y-h*0.4],
-            [system.AC_loadcenter_type, 'Load Center'],
+            [system.AC.loadcenter_types, 'Load Center'],
             'label',
             'text'
         );
@@ -880,7 +941,7 @@ var mk_drawing = function(settings){
         }
 
         var s, l;
-        
+
         l = loc.AC_loadcenter.neutralbar;
         s = size.AC_loadcenter.neutralbar;
         rect([l.x,l.y], [s.w,s.h], 'AC_neutral' );
@@ -894,19 +955,20 @@ var mk_drawing = function(settings){
 
 
     // AC lines
+        section("AC lines");
 
         x = loc.inverter.bottom_right.x;
         y = loc.inverter.bottom_right.y;
-        x -= size.terminal_diam * (system.AC_conductors.length+1);
+        x -= size.terminal_diam * (system.AC.num_conductors+1);
         y -= size.terminal_diam;
 
-        var conduit_y = loc.AC_conduit.y;    
+        var conduit_y = loc.AC_conduit.y;
         padding = size.terminal_diam;
         //var AC_layer_names = ['AC_ground', 'AC_neutral', 'AC_L1', 'AC_L2', 'AC_L2'];
 
-        for( var i=0; i < system.AC_conductors.length; i++ ){
+        for( var i=0; i < system.AC.num_conductors; i++ ){
             block('terminal', [x,y] );
-            layer('AC_'+system.AC_conductors[i]);
+            layer('AC_'+system.AC.conductors[i]);
             line([
                 [x, y],
                 [x, loc.AC_disc.bottom - padding*2 - padding*i  ],
@@ -920,7 +982,7 @@ var mk_drawing = function(settings){
         y = loc.AC_disc.y + size.AC_disc.h/2;
         y -= padding*2;
 
-        if( system.AC_conductors.indexOf('ground')+1 ) {
+        if( system.AC.conductors.indexOf('ground')+1 ) {
             layer('AC_ground');
             line([
                 [ x-size.AC_disc.w/2, y ],
@@ -935,7 +997,7 @@ var mk_drawing = function(settings){
             ]);
         }
 
-        if( system.AC_conductors.indexOf('neutral')+1 ) {
+        if( system.AC.conductors.indexOf('neutral')+1 ) {
             y -= padding;
             layer('AC_neutral');
             line([
@@ -943,15 +1005,15 @@ var mk_drawing = function(settings){
                 [ x+padding*3*2, y ],
                 [ x+padding*3*2, conduit_y + breaker_spacing*1 ],
                 [ loc.AC_loadcenter.neutralbar.x, conduit_y + breaker_spacing*1 ],
-                [ loc.AC_loadcenter.neutralbar.x, 
+                [ loc.AC_loadcenter.neutralbar.x,
                     loc.AC_loadcenter.neutralbar.y-size.AC_loadcenter.neutralbar.h/2 ],
             ]);
         }
-            
-        
+
+
 
         for( var i=1; i <= 3; i++ ) {
-            if( system.AC_conductors.indexOf('L'+i)+1 ) {
+            if( system.AC.conductors.indexOf('L'+i)+1 ) {
                 y -= padding;
                 layer('AC_L'+i);
                 line([
@@ -979,6 +1041,7 @@ var mk_drawing = function(settings){
 
 
 // Wire table
+    section("Wire table");
 
     x = loc.wire_table.x;
     y = loc.wire_table.y;
@@ -1003,8 +1066,8 @@ var mk_drawing = function(settings){
         [x+w/2 , y-h/2+(1*row_h)],
     ]);
 
-    for( var r=2; r<system.wire_config_num+3; r++ ) {
-    
+    for( var r=2; r<system.AC.num_conductors+3; r++ ) {
+
         line([
             [x-w/2 , y-h/2+(r*row_h)],
             [x+w/2 , y-h/2+(r*row_h)],
@@ -1051,6 +1114,9 @@ var mk_drawing = function(settings){
 
 
 // voltage drop
+    section("voltage drop");
+
+
     x = loc.volt_drop_table.x;
     y = loc.volt_drop_table.y;
     w = size.volt_drop_table.w;
@@ -1058,14 +1124,16 @@ var mk_drawing = function(settings){
 
     layer('table');
     rect( [x,y], [w,h] );
-    
+
     y -= h/2;
-    y += 10
+    y += 10;
 
     text( [x,y], 'Voltage Drop', 'table', 'text');
 
 
 // general notes
+    section("general notes");
+
     x = loc.general_notes.x;
     y = loc.general_notes.y;
     w = size.general_notes.w;
@@ -1073,16 +1141,14 @@ var mk_drawing = function(settings){
 
     layer('table');
     rect( [x,y], [w,h] );
-    
+
     y -= h/2;
-    y += 10
+    y += 10;
 
     text( [x,y], 'General Notes', 'table', 'text');
 
 
-
-
-
+    section();
 
     return elements;
 };

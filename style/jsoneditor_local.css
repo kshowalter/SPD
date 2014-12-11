@@ -1,0 +1,17 @@
+.header {
+    padding: 5px;
+    background: #D5DDF6;
+    border-color: #aec0f8;
+    border-width: 1px;
+    border-bottom-style: solid;
+}
+.header a {
+    padding: 2px;
+    margin: 5px;
+     color: #828489;
+    background: #E0E7F5;
+    /*border-color: #aec0f8;*/
+    border-color: #97B0F8;
+    border-width: 1px;
+    border-style: solid;
+}
