@@ -591,7 +591,6 @@ var mk_drawing = function(settings){
     //
 
         layer('DC_ground');
-        console.log(loc,size);
         line([
             //[ loc.array.left , loc.array.lower + size.wire_offset.ground ],
             [ loc.array.left, loc.array.lower + size.wire_offset.ground ],
@@ -609,7 +608,6 @@ var mk_drawing = function(settings){
 // combiner box
 
     if( f.section_defined('DC') ){
-        console.log("Drawing: adding DC");
 
         section("combiner");
 
@@ -625,7 +623,7 @@ var mk_drawing = function(settings){
         x = loc.array.x;
         y = loc.array.y;
 
-        for( var i in _.range(system.DC.string_num)) {
+        for( var i in _.range(system.array.num_strings)) {
             offset = size.wire_offset.min + ( size.wire_offset.base * i );
 
             layer('DC_pos');
@@ -722,9 +720,9 @@ var mk_drawing = function(settings){
         x = loc.discbox.x;
         y = loc.discbox.y + size.discbox.h/2;
 
-        if( system.array.num_string > 1){
+        if( system.array.num_strings > 1){
             var offset_min = size.wire_offset.min;
-            var offset_max = size.wire_offset.min + ( (system.array.num_string -1) * size.wire_offset.base );
+            var offset_max = size.wire_offset.min + ( (system.array.num_strings -1) * size.wire_offset.base );
             line([
                 [ x-offset_min, y-size.terminal_diam-size.terminal_diam*3],
                 [ x-offset_max, y-size.terminal_diam-size.terminal_diam*3],
@@ -925,7 +923,7 @@ var mk_drawing = function(settings){
         );
 
         text([x,y-h*0.4],
-            [system.AC_loadcenter_type, 'Load Center'],
+            [system.AC.loadcenter_types, 'Load Center'],
             'label',
             'text'
         );
@@ -961,7 +959,7 @@ var mk_drawing = function(settings){
 
         x = loc.inverter.bottom_right.x;
         y = loc.inverter.bottom_right.y;
-        x -= size.terminal_diam * (system.AC.num_conductors.length+1);
+        x -= size.terminal_diam * (system.AC.num_conductors+1);
         y -= size.terminal_diam;
 
         var conduit_y = loc.AC_conduit.y;

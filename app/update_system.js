@@ -67,7 +67,7 @@ var update_system = function(settings) {
                 '480/277V';
 
 
-            system.AC.type = system.AC.type || '480V Delta';
+            inputs.AC.type = system.AC.type = system.AC.type || '480V Wye';
             //inputs.AC.type = system.AC.type = system.AC.type ||
             //    input_options.AC.loadcenter_types[system.AC.loadcenter_types][0];
 
@@ -123,11 +123,9 @@ var update_system = function(settings) {
 
     }
 
-    //if( f.section_defined('Array') ){
-        size.wire_offset.max = size.wire_offset.min + system.array.num_strings * size.wire_offset.base;
-        size.wire_offset.ground = size.wire_offset.max + size.wire_offset.base*1;
-        loc.array.left = loc.array.right - ( size.string.w * system.array.num_strings ) - ( size.module.frame.w*3/4 ) ;
-    //}
+    size.wire_offset.max = size.wire_offset.min + system.array.num_strings * size.wire_offset.base;
+    size.wire_offset.ground = size.wire_offset.max + size.wire_offset.base*1;
+    loc.array.left = loc.array.right - ( size.string.w * system.array.num_strings ) - ( size.module.frame.w*3/4 ) ;
 
 
     settings.drawing.size.wire_table.h = (system.AC.num_conductors+3) * settings.drawing.size.wire_table.row_h;

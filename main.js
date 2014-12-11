@@ -41,7 +41,7 @@ $.getJSON( database_json_URL)
         f.load_database(json);
         settings.state.database_loaded = true;
         update();
-        console.log( 'settings.elements', JSON.stringify(settings.elements, null, 4));
+        //console.log( 'settings.elements', JSON.stringify(settings.elements, null, 4));
         //console.log( 'system', JSON.stringify(settings.system, null, 4));
         //console.log( 'inputs', JSON.stringify(settings.inputs, null, 4));
         //console.log( 'drawing', JSON.stringify(settings.drawing, null, 4));
@@ -51,6 +51,11 @@ $.getJSON( database_json_URL)
 
 var update = settings.update = function(){
     console.log('/--- begin update');
+
+    for( var section_name in settings.inputs ){
+        console.log( section_name, f.section_defined(section_name) );
+    }
+
 
     settings.select_registry.forEach(function(selector){
         //console.log(selector.value());
