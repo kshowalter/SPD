@@ -6,7 +6,7 @@ function settings_drawing(settings){
     var status = settings.status;
 
     // Drawing specific
-    settings.drawing = {};
+    settings.drawing = settings.drawing || {};
 
     ///////////////
     // fonts

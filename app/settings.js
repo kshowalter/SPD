@@ -30,11 +30,13 @@ f.merge_objects( settings.inputs, settings.system );
 settings.input_options.DC = settings.input_options.DC || {};
 settings.input_options.DC.AWG = k.obj_names(settings.config_options.NEC_tables['Ch 9 Table 8 Conductor Properties']);
 // load layers
-settings.layers = require('./settings_layers.js');
+
+settings.drawing = settings.drawing || {};
+settings.drawing.layer_attr = require('./settings_layers');
 
 // Load drawing specific settings
 // TODO Fix settings_drawing with new variable locations
-var settings_drawing = require('./settings_drawing.js');
+var settings_drawing = require('./settings_drawing');
 settings = settings_drawing(settings);
 
 //settings.state_app.version_string = version_string;

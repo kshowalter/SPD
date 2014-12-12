@@ -12,14 +12,17 @@ var k = require('./lib/k/k.js');
 var k_data = require('./lib/k/k_data');
 var k$ = require('./lib/k/k_DOM');
 
-var mk_drawing = require('./app/mk_drawing.js');
-var mk_svg= require('./app/mk_svg.js');
+var mk_page1 = require('./app/mk_page1');
+var mk_page2 = require('./app/mk_page2');
+
+var mk_svg= require('./app/mk_svg');
 //var mk_pdf = require('./app/mk_pdf.js');
 var update_system = require('./app/update_system');
 
 var settings = require('./app/settings');
 settings.state.version_string = version_string;
 console.log('settings', settings);
+
 
 var f = require('./app/functions');
 
@@ -53,7 +56,7 @@ var update = settings.update = function(){
     console.log('/--- begin update');
 
     for( var section_name in settings.inputs ){
-        console.log( section_name, f.section_defined(section_name) );
+        //console.log( section_name, f.section_defined(section_name) );
     }
 
 
@@ -82,24 +85,21 @@ var update = settings.update = function(){
 
 
     // Make drawing
-    settings.elements = mk_drawing(settings);
+    settings.drawing.parts = {};
+    settings.drawing.parts.P1 = mk_page1(settings);
+    settings.drawing.parts.P2 = mk_page2(settings);
 
-    //f.nan_check(settings.elements, "settings.elements");
+    settings.drawing.svgs = {};
+    settings.drawing.svgs.P1 = mk_svg(settings.drawing.parts.P1, settings);
+    settings.drawing.svgs.P2 = mk_svg(settings.drawing.parts.P2, settings);
 
-
-
-
-    // Add drawing elements to SVG on screen
-    ///*
-    var svg = mk_svg(settings);
     //    console.log(svg);
-    var svg_wrapper = $(svg);
     //    console.log(svg_wrapper);
     $("#drawing").html('')
         .append($("<p>Page 1</p>"))
-        .append($(svg))
+        .append($(settings.drawing.svgs.P1))
         .append($("<p>Page 2</p>"))
-        .append($(mk_svg(settings)));
+        .append($(settings.drawing.svgs.P2));
     //*/
     //var pdf_download = mk_pdf(settings, setDownloadLink);
     //mk_pdf(settings, setDownloadLink);
