@@ -279,6 +279,104 @@ drawing.block = function(name) {// set current block
 };
 
 
+var Cell = {
+    init: function(){
+        this.borders = {};
+        this.border_options.forEach(function(side){
+            this.borders[side] = false;
+        });
+
+
+    },
+    border_options: ['T', 'B', 'L', 'R'],
+
+    text: function(text){
+        this.cell_text = text;
+    },
+    borders: function(border_string){
+        border_string = border_string.toUpperCase().trim();
+        var borders;
+        if( border_string === 'ALL' ){
+            borders = this.border_options;
+        } else {
+            borders = border_string.split(/[\s,]+/);
+        }
+        borders.forEach(function(side){
+            this.borders[side] = true;
+
+        });
+    }
+};
+
+var Table = {
+    init: function( num_rows, num_cols ){
+        var self = this;
+        this.num_rows = num_rows;
+        this.num_columns = num_cols;
+        this.borders_rows = [];
+        this.borders_cols = [];
+        this.cell = [];
+        _.range(num_cols+1).forEach(function(c){
+            self.borders_cols.push([]);
+        });
+        _.range(num_rows+1).forEach(function(i){
+            var r = i+1;
+            if( i <  num_rows) self.cell[r] = [];
+            self.borders_rows.push([]);
+            _.range(num_cols+1).forEach(function(j){
+                var c = j+1;
+                if( i <  num_rows) self.cell[r][c] = Object.create(Cell);
+                self.borders_rows[r-1][c] = false;
+                self.borders_cols[c-1][r] = false;
+            });
+        });
+        this.borders_rows[num_rows][num_cols] = false;
+        this.borders_cols[num_cols][num_rows] = false;
+
+    },
+    text: function( R, C ){
+        
+    },
+    cell_size: function(xy){
+        this.cell_size = this.cell_size || {};
+        this.cell_size.x = xy[0];
+        this.cell_size.y = xy[1];
+    },
+    /*
+    add_cell: function(){
+
+    },
+    add_rows: function(n){
+        this.num_colmns += n;
+        this.num_rows += n;
+        _.range(n).forEach(function(){
+            this.rows.push([]);
+        });
+        _.range(n).forEach(function(){
+            this.text_rows.push([]);
+        });
+
+    },
+    text: function( R, C, text){
+        this.text_rows[R][C] = text;
+    },
+    //*/
+    border: function( R, C, text){
+        this.text_rows[R][C] = text;
+    },
+
+
+};
+
+drawing.table = function( num_rows, num_cols ){
+    var new_table = Object.create(Table);
+    new_table.init( num_rows, num_cols );
+
+    return new_table;
+
+};
+
+
 
 
 
@@ -289,6 +387,7 @@ var mk_drawing = function(){
     page.drawing_parts = [];
     return page;
 };
+
 
 
 

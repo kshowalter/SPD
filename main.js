@@ -12,8 +12,10 @@ var k = require('./lib/k/k.js');
 var k_data = require('./lib/k/k_data');
 var k$ = require('./lib/k/k_DOM');
 
-var mk_page1 = require('./app/mk_page1');
-var mk_page2 = require('./app/mk_page2');
+var mk_page = {};
+mk_page[1] = require('./app/mk_page_1');
+mk_page[2] = require('./app/mk_page_2');
+mk_page[3] = require('./app/mk_page_3');
 
 var mk_svg= require('./app/mk_svg');
 //var mk_pdf = require('./app/mk_pdf.js');
@@ -86,20 +88,20 @@ var update = settings.update = function(){
 
     // Make drawing
     settings.drawing.parts = {};
-    settings.drawing.parts.P1 = mk_page1(settings);
-    settings.drawing.parts.P2 = mk_page2(settings);
-
     settings.drawing.svgs = {};
-    settings.drawing.svgs.P1 = mk_svg(settings.drawing.parts.P1, settings);
-    settings.drawing.svgs.P2 = mk_svg(settings.drawing.parts.P2, settings);
+    $("#drawing").html('');
 
-    //    console.log(svg);
-    //    console.log(svg_wrapper);
-    $("#drawing").html('')
-        .append($("<p>Page 1</p>"))
-        .append($(settings.drawing.svgs.P1))
-        .append($("<p>Page 2</p>"))
-        .append($(settings.drawing.svgs.P2));
+    for( var p in mk_page ){
+        console.log(p);
+        settings.drawing.parts[p] = mk_page[p](settings);
+        settings.drawing.svgs[p] = mk_svg(settings.drawing.parts[p], settings);
+        $("#drawing")
+            .append($("<p>Page "+p+"</p>"))
+            .append($(settings.drawing.svgs[p]));
+
+    }
+
+
     //*/
     //var pdf_download = mk_pdf(settings, setDownloadLink);
     //mk_pdf(settings, setDownloadLink);

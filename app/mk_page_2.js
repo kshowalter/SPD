@@ -3,8 +3,8 @@ var mk_drawing = require('./mk_drawing');
 //var drawing_parts = [];
 //d.link_drawing_parts(drawing_parts);
 
-var page1 = function(settings){
-    console.log("** Making page 1");
+var page = function(settings){
+    console.log("** Making page 2");
     d = mk_drawing();
 
     var f = settings.f;
@@ -875,4 +875,4 @@ var page1 = function(settings){
 
 
 
-module.exports = page1;
+module.exports = page;
