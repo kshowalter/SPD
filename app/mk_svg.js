@@ -5,12 +5,11 @@
 
 
 
-var display_svg = function(settings){
-    console.log('displaying svg');
-    var l_attr = settings.drawing.l_attr;
+var display_svg = function(drawing_parts, settings){
+    //console.log('displaying svg');
+    var layer_attr = settings.drawing.layer_attr;
     var fonts = settings.drawing.fonts;
-    var elements = settings.elements;
-    //console.log('elements: ', elements);
+    //console.log('drawing_parts: ', drawing_parts);
     //container.empty()
 
     //var svg_elem = document.getElementById('SvgjsSvg1000')
@@ -22,7 +21,7 @@ var display_svg = function(settings){
     //var svg = snapsvg('#svg_drawing');
 
     // Loop through all the drawing contents, call the function below.
-    elements.forEach( function(elem,id) {
+    drawing_parts.forEach( function(elem,id) {
         show_elem_array(elem);
     });
 
@@ -33,7 +32,7 @@ var display_svg = function(settings){
         if( typeof elem.y !== 'undefined' ) { y = elem.y + offset.y; }
 
         if( elem.type === 'rect') {
-            //svg.rect( elem.w, elem.h ).move( x-elem.w/2, y-elem.h/2 ).attr( l_attr[elem.layer_name] );
+            //svg.rect( elem.w, elem.h ).move( x-elem.w/2, y-elem.h/2 ).attr( layer_attr[elem.layer_name] );
             //console.log('elem:', elem );
             //if( isNaN(elem.w) ) {
             //    console.log('error: elem not fully defined', elem)
@@ -48,7 +47,8 @@ var display_svg = function(settings){
             r.setAttribute('height', elem.h);
             r.setAttribute('x', x-elem.w/2);
             r.setAttribute('y', y-elem.h/2);
-            attr = l_attr[elem.layer_name];
+            //console.log(elem.layer_name);
+            attr = layer_attr[elem.layer_name];
             for( var i2 in attr ){
                 r.setAttribute(i2, attr[i2]);
             }
@@ -62,19 +62,19 @@ var display_svg = function(settings){
                     console.log('error: elem not fully defined', elem);
                 }
             });
-            //svg.polyline( points2 ).attr( l_attr[elem.layer_name] );
+            //svg.polyline( points2 ).attr( layer_attr[elem.layer_name] );
 
             var l = document.createElementNS("http://www.w3.org/2000/svg", 'polyline');
             l.setAttribute( 'points', points2.join(' ') );
-            attr = l_attr[elem.layer_name];
+            attr = layer_attr[elem.layer_name];
             for( var i2 in attr ){
                 l.setAttribute(i2, attr[i2]);
             }
             svg_elem.appendChild(l);
         } else if( elem.type === 'text') {
-            //var t = svg.text( elem.strings ).move( elem.points[0][0], elem.points[0][1] ).attr( l_attr[elem.layer_name] )
+            //var t = svg.text( elem.strings ).move( elem.points[0][0], elem.points[0][1] ).attr( layer_attr[elem.layer_name] )
             var font = fonts[elem.font];
-
+            if( font['text-anchor'] === 'middle' ) y += font['font-size']*1/3;
             var t = document.createElementNS("http://www.w3.org/2000/svg", 'text');
             t.setAttribute('x', x);
             //t.setAttribute('y', y + font['font-size']/2 );
@@ -83,8 +83,8 @@ var display_svg = function(settings){
                 //t.setAttribute('transform', "rotate(" + elem.rotated + " " + x + " " + y + ")" );
                 t.setAttribute('transform', "rotate(" + elem.rotated + " " + x + " " + y + ")" );
             }
-            for( var i2 in l_attr[elem.layer_name] ){
-                t.setAttribute( i2, l_attr[elem.layer_name][i2] );
+            for( var i2 in layer_attr[elem.layer_name] ){
+                t.setAttribute( i2, layer_attr[elem.layer_name][i2] );
             }
             for( var i2 in font ){
                 t.setAttribute( i2, font[i2] );
@@ -103,13 +103,13 @@ var display_svg = function(settings){
             c.setAttribute('ry', elem.d/2);
             c.setAttribute('cx', x);
             c.setAttribute('cy', y);
-            attr = l_attr[elem.layer_name];
+            attr = layer_attr[elem.layer_name];
             for( var i2 in attr ){
                 c.setAttribute(i2, attr[i2]);
             }
             svg_elem.appendChild(c);
             /*
-            c.attributes( l_attr[elem.layer_name] )
+            c.attributes( layer_attr[elem.layer_name] )
             c.attributes({
                 rx: 5,
                 --------------------------
@@ -120,11 +120,11 @@ var display_svg = function(settings){
             var c2 = svg.ellipse( elem.r, elem.r )
             c2.move( elem.points[0][0]-elem.d/2, elem.points[0][1]-elem.d/2 )
             c2.attr({rx:5, ry:5})
-            c2.attr( l_attr[elem.layer_name] )
+            c2.attr( layer_attr[elem.layer_name] )
             */
         } else if(elem.type === 'block') {
             // if it is a block, run this function through each element.
-            elem.elements.forEach( function(block_elem,id){
+            elem.drawing_parts.forEach( function(block_elem,id){
                 show_elem_array(block_elem, {x:x, y:y});
             });
         }

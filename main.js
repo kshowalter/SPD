@@ -1,6 +1,6 @@
 "use strict";
 //var version_string = "Dev";
-var version_string = "Alpha20141210";
+var version_string = "Alpha20141218";
 
 // Moved to index.html
 // TODO: look into ways to further reduce size. It seems way to big.
@@ -12,14 +12,19 @@ var k = require('./lib/k/k.js');
 var k_data = require('./lib/k/k_data');
 var k$ = require('./lib/k/k_DOM');
 
-var mk_drawing = require('./app/mk_drawing.js');
-var mk_svg= require('./app/mk_svg.js');
+var mk_page = {};
+mk_page[1] = require('./app/mk_page_1');
+mk_page[2] = require('./app/mk_page_2');
+mk_page[3] = require('./app/mk_page_3');
+
+var mk_svg= require('./app/mk_svg');
 //var mk_pdf = require('./app/mk_pdf.js');
 var update_system = require('./app/update_system');
 
 var settings = require('./app/settings');
 settings.state.version_string = version_string;
 console.log('settings', settings);
+
 
 var f = require('./app/functions');
 
@@ -53,7 +58,7 @@ var update = settings.update = function(){
     console.log('/--- begin update');
 
     for( var section_name in settings.inputs ){
-        console.log( section_name, f.section_defined(section_name) );
+        //console.log( section_name, f.section_defined(section_name) );
     }
 
 
@@ -82,24 +87,22 @@ var update = settings.update = function(){
 
 
     // Make drawing
-    settings.elements = mk_drawing(settings);
+    settings.drawing.parts = {};
+    settings.drawing.svgs = {};
+    $("#drawing").html('');
 
-    //f.nan_check(settings.elements, "settings.elements");
+    for( var p in mk_page ){
+        settings.drawing.parts[p] = mk_page[p](settings);
+        settings.drawing.svgs[p] = mk_svg(settings.drawing.parts[p], settings);
+        $("#drawing")
+            //.append($("<p>Page "+p+"</p>"))
+            .append($(settings.drawing.svgs[p]))
+            .append($("</br>"))
+            .append($("</br>"));
+
+    }
 
 
-
-
-    // Add drawing elements to SVG on screen
-    ///*
-    var svg = mk_svg(settings);
-    //    console.log(svg);
-    var svg_wrapper = $(svg);
-    //    console.log(svg_wrapper);
-    $("#drawing").html('')
-        .append($("<p>Page 1</p>"))
-        .append($(svg))
-        .append($("<p>Page 2</p>"))
-        .append($(mk_svg(settings)));
     //*/
     //var pdf_download = mk_pdf(settings, setDownloadLink);
     //mk_pdf(settings, setDownloadLink);

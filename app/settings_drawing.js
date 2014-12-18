@@ -6,7 +6,7 @@ function settings_drawing(settings){
     var status = settings.status;
 
     // Drawing specific
-    settings.drawing = {};
+    settings.drawing = settings.drawing || {};
 
     ///////////////
     // fonts
@@ -36,7 +36,7 @@ function settings_drawing(settings){
     fonts['page'] = {
         'font-family': 'monospace',
         'font-size':     20,
-        'text-anchor':   'left',
+        'text-anchor':   'middle',
     };
     fonts['table'] = {
         'font-family': 'monospace',
