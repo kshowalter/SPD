@@ -92,7 +92,6 @@ var update = settings.update = function(){
     $("#drawing").html('');
 
     for( var p in mk_page ){
-        console.log(p);
         settings.drawing.parts[p] = mk_page[p](settings);
         settings.drawing.svgs[p] = mk_svg(settings.drawing.parts[p], settings);
         $("#drawing")

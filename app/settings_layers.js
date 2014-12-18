@@ -26,6 +26,7 @@ layer_attr.box = Object.create(layer_attr.base);
 layer_attr.text = Object.create(layer_attr.base);
 layer_attr.text.stroke = '#0000ff';
 layer_attr.terminal = Object.create(layer_attr.base);
+layer_attr.border = Object.create(layer_attr.base);
 
 layer_attr.AC_ground = Object.create(layer_attr.base);
 layer_attr.AC_ground.stroke = '#009900';

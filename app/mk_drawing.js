@@ -61,7 +61,7 @@ drawing.layer = function(name){ // set current layer
     if( typeof name === 'undefined' ){ // if no layer name given, reset to default
         layer_active = false;
     } else if ( ! (name in layer_attr) ) {
-        console.log('Error: unknown layer, using base');
+        console.warn('Error: unknown layer, using base');
         layer_active = 'base' ;
     } else { // finaly activate requested layer
         layer_active = name;
@@ -175,7 +175,7 @@ drawing.add = function(type, points, layer_name) {
 
     if( typeof layer_name === 'undefined' ) { layer_name = layer_active; }
     if( ! (layer_name in layer_attr) ) {
-        console.log('Error: Layer "'+ layer_name +'" name not found, using base');
+        console.warn('Error: Layer "'+ layer_name +'" name not found, using base');
         layer_name = 'base';
     }
 
@@ -280,68 +280,128 @@ drawing.block = function(name) {// set current block
 
 
 var Cell = {
-    init: function(){
+    init: function(table, R, C){
+        var self = this;
+        this.table = table;
+        this.R = R;
+        this.C = C;
+        /*
         this.borders = {};
         this.border_options.forEach(function(side){
-            this.borders[side] = false;
+            self.borders[side] = false;
         });
-
-
+        //*/
+        return this;
     },
+    /*
     border_options: ['T', 'B', 'L', 'R'],
-
+    //*/
     text: function(text){
         this.cell_text = text;
-    },
-    borders: function(border_string){
-        border_string = border_string.toUpperCase().trim();
-        var borders;
-        if( border_string === 'ALL' ){
-            borders = this.border_options;
-        } else {
-            borders = border_string.split(/[\s,]+/);
-        }
-        borders.forEach(function(side){
-            this.borders[side] = true;
+        return this;
 
-        });
+    },
+    border: function(border_string){
+        this.table.border( this.R, this.C, border_string );
+        return this;
     }
 };
 
 var Table = {
-    init: function( num_rows, num_cols ){
-        var self = this;
+    init: function( drawing, num_rows, num_cols ){
+        this.drawing = drawing;
         this.num_rows = num_rows;
-        this.num_columns = num_cols;
-        this.borders_rows = [];
-        this.borders_cols = [];
-        this.cell = [];
-        _.range(num_cols+1).forEach(function(c){
-            self.borders_cols.push([]);
-        });
-        _.range(num_rows+1).forEach(function(i){
-            var r = i+1;
-            if( i <  num_rows) self.cell[r] = [];
-            self.borders_rows.push([]);
-            _.range(num_cols+1).forEach(function(j){
-                var c = j+1;
-                if( i <  num_rows) self.cell[r][c] = Object.create(Cell);
-                self.borders_rows[r-1][c] = false;
-                self.borders_cols[c-1][r] = false;
-            });
-        });
-        this.borders_rows[num_rows][num_cols] = false;
-        this.borders_cols[num_cols][num_rows] = false;
+        this.num_cols = num_cols;
+        var r,c;
 
+        // setup border containers
+        this.borders_rows = [];
+        for( r=0; r<=num_rows; r++){
+            this.borders_rows[r] = [];
+            for( c=1; c<=num_cols; c++){
+                this.borders_rows[r][c] = false;
+            }
+        }
+        this.borders_cols = [];
+        for( c=0; c<=num_cols; c++){
+            this.borders_cols[c] = [];
+            for( r=1; r<=num_rows; r++){
+                this.borders_cols[c][r] = false;
+            }
+        }
+
+        // set column and row size containers
+        this.size_rows = [];
+        for( r=1; r<=num_rows; r++){
+            this.size_rows[r] = 15;
+        }
+        this.size_cols = [];
+        for( c=1; c<=num_cols; c++){
+            this.size_cols[c] = 60;
+        }
+
+        // setup cell container
+        this.cells = [];
+        for( r=1; r<=num_rows; r++){
+            this.cells[r] = [];
+            for( c=1; c<=num_cols; c++){
+                this.cells[r][c] = Object.create(Cell);
+                this.cells[r][c].init( this, r, c);
+            }
+
+        }
+        //*/
+
+        return this;
     },
-    text: function( R, C ){
-        
+    loc: function( x, y){
+        this.x = x;
+        this.y = y;
+        return this;
     },
-    cell_size: function(xy){
-        this.cell_size = this.cell_size || {};
-        this.cell_size.x = xy[0];
-        this.cell_size.y = xy[1];
+    cell: function( R, C ){
+        return this.cells[R][C];
     },
+    /*
+    size_col: function(col, s){
+        if( typeof col === 'string' ){
+            if( col === 'all'){
+                _.range(this.num_cols).forEach(function(c){
+                    this.size_cols[c+1] = s;
+                },this);
+            } else {
+                s = Number(s);
+                if( isNaN(s) ){
+                    console.log('Error: column wrong');
+                } else {
+                    this.size_cols[col] = s;
+                }
+            }
+        } else { // is number
+            this.size_rows[col] = s;
+        }
+        return this;
+    },
+    size_row: function(row, s){
+        if( typeof row === 'string' ){
+            if( row === 'all'){
+                _.range(this.num_rows).forEach(function(r){
+                    this.size_rows[r+1] = s;
+                },this);
+            } else {
+                s = Number(s);
+                if( isNaN(s) ){
+                    console.log('Error: column wrong');
+                } else {
+                    this.size_rows[row] = s;
+                }
+            }
+        } else { // is number
+            this.size_rows[row] = s;
+        }
+        return this;
+    },
+    //*/
     /*
     add_cell: function(){
 
@@ -361,16 +421,104 @@ var Table = {
         this.text_rows[R][C] = text;
     },
     //*/
-    border: function( R, C, text){
-        this.text_rows[R][C] = text;
+    border: function( R, C, border_string){
+        border_string = border_string.toUpperCase().trim();
+        var borders;
+        if( border_string === 'ALL' ){
+            borders = ['T', 'B', 'L', 'R'];
+        } else {
+            borders = border_string.split(/[\s,]+/);
+        }
+        borders.forEach(function(side){
+            switch(side){
+                case 'T':
+                    this.borders_rows[R-1][C] = true;
+                    break;
+                case 'B':
+                    this.borders_rows[R][C] = true;
+                    break;
+                case 'L':
+                    this.borders_cols[C-1][R] = true;
+                    break;
+                case 'R':
+                    this.borders_cols[C][R] = true;
+                    break;
+            }
+        }, this);
+        return this;
     },
+    corner: function(R,C){
+        var x = this.x;
+        var y = this.y;
+        var r,c;
+        for( r=1; r<=R; r++ ){
+            y += this.size_rows[r];
+        }
+        for( c=1; c<=C; c++ ){
+            x += this.size_cols[c];
+        }
+        return [x,y];
+    },
+    center: function(R,C){
+        var x = this.x;
+        var y = this.y;
+        var r,c;
+        for( r=1; r<=R; r++ ){
+            y += this.size_rows[r];
+        }
+        for( c=1; c<=C; c++ ){
+            x += this.size_cols[c];
+        }
+        y -= this.size_rows[R]/2;
+        x -= this.size_cols[C]/2;
+        return [x,y];
+    },
+    mk: function(){
+        var self = this;
+        var r,c;
+        for( r=0; r<=this.num_rows; r++ ){
+            for( c=1; c<=this.num_cols; c++ ){
+                if( this.borders_rows[r][c] === true ){
+                    this.drawing.line([
+                        this.corner(r,c-1),
+                        this.corner(r,c),
+                        ], 'border');
 
+                }
+            }
+        }
+        for( c=0; c<=this.num_cols; c++ ){
+            for( r=1; r<=this.num_rows; r++ ){
+                if( this.borders_cols[c][r] === true ){
+                    this.drawing.line([
+                        this.corner(r-1,c),
+                        this.corner(r,c),
+                        ], 'border');
+
+                }
+            }
+        }
+        for( r=1; r<=this.num_rows; r++ ){
+            for( c=1; c<=this.num_cols; c++ ){
+                if( typeof this.cell(r,c).cell_text === 'string' ){
+
+                    this.drawing.text(
+                        this.center(r,c),
+                        this.cell(r,c).cell_text,
+                        'table',
+                        'text'
+                    );
+                }
+            }
+        }
+
+    }
 
 };
 
 drawing.table = function( num_rows, num_cols ){
     var new_table = Object.create(Table);
-    new_table.init( num_rows, num_cols );
+    new_table.init( this, num_rows, num_cols );
 
     return new_table;
 

@@ -6,7 +6,7 @@
 
 
 var display_svg = function(drawing_parts, settings){
-    console.log('displaying svg');
+    //console.log('displaying svg');
     var layer_attr = settings.drawing.layer_attr;
     var fonts = settings.drawing.fonts;
     //console.log('drawing_parts: ', drawing_parts);
@@ -74,6 +74,7 @@ var display_svg = function(drawing_parts, settings){
         } else if( elem.type === 'text') {
             //var t = svg.text( elem.strings ).move( elem.points[0][0], elem.points[0][1] ).attr( layer_attr[elem.layer_name] )
             var font = fonts[elem.font];
+            if( font['text-anchor'] === 'middle' ) y += font['font-size']*1/3;
             var t = document.createElementNS("http://www.w3.org/2000/svg", 'text');
             t.setAttribute('x', x);
             //t.setAttribute('y', y + font['font-size']/2 );
