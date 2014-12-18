@@ -36,7 +36,7 @@ function settings_drawing(settings){
     fonts['page'] = {
         'font-family': 'monospace',
         'font-size':     20,
-        'text-anchor':   'left',
+        'text-anchor':   'middle',
     };
     fonts['table'] = {
         'font-family': 'monospace',

@@ -95,8 +95,10 @@ var update = settings.update = function(){
         settings.drawing.parts[p] = mk_page[p](settings);
         settings.drawing.svgs[p] = mk_svg(settings.drawing.parts[p], settings);
         $("#drawing")
-            .append($("<p>Page "+p+"</p>"))
-            .append($(settings.drawing.svgs[p]));
+            //.append($("<p>Page "+p+"</p>"))
+            .append($(settings.drawing.svgs[p]))
+            .append($("</br>"))
+            .append($("</br>"));
 
     }
 

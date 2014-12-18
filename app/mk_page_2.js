@@ -1,4 +1,5 @@
 var mk_drawing = require('./mk_drawing');
+var mk_border = require('./mk_border');
 
 //var drawing_parts = [];
 //d.link_drawing_parts(drawing_parts);
@@ -6,6 +7,9 @@ var mk_drawing = require('./mk_drawing');
 var page = function(settings){
     console.log("** Making page 2");
     d = mk_drawing();
+    var sheet_section = 'PV';
+    var sheet_num = '01';
+    d.append(mk_border(settings, sheet_section, sheet_num ));
 
     var f = settings.f;
 
@@ -183,6 +187,7 @@ var page = function(settings){
 
 ////////////////////////////////////////
 // Frame
+/*
     d.section('Frame');
 
     w = size.drawing.w;
@@ -256,7 +261,7 @@ var page = function(settings){
         'page', 'text');
 
 
-
+//*/
 
 
 

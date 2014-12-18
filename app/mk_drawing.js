@@ -525,7 +525,10 @@ drawing.table = function( num_rows, num_cols ){
 };
 
 
-
+drawing.append =  function(drawing_parts){
+    this.drawing_parts = this.drawing_parts.concat(drawing_parts);
+    return this;
+};
 
 
 
