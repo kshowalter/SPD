@@ -95,12 +95,15 @@ var add_border = function(settings, sheet_section, sheet_num){
     y = title.bottom - padding;
 
     x += 10;
-    d.text([x,y],
-         [ system.inverter.make + " " + system.inverter.model + " Inverter System" ],
-        'title1', 'text').rotate(-90);
+    if( system.inverter.make && system.inverter.model ){
+        d.text([x,y],
+             [ system.inverter.make + " " + system.inverter.model + " Inverter System" ],
+            'title1', 'text').rotate(-90);
+
+    }
 
     x += 14;
-    if( system.module.specs !== undefined && system.module.specs !== null  ){
+    if( system.module.model && system.array.num_strings && system.array.num_modules  ){
         d.text([x,y], [
             system.module.make + " " + system.module.model +
                 " (" + system.array.num_strings  + " strings of " + system.array.num_modules + " modules )"
