@@ -1,0 +1,9 @@
+#!/bin/bash
+echo "Removing old k"
+cd javascripts
+trash-put k
+echo "Getting new k"
+git clone --depth=1 https://github.com/kshowalter/k.git
+rm -rf k/.git
+cd ..
+echo "Done"
