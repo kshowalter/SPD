@@ -74,15 +74,18 @@ var display_svg = function(drawing_parts, settings){
         } else if( elem.type === 'text') {
             //var t = svg.text( elem.strings ).move( elem.points[0][0], elem.points[0][1] ).attr( layer_attr[elem.layer_name] )
             var font = fonts[elem.font];
-            if( font['text-anchor'] === 'middle' ) y += font['font-size']*1/3;
             var t = document.createElementNS("http://www.w3.org/2000/svg", 'text');
-            t.setAttribute('x', x);
-            //t.setAttribute('y', y + font['font-size']/2 );
-            t.setAttribute('y', y );
             if(elem.rotated){
                 //t.setAttribute('transform', "rotate(" + elem.rotated + " " + x + " " + y + ")" );
                 t.setAttribute('transform', "rotate(" + elem.rotated + " " + x + " " + y + ")" );
+            } else {
+                //if( font['text-anchor'] === 'middle' ) y += font['font-size']*1/3;
+                y += font['font-size']*1/3;
             }
+            t.setAttribute('x', x);
+            //t.setAttribute('y', y + font['font-size']/2 );
+            t.setAttribute('y', y );
+            
             for( var i2 in layer_attr[elem.layer_name] ){
                 t.setAttribute( i2, layer_attr[elem.layer_name][i2] );
             }

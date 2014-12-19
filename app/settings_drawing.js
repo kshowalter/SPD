@@ -43,7 +43,21 @@ function settings_drawing(settings){
         'font-size':     6,
         'text-anchor':   'middle',
     };
-
+    fonts['table_large_left'] = {
+        'font-family': 'monospace',
+        'font-size':     14,
+        'text-anchor':   'left',
+    };
+    fonts['table_large'] = {
+        'font-family': 'monospace',
+        'font-size':     14,
+        'text-anchor':   'middle',
+    };
+    fonts['project title'] = {
+        'font-family': 'monospace',
+        'font-size':     16,
+        'text-anchor':   'middle',
+    };
 
     var size = settings.drawing.size = {};
     var loc = settings.drawing.loc = {};

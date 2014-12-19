@@ -2,7 +2,6 @@
 
 var k = require('../lib/k/k.js');
 var f = require('./functions.js');
-var settings = require('./settings');
 
 //var settings = require('./settings.js');
 //var l_attr = settings.drawing.l_attr;
@@ -11,12 +10,14 @@ var _ = require('underscore');
 
 var settings = require('./settings');
 var layer_attr = settings.drawing.layer_attr;
+var fonts = settings.drawing.fonts;
 
 
 
 
 
 var drawing = {};
+drawing.fonts = fonts;
 
 
 
@@ -71,7 +72,7 @@ drawing.layer = function(name){ // set current layer
 
 var section_active = false;
 
-drawing. section = function(name){ // set current section
+drawing.section = function(name){ // set current section
     if( typeof name === 'undefined' ){ // if no section name given, reset to default
         section_active = false;
     } else { // finaly activate requested section
@@ -301,6 +302,11 @@ var Cell = {
         return this;
 
     },
+    font: function(font_name){
+        this.cell_font_name = font_name;
+        return this;
+    },
+
     border: function(border_string){
         this.table.border( this.R, this.C, border_string );
         return this;
@@ -331,13 +337,13 @@ var Table = {
         }
 
         // set column and row size containers
-        this.size_rows = [];
+        this.row_sizes = [];
         for( r=1; r<=num_rows; r++){
-            this.size_rows[r] = 15;
+            this.row_sizes[r] = 15;
         }
-        this.size_cols = [];
+        this.col_sizes = [];
         for( c=1; c<=num_cols; c++){
-            this.size_cols[c] = 60;
+            this.col_sizes[c] = 60;
         }
 
         // setup cell container
@@ -362,46 +368,56 @@ var Table = {
     cell: function( R, C ){
         return this.cells[R][C];
     },
-    /*
-    size_col: function(col, s){
+    all_cells: function(){
+        var cell_array = [];
+        this.cells.forEach(function(row){
+            row.forEach(function(cell){
+                cell_array.push(cell);
+            });
+        });
+        return cell_array;
+    },
+    col_size: function(col, size){
         if( typeof col === 'string' ){
             if( col === 'all'){
                 _.range(this.num_cols).forEach(function(c){
-                    this.size_cols[c+1] = s;
+                    this.col_sizes[c+1] = size;
                 },this);
             } else {
-                s = Number(s);
-                if( isNaN(s) ){
+                size = Number(size);
+                if( isNaN(size) ){
                     console.log('Error: column wrong');
                 } else {
-                    this.size_cols[col] = s;
+                    this.col_sizes[col] = size;
                 }
             }
         } else { // is number
-            this.size_rows[col] = s;
-        }
-        return this;
-    },
-    size_row: function(row, s){
-        if( typeof row === 'string' ){
-            if( row === 'all'){
-                _.range(this.num_rows).forEach(function(r){
-                    this.size_rows[r+1] = s;
-                },this);
-            } else {
-                s = Number(s);
-                if( isNaN(s) ){
-                    console.log('Error: column wrong');
-                } else {
-                    this.size_rows[row] = s;
-                }
-            }
-        } else { // is number
-            this.size_rows[row] = s;
+            this.col_sizes[col] = size;
         }
         return this;
     },
     //*/
+    row_size: function(row, size){
+        if( typeof row === 'string' ){
+            if( row === 'all'){
+                _.range(this.num_rows).forEach(function(r){
+                    this.row_sizes[r+1] = size;
+                },this);
+            } else {
+                size = Number(size);
+                if( isNaN(size) ){
+                    console.log('Error: column wrong');
+                } else {
+                    this.row_sizes[row] = size;
+                }
+            }
+        } else { // is number
+            this.row_sizes[row] = size;
+        }
+        return this;
+    },
+    //*/
+
     /*
     add_cell: function(){
 
@@ -452,10 +468,10 @@ var Table = {
         var y = this.y;
         var r,c;
         for( r=1; r<=R; r++ ){
-            y += this.size_rows[r];
+            y += this.row_sizes[r];
         }
         for( c=1; c<=C; c++ ){
-            x += this.size_cols[c];
+            x += this.col_sizes[c];
         }
         return [x,y];
     },
@@ -464,14 +480,24 @@ var Table = {
         var y = this.y;
         var r,c;
         for( r=1; r<=R; r++ ){
-            y += this.size_rows[r];
+            y += this.row_sizes[r];
         }
         for( c=1; c<=C; c++ ){
-            x += this.size_cols[c];
+            x += this.col_sizes[c];
         }
-        y -= this.size_rows[R]/2;
-        x -= this.size_cols[C]/2;
+        y -= this.row_sizes[R]/2;
+        x -= this.col_sizes[C]/2;
         return [x,y];
+    },
+    left: function(R,C){
+        var coor = this.center(R,C);
+        coor[0] = coor[0] - this.col_sizes[C]/2 + this.row_sizes[R]/2;
+        return coor;
+    },
+    right: function(R,C){
+        var coor = this.center(R,C);
+        coor[0] = coor[0] + this.col_sizes[C]/2 - this.row_sizes[R]/2;
+        return coor;
     },
     mk: function(){
         var self = this;
@@ -501,11 +527,18 @@ var Table = {
         for( r=1; r<=this.num_rows; r++ ){
             for( c=1; c<=this.num_cols; c++ ){
                 if( typeof this.cell(r,c).cell_text === 'string' ){
+                    var cell = this.cell(r,c);
+                    var font_name = cell.cell_font_name || 'table';
+                    var coor;
+                    if( this.drawing.fonts[font_name]['text-anchor'] === 'center') coor = this.center(r,c);
+                    else if( this.drawing.fonts[font_name]['text-anchor'] === 'right') coor = this.right(r,c);
+                    else if( this.drawing.fonts[font_name]['text-anchor'] === 'left') coor = this.left(r,c);
+
 
                     this.drawing.text(
-                        this.center(r,c),
+                        coor,
                         this.cell(r,c).cell_text,
-                        'table',
+                        font_name,
                         'text'
                     );
                 }
