@@ -2,24 +2,12 @@
 /***********/
 /* fonts */
 /*
-@font-face {
-    font-family: "Open Sans";
-    src: url(Open_Sans/OpenSans-Regular.ttf) format("truetype");
-}
-@font-face {
-    font-family: "Roboto";
-    src: url(Open_Sans/Roboto-Regular.ttf) format("truetype");
-}
 */
 
 /***********/
 /* misc */
 
 body {
-    /*
-    font-family: 'Roboto', sans-serif;
-    font-family: 'Open Sans', sans-serif;
-    */
     font-family: sans-serif;
 
     background: #DFDFDF;
