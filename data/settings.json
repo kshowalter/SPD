@@ -44,7 +44,6 @@
 
     "system": {
         "module": {
-            "specs": null
         },
         "array": {
             "isc": "system.module.isc * inputs.array.num_strings",

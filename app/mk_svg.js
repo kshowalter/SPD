@@ -14,9 +14,13 @@ var display_svg = function(drawing_parts, settings){
 
     //var svg_elem = document.getElementById('SvgjsSvg1000')
     var svg_elem = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
-    svg_elem.setAttribute('id','svg_drawing');
-    svg_elem.setAttribute('width', settings.drawing.size.drawing.w);
-    svg_elem.setAttribute('height', settings.drawing.size.drawing.h);
+    svg_elem.setAttribute('class','svg_drawing');
+    //svg_elem.setAttribute('width', settings.drawing.size.drawing.w);
+    //svg_elem.setAttribute('height', settings.drawing.size.drawing.h);
+    var view_box = '0 0 ' +
+                    settings.drawing.size.drawing.w + ' ' +
+                    settings.drawing.size.drawing.h + ' ';
+    svg_elem.setAttribute('viewBox', view_box);
     //var svg = snapsvg(svg_elem).size(size.drawing.w, size.drawing.h);
     //var svg = snapsvg('#svg_drawing');
 
@@ -85,7 +89,7 @@ var display_svg = function(drawing_parts, settings){
             t.setAttribute('x', x);
             //t.setAttribute('y', y + font['font-size']/2 );
             t.setAttribute('y', y );
-            
+
             for( var i2 in layer_attr[elem.layer_name] ){
                 t.setAttribute( i2, layer_attr[elem.layer_name][i2] );
             }

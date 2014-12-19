@@ -38,7 +38,7 @@ var update_system = function(settings) {
     ///*
     if( true && state.version_string === 'Dev'){
         //show_defaults = true;
-        console.log('Dev mode - defaults on');
+        //console.log('Dev mode - defaults on');
 
         system.array.num_strings = system.array.num_strings || 4;
         system.array.num_modules = system.array.num_modules || 6;
@@ -99,7 +99,13 @@ var update_system = function(settings) {
     }
 
     if( system.module.model ) {
-        system.module.specs = settings.components.modules[system.module.make][system.module.model];
+        var specs = settings.components.modules[system.module.make][system.module.model];
+        for( var spec_name in specs ){
+            if( spec_name !== 'module_id' ){
+                system.module[spec_name] = specs[spec_name];
+            }
+        }
+        //system.module.specs = settings.components.modules[system.module.make][system.module.model];
     }
 
     input_options.inverter.make = k.obj_names(settings.components.inverters);

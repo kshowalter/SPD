@@ -89,6 +89,9 @@ var update = settings.update = function(){
     // Make drawing
     settings.drawing.parts = {};
     settings.drawing.svgs = {};
+
+
+
     $("#drawing").html('');
 
     for( var p in mk_page ){
@@ -102,6 +105,7 @@ var update = settings.update = function(){
 
     }
 
+    $("#drawing_preview").html('').append($(settings.drawing.svgs[2]).clone());
 
     //*/
     //var pdf_download = mk_pdf(settings, setDownloadLink);
@@ -178,18 +182,29 @@ function page_setup(settings){
     f.add_selectors(settings, config_frame);
 
     // Parameters and specifications
+    /*
     $('<div>').html('System Parameters').attr('class', 'section_title').appendTo(system_frame);
     var params_container = $('<div>').attr('class', 'section');
     params_container.appendTo(system_frame);
     f.add_params( settings, params_container );
+    //*/
 
     //TODO: add svg display of modules
     // http://quote.snapnrack.com/ui/o100.php#step-2
 
     // drawing
     //var drawing = $('div').attr('id', 'drawing_frame').attr('class', 'section').appendTo(page);
+
+
+    var drawing_preview = $('<div>').attr('id', 'drawing_frame_preview').appendTo(page);
+    $('<div>').html('Preview').attr('class', 'section_title').appendTo(drawing_preview);
+    $('<div>').attr('id', 'drawing_preview').attr('class', 'drawing').css('clear', 'both').appendTo(drawing_preview);
+
+
+
+
     var drawing = $('<div>').attr('id', 'drawing_frame').appendTo(page);
-    drawing.css('width', (settings.drawing.size.drawing.w+20).toString() + "px" );
+    //drawing.css('width', (settings.drawing.size.drawing.w+20).toString() + "px" );
     $('<div>').html('Drawing').attr('class', 'section_title').appendTo(drawing);
     /*
     var page_selector = k$('selector')
@@ -205,7 +220,7 @@ function page_setup(settings){
 
     var svg_container_object = k$('div').attr('id', 'drawing').attr('class', 'drawing').css('clear', 'both').appendTo(drawing);
     //svg_container_object.style('width', settings.drawing.size.drawing.w+"px" )
-    var svg_container = svg_container_object.elem;
+    //var svg_container = svg_container_object.elem;
     $('<br>').appendTo(drawing);
 
     ///////////////////
@@ -220,7 +235,5 @@ var status_id = "status";
 setInterval(function(){ k.update_status_page(status_id, boot_time, version_string);},1000);
 
 update();
-
-console.log('settings', settings);
 
 //console.log('window', window);

@@ -36,7 +36,8 @@ function convert( obj, assign, output){
             line = new_assign +" = "+ output_value;
         }
 
-        line = "    try { " + line + ";}\n    catch(e) { if(settings.state.database_loaded) console.log(e); }";
+        //line = "    try { " + line + ";}\n    catch(e) { if(settings.state.database_loaded) console.log(e); }";
+        line = "    try { " + line + ";}\n    catch(e) {  }";
 
         output.push(line);
 

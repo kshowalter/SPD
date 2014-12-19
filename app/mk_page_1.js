@@ -44,8 +44,6 @@ var page = function(settings){
         cell.font('table_large_left').border('all');
     });
 
-    console.log(t);
-
     t.mk();
 
     /*

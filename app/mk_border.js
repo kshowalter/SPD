@@ -4,10 +4,7 @@ var mk_drawing = require('./mk_drawing');
 //d.link_drawing_parts(drawing_parts);
 
 var add_border = function(settings, sheet_section, sheet_num){
-    console.log("** Making page 2");
     d = mk_drawing();
-    console.log(d);
-
     var f = settings.f;
 
     //var components = settings.components;

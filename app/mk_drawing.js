@@ -173,6 +173,7 @@ SvgElem.rotate = function(deg){
 // functions for adding drawing_parts
 
 drawing.add = function(type, points, layer_name) {
+    if( points[0] === undefined ) console.warn("points not deffined", type, points, layer_name );
 
     if( typeof layer_name === 'undefined' ) { layer_name = layer_active; }
     if( ! (layer_name in layer_attr) ) {
@@ -533,7 +534,7 @@ var Table = {
                     if( this.drawing.fonts[font_name]['text-anchor'] === 'center') coor = this.center(r,c);
                     else if( this.drawing.fonts[font_name]['text-anchor'] === 'right') coor = this.right(r,c);
                     else if( this.drawing.fonts[font_name]['text-anchor'] === 'left') coor = this.left(r,c);
-
+                    else coor = this.center(r,c);
 
                     this.drawing.text(
                         coor,
