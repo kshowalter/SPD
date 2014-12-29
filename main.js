@@ -17,6 +17,8 @@ mk_page[1] = require('./app/mk_page_1');
 mk_page[2] = require('./app/mk_page_2');
 mk_page[3] = require('./app/mk_page_3');
 
+var mk_preview = require('./app/mk_page_preview');
+
 var mk_svg= require('./app/mk_svg');
 //var mk_pdf = require('./app/mk_pdf.js');
 var update_system = require('./app/update_system');
@@ -105,7 +107,10 @@ var update = settings.update = function(){
 
     }
 
-    $("#drawing_preview").html('').append($(settings.drawing.svgs[2]).clone());
+    //$("#drawing_preview").html('').append($(settings.drawing.svgs[2]).clone());
+    settings.drawing.preview_parts = mk_preview(settings);
+    settings.drawing.preview_svgs = mk_svg(settings.drawing.preview_parts, settings);
+    $("#drawing_preview").html('').append( $(settings.drawing.preview_svgs) );
 
     //*/
     //var pdf_download = mk_pdf(settings, setDownloadLink);

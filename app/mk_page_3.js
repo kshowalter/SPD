@@ -21,8 +21,11 @@ var page = function(settings){
         'title2'
     );
 
+
     x = size.drawing.frame_padding*6;
     y = size.drawing.frame_padding*6 +20;
+
+    d.layer('table');
 
     for( var section_name in settings.system ){
         if( f.section_defined(section_name) ){
@@ -38,8 +41,8 @@ var page = function(settings){
 
 
             var t = d.table(n_rows,n_cols).loc(x,y);
-            t.row_size('all', row_height).col_size(1, 100).col_size(2, 60);
-            w = 100+60;
+            t.row_size('all', row_height).col_size(1, 100).col_size(2, 80);
+            w = 100+80;
 
             var r = 1;
             for( var value_name in section ){
@@ -73,6 +76,7 @@ var page = function(settings){
 
     }
 
+    d.layer();
 
 
     return d.drawing_parts;

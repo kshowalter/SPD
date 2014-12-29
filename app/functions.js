@@ -160,7 +160,7 @@ f.add_selectors = function(settings, parent_container){
     for( var section_name in settings.input_options ){
         var selection_container = $('<div>').attr('class', 'input_section').attr('id', section_name ).appendTo(parent_container);
         //selection_container.get(0).style.display = display_type;
-        var system_div = $('<div>').attr('class', 'title_bar')
+        var system_div = $('<div>').attr('class', 'title_bar').attr('id', 'section_'+section_name)
             .appendTo(selection_container)
             /* jshint -W083 */
             .click(function(){

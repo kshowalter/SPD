@@ -13,7 +13,7 @@ layer_attr.block = Object.create(layer_attr.base);
 layer_attr.frame = Object.create(layer_attr.base);
 layer_attr.frame.stroke = '#000042';
 layer_attr.table = Object.create(layer_attr.base);
-layer_attr.table.stroke = '#000042';
+layer_attr.table.stroke = '#000000';
 
 layer_attr.DC_pos = Object.create(layer_attr.base);
 layer_attr.DC_pos.stroke = '#ff0000';
@@ -23,6 +23,9 @@ layer_attr.DC_ground = Object.create(layer_attr.base);
 layer_attr.DC_ground.stroke = '#006600';
 layer_attr.module = Object.create(layer_attr.base);
 layer_attr.box = Object.create(layer_attr.base);
+
+
+
 layer_attr.text = Object.create(layer_attr.base);
 layer_attr.text.stroke = '#0000ff';
 layer_attr.terminal = Object.create(layer_attr.base);
@@ -38,6 +41,20 @@ layer_attr.AC_L2 = Object.create(layer_attr.base);
 layer_attr.AC_L2.stroke = '#FF0000';
 layer_attr.AC_L3 = Object.create(layer_attr.base);
 layer_attr.AC_L3.stroke = '#0000FF';
+
+layer_attr.preview_module = Object.create(layer_attr.base);
+layer_attr.preview_module.fill = '#ffb300';
+layer_attr.preview_module.stroke = 'none';
+layer_attr.preview_array = Object.create(layer_attr.base);
+layer_attr.preview_array.stroke = '#ff5d00';
+layer_attr.preview_DC = Object.create(layer_attr.base);
+layer_attr.preview_DC.stroke = '#b092c4';
+layer_attr.preview_inverter = Object.create(layer_attr.base);
+layer_attr.preview_inverter.stroke = '#86c974';
+layer_attr.preview_AC = Object.create(layer_attr.base);
+layer_attr.preview_AC.stroke = '#8188a1';
+
+
 
 
 module.exports = layer_attr;

@@ -257,6 +257,16 @@ function settings_drawing(settings){
         settings.page.scale = settings.pages.PDF.scale.y;
     }
 
+
+    loc.preview = loc.preview || {};
+    loc.preview.array = loc.preview.array = {};
+    loc.preview.array.top = 100;
+    loc.preview.array.left = 100;
+
+
+
+
+
   return settings;
 
 }
