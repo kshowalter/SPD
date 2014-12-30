@@ -33,6 +33,7 @@ settings.input_options.DC.AWG = k.obj_names(settings.config_options.NEC_tables['
 
 settings.drawing = settings.drawing || {};
 settings.drawing.layer_attr = require('./settings_layers');
+settings.drawing.fonts = require('./settings_fonts');
 
 // Load drawing specific settings
 // TODO Fix settings_drawing with new variable locations

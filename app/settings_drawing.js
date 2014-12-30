@@ -8,56 +8,6 @@ function settings_drawing(settings){
     // Drawing specific
     settings.drawing = settings.drawing || {};
 
-    ///////////////
-    // fonts
-
-    var fonts = settings.drawing.fonts = {};
-
-    fonts['signs'] = {
-        'font-family': 'monospace',
-        'font-size':     5,
-        'text-anchor':   'middle',
-    };
-    fonts['label'] = {
-        'font-family': 'monospace',
-        'font-size':     12,
-        'text-anchor':   'middle',
-    };
-    fonts['title1'] = {
-        'font-family': 'monospace',
-        'font-size':     14,
-        'text-anchor':   'left',
-    };
-    fonts['title2'] = {
-        'font-family': 'monospace',
-        'font-size':     12,
-        'text-anchor':   'left',
-    };
-    fonts['page'] = {
-        'font-family': 'monospace',
-        'font-size':     20,
-        'text-anchor':   'middle',
-    };
-    fonts['table'] = {
-        'font-family': 'monospace',
-        'font-size':     6,
-        'text-anchor':   'middle',
-    };
-    fonts['table_large_left'] = {
-        'font-family': 'monospace',
-        'font-size':     14,
-        'text-anchor':   'left',
-    };
-    fonts['table_large'] = {
-        'font-family': 'monospace',
-        'font-size':     14,
-        'text-anchor':   'middle',
-    };
-    fonts['project title'] = {
-        'font-family': 'monospace',
-        'font-size':     16,
-        'text-anchor':   'middle',
-    };
 
     var size = settings.drawing.size = {};
     var loc = settings.drawing.loc = {};
@@ -263,6 +213,9 @@ function settings_drawing(settings){
     loc.preview.array.top = 100;
     loc.preview.array.left = 100;
 
+    loc.preview.DC = loc.preview.DC = {};
+    loc.preview.inverter = loc.preview.inverter = {};
+    loc.preview.AC = loc.preview.AC = {};
 
 
 
