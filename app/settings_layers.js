@@ -1,3 +1,30 @@
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
+if (!Object.assign) {
+  Object.defineProperty(Object, "assign", {
+    enumerable: false,
+    configurable: true,
+    writable: true,
+    value: function(target, firstSource) {
+      "use strict";
+      if (target === undefined || target === null)
+        throw new TypeError("Cannot convert first argument to object");
+      var to = Object(target);
+      for (var i = 1; i < arguments.length; i++) {
+        var nextSource = arguments[i];
+        if (nextSource === undefined || nextSource === null) continue;
+        var keysArray = Object.keys(Object(nextSource));
+        for (var nextIndex = 0, len = keysArray.length; nextIndex < len; nextIndex++) {
+          var nextKey = keysArray[nextIndex];
+          var desc = Object.getOwnPropertyDescriptor(nextSource, nextKey);
+          if (desc !== undefined && desc.enumerable) to[nextKey] = nextSource[nextKey];
+        }
+      }
+      return to;
+    }
+  });
+}
+
+
 var layer_attr = {};
 
 layer_attr.base = {
@@ -42,19 +69,39 @@ layer_attr.AC_L2.stroke = '#FF0000';
 layer_attr.AC_L3 = Object.create(layer_attr.base);
 layer_attr.AC_L3.stroke = '#0000FF';
 
-layer_attr.preview_module = Object.create(layer_attr.base);
-layer_attr.preview_module.fill = '#ffb300';
-layer_attr.preview_module.stroke = 'none';
-layer_attr.preview_array = Object.create(layer_attr.base);
-layer_attr.preview_array.stroke = '#ff5d00';
-layer_attr.preview_DC = Object.create(layer_attr.base);
-layer_attr.preview_DC.stroke = '#b092c4';
-layer_attr.preview_inverter = Object.create(layer_attr.base);
-layer_attr.preview_inverter.stroke = '#86c974';
-layer_attr.preview_AC = Object.create(layer_attr.base);
-layer_attr.preview_AC.stroke = '#8188a1';
+layer_attr.preview_module = Object.assign(Object.create(layer_attr.base),{
+    fill: '#ffb300',
+    stroke: 'none',
+});
 
+layer_attr.preview_array = Object.assign(Object.create(layer_attr.base),{
+    stroke: '#ff5d00',
+});
 
+layer_attr.preview_DC = Object.assign(Object.create(layer_attr.base),{
+    stroke: '#b092c4',
+});
+layer_attr.preview_DC_box = Object.assign(Object.create(layer_attr.base),{
+    fill: '#b092c4',
+    stroke: 'none',
+});
+
+layer_attr.preview_inverter = Object.assign(Object.create(layer_attr.base),{
+    stroke:'#86c974',
+});
+layer_attr.preview_inverter_box = Object.assign(Object.create(layer_attr.base),{
+    fill: '#86c974',
+    stroke: 'none',
+});
+
+layer_attr.preview_AC = Object.assign(Object.create(layer_attr.base),{
+    stroke: '#8188a1',
+});
+
+layer_attr.preview_AC_box = Object.assign(Object.create(layer_attr.base),{
+    fill: '#8188a1',
+    stroke: 'none',
+});
 
 
 module.exports = layer_attr;
