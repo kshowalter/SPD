@@ -108,6 +108,15 @@ var update_system = function(settings) {
         //system.module.specs = settings.components.modules[system.module.make][system.module.model];
     }
 
+    if( f.section_defined('array') && f.section_defined('module') ){
+        system.array = system.array || {};
+        system.array.isc = system.module.isc * system.array.num_strings;
+        system.array.voc = system.module.voc * system.array.num_modules;
+        system.array.imp = system.module.imp * system.array.num_strings;
+        system.array.vmp = system.module.vmp * system.array.num_modules;
+        system.array.pmp = system.array.vmp  * system.array.imp;
+    }
+
     input_options.inverter.make = k.obj_names(settings.components.inverters);
     if( system.inverter.make ) {
         input_options.inverter.model = k.obj_names( settings.components.inverters[system.inverter.make] );
