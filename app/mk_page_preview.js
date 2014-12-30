@@ -14,20 +14,11 @@ var page = function(settings){
 
     var x, y, h, w, section_x, section_y;
 
-    d.text(
-        [size.drawing.w*1/2, size.drawing.h*1/3],
-        [
-            'Preview',
-            'DEMO'
-        ],
-        'project title'
-    );
-
 
     w = 15;
     h = 25;
     loc.preview.array.bottom = loc.preview.array.top + h*1.25*system.array.num_modules + h*3/4;
-    loc.preview.array.right = loc.preview.array.left + w*1.25*system.array.num_strings + w;
+    loc.preview.array.right = loc.preview.array.left + w*1.25*system.array.num_strings + w*2;
 
     d.layer('preview_array');
 
@@ -54,25 +45,110 @@ var page = function(settings){
     // top array conduit
     d.line([
             [ loc.preview.array.left , loc.preview.array.top ],
+            [ loc.preview.array.right - w, loc.preview.array.top ],
             [ loc.preview.array.right , loc.preview.array.top ],
-            [ loc.preview.array.right + 20 , loc.preview.array.top ],
         ]
     );
     // bottom array conduit
     d.line([
             [ loc.preview.array.left , loc.preview.array.bottom ],
-            [ loc.preview.array.right , loc.preview.array.bottom ],
-            [ loc.preview.array.right , loc.preview.array.top ],
+            [ loc.preview.array.right - w , loc.preview.array.bottom ],
+            [ loc.preview.array.right - w , loc.preview.array.top ],
         ]
     );
+
+    y = loc.preview.array.top;
 
     d.layer('preview_DC');
+    loc.preview.DC.left = loc.preview.array.right;
+    loc.preview.DC.right = loc.preview.DC.left + 200;
+    loc.preview.DC.center = ( loc.preview.DC.right + loc.preview.DC.left )/2;
 
+    y = y;
+    w = 30;
+    h = 50;
     d.line([
-            [ loc.preview.array.right + 20 , loc.preview.array.top ],
-            [ loc.preview.array.right + 20 + 40 , loc.preview.array.top ],
+            [ loc.preview.DC.left , y ],
+            [ loc.preview.DC.right, y ],
         ]
     );
+    d.rect(
+        [loc.preview.DC.center,y],
+        [w,h],
+        'preview_DC_box'
+    );
+    d.text(
+        [loc.preview.DC.center,y+h],
+        [
+            'Array DC',
+            'Strings: ' + system.array.num_strings,
+            'Modules: ' + system.array.num_modules,
+            'Pmp: ' + parseFloat(system.array.pmp).toFixed(),
+            'Imp: ' + parseFloat(system.array.imp).toFixed(),
+            'Vmp: ' + parseFloat(system.array.vmp).toFixed(),
+            'Isc: ' + parseFloat(system.array.isc).toFixed(),
+            'Voc: ' + parseFloat(system.array.voc).toFixed(),
+        ],
+        'project title'
+    );
+
+    d.layer('preview_inverter');
+    loc.preview.inverter.left = loc.preview.DC.right;
+    loc.preview.inverter.right = loc.preview.inverter.left + 200;
+    loc.preview.inverter.center = ( loc.preview.inverter.right + loc.preview.inverter.left )/2;
+
+    y = y;
+    w = 150;
+    h = 75;
+    d.line([
+            [ loc.preview.inverter.left , y ],
+            [ loc.preview.inverter.right, y ],
+        ]
+    );
+    d.rect(
+        [loc.preview.inverter.center,y],
+        [w,h],
+        'preview_inverter_box'
+    );
+    d.text(
+        [loc.preview.inverter.center,y+h],
+        [
+            'Inverter',
+            system.inverter.make,
+            system.inverter.model,
+        ],
+        'project title'
+    );
+
+
+
+    d.layer('preview_AC');
+    loc.preview.AC.left = loc.preview.inverter.right;
+    loc.preview.AC.right = loc.preview.AC.left + 200;
+    loc.preview.AC.center = ( loc.preview.AC.right + loc.preview.AC.left )/2;
+
+    y = y;
+    w = 30;
+    h = 50;
+    d.line([
+            [ loc.preview.AC.left , y ],
+            [ loc.preview.AC.right, y ],
+        ]
+    );
+    d.rect(
+        [loc.preview.AC.center,y],
+        [w,h],
+        'preview_AC_box'
+    );
+    d.text(
+        [loc.preview.AC.center,y+h],
+        [
+            'AC',
+
+        ],
+        'project title'
+    );
+
 
     return d.drawing_parts;
 };
