@@ -75,5 +75,14 @@ fonts['project title'] = {
     'font-size':     16,
     'text-anchor':   'middle',
 };
+fonts['preview text'] = {
+    'font-family': 'monospace',
+    'font-size':     20,
+    'text-anchor':   'middle',
+};
+
+
+
+
 
 module.exports = fonts;
