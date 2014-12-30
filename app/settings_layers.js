@@ -69,36 +69,41 @@ layer_attr.AC_L2.stroke = '#FF0000';
 layer_attr.AC_L3 = Object.create(layer_attr.base);
 layer_attr.AC_L3.stroke = '#0000FF';
 
-layer_attr.preview_module = Object.assign(Object.create(layer_attr.base),{
+
+layer_attr.preview = Object.assign(Object.create(layer_attr.base),{
+    'stroke-width': '2',
+});
+
+layer_attr.preview_module = Object.assign(Object.create(layer_attr.preview),{
     fill: '#ffb300',
     stroke: 'none',
 });
 
-layer_attr.preview_array = Object.assign(Object.create(layer_attr.base),{
+layer_attr.preview_array = Object.assign(Object.create(layer_attr.preview),{
     stroke: '#ff5d00',
 });
 
-layer_attr.preview_DC = Object.assign(Object.create(layer_attr.base),{
+layer_attr.preview_DC = Object.assign(Object.create(layer_attr.preview),{
     stroke: '#b092c4',
 });
-layer_attr.preview_DC_box = Object.assign(Object.create(layer_attr.base),{
+layer_attr.preview_DC_box = Object.assign(Object.create(layer_attr.preview),{
     fill: '#b092c4',
     stroke: 'none',
 });
 
-layer_attr.preview_inverter = Object.assign(Object.create(layer_attr.base),{
+layer_attr.preview_inverter = Object.assign(Object.create(layer_attr.preview),{
     stroke:'#86c974',
 });
-layer_attr.preview_inverter_box = Object.assign(Object.create(layer_attr.base),{
+layer_attr.preview_inverter_box = Object.assign(Object.create(layer_attr.preview),{
     fill: '#86c974',
     stroke: 'none',
 });
 
-layer_attr.preview_AC = Object.assign(Object.create(layer_attr.base),{
+layer_attr.preview_AC = Object.assign(Object.create(layer_attr.preview),{
     stroke: '#8188a1',
 });
 
-layer_attr.preview_AC_box = Object.assign(Object.create(layer_attr.base),{
+layer_attr.preview_AC_box = Object.assign(Object.create(layer_attr.preview),{
     fill: '#8188a1',
     stroke: 'none',
 });
