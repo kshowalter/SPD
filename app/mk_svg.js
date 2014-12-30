@@ -91,9 +91,10 @@ var display_svg = function(drawing_parts, settings){
                 //if( font['text-anchor'] === 'middle' ) y += font['font-size']*1/3;
                 y += font['font-size']*1/3;
             }
+            var dy = font['font-size']*1.5;
             t.setAttribute('x', x);
             //t.setAttribute('y', y + font['font-size']/2 );
-            t.setAttribute('y', y );
+            t.setAttribute('y', y-dy );
 
             for( var i2 in layer_attr[elem.layer_name] ){
                 t.setAttribute( i2, layer_attr[elem.layer_name][i2] );
@@ -103,7 +104,7 @@ var display_svg = function(drawing_parts, settings){
             }
             for( var i2 in elem.strings ){
                 var tspan = document.createElementNS("http://www.w3.org/2000/svg", 'tspan');
-                tspan.setAttribute('dy', font['font-size']*1.5 );
+                tspan.setAttribute('dy', dy );
                 tspan.setAttribute('x', x);
                 tspan.innerHTML = elem.strings[i2];
                 t.appendChild(tspan);
