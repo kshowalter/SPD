@@ -77,7 +77,12 @@ var display_svg = function(drawing_parts, settings){
             svg_elem.appendChild(l);
         } else if( elem.type === 'text') {
             //var t = svg.text( elem.strings ).move( elem.points[0][0], elem.points[0][1] ).attr( layer_attr[elem.layer_name] )
-            var font = fonts[elem.font];
+            var font;
+            if( elem.font ){
+                font = fonts[elem.font];
+            } else {
+                font = fonts[layer_attr[elem.layer_name].font];
+            }
             var t = document.createElementNS("http://www.w3.org/2000/svg", 'text');
             if(elem.rotated){
                 //t.setAttribute('transform', "rotate(" + elem.rotated + " " + x + " " + y + ")" );
@@ -98,7 +103,7 @@ var display_svg = function(drawing_parts, settings){
             }
             for( var i2 in elem.strings ){
                 var tspan = document.createElementNS("http://www.w3.org/2000/svg", 'tspan');
-                tspan.setAttribute('dy', font['font-size']*1.5*i2 );
+                tspan.setAttribute('dy', font['font-size']*1.5 );
                 tspan.setAttribute('x', x);
                 tspan.innerHTML = elem.strings[i2];
                 t.appendChild(tspan);
