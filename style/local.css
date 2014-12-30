@@ -2,12 +2,24 @@
 /***********/
 /* fonts */
 /*
+@font-face {
+    font-family: "Open Sans";
+    src: url(Open_Sans/OpenSans-Regular.ttf) format("truetype");
+}
+@font-face {
+    font-family: "Roboto";
+    src: url(Open_Sans/Roboto-Regular.ttf) format("truetype");
+}
 */
 
 /***********/
 /* misc */
 
 body {
+    /*
+    font-family: 'Roboto', sans-serif;
+    font-family: 'Open Sans', sans-serif;
+    */
     font-family: sans-serif;
 
     background: #DFDFDF;
@@ -201,6 +213,13 @@ img { border: 0; }
     margin: 0px;
     padding: 1px 3px 1px 3px;
 }
+
+
+#section_module { background: #ffb300; }
+#section_array { background: #ff5d00; }
+#section_DC { background: #b092c4; }
+#section_inverter { background: #86c974; }
+#section_AC { background: #8188a1; }
 
 
 /*************/
