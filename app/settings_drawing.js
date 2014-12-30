@@ -211,12 +211,33 @@ function settings_drawing(settings){
     loc.preview = loc.preview || {};
     loc.preview.array = loc.preview.array = {};
     loc.preview.array.top = 100;
-    loc.preview.array.left = 100;
+    loc.preview.array.left = 50;
 
     loc.preview.DC = loc.preview.DC = {};
     loc.preview.inverter = loc.preview.inverter = {};
     loc.preview.AC = loc.preview.AC = {};
 
+    size.preview = size.preview || {};
+    size.preview.module = {
+        w: 15,
+        h: 25,
+    };
+    size.preview.DC = {
+        w: 30,
+        h: 50,
+    };
+    size.preview.inverter = {
+        w: 150,
+        h: 75,
+    };
+    size.preview.AC = {
+        w: 30,
+        h: 50,
+    };
+    size.preview.loadcenter = {
+        w: 50,
+        h: 100,
+    };
 
 
 
