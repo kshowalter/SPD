@@ -1,6 +1,6 @@
 "use strict";
-//var version_string = "Dev";
-var version_string = "Alpha20141230";
+var version_string = "Dev";
+//var version_string = "Alpha20141230";
 
 // Moved to index.html
 // TODO: look into ways to further reduce size. It seems way to big.
