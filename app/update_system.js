@@ -117,9 +117,16 @@ var update_system = function(settings) {
         system.array.pmp = system.array.vmp  * system.array.imp;
     }
 
+    if( f.section_defined('DC') ){
+
+    }
+
     input_options.inverter.make = k.obj_names(settings.components.inverters);
     if( system.inverter.make ) {
         input_options.inverter.model = k.obj_names( settings.components.inverters[system.inverter.make] );
+    }
+    if( f.section_defined('inverter') ){
+
     }
 
     //input_options.AC.loadcenter_type = settings.f.obj_names(input_options.AC.loadcenter_types);
@@ -131,10 +138,12 @@ var update_system = function(settings) {
 
         //input_options.AC['type'] = k.obj_names( settings.i_options.AC.type );
     }
-
     if( system.AC.type ) {
         system.AC.conductors = settings.i_options.AC.types[system.AC.type];
         system.AC.num_conductors = system.AC.conductors.length;
+
+    }
+    if( f.section_defined('AC') ){
 
     }
 
@@ -144,6 +153,12 @@ var update_system = function(settings) {
 
 
     settings.drawing.size.wire_table.h = (system.AC.num_conductors+3) * settings.drawing.size.wire_table.row_h;
+
+
+
+
+
+
 
     /*
     for( var section_name in input_options ){
