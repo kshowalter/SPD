@@ -204,8 +204,9 @@ img { border: 0; }
 }
 
 
-
-
+.selector_set span {
+    white-space: nowrap;
+}
 
 
 
@@ -213,6 +214,7 @@ img { border: 0; }
     margin: 0px;
     padding: 1px 3px 1px 3px;
 }
+
 
 
 #section_module { background: #ffb300; }
