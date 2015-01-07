@@ -768,15 +768,17 @@ var page = function(settings){
 // Wire table
     d.section("Wire table");
 
+///*
 
     x = loc.wire_table.x;
     y = loc.wire_table.y;
 
     var n_rows = 2 + system.AC.num_conductors;
-    var n_cols = 5;
+    var n_cols = 6;
     var row_height = 15;
     var column_width = {
         number: 25,
+        conductor: 50,
         wire_gauge: 25,
         wire_type: 75,
         conduit_size: 35,
@@ -785,50 +787,43 @@ var page = function(settings){
 
     h = n_rows*row_height;
 
-
     var t = d.table(n_rows,n_cols).loc(x,y);
     t.row_size('all', row_height)
         .col_size(1, column_width.number)
-        .col_size(2, column_width.wire_gauge)
-        .col_size(3, column_width.wire_type)
-        .col_size(4, column_width.conduit_size)
-        .col_size(5, column_width.conduit_type);
-    w = 100+80;
+        .col_size(2, column_width.conductor)
+        .col_size(3, column_width.wire_gauge)
+        .col_size(4, column_width.wire_type)
+        .col_size(5, column_width.conduit_size)
+        .col_size(6, column_width.conduit_type);
 
     t.all_cells().forEach(function(cell){
         cell.font('table').border('all');
     });
     t.cell(1,1).border('B', false);
-    t.cell(1,2).border('R', false);
-    t.cell(1,4).border('R', false);
+    t.cell(1,3).border('R', false);
+    t.cell(1,5).border('R', false);
 
-    t.cell(1,2).font('table_left').text('Wire');
-    t.cell(1,4).font('table_left').text('Conduit');
+    t.cell(1,3).font('table_left').text('Wire');
+    t.cell(1,5).font('table_left').text('Conduit');
 
-    t.cell(2,2).font('table').text('AWG');
-    t.cell(2,3).font('table').text('Type');
-    t.cell(2,4).font('table').text('Size');
-    t.cell(2,5).font('table').text('Type');
+    t.cell(2,3).font('table').text('Conductors');
+    t.cell(2,3).font('table').text('AWG');
+    t.cell(2,4).font('table').text('Type');
+    t.cell(2,5).font('table').text('Size');
+    t.cell(2,6).font('table').text('Type');
 
     for( i=1; i<=system.AC.num_conductors; i++){
-        console.log('row', i);
         t.cell(2+i,1).font('table').text(i.toString());
+        t.cell(2+i,2).font('table_left').text( f.pretty_word(settings.system.AC.conductors[i-1]) );
 
     }
 
-/*
-    var r = 1;
-    for( var value_name in section ){
-        t.cell(r,1).text( f.pretty_name(value_name) );
-        t.cell(r,2).text(section[value_name]);
-        r++;
 
-    }
-//*/
     //d.text( [x+w/2, y-row_height], f.pretty_name(section_name),'table' );
 
 
     t.mk();
+//*/
 
 
 
