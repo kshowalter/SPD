@@ -152,7 +152,7 @@ function settings_drawing(settings){
 
     // wire table
     loc.wire_table = {
-        x: size.drawing.w - size.drawing.titlebox - size.drawing.frame_padding*3 - 275,
+        x: size.drawing.w - size.drawing.titlebox - size.drawing.frame_padding*3 - 325,
         y: size.drawing.frame_padding*3,
     };
 
