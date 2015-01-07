@@ -768,73 +768,76 @@ var page = function(settings){
 // Wire table
     d.section("Wire table");
 
+
     x = loc.wire_table.x;
     y = loc.wire_table.y;
-    w = size.wire_table.w;
-    h = size.wire_table.h;
-    var row_h = size.wire_table.row_h;
-    var top = loc.wire_table.top;
-    var bottom = loc.wire_table.bottom;
+
+    var n_rows = 2 + system.AC.num_conductors;
+    var n_cols = 5;
+    var row_height = 15;
     var column_width = {
         number: 25,
         wire_gauge: 25,
-        wire_type: 50,
-        conduit_gauge: 25,
-        conduit_type: 50,
+        wire_type: 75,
+        conduit_size: 35,
+        conduit_type: 75,
     };
 
-    d.layer('table');
-    d.rect( [x,y], [w,h] );
+    h = n_rows*row_height;
 
-    d.line([
-        [x-w/2+25 , y-h/2+(1*row_h)],
-        [x+w/2 , y-h/2+(1*row_h)],
-    ]);
 
-    for( var r=2; r<system.AC.num_conductors+3; r++ ) {
+    var t = d.table(n_rows,n_cols).loc(x,y);
+    t.row_size('all', row_height)
+        .col_size(1, column_width.number)
+        .col_size(2, column_width.wire_gauge)
+        .col_size(3, column_width.wire_type)
+        .col_size(4, column_width.conduit_size)
+        .col_size(5, column_width.conduit_type);
+    w = 100+80;
 
-        d.line([
-            [x-w/2 , y-h/2+(r*row_h)],
-            [x+w/2 , y-h/2+(r*row_h)],
-        ]);
+    t.all_cells().forEach(function(cell){
+        cell.font('table').border('all');
+    });
+    t.cell(1,1).border('B', false);
+    t.cell(1,2).border('R', false);
+    t.cell(1,4).border('R', false);
+
+    t.cell(1,2).font('table_left').text('Wire');
+    t.cell(1,4).font('table_left').text('Conduit');
+
+    t.cell(2,2).font('table').text('AWG');
+    t.cell(2,3).font('table').text('Type');
+    t.cell(2,4).font('table').text('Size');
+    t.cell(2,5).font('table').text('Type');
+
+    for( i=1; i<=system.AC.num_conductors; i++){
+        console.log('row', i);
+        t.cell(2+i,1).font('table').text(i.toString());
+
     }
-    x = loc.wire_table.x - w/2;
-    y = loc.wire_table.y - h/2;
-    x += column_width.number;
 
-    var c_w = column_width.wire_gauge;
-    d.line([ [x,top], [x,bottom-row_h] ]);
-    d.text( [x+c_w,y+row_h*0.75], 'Wire', 'table', 'text');
-    d.text( [x+c_w/2,y+row_h*1.75], 'AWG', 'table', 'text');
-    x += c_w;
+/*
+    var r = 1;
+    for( var value_name in section ){
+        t.cell(r,1).text( f.pretty_name(value_name) );
+        t.cell(r,2).text(section[value_name]);
+        r++;
 
-    c_w = column_width.wire_type;
-    d.line([ [x,top+row_h], [x,bottom-row_h] ]);
-    d.text( [x+c_w/2,y+row_h*1.75], 'Type', 'table', 'text');
-    x += c_w;
-
-    c_w = column_width.conduit_gauge;
-    d.line([ [x,top], [x,bottom-row_h] ]);
-    d.text( [x+c_w,y+row_h*0.75], 'Conduit', 'table', 'text');
-    d.text( [x+c_w/2,y+row_h*1.75], 'Size', 'table', 'text');
-    x += c_w;
-
-    d.line([ [x,top+row_h], [x,bottom-row_h] ]);
-    d.text( [x+c_w/2,y+row_h*1.75], 'Type', 'table', 'text');
-
-    x = loc.wire_table.x - w/2;
-    y = loc.wire_table.y - h/2;
-
-    x += column_width.number/2;
-    y += row_h*2 + row_h*0.75;
-
-    for( var r=1; r<=system.wire_config_num; r++ ) {
-        d.text( [x,y], String(r), 'table', 'text');
-
-
-
-        y += row_h;
     }
+//*/
+    //d.text( [x+w/2, y-row_height], f.pretty_name(section_name),'table' );
+
+
+    t.mk();
+
+
+
+
+
+
+
+
+
 
 
 
