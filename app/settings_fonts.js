@@ -56,13 +56,13 @@ fonts['page'] = {
     'text-anchor':   'middle',
 };
 fonts['table'] = {
-    'font-family': 'monospace',
-    'font-size':     6,
+    'font-family': 'serif',
+    'font-size':     8,
     'text-anchor':   'middle',
 };
 fonts['table_left'] = {
-    'font-family': 'monospace',
-    'font-size':     6,
+    'font-family': 'serif',
+    'font-size':     8,
     'text-anchor':   'left',
 };
 fonts['table_large_left'] = {
