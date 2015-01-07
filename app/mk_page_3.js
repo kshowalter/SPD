@@ -27,6 +27,7 @@ var page = function(settings){
 
     d.layer('table');
 
+
     for( var section_name in settings.system ){
         if( f.section_defined(section_name) ){
             var section = settings.system[section_name];
@@ -45,9 +46,15 @@ var page = function(settings){
             w = 100+80;
 
             var r = 1;
+            var value;
             for( var value_name in section ){
                 t.cell(r,1).text( f.pretty_name(value_name) );
-                t.cell(r,2).text(section[value_name]);
+                if( isNaN(value_name) ){
+                    value = section[value_name];
+                } else {
+                    value = parseFloat(section[value_name]).toFixed(2);
+                }
+                t.cell(r,2).text( value );
                 r++;
 
             }
