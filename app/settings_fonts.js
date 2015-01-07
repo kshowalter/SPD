@@ -60,6 +60,11 @@ fonts['table'] = {
     'font-size':     6,
     'text-anchor':   'middle',
 };
+fonts['table_left'] = {
+    'font-family': 'monospace',
+    'font-size':     6,
+    'text-anchor':   'left',
+};
 fonts['table_large_left'] = {
     'font-family': 'monospace',
     'font-size':     14,
