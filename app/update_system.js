@@ -152,7 +152,6 @@ var update_system = function(settings) {
     loc.array.left = loc.array.right - ( size.string.w * system.array.num_strings ) - ( size.module.frame.w*3/4 ) ;
 
 
-    settings.drawing.size.wire_table.h = (system.AC.num_conductors+3) * settings.drawing.size.wire_table.row_h;
 
 
 
@@ -161,6 +160,7 @@ var update_system = function(settings) {
 
 
     /*
+    //settings.drawing.size.wire_table.h = (system.AC.num_conductors+3) * settings.drawing.size.wire_table.row_h;
     for( var section_name in input_options ){
         for( var input_name in settings.input_options[section_name] ){
             if( typeof settings.input_options[section_name][input_name] === 'string' ){
