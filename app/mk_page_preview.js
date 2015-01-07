@@ -41,6 +41,7 @@ var page = function(settings){
 
         w = size.preview.module.w;
         h = size.preview.module.h;
+        offset = 40;
 
         for( var s=0; s<system.array.num_strings; s++ ){
             x = loc.preview.array.left + w*1.25*s;
@@ -78,9 +79,10 @@ var page = function(settings){
         );
 
         y = loc.preview.array.top;
+        h = size.preview.module.h;
 
         d.text(
-            [loc.preview.DC.center,y+size.preview.module.h],
+            [ loc.preview.DC.center, y+h/2+offset ],
             [
                 'Array DC',
                 'Strings: ' + system.array.num_strings,
@@ -97,8 +99,9 @@ var page = function(settings){
 
     if( f.section_defined('DC') ){
         d.layer('preview_DC');
-console.log(loc.preview);
-        y = y;
+
+        //y = y;
+        y = loc.preview.array.top;
         w = size.preview.module.w;
         h = size.preview.module.h;
 
@@ -129,7 +132,7 @@ console.log(loc.preview);
             'preview_inverter_box'
         );
         d.text(
-            [loc.preview.inverter.center,y+h],
+            [loc.preview.inverter.center,y+h/2+offset],
             [
                 'Inverter',
                 system.inverter.make,
@@ -166,7 +169,7 @@ console.log(loc.preview);
         );
 
         d.text(
-            [loc.preview.AC.center,y+h],
+            [loc.preview.AC.center,y+h/2+offset],
             [
                 'AC',
 
