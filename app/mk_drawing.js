@@ -308,8 +308,8 @@ var Cell = {
         return this;
     },
 
-    border: function(border_string){
-        this.table.border( this.R, this.C, border_string );
+    border: function(border_string, state){
+        this.table.border( this.R, this.C, border_string, state );
         return this;
     }
 };
@@ -438,7 +438,9 @@ var Table = {
         this.text_rows[R][C] = text;
     },
     //*/
-    border: function( R, C, border_string){
+    border: function( R, C, border_string, state){
+        if( state === undefined ) state = true;
+
         border_string = border_string.toUpperCase().trim();
         var borders;
         if( border_string === 'ALL' ){
@@ -449,16 +451,16 @@ var Table = {
         borders.forEach(function(side){
             switch(side){
                 case 'T':
-                    this.borders_rows[R-1][C] = true;
+                    this.borders_rows[R-1][C] = state;
                     break;
                 case 'B':
-                    this.borders_rows[R][C] = true;
+                    this.borders_rows[R][C] = state;
                     break;
                 case 'L':
-                    this.borders_cols[C-1][R] = true;
+                    this.borders_cols[C-1][R] = state;
                     break;
                 case 'R':
-                    this.borders_cols[C][R] = true;
+                    this.borders_cols[C][R] = state;
                     break;
             }
         }, this);
