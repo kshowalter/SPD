@@ -151,17 +151,10 @@ function settings_drawing(settings){
 
 
     // wire table
-    size.wire_table = {};
-    size.wire_table.w = 200;
-    size.wire_table.row_h = 10;
-    size.wire_table.h = (5+3) * size.wire_table.row_h; // 5 max wires, updated in update_system.js
     loc.wire_table = {
-        x: size.drawing.w - size.drawing.titlebox - size.drawing.frame_padding*3 - size.wire_table.w/2 - 25,
-        y: size.drawing.frame_padding*3 + size.wire_table.h/2,
+        x: size.drawing.w - size.drawing.titlebox - size.drawing.frame_padding*3 - 275,
+        y: size.drawing.frame_padding*3,
     };
-    loc.wire_table.top = loc.wire_table.y - size.wire_table.h/2;
-    loc.wire_table.bottom = loc.wire_table.y + size.wire_table.h/2;
-
 
     // voltage drop table
     size.volt_drop_table = {};
