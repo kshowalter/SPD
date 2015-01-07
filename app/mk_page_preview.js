@@ -85,8 +85,8 @@ var page = function(settings){
             [ loc.preview.DC.center, y+h/2+offset ],
             [
                 'Array DC',
-                'Strings: ' + system.array.num_strings,
-                'Modules: ' + system.array.num_modules,
+                'Strings: ' + parseFloat(system.array.num_strings).toFixed(),
+                'Modules: ' + parseFloat(system.array.num_modules).toFixed(),
                 'Pmp: ' + parseFloat(system.array.pmp).toFixed(),
                 'Imp: ' + parseFloat(system.array.imp).toFixed(),
                 'Vmp: ' + parseFloat(system.array.vmp).toFixed(),
