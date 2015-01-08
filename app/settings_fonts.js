@@ -82,8 +82,13 @@ fonts['project title'] = {
 };
 fonts['preview text'] = {
     'font-family': 'monospace',
-    'font-size':     20,
-    'text-anchor':   'middle',
+    'font-size'  : 20,
+    'text-anchor': 'middle',
+};
+fonts['dimention'] = {
+    'font-family': 'monospace',
+    'font-size'  : 20,
+    'text-anchor': 'middle',
 };
 
 

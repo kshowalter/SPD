@@ -44,6 +44,13 @@ var update_system = function(settings) {
         system.array.num_modules = system.array.num_modules || 6;
         system.DC.home_run_length = system.DC.home_run_length || 50;
 
+        system.roof.width  = system.roof.width || 25;
+        system.roof.height = system.roof.height || 15;
+        system.roof.angle  = system.roof.angle || "6, 26.5";
+        inputs.roof.width  = inputs.roof.width || 25;
+        inputs.roof.height = inputs.roof.height || 15;
+        inputs.roof.angle  = inputs.roof.angle || "6, 26.5";
+
         settings.system.DC.AWG = settings.system.DC.AWG || settings.input_options.DC.AWG[10];
 
         if( state.database_loaded ){

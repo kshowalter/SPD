@@ -81,7 +81,7 @@ var page = function(settings){
 
         } else {
 
-            console.log('not defined: ', section_name,section);
+            //console.log('not defined: ', section_name, section);
         }
 
 
