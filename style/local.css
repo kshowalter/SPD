@@ -189,6 +189,7 @@ img { border: 0; }
 
 .selector_set {
     background: #d9dce6;
+    display: inline-block;
     padding: 3px;
     margin: 2px;
 }
@@ -204,7 +205,7 @@ img { border: 0; }
 }
 
 
-.selector_set span {
+.selector_set {
     white-space: nowrap;
 }
 
