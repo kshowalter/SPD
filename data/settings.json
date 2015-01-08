@@ -2,12 +2,12 @@
     "i_options":{
         "AC": {
             "types": {
-                "120V": [ "ground", "neutral", "L1" ],
-                "240V": [ "ground", "neutral", "L1", "L2" ],
-                "208V": [ "ground", "neutral", "L1", "L2" ],
-                "277V": [ "ground", "neutral", "L1" ],
-                "480V Wye": [ "ground", "neutral", "L1", "L2", "L3" ],
-                "480V Delta": [ "ground", "L1", "L2", "L3" ]
+                "120V": [ "G", "N", "L1" ],
+                "240V": [ "G", "N", "L1", "L2" ],
+                "208V": [ "G", "N", "L1", "L2" ],
+                "277V": [ "G", "N", "L1" ],
+                "480V Wye": [ "G", "N", "L1", "L2", "L3" ],
+                "480V Delta": [ "G", "L1", "L2", "L3" ]
             }
         }
     },
