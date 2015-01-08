@@ -66,6 +66,26 @@ f.blank_copy = function(object){
     return newObject;
 };
 
+f.blank_clean_copy = function(object){
+    var newObject = {};
+    for( var key in object ){
+        if( object.hasOwnProperty(key) ){
+            if( object[key].constructor === Object ) {
+                newObject[key] = {};
+                for( var key2 in object[key] ){
+                    if( object[key].hasOwnProperty(key2) ){
+                        var clean_key = f.clean_name(key2);
+                        newObject[key][clean_key] = null;
+                    }
+                }
+            } else {
+                newObject[key] = null;
+            }
+        }
+    }
+    return newObject;
+};
+
 f.merge_objects = function merge_objects(object1, object2){
     for( var key in object1 ){
         if( object1.hasOwnProperty(key) ){
@@ -137,6 +157,10 @@ f.pretty_names = function(object){
         }
     }
     return new_object;
+};
+
+f.clean_name = function(name){
+    return name.split(' ')[0];
 };
 
 /*
