@@ -49,7 +49,13 @@ var page = function(settings){
             var value;
             for( var value_name in section ){
                 t.cell(r,1).text( f.pretty_name(value_name) );
-                if( isNaN(value_name) ){
+                if( ! section[value_name]) {
+                    value = '-';
+                } else if( section[value_name].constructor === Array ){
+                    value = section[value_name].toString();
+                } else if( section[value_name].constructor === Object ){
+                    value = '( )';
+                } else if( isNaN(section[value_name]) ){
                     value = section[value_name];
                 } else {
                     value = parseFloat(section[value_name]).toFixed(2);
