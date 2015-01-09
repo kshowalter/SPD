@@ -75,6 +75,23 @@ var display_svg = function(drawing_parts, settings){
                 l.setAttribute(attr_name, attrs[attr_name]);
             }
             svg_elem.appendChild(l);
+        } else if( elem.type === 'poly') {
+            var points2 = [];
+            elem.points.forEach( function(point){
+                if( ! isNaN(point[0]) && ! isNaN(point[1]) ){
+                    points2.push([ point[0]+offset.x, point[1]+offset.y ]);
+                } else {
+                    console.log('error: elem not fully defined', elem);
+                }
+            });
+            //svg.polyline( points2 ).attr( layer_attr[elem.layer_name] );
+
+            var l = document.createElementNS("http://www.w3.org/2000/svg", 'polyline');
+            l.setAttribute( 'points', points2.join(' ') );
+            for( attr_name in attrs ){
+                l.setAttribute(attr_name, attrs[attr_name]);
+            }
+            svg_elem.appendChild(l);
         } else if( elem.type === 'text') {
             //var t = svg.text( elem.strings ).move( elem.points[0][0], elem.points[0][1] ).attr( layer_attr[elem.layer_name] )
             var font;

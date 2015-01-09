@@ -197,6 +197,8 @@ drawing.add = function(type, points, layer_name) {
     elem.section_name = section_active;
     if( type === 'line' ) {
         elem.points = points;
+    } else if( type === 'poly' ) {
+        elem.points = points;
     } else if( typeof points[0].x === 'undefined') {
         elem.x = points[0][0];
         elem.y = points[0][1];
@@ -219,6 +221,12 @@ drawing.line = function(points, layer){ // (points, [layer])
     //return add('line', points, layer)
     var line =  this.add('line', points, layer);
     return line;
+};
+
+drawing.poly = function(points, layer){ // (points, [layer])
+    //return add('poly', points, layer)
+    var poly =  this.add('poly', points, layer);
+    return poly;
 };
 
 drawing.rect = function(loc, size, layer){

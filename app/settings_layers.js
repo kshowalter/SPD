@@ -115,6 +115,18 @@ layer_attr.preview_structural_dot = Object.assign(Object.create(layer_attr.previ
     stroke: '#000000',
     "stroke-dasharray": "5, 5"
 });
+layer_attr.preview_structural_poly_unselected = Object.assign(Object.create(layer_attr.preview),{
+    fill: '#e1e1e1',
+    stroke: 'none'
+});
+layer_attr.preview_structural_poly_selected = Object.assign(Object.create(layer_attr.preview),{
+    fill: '#ffe7cb',
+    stroke: 'none'
+});
+layer_attr.preview_structural_poly_selected_framed = Object.assign(Object.create(layer_attr.preview),{
+    fill: '#ffe7cb',
+    stroke: '#000000'
+});
 
 
 module.exports = layer_attr;
