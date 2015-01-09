@@ -29,11 +29,15 @@ e.inputs = function(settings){
     catch(e) {  }
     try { settings.inputs.roof.angle = ["1, 4.5","2, 9.5","3, 14","4, 18.5","5, 22.5","6, 26.5","7, 30.5"];}
     catch(e) {  }
+    try { settings.inputs.roof.type = ["Gable","Shed","Hipped"];}
+    catch(e) {  }
     try { settings.inputs.module = settings.inputs.module || {};}
     catch(e) {  }
     try { settings.inputs.module.make = settings.inputs.module.make || null;}
     catch(e) {  }
     try { settings.inputs.module.model = settings.inputs.module.model || null;}
+    catch(e) {  }
+    try { settings.inputs.module.orientation = ["Portrait","Landscape"];}
     catch(e) {  }
     try { settings.inputs.array = settings.inputs.array || {};}
     catch(e) {  }
