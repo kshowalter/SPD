@@ -108,5 +108,13 @@ layer_attr.preview_AC_box = Object.assign(Object.create(layer_attr.preview),{
     stroke: 'none',
 });
 
+layer_attr.preview_structural = Object.assign(Object.create(layer_attr.preview),{
+    stroke: '#000000',
+});
+layer_attr.preview_structural_dot = Object.assign(Object.create(layer_attr.preview),{
+    stroke: '#000000',
+    "stroke-dasharray": "5, 5"
+});
+
 
 module.exports = layer_attr;

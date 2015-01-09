@@ -25,7 +25,7 @@ e.inputs = function(settings){
     catch(e) {  }
     try { settings.inputs.roof.width = [5,10,15,20,25];}
     catch(e) {  }
-    try { settings.inputs.roof.height = [5,10,15,20,25];}
+    try { settings.inputs.roof.length = [5,10,15,20,25];}
     catch(e) {  }
     try { settings.inputs.roof.angle = ["1, 4.5","2, 9.5","3, 14","4, 18.5","5, 22.5","6, 26.5","7, 30.5"];}
     catch(e) {  }
