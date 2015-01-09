@@ -45,11 +45,17 @@ var update_system = function(settings) {
         system.DC.home_run_length = system.DC.home_run_length || 50;
 
         system.roof.width  = system.roof.width || 25;
-        system.roof.height = system.roof.height || 15;
-        system.roof.angle  = system.roof.angle || "6, 26.5";
         inputs.roof.width  = inputs.roof.width || 25;
+        system.roof.height = system.roof.height || 15;
         inputs.roof.height = inputs.roof.height || 15;
+        system.roof.angle  = system.roof.angle || "6, 26.5";
         inputs.roof.angle  = inputs.roof.angle || "6, 26.5";
+        system.roof.type = system.roof.type || "Gable";
+        inputs.roof.type = inputs.roof.type || "Gable";
+
+        inputs.module.orientation = inputs.module.orientation || "Portrait";
+        system.module.orientation = system.module.orientation || "Portrait";
+
 
         settings.system.DC.AWG = settings.system.DC.AWG || settings.input_options.DC.AWG[10];
 
