@@ -25,6 +25,7 @@ var mk_svg= require('./app/mk_svg');
 var update_system = require('./app/update_system');
 
 var settings = require('./app/settings');
+window.g = settings;
 settings.state.version_string = version_string;
 console.log('settings', settings);
 
