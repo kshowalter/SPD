@@ -128,5 +128,14 @@ layer_attr.preview_structural_poly_selected_framed = Object.assign(Object.create
     stroke: '#000000'
 });
 
+layer_attr.preview_structural_module = Object.assign(Object.create(layer_attr.preview),{
+    fill: '#ffffff',
+    stroke: 'none'
+});
+layer_attr.preview_structural_module_selected = Object.assign(Object.create(layer_attr.preview),{
+    fill: '#8397e8',
+    stroke: '#dffaff'
+});
+
 
 module.exports = layer_attr;

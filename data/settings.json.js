@@ -39,6 +39,10 @@ e.inputs = function(settings){
     catch(e) {  }
     try { settings.inputs.module.orientation = ["Portrait","Landscape"];}
     catch(e) {  }
+    try { settings.inputs.module.width = [20,25,30,35,40];}
+    catch(e) {  }
+    try { settings.inputs.module.length = [30,35,40,45,50];}
+    catch(e) {  }
     try { settings.inputs.array = settings.inputs.array || {};}
     catch(e) {  }
     try { settings.inputs.array.num_modules = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];}

@@ -3,7 +3,7 @@ var mk_border = require('./mk_border');
 var f = require('./functions');
 
 var page = function(settings){
-    console.log("** Making page 1");
+    console.log("** Making preview 1");
 
     var d = mk_drawing();
 
@@ -35,13 +35,14 @@ var page = function(settings){
     loc.preview.AC.center = ( loc.preview.AC.right + loc.preview.AC.left )/2;
 
 
+// TODO fix: sections must be defined in order, or there are areas
 
     if( f.section_defined('array') && f.section_defined('module') ){
         d.layer('preview_array');
 
         w = size.preview.module.w;
         h = size.preview.module.h;
-        offset = 40;
+        var offset = 40;
 
         for( var s=0; s<system.array.num_strings; s++ ){
             x = loc.preview.array.left + w*1.25*s;

@@ -3,7 +3,7 @@ var mk_border = require('./mk_border');
 var f = require('./functions');
 
 var page = function(settings){
-    console.log("** Making page 1");
+    console.log("** Making preview 2");
 
     var d = mk_drawing();
 
@@ -155,30 +155,30 @@ var page = function(settings){
                 "preview_structural_poly_selected_framed"
             );
 
-            scale = 5;
-            var a = 3 * scale;
+            var a = 3;
+            var offset_a = a * scale;
 
             d.line([
-                    [detail_x,   detail_y+a],
-                    [detail_x+detail_w,   detail_y+a],
+                    [detail_x,   detail_y+offset_a],
+                    [detail_x+detail_w,   detail_y+offset_a],
                 ],
                 "preview_structural_dot"
             );
             d.line([
-                    [detail_x,          detail_y+detail_h-a],
-                    [detail_x+detail_w, detail_y+detail_h-a],
+                    [detail_x,          detail_y+detail_h-offset_a],
+                    [detail_x+detail_w, detail_y+detail_h-offset_a],
                 ],
                 "preview_structural_dot"
             );
             d.line([
-                    [detail_x+a, detail_y],
-                    [detail_x+a, detail_y+detail_h],
+                    [detail_x+offset_a, detail_y],
+                    [detail_x+offset_a, detail_y+detail_h],
                 ],
                 "preview_structural_dot"
             );
             d.line([
-                    [detail_x+detail_w-a, detail_y],
-                    [detail_x+detail_w-a, detail_y+detail_h],
+                    [detail_x+detail_w-offset_a, detail_y],
+                    [detail_x+detail_w-offset_a, detail_y+detail_h],
                 ],
                 "preview_structural_dot"
             );
@@ -189,10 +189,89 @@ var page = function(settings){
                 'dimention'
             );
             d.text(
+                [detail_x+ (offset_a)/2, detail_y+detail_h+20],
+                'a',
+                'dimention'
+            );
+            d.text(
                 [detail_x+detail_w/2, detail_y+detail_h+20],
                 parseFloat( system.roof.width ).toFixed().toString(),
                 'dimention'
             );
+
+
+
+            //////
+            // Module options
+
+            var roof_length_avail = system.roof.length - (a*2);
+            var roof_width_avail = system.roof.width - (a*2);
+
+            var row_spacing;
+            if( system.module.orientation === 'Portrait' ){
+                row_spacing = Number(system.module.length) + 1;
+                col_spacing = Number(system.module.width) + 1;
+                module_w = (Number(system.module.width)  )/12;
+                module_h = (Number(system.module.length) )/12;
+            } else {
+                row_spacing = Number(system.module.width) + 1;
+                col_spacing = Number(system.module.length) + 1;
+                module_w = (Number(system.module.length))/12;
+                module_h = (Number(system.module.width) )/12;
+            }
+
+            row_spacing = row_spacing/12; //module dimentions are in inches
+            col_spacing = col_spacing/12; //module dimentions are in inches
+
+            var num_rows = Math.floor(roof_length_avail/row_spacing);
+            var num_cols = Math.floor(roof_width_avail/col_spacing);
+
+            console.log( ( roof_width_avail - (col_spacing*num_cols))/2 );
+
+
+            x = detail_x + offset_a; //corner of usable space
+            y = detail_y + offset_a;
+            x += ( roof_width_avail - (col_spacing*num_cols))/2 *scale; // center array on roof
+            y += ( roof_length_avail - (row_spacing*num_rows))/2 *scale;
+            module_w = module_w * scale;
+            module_h = module_h * scale;
+
+            var active_modules = {
+                1: {
+                    1:true,
+                    2:true,
+                    3:true,
+                },
+                2: {
+                    1:true,
+                    2:true,
+                }
+            };
+
+            for( var r=0; r<num_rows; r++){
+                for( var c=0; c<num_cols; c++){
+                    module_x = c * col_spacing * scale;
+                    module_y = r * row_spacing * scale;
+
+                    if( active_modules[r+1] && active_modules[r+1][c+1] ){
+                        d.rect(
+                            [x+module_x+module_w/2, y+module_y+module_h/2],
+                            [module_w, module_h],
+                            "preview_structural_module_selected"
+                        );
+
+                    } else {
+                        d.rect(
+                            [x+module_x+module_w/2, y+module_y+module_h/2],
+                            [module_w, module_h],
+                            "preview_structural_module"
+                        );
+
+                    }
+
+                }
+            }
+
 
 
 //*/

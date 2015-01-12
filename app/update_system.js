@@ -55,7 +55,10 @@ var update_system = function(settings) {
 
         inputs.module.orientation = inputs.module.orientation || "Portrait";
         system.module.orientation = system.module.orientation || "Portrait";
-
+        inputs.module.width = inputs.module.width || 30;
+        system.module.width = system.module.width || 30;
+        inputs.module.length = inputs.module.length || 50;
+        system.module.length = system.module.length || 50;
 
         settings.system.DC.AWG = settings.system.DC.AWG || settings.input_options.DC.AWG[10];
 

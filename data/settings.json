@@ -22,7 +22,9 @@
         "module": {
             "make": null,
             "model": null,
-            "orientation": ["Portrait","Landscape"]
+            "orientation": ["Portrait","Landscape"],
+            "width": [20,25,30,35,40],
+            "length": [30,35,40,45,50]
         },
         "array": {
             "num_modules": [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 ],
