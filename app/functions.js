@@ -508,4 +508,45 @@ f.lowercase_properties = function lowercase_properties(obj) {
 };
 
 
+f.toggle_module = function(element){
+    //console.log('switch', element, element.classLis );
+
+    //element.setAttribute("fill", null);
+
+    var elem = $(element);
+    //console.log('switch', elem[0].classList.contains('preview_structural_module') );
+
+    var layer;
+    if( elem[0].classList.contains('svg_preview_structural_module_selected') ){
+        g.TEMP.selected_modules = g.TEMP.selected_modules-1 || 0;
+        layer = g.drawing.layer_attr.preview_structural_module;
+        element.setAttribute("class", "svg_preview_structural_module");
+    } else {
+        g.TEMP.selected_modules = g.TEMP.selected_modules +1 || 1;
+        layer = g.drawing.layer_attr.preview_structural_module_selected;
+        element.setAttribute("class", "svg_preview_structural_module_selected");
+    }
+
+    //console.log( g.TEMP.selected_modules);
+    for( var attr_name in layer ){
+        element.setAttribute(attr_name, layer[attr_name]);
+
+    }
+
+    //g.f.update();
+
+    /*
+    if( elem.hasClass("svg_preview_structural_module") ){
+        elem.removeClass("svg_preview_structural_module");
+        elem.addClass("svg_preview_structural_module_selected");
+    } else if( elem.hasClass("svg_preview_structural_module_selected") ){
+        elem.removeClass("svg_preview_structural_module_selected");
+        elem.addClass("svg_preview_structural_module");
+    } else {
+        elem.addClass("svg_preview_structural_module");
+    }
+    */
+};
+
+
 module.exports = f;

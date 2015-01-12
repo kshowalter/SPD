@@ -201,6 +201,7 @@ var page = function(settings){
 
 
 
+
             //////
             // Module options
 
@@ -236,41 +237,30 @@ var page = function(settings){
             module_w = module_w * scale;
             module_h = module_h * scale;
 
-            var active_modules = {
-                1: {
-                    1:true,
-                    2:true,
-                    3:true,
-                },
-                2: {
-                    1:true,
-                    2:true,
-                }
-            };
-
             for( var r=0; r<num_rows; r++){
                 for( var c=0; c<num_cols; c++){
                     module_x = c * col_spacing * scale;
                     module_y = r * row_spacing * scale;
 
-                    if( active_modules[r+1] && active_modules[r+1][c+1] ){
-                        d.rect(
-                            [x+module_x+module_w/2, y+module_y+module_h/2],
-                            [module_w, module_h],
-                            "preview_structural_module_selected"
-                        );
+                    d.rect(
+                        [x+module_x+module_w/2, y+module_y+module_h/2],
+                        [module_w, module_h],
+                        "preview_structural_module",
+                        {
+                            onclick: "g.f.toggle_module(this)"
 
-                    } else {
-                        d.rect(
-                            [x+module_x+module_w/2, y+module_y+module_h/2],
-                            [module_w, module_h],
-                            "preview_structural_module"
-                        );
-
-                    }
+                        }
+                    );
 
                 }
             }
+
+            g.TEMP.selected_modules = 0;
+            //d.text(
+            //    [detail_x+detail_w/2, detail_y+detail_h+50],
+            //    "Selected modules: " + parseFloat( g.TEMP.selected_modules ).toFixed().toString(),
+            //    'dimention'
+            //);
 
 
 
