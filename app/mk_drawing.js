@@ -172,7 +172,7 @@ SvgElem.rotate = function(deg){
 ///////
 // functions for adding drawing_parts
 
-drawing.add = function(type, points, layer_name) {
+drawing.add = function(type, points, layer_name, attrs) {
     if( points[0] === undefined ) console.warn("points not deffined", type, points, layer_name );
 
     if( typeof layer_name === 'undefined' ) { layer_name = layer_active; }
@@ -195,6 +195,7 @@ drawing.add = function(type, points, layer_name) {
     elem.type = type;
     elem.layer_name = layer_name;
     elem.section_name = section_active;
+    if( attrs !== undefined ) elem.attrs = attrs;
     if( type === 'line' ) {
         elem.points = points;
     } else if( type === 'poly' ) {
@@ -217,20 +218,20 @@ drawing.add = function(type, points, layer_name) {
     return elem;
 };
 
-drawing.line = function(points, layer){ // (points, [layer])
+drawing.line = function(points, layer, attrs){ // (points, [layer])
     //return add('line', points, layer)
-    var line =  this.add('line', points, layer);
+    var line =  this.add('line', points, layer, attrs);
     return line;
 };
 
-drawing.poly = function(points, layer){ // (points, [layer])
+drawing.poly = function(points, layer, attrs){ // (points, [layer])
     //return add('poly', points, layer)
-    var poly =  this.add('poly', points, layer);
+    var poly =  this.add('poly', points, layer, attrs);
     return poly;
 };
 
-drawing.rect = function(loc, size, layer){
-    var rec = this.add('rect', [loc], layer);
+drawing.rect = function(loc, size, layer, attrs){
+    var rec = this.add('rect', [loc], layer, attrs);
     rec.w = size[0];
     /*
     if( typeof layer_name !== 'undefined' && (layer_name in layers) ) {
@@ -244,14 +245,14 @@ drawing.rect = function(loc, size, layer){
     return rec;
 };
 
-drawing.circ = function(loc, diameter, layer){
-    var cir = this.add('circ', [loc], layer);
+drawing.circ = function(loc, diameter, layer, attrs){
+    var cir = this.add('circ', [loc], layer, attrs);
     cir.d = diameter;
     return cir;
 };
 
-drawing.text = function(loc, strings, font, layer){
-    var txt = this.add('text', [loc], layer);
+drawing.text = function(loc, strings, font, layer, attrs){
+    var txt = this.add('text', [loc], layer, attrs);
     if( typeof strings == 'string'){
         strings = [strings];
     }

@@ -36,6 +36,11 @@ var display_svg = function(drawing_parts, settings){
         if( typeof elem.y !== 'undefined' ) { y = elem.y + offset.y; }
 
         var attrs = layer_attr[elem.layer_name];
+        if( elem.attrs !== undefined){
+            for( attr_name in elem.attrs ){
+                attrs[attr_name] = elem.attrs[attr_name];
+            }
+        }
 
         if( elem.type === 'rect') {
             //svg.rect( elem.w, elem.h ).move( x-elem.w/2, y-elem.h/2 ).attr( layer_attr[elem.layer_name] );
