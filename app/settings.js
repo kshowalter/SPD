@@ -9,6 +9,7 @@ var mk_settings = require('../data/settings.json.js');
 f.mk_settings = mk_settings;
 
 var settings = {};
+settings.TEMP = {};
 
 settings.config_options = {};
 settings.config_options.NEC_tables = require('../data/tables.json');
