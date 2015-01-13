@@ -17,7 +17,7 @@ var page = function(settings){
 
     w = size.preview.module.w;
     h = size.preview.module.h;
-    loc.preview.array.bottom = loc.preview.array.top + h*1.25*system.array.num_modules + h*3/4;
+    loc.preview.array.bottom = loc.preview.array.top + h*1.25*system.array.modules_per_string + h*3/4;
     //loc.preview.array.right = loc.preview.array.left + w*1.25*system.array.num_strings + w*2;
     loc.preview.array.right = loc.preview.array.left + w*1.25*8 + w*2;
 
@@ -53,7 +53,7 @@ var page = function(settings){
                 ]
             );
             // modules
-            for( var m=0; m<system.array.num_modules; m++ ){
+            for( var m=0; m<system.array.modules_per_string; m++ ){
                 y = loc.preview.array.top + h + h*1.25*m;
                 // modules
                 d.rect(
@@ -87,7 +87,7 @@ var page = function(settings){
             [
                 'Array DC',
                 'Strings: ' + parseFloat(system.array.num_strings).toFixed(),
-                'Modules: ' + parseFloat(system.array.num_modules).toFixed(),
+                'Modules: ' + parseFloat(system.array.modules_per_string).toFixed(),
                 'Pmp: ' + parseFloat(system.array.pmp).toFixed(),
                 'Imp: ' + parseFloat(system.array.imp).toFixed(),
                 'Vmp: ' + parseFloat(system.array.vmp).toFixed(),

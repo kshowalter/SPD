@@ -41,7 +41,7 @@ var update_system = function(settings) {
         //console.log('Dev mode - defaults on');
 
         system.array.num_strings = system.array.num_strings || 4;
-        system.array.num_modules = system.array.num_modules || 6;
+        system.array.modules_per_string = system.array.modules_per_string || 6;
         system.DC.home_run_length = system.DC.home_run_length || 50;
 
         system.roof.width  = system.roof.width || 25;
@@ -127,10 +127,13 @@ var update_system = function(settings) {
     if( f.section_defined('array') && f.section_defined('module') ){
         system.array = system.array || {};
         system.array.isc = system.module.isc * system.array.num_strings;
-        system.array.voc = system.module.voc * system.array.num_modules;
+        system.array.voc = system.module.voc * system.array.modules_per_string;
         system.array.imp = system.module.imp * system.array.num_strings;
-        system.array.vmp = system.module.vmp * system.array.num_modules;
+        system.array.vmp = system.module.vmp * system.array.modules_per_string;
         system.array.pmp = system.array.vmp  * system.array.imp;
+
+        system.array.number_of_modules = system.array.modules_per_string * system.array.num_strings;
+
     }
 
     if( f.section_defined('DC') ){

@@ -247,7 +247,7 @@ var page = function(settings){
     if( system.module.specs !== undefined && system.module.specs !== null  ){
         d.text([x,y], [
             system.module.make + " " + system.module.model +
-                " (" + system.array.num_strings  + " strings of " + system.array.num_modules + " modules )"
+                " (" + system.array.num_strings  + " strings of " + system.array.modules_per_string + " modules )"
         ], 'title2', 'text').rotate(-90);
     }
 

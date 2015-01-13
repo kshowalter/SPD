@@ -516,24 +516,36 @@ f.toggle_module = function(element){
     var elem = $(element);
     //console.log('switch', elem[0].classList.contains('preview_structural_module') );
 
+    var r = element.getAttribute('module_ID').split(',')[0];
+    var c = element.getAttribute('module_ID').split(',')[1];
+
+    if( g.TEMP.selected_modules[r][c] ){
+        g.TEMP.selected_modules[r][c] = false;
+        g.TEMP.selected_modules_total--;
+    } else {
+        g.TEMP.selected_modules[r][c] = true;
+        g.TEMP.selected_modules_total++;
+    }
+
+    /*
     var layer;
     if( elem[0].classList.contains('svg_preview_structural_module_selected') ){
-        g.TEMP.selected_modules = g.TEMP.selected_modules-1 || 0;
-        layer = g.drawing.layer_attr.preview_structural_module;
-        element.setAttribute("class", "svg_preview_structural_module");
+        //g.TEMP.selected_modules[r][c] = true;
+        //layer = g.drawing.layer_attr.preview_structural_module;
+        //element.setAttribute("class", "svg_preview_structural_module");
     } else {
         g.TEMP.selected_modules = g.TEMP.selected_modules +1 || 1;
-        layer = g.drawing.layer_attr.preview_structural_module_selected;
-        element.setAttribute("class", "svg_preview_structural_module_selected");
+        //layer = g.drawing.layer_attr.preview_structural_module_selected;
+        //element.setAttribute("class", "svg_preview_structural_module_selected");
     }
-
+    //*/
     //console.log( g.TEMP.selected_modules);
-    for( var attr_name in layer ){
-        element.setAttribute(attr_name, layer[attr_name]);
+    //for( var attr_name in layer ){
+    //    element.setAttribute(attr_name, layer[attr_name]);
 
-    }
+    //}
 
-    //g.f.update();
+    g.f.update();
 
     /*
     if( elem.hasClass("svg_preview_structural_module") ){

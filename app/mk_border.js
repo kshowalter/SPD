@@ -100,10 +100,10 @@ var add_border = function(settings, sheet_section, sheet_num){
     }
 
     x += 14;
-    if( system.module.model && system.array.num_strings && system.array.num_modules  ){
+    if( system.module.model && system.array.num_strings && system.array.modules_per_string  ){
         d.text([x,y], [
             system.module.make + " " + system.module.model +
-                " (" + system.array.num_strings  + " strings of " + system.array.num_modules + " modules )"
+                " (" + system.array.num_strings  + " strings of " + system.array.modules_per_string + " modules )"
         ], 'title2', 'text').rotate(-90);
     }
 
