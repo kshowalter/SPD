@@ -48,8 +48,8 @@ var update_system = function(settings) {
         inputs.roof.width  = inputs.roof.width || 25;
         system.roof.length = system.roof.length || 15;
         inputs.roof.length = inputs.roof.length || 15;
-        system.roof.angle  = system.roof.angle || "6, 26.5";
-        inputs.roof.angle  = inputs.roof.angle || "6, 26.5";
+        system.roof.slope  = system.roof.slope || "6:12";
+        inputs.roof.slope  = inputs.roof.slope || "6:12";
         system.roof.type = system.roof.type || "Gable";
         inputs.roof.type = inputs.roof.type || "Gable";
 

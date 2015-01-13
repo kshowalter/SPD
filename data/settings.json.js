@@ -27,7 +27,7 @@ e.inputs = function(settings){
     catch(e) {  }
     try { settings.inputs.roof.length = [5,10,15,20,25];}
     catch(e) {  }
-    try { settings.inputs.roof.angle = ["1, 4.5","2, 9.5","3, 14","4, 18.5","5, 22.5","6, 26.5","7, 30.5"];}
+    try { settings.inputs.roof.slope = ["1:12","2:12","3:12","4:12","5:12","6:12","7:12","8:12","9:12","10:12","11:12","12:12","13:12","14:12","15:12","16:12","17:12","18:12"];}
     catch(e) {  }
     try { settings.inputs.roof.type = ["Gable","Shed","Hipped"];}
     catch(e) {  }
@@ -45,7 +45,7 @@ e.inputs = function(settings){
     catch(e) {  }
     try { settings.inputs.array = settings.inputs.array || {};}
     catch(e) {  }
-    try { settings.inputs.array.num_modules = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];}
+    try { settings.inputs.array.modules_per_string = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];}
     catch(e) {  }
     try { settings.inputs.array.num_strings = [1,2,3,4,5,6];}
     catch(e) {  }
