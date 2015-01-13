@@ -62,7 +62,7 @@ drawing.layer = function(name){ // set current layer
     if( typeof name === 'undefined' ){ // if no layer name given, reset to default
         layer_active = false;
     } else if ( ! (name in layer_attr) ) {
-        console.warn('Error: unknown layer, using base');
+        console.warn('Error: unknown layer "'+name+'", using base');
         layer_active = 'base' ;
     } else { // finaly activate requested layer
         layer_active = name;
