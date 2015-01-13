@@ -42,7 +42,7 @@ var page = function(settings){
 
 
             var t = d.table(n_rows,n_cols).loc(x,y);
-            t.row_size('all', row_height).col_size(1, 100).col_size(2, 80);
+            t.row_size('all', row_height).col_size(1, 100).col_size(2, 125);
             w = 100+80;
 
             var r = 1;
