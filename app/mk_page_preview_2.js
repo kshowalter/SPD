@@ -16,8 +16,9 @@ var page = function(settings){
 
         var x, y, h, w, section_x, section_y, length_p, scale;
 
-        var angle = system.roof.angle.split(', ')[1];
-        angle_rad = angle * (Math.PI/180);
+        var slope = system.roof.slope.split(':')[0];
+        var angle_rad = Math.atan( Number(slope) /12 );
+        //angle_rad = angle * (Math.PI/180);
 
 
         length_p = system.roof.length * Math.cos(angle_rad);
@@ -119,17 +120,12 @@ var page = function(settings){
             );
             d.text(
                 [cs_x+cs_w-15, cs_y+cs_h*2/3],
-                "h",
-                'dimention'
-            );
-            d.text(
-                [cs_x+cs_w+20, cs_y+cs_h*2/3],
                 parseFloat( system.roof.height ).toFixed().toString(),
                 'dimention'
             );
             d.text(
                 [cs_x+cs_w*1.5+20, cs_y+cs_h/3],
-                "l:" + parseFloat( system.roof.length ).toFixed().toString(),
+                parseFloat( system.roof.length ).toFixed().toString(),
                 'dimention'
             );
 
@@ -184,20 +180,37 @@ var page = function(settings){
             );
 
             d.text(
-                [detail_x-20, detail_y+detail_h/2],
+                [detail_x-40, detail_y+detail_h/2],
                 parseFloat( system.roof.length ).toFixed().toString(),
                 'dimention'
             );
             d.text(
-                [detail_x+ (offset_a)/2, detail_y+detail_h+20],
+                [detail_x+detail_w/2, detail_y+detail_h+40],
+                parseFloat( system.roof.width ).toFixed().toString(),
+                'dimention'
+            );
+
+            d.text(
+                [detail_x+ (offset_a)/2, detail_y+detail_h+15],
                 'a',
                 'dimention'
             );
             d.text(
-                [detail_x+detail_w/2, detail_y+detail_h+20],
-                parseFloat( system.roof.width ).toFixed().toString(),
+                [detail_x+detail_w-(offset_a)/2, detail_y+detail_h+15],
+                'a',
                 'dimention'
             );
+            d.text(
+                [detail_x-15, detail_y+detail_h-(offset_a)/2],
+                'a',
+                'dimention'
+            );
+            d.text(
+                [detail_x-15, detail_y+(offset_a)/2],
+                'a',
+                'dimention'
+            );
+
 
 
 
@@ -227,9 +240,6 @@ var page = function(settings){
             var num_rows = Math.floor(roof_length_avail/row_spacing);
             var num_cols = Math.floor(roof_width_avail/col_spacing);
 
-            console.log( ( roof_width_avail - (col_spacing*num_cols))/2 );
-
-
             x = detail_x + offset_a; //corner of usable space
             y = detail_y + offset_a;
             x += ( roof_width_avail - (col_spacing*num_cols))/2 *scale; // center array on roof
@@ -238,16 +248,22 @@ var page = function(settings){
             module_h = module_h * scale;
 
             for( var r=0; r<num_rows; r++){
+
                 for( var c=0; c<num_cols; c++){
+
+                    var layer;
+                    if( g.TEMP.selected_modules[r][c] ) layer = 'preview_structural_module_selected';
+                    else layer = 'preview_structural_module';
                     module_x = c * col_spacing * scale;
                     module_y = r * row_spacing * scale;
 
                     d.rect(
                         [x+module_x+module_w/2, y+module_y+module_h/2],
                         [module_w, module_h],
-                        "preview_structural_module",
+                        layer,
                         {
-                            onclick: "g.f.toggle_module(this)"
+                            onclick: "g.f.toggle_module(this)",
+                            module_ID:  (r) + ',' + (c)
 
                         }
                     );
@@ -255,12 +271,14 @@ var page = function(settings){
                 }
             }
 
-            g.TEMP.selected_modules = 0;
-            //d.text(
-            //    [detail_x+detail_w/2, detail_y+detail_h+50],
-            //    "Selected modules: " + parseFloat( g.TEMP.selected_modules ).toFixed().toString(),
-            //    'dimention'
-            //);
+            d.text(
+                [detail_x+detail_w/2, detail_y+detail_h+100],
+                [
+                    "Selected modules: " + parseFloat( g.TEMP.selected_modules_total ).toFixed().toString(),
+                    "Calculated modules: " + parseFloat( g.system.array.number_of_modules ).toFixed().toString(),
+                ],
+                'dimention'
+            );
 
 
 

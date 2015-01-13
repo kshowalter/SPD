@@ -10,6 +10,13 @@ f.mk_settings = mk_settings;
 
 var settings = {};
 settings.TEMP = {};
+settings.TEMP.selected_modules_total = 0;
+settings.TEMP.selected_modules = {};
+for( var r=0; r<100; r++){
+    settings.TEMP.selected_modules[r] = {};
+
+}
+
 
 settings.config_options = {};
 settings.config_options.NEC_tables = require('../data/tables.json');
