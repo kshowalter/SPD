@@ -5,17 +5,17 @@ e.i_options = function(settings){
     catch(e) {  }
     try { settings.i_options.AC.types = settings.i_options.AC.types || {};}
     catch(e) {  }
-    try { settings.i_options.AC.types["120V"] = ["G","N","L1"];}
+    try { settings.i_options.AC.types["120V"] = ["ground","neutral","L1"];}
     catch(e) {  }
-    try { settings.i_options.AC.types["240V"] = ["G","N","L1","L2"];}
+    try { settings.i_options.AC.types["240V"] = ["ground","neutral","L1","L2"];}
     catch(e) {  }
-    try { settings.i_options.AC.types["208V"] = ["G","N","L1","L2"];}
+    try { settings.i_options.AC.types["208V"] = ["ground","neutral","L1","L2"];}
     catch(e) {  }
-    try { settings.i_options.AC.types["277V"] = ["G","N","L1"];}
+    try { settings.i_options.AC.types["277V"] = ["ground","neutral","L1"];}
     catch(e) {  }
-    try { settings.i_options.AC.types["480V Wye"] = ["G","N","L1","L2","L3"];}
+    try { settings.i_options.AC.types["480V Wye"] = ["ground","neutral","L1","L2","L3"];}
     catch(e) {  }
-    try { settings.i_options.AC.types["480V Delta"] = ["G","L1","L2","L3"];}
+    try { settings.i_options.AC.types["480V Delta"] = ["ground","L1","L2","L3"];}
     catch(e) {  }
     return settings;
 };
