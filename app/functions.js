@@ -31,7 +31,18 @@ f.object_defined = function(object){
 
 f.section_defined = function(section_name){
     //console.log("-"+section_name);
-    return f.object_defined(f.settings.inputs[section_name] );
+    //var input_section = g.inputs[section_name];
+    var output_section = g.system[section_name];
+    for( var key in output_section ){
+        if( output_section.hasOwnProperty(key) ){
+            //console.log(key);
+
+            if( output_section[key] === undefined || output_section[key] === null ) {
+                return false;
+            }
+        }
+    }
+    return true;
 };
 
 f.nullToObject = function(object){
@@ -179,7 +190,7 @@ f.kelem_setup = function(kelem, settings){
         kelem.update();
     } else if( kelem.type === 'value' ){
         kelem.setRefObj(settings);
-        //kelem.setUpdate(update_system);
+        //kelem.setUpdate(settings_update);
         settings.value_registry.push(kelem);
     }
     return kelem;
@@ -187,7 +198,7 @@ f.kelem_setup = function(kelem, settings){
 */
 
 f.add_selectors = function(settings, parent_container){
-    for( var section_name in settings.input_options ){
+    for( var section_name in settings.inputs ){
         var selection_container = $('<div>').attr('class', 'input_section').attr('id', section_name ).appendTo(parent_container);
         //selection_container.get(0).style.display = display_type;
         var system_div = $('<div>').attr('class', 'title_bar').attr('id', 'section_'+section_name)
@@ -204,12 +215,18 @@ f.add_selectors = function(settings, parent_container){
         $(this).trigger('click');
         var drawer = $('<div>').attr('class', 'drawer').appendTo(selection_container);
         var drawer_content = $('<div>').attr('class', 'drawer_content').appendTo(drawer);
-        for( var input_name in settings.input_options[section_name] ){
+        for( var input_name in settings.inputs[section_name] ){
+            var units;
+            if( (settings.inputs[section_name][input_name] !== undefined) && (settings.inputs[section_name][input_name].units !== undefined) ) {
+                units = "(" + settings.inputs[section_name][input_name].units + ")";
+            } else {
+                units = "";
+            }
             var selector_set = $('<span>').attr('class', 'selector_set').appendTo(drawer_content);
-            $('<span>').html(f.pretty_name(input_name) + ': ').appendTo(selector_set);
+            $('<span>').html(f.pretty_name(input_name) + ': ' + units ).appendTo(selector_set);
             /*
             var selector = k$('selector')
-                .setOptionsRef( 'input_options.' + section_name + '.' + input_name )
+                .setOptionsRef( 'inputs.' + section_name + '.' + input_name )
                 .setRef( 'system.' + section_name + '.' + input_name )
                 .appendTo(selector_set);
             f.kelem_setup(selector, settings);
@@ -220,8 +237,8 @@ f.add_selectors = function(settings, parent_container){
             var selector = {
                 elem: $elem.get()[0],
                 system_ref: Object.create(kontainer).obj(settings).ref('system.' + section_name + '.' + input_name),
-                input_ref: Object.create(kontainer).obj(settings).ref('inputs.' + section_name + '.' + input_name),
-                list_ref: Object.create(kontainer).obj(settings).ref('input_options.' + section_name + '.' + input_name),
+                //input_ref: Object.create(kontainer).obj(settings).ref('inputs.' + section_name + '.' + input_name + '.value'),
+                list_ref: Object.create(kontainer).obj(settings).ref('inputs.' + section_name + '.' + input_name + '.options'),
                 interacted: false,
                 value: function(){
                     //console.log( this.set_ref.refString, this.elem.selectedIndex );
@@ -307,7 +324,7 @@ f.add_params = function(settings, parent_container){
                 $('<span>').html(f.pretty_name(input_name) + ': ').appendTo(drawer_content);
                 /*
                 var selector = k$('value')
-                    //.setOptionsRef( 'input_options.' + section_name + '.' + input_name )
+                    //.setOptionsRef( 'inputs.' + section_name + '.' + input_name )
                     .setRef( 'system.' + section_name + '.' + input_name )
                     .appendTo(drawer_content);
                 f.kelem_setup(selector, settings);

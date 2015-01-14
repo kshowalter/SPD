@@ -7,7 +7,7 @@ var f = require('./functions');
 
 var object_defined = f.object_defined;
 
-var update_system = function(settings) {
+var settings_update = function(settings) {
 
     //console.log('---settings---', settings);
     var config_options = settings.config_options;
@@ -16,20 +16,16 @@ var update_system = function(settings) {
     var size = settings.drawing.size;
     var state = settings.state;
 
-    var calculated = settings.calculated;
-    var calculated_formulas = settings.calculated_formulas;
     var inputs = settings.inputs;
-    var input_options = settings.input_options;
 
-    var sections = k.objIdArray(settings.inputs);
-    //console.log(sections);
-    sections.forEach(function(sectionName,id){
-        //console.log( sectionName, f.object_defined(settings.inputs[sectionName]) );
-    });
 
-    f.mk_settings.system(settings);
 
-    for( var section in settings.system_formulas ){
+
+
+    if( state.database_loaded ){
+        inputs.DC = settings.inputs.DC || {};
+        inputs.DC.wire_size = settings.inputs.DC.wire_size || {};
+        inputs.DC.wire_size.options = inputs.DC.wire_size.options || k.obj_names(settings.config_options.NEC_tables['Ch 9 Table 8 Conductor Properties']);
 
 
     }
@@ -45,56 +41,46 @@ var update_system = function(settings) {
         system.DC.home_run_length = system.DC.home_run_length || 50;
 
         system.roof.width  = system.roof.width || 25;
-        inputs.roof.width  = inputs.roof.width || 25;
         system.roof.length = system.roof.length || 15;
-        inputs.roof.length = inputs.roof.length || 15;
         system.roof.slope  = system.roof.slope || "6:12";
-        inputs.roof.slope  = inputs.roof.slope || "6:12";
         system.roof.type = system.roof.type || "Gable";
-        inputs.roof.type = inputs.roof.type || "Gable";
 
-        inputs.module.orientation = inputs.module.orientation || "Portrait";
         system.module.orientation = system.module.orientation || "Portrait";
-        inputs.module.width = inputs.module.width || 30;
         system.module.width = system.module.width || 30;
-        inputs.module.length = inputs.module.length || 50;
         system.module.length = system.module.length || 50;
 
-        settings.system.DC.AWG = settings.system.DC.AWG || settings.input_options.DC.AWG[10];
 
         if( state.database_loaded ){
-            inputs.inverter.make = system.inverter.make = system.inverter.make ||
+            system.inverter.make = system.inverter.make ||
                 'SMA';
-            inputs.inverter.model = system.inverter.model = system.inverter.model ||
+            system.inverter.model = system.inverter.model ||
                 'SI3000';
 
-            inputs.module.make = system.module.make = system.module.make ||
+            system.module.make = system.module.make ||
                 f.obj_names( settings.components.modules )[0];
             //if( system.module.make) settings.config_options.moduleModelArray = k.objIdArray(settings.config_options.modules[system.module.make]);
-            inputs.module.model = system.module.model = system.module.model ||
+            system.module.model = system.module.model ||
                 f.obj_names( settings.components.modules[system.module.make] )[0];
 
 
-            inputs.module.model = system.module.model = system.module.model ||
+            system.module.model = system.module.model ||
                 f.obj_names( settings.components.modules[system.module.make] )[0];
 
-            inputs.AC.loadcenter_types = system.AC.loadcenter_types = system.AC.loadcenter_types ||
-            //    f.obj_names(input_options.AC.loadcenter_types)[0];
+            system.AC.loadcenter_types = system.AC.loadcenter_types ||
+            //    f.obj_names(inputs.AC.loadcenter_types)[0];
                 '480/277V';
 
 
-            inputs.AC.type = system.AC.type = system.AC.type || '480V Wye';
-            //inputs.AC.type = system.AC.type = system.AC.type ||
-            //    input_options.AC.loadcenter_types[system.AC.loadcenter_types][0];
+            system.AC.type = system.AC.type || '480V Wye';
+            //system.AC.type = system.AC.type ||
+            //    system.AC.loadcenter_types[system.AC.loadcenter_types][0];
 
-            inputs.AC.distance_to_loadcenter = system.AC.distance_to_loadcenter = system.AC.distance_to_loadcenter ||
-                input_options.AC.distance_to_loadcenter[3];
+            system.AC.distance_to_loadcenter = system.AC.distance_to_loadcenter ||
+                inputs.AC.distance_to_loadcenter.options[3];
 
 
+            system.DC.wire_size = inputs.DC.wire_size.options[3];
             /*
-            config_options.DC_homerun_AWG_options = k.objIdArray( config_options.NEC_tables['Ch 9 Table 8 Conductor Properties'] );
-            system.array.homerun.AWG = system.array.homerun.AWG ||
-                          config_options.DC_homerun_AWG_options[config_options.DC_homerun_AWG_options.length-1];
 
             settings.config_options.inverterMakeArray = k.objIdArray(settings.config_options.inverters);
             system.inverter.make = system.inverter.make || Object.keys( settings.config_options.inverters )[0];
@@ -106,12 +92,13 @@ var update_system = function(settings) {
     }
     //*/
 
-    //console.log("update_system");
+
+    //console.log("settings_update");
     //console.log(system.module.make);
 
-    input_options.module.make = k.obj_names(settings.components.modules);
+    inputs.module.make.options = k.obj_names(settings.components.modules);
     if( system.module.make ) {
-        input_options.module.model  = k.obj_names( settings.components.modules[system.module.make] );
+        inputs.module.model.options  = k.obj_names( settings.components.modules[system.module.make] );
     }
 
     if( system.module.model ) {
@@ -136,26 +123,27 @@ var update_system = function(settings) {
 
     }
 
+
     if( f.section_defined('DC') ){
 
     }
 
-    input_options.inverter.make = k.obj_names(settings.components.inverters);
+    inputs.inverter.make.options = k.obj_names(settings.components.inverters);
     if( system.inverter.make ) {
-        input_options.inverter.model = k.obj_names( settings.components.inverters[system.inverter.make] );
+        inputs.inverter.model.options = k.obj_names( settings.components.inverters[system.inverter.make] );
     }
     if( f.section_defined('inverter') ){
 
     }
 
-    //input_options.AC.loadcenter_type = settings.f.obj_names(input_options.AC.loadcenter_types);
+    //inputs.AC.loadcenter_type = settings.f.obj_names(inputs.AC.loadcenter_types);
     if( system.AC.loadcenter_types ) {
         var loadcenter_type = system.AC.loadcenter_types;
-        var AC_options = input_options.AC.loadcenter_types[loadcenter_type];
-        input_options.AC.type = AC_options;
+        var AC_options = inputs.AC.loadcenter_types[loadcenter_type];
+        inputs.AC.type.options = AC_options;
         //i_options.AC.types[loadcenter_type];
 
-        //input_options.AC['type'] = k.obj_names( settings.i_options.AC.type );
+        //inputs.AC['type'] = k.obj_names( settings.i_options.AC.type );
     }
     if( system.AC.type ) {
         system.AC.conductors = settings.i_options.AC.types[system.AC.type];
@@ -180,15 +168,15 @@ var update_system = function(settings) {
 
     /*
     //settings.drawing.size.wire_table.h = (system.AC.num_conductors+3) * settings.drawing.size.wire_table.row_h;
-    for( var section_name in input_options ){
-        for( var input_name in settings.input_options[section_name] ){
-            if( typeof settings.input_options[section_name][input_name] === 'string' ){
-                console.log( settings.input_options[section_name][input_name] );
+    for( var section_name in inputs ){
+        for( var input_name in settings.inputs[section_name] ){
+            if( typeof settings.inputs[section_name][input_name] === 'string' ){
+                console.log( settings.inputs[section_name][input_name] );
                 console.log( k.obj_names(
-                    f.get_ref(settings.input_options[section_name][input_name], settings)
+                    f.get_ref(settings.inputs[section_name][input_name], settings)
                 ));
 
-                var to_eval = "k.obj_names(setttings." + settings.input_options[section_name][input_name] + ")";
+                var to_eval = "k.obj_names(setttings." + settings.inputs[section_name][input_name] + ")";
                 console.log(to_eval);
                 // eval is only being used on strings defined in the settings.json file that is built into the application
                 /* jshint evil:true //*/
@@ -196,7 +184,7 @@ var update_system = function(settings) {
                 // http://perfectionkills.com/global-eval-what-are-the-options/#indirect_eval_call_examples
                 /*
                 var e = eval; // This allows eval to be called indirectly, triggering a global call in modern browsers.
-                settings.input_options[section_name][input_name] = e(to_eval);
+                settings.inputs[section_name][input_name] = e(to_eval);
                 /* jshint evil:false //*/
                 /*
             }
@@ -298,4 +286,4 @@ var update_system = function(settings) {
 
 //*/
 
-module.exports = update_system;
+module.exports = settings_update;

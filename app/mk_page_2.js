@@ -27,6 +27,7 @@ var page = function(settings){
     var offset;
 
 // Define d.blocks
+
 // module d.block
     w = size.module.frame.w;
     h = size.module.frame.h;
@@ -97,8 +98,21 @@ var page = function(settings){
     d.layer();
 
     d.block('module', [x,y]);
-    y += size.module.h + size.string.gap_missing;
+
+    y += size.module.h;
+    d.line(
+        [
+            [x,y],
+            [x,y+size.string.gap_missing],
+        //[x-size.module.frame.w*3/4, y+size.string.h + size.wire_offset.ground ],
+        ],
+        'DC_intermodule'
+    );
+
+    y += size.string.gap_missing;
     d.block('module', [x,y]);
+
+
     y += size.module.h + size.string.gap;
     d.block('module', [x,y]);
     y += size.module.h + size.string.gap;
@@ -273,7 +287,6 @@ var page = function(settings){
     if( f.section_defined('module') && f.section_defined('array') ){
         d.section('array');
 
-        console.log("Drawing: adding array");
 
         x = loc.array.right - size.string.w;
         y = loc.array.y;
@@ -773,56 +786,60 @@ var page = function(settings){
     x = loc.wire_table.x;
     y = loc.wire_table.y;
 
-    var n_rows = 2 + system.AC.num_conductors;
-    var n_cols = 6;
-    var row_height = 15;
-    var column_width = {
-        number: 25,
-        conductor: 50,
-        wire_gauge: 25,
-        wire_type: 75,
-        conduit_size: 35,
-        conduit_type: 75,
-    };
+    if( system.AC.num_conductors ) {
+        var n_rows = 2 + system.AC.num_conductors;
+        var n_cols = 6;
+        var row_height = 15;
+        var column_width = {
+            number: 25,
+            conductor: 50,
+            wire_gauge: 25,
+            wire_type: 75,
+            conduit_size: 35,
+            conduit_type: 75,
+        };
 
-    h = n_rows*row_height;
+        h = n_rows*row_height;
 
-    var t = d.table(n_rows,n_cols).loc(x,y);
-    t.row_size('all', row_height)
-        .col_size(1, column_width.number)
-        .col_size(2, column_width.conductor)
-        .col_size(3, column_width.wire_gauge)
-        .col_size(4, column_width.wire_type)
-        .col_size(5, column_width.conduit_size)
-        .col_size(6, column_width.conduit_type);
+        var t = d.table(n_rows,n_cols).loc(x,y);
+        t.row_size('all', row_height)
+            .col_size(1, column_width.number)
+            .col_size(2, column_width.conductor)
+            .col_size(3, column_width.wire_gauge)
+            .col_size(4, column_width.wire_type)
+            .col_size(5, column_width.conduit_size)
+            .col_size(6, column_width.conduit_type);
 
-    t.all_cells().forEach(function(cell){
-        cell.font('table').border('all');
-    });
-    t.cell(1,1).border('B', false);
-    t.cell(1,3).border('R', false);
-    t.cell(1,5).border('R', false);
+        t.all_cells().forEach(function(cell){
+            cell.font('table').border('all');
+        });
+        t.cell(1,1).border('B', false);
+        t.cell(1,3).border('R', false);
+        t.cell(1,5).border('R', false);
 
-    t.cell(1,3).font('table_left').text('Wire');
-    t.cell(1,5).font('table_left').text('Conduit');
+        t.cell(1,3).font('table_left').text('Wire');
+        t.cell(1,5).font('table_left').text('Conduit');
 
-    t.cell(2,3).font('table').text('Conductors');
-    t.cell(2,3).font('table').text('AWG');
-    t.cell(2,4).font('table').text('Type');
-    t.cell(2,5).font('table').text('Size');
-    t.cell(2,6).font('table').text('Type');
+        t.cell(2,3).font('table').text('Conductors');
+        t.cell(2,3).font('table').text('AWG');
+        t.cell(2,4).font('table').text('Type');
+        t.cell(2,5).font('table').text('Size');
+        t.cell(2,6).font('table').text('Type');
 
-    for( i=1; i<=system.AC.num_conductors; i++){
-        t.cell(2+i,1).font('table').text(i.toString());
-        t.cell(2+i,2).font('table_left').text( f.pretty_word(settings.system.AC.conductors[i-1]) );
+        for( i=1; i<=system.AC.num_conductors; i++){
+            t.cell(2+i,1).font('table').text(i.toString());
+            t.cell(2+i,2).font('table_left').text( f.pretty_word(settings.system.AC.conductors[i-1]) );
+
+        }
+
+
+        //d.text( [x+w/2, y-row_height], f.pretty_name(section_name),'table' );
+
+
+        t.mk();
 
     }
 
-
-    //d.text( [x+w/2, y-row_height], f.pretty_name(section_name),'table' );
-
-
-    t.mk();
 //*/
 
 

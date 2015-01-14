@@ -42,6 +42,13 @@ layer_attr.frame.stroke = '#000042';
 layer_attr.table = Object.create(layer_attr.base);
 layer_attr.table.stroke = '#000000';
 
+layer_attr.DC_intermodule = Object.assign(Object.create(layer_attr.base),{
+    stroke: '#bebebe',
+    "stroke-dasharray": "1, 1",
+
+
+});
+
 layer_attr.DC_pos = Object.create(layer_attr.base);
 layer_attr.DC_pos.stroke = '#ff0000';
 layer_attr.DC_neg = Object.create(layer_attr.base);

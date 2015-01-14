@@ -22,7 +22,7 @@ mk_preview[2] = require('./app/mk_page_preview_2');
 
 var mk_svg= require('./app/mk_svg');
 //var mk_pdf = require('./app/mk_pdf.js');
-var update_system = require('./app/update_system');
+var settings_update = require('./app/settings_update');
 
 var settings = require('./app/settings');
 window.g = settings;
@@ -61,15 +61,16 @@ $.getJSON( database_json_URL)
 var update = settings.update = function(){
     console.log('/--- begin update');
 
-    for( var section_name in settings.inputs ){
-        //console.log( section_name, f.section_defined(section_name) );
-    }
-
+    var sections = k.objIdArray(settings.inputs);
+    //console.log(sections);
+    sections.forEach(function(sectionName,id){
+        console.log( "   defined? " + sectionName, f.section_defined(sectionName) );
+    });
 
     settings.select_registry.forEach(function(selector){
         //console.log(selector.value());
         if(selector.value()) selector.system_ref.set(selector.value());
-        if(selector.value()) selector.input_ref.set(selector.value());
+        //if(selector.value()) selector.input_ref.set(selector.value());
         //console.log(selector.set_ref.refString, selector.value(), selector.set_ref.get());
 
     });
@@ -78,7 +79,7 @@ var update = settings.update = function(){
     //copy inputs from settings.input to settings.system.
 
 
-    update_system(settings);
+    settings_update(settings);
 
     settings.select_registry.forEach(function(selector){
         f.selector_add_options(selector);
