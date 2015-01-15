@@ -38,8 +38,7 @@ function settings_drawing(settings){
 
     size.string = {};
     size.string.gap = size.module.frame.w/42;
-    size.string.gap_missing = size.string.gap + size.module.frame.w;
-    size.string.h = (size.module.h * 4) + (size.string.gap * 2) + size.string.gap_missing;
+    size.string.gap_missing = size.module.h;
     size.string.w = size.module.frame.w * 2.5;
 
     size.terminal_diam = 5;
@@ -68,11 +67,13 @@ function settings_drawing(settings){
     // array
     loc.array = {
         x: loc.inverter.x - 200,
-        y:600
+        upper: loc.inverter.y - 20,
     };
-    loc.array.upper = loc.array.y - size.string.h/2;
-    loc.array.lower = loc.array.upper + size.string.h;
+    //loc.array.upper = loc.array.y - size.string.h/2;
     loc.array.right = loc.array.x - size.module.frame.h*3;
+
+
+
 
     loc.DC = loc.array;
 
@@ -82,8 +83,8 @@ function settings_drawing(settings){
         w: 80,
     };
     loc.jb_box = {
-        x: loc.array.x + size.jb_box.w/2,
-        y: loc.array.y + size.jb_box.h/10,
+        x: 350,
+        y: 550,
     };
 
     // DC diconect
