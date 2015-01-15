@@ -222,8 +222,15 @@ f.add_selectors = function(settings, parent_container){
             } else {
                 units = "";
             }
+            var note;
+            if( (settings.inputs[section_name][input_name] !== undefined) && (settings.inputs[section_name][input_name].note !== undefined) ) {
+                note = settings.inputs[section_name][input_name].note;
+            } else {
+                note = false;
+            }
             var selector_set = $('<span>').attr('class', 'selector_set').appendTo(drawer_content);
-            $('<span>').html(f.pretty_name(input_name) + ': ' + units ).appendTo(selector_set);
+            var input_text = $('<span>').html(f.pretty_name(input_name) + ': ' + units ).appendTo(selector_set);
+            if( note ) input_text.attr('title', note);
             /*
             var selector = k$('selector')
                 .setOptionsRef( 'inputs.' + section_name + '.' + input_name )
