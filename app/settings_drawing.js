@@ -6,11 +6,11 @@ function settings_drawing(settings){
     var status = settings.status;
 
     // Drawing specific
-    settings.drawing = settings.drawing || {};
+    //settings.drawing = settings.drawing || {};
 
 
-    var size = settings.drawing.size = {};
-    var loc = settings.drawing.loc = {};
+    var size = settings.drawing_settings.size = {};
+    var loc = settings.drawing_settings.loc = {};
 
 
     // sizes
@@ -191,8 +191,8 @@ function settings_drawing(settings){
     };
 
     settings.pages.PDF.scale = {
-        x: settings.pages.PDF.w / settings.drawing.size.drawing.w,
-        y: settings.pages.PDF.h / settings.drawing.size.drawing.h,
+        x: settings.pages.PDF.w / settings.drawing_settings.size.drawing.w,
+        y: settings.pages.PDF.h / settings.drawing_settings.size.drawing.h,
     };
 
     if( settings.pages.PDF.scale.x < settings.pages.PDF.scale.y ) {

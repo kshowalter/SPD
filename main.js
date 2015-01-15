@@ -11,6 +11,11 @@ var version_string = 'Dev';
 var k = require('./lib/k/k.js');
 var k_data = require('./lib/k/k_data');
 
+var settings = require('./app/settings');
+window.g = settings;
+settings.state.version_string = version_string;
+console.log('settings', settings);
+
 var mk_page = {};
 mk_page[1] = require('./app/mk_page_1');
 mk_page[2] = require('./app/mk_page_2');
@@ -24,10 +29,6 @@ var mk_svg= require('./app/mk_svg');
 //var mk_pdf = require('./app/mk_pdf.js');
 var settings_update = require('./app/settings_update');
 
-var settings = require('./app/settings');
-window.g = settings;
-settings.state.version_string = version_string;
-console.log('settings', settings);
 
 
 var f = require('./app/functions');
@@ -60,11 +61,12 @@ $.getJSON( database_json_URL)
 
 var update = settings.update = function(){
     console.log('/--- begin update');
+    f.clear_drawing();
 
     var sections = k.objIdArray(settings.inputs);
     //console.log(sections);
     sections.forEach(function(sectionName,id){
-        console.log( "   defined? " + sectionName, f.section_defined(sectionName) );
+        //console.log( "   defined? " + sectionName, f.section_defined(sectionName) );
     });
 
     settings.select_registry.forEach(function(selector){
@@ -90,12 +92,30 @@ var update = settings.update = function(){
     });
 
 
+    // Make preview
+    settings.drawing.preview_parts = {};
+    settings.drawing.preview_svgs = {};
+    $('#drawing_preview').empty().html('');
+    for( var p in mk_preview ){
+        settings.drawing.preview_parts[p] = mk_preview[p](settings);
+        settings.drawing.preview_svgs[p] = mk_svg(settings.drawing.preview_parts[p], settings);
+        var section = ['','Electrical','Structural'][p];
+        $('#drawing_preview')
+            //.append($('<p>Page '+p+'</p>'))
+            .append($('<p>'+section+'</p>'))
+            .append($(settings.drawing.preview_svgs[p]))
+            .append($('</br>'))
+            .append($('</br>'));
+
+    }
+
+
 
     // Make drawing
     settings.drawing.parts = {};
     settings.drawing.svgs = {};
-    $('#drawing').html('Electrical');
-    for( var p in mk_page ){
+    $('#drawing').empty().html('Electrical');
+    for( p in mk_page ){
         settings.drawing.parts[p] = mk_page[p](settings);
         settings.drawing.svgs[p] = mk_svg(settings.drawing.parts[p], settings);
         $('#drawing')
@@ -106,21 +126,7 @@ var update = settings.update = function(){
 
     }
 
-    settings.drawing.preview_parts = {};
-    settings.drawing.preview_svgs = {};
-    $('#drawing_preview').html('');
-    for( var p in mk_preview ){
-        settings.drawing.preview_parts[p] = mk_preview[p](settings);
-        settings.drawing.preview_svgs[p] = mk_svg(settings.drawing.preview_parts[p], settings);
-        var section = ['','Electrical','Structural'][p]
-        $('#drawing_preview')
-            //.append($('<p>Page '+p+'</p>'))
-            .append($('<p>'+section+'</p>'))
-            .append($(settings.drawing.preview_svgs[p]))
-            .append($('</br>'))
-            .append($('</br>'));
 
-    }
 
 
 
@@ -179,7 +185,7 @@ function page_setup(settings){
     k.setup_body(title);
 
     var page = $('<div>').attr('class', 'page').appendTo($(document.body));
-    //page.style('width', (settings.drawing.size.drawing.w+20).toString() + 'px' )
+    //page.style('width', (settings.drawing_settings.size.drawing.w+20).toString() + 'px' )
 
     var system_frame = $('<div>').attr('id', system_frame_id).appendTo(page);
 
@@ -221,11 +227,11 @@ function page_setup(settings){
 
 
     var drawing = $('<div>').attr('id', 'drawing_frame').appendTo(page);
-    //drawing.css('width', (settings.drawing.size.drawing.w+20).toString() + 'px' );
+    //drawing.css('width', (settings.drawing_settings.size.drawing.w+20).toString() + 'px' );
     $('<div>').html('Drawing').attr('class', 'section_title').appendTo(drawing);
 
     var svg_container_object = $('<div>').attr('id', 'drawing').attr('class', 'drawing').css('clear', 'both').appendTo(drawing);
-    //svg_container_object.style('width', settings.drawing.size.drawing.w+'px' )
+    //svg_container_object.style('width', settings.drawing_settings.size.drawing.w+'px' )
     //var svg_container = svg_container_object.elem;
     $('<br>').appendTo(drawing);
 

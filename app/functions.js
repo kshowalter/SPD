@@ -548,11 +548,11 @@ f.toggle_module = function(element){
     var layer;
     if( elem[0].classList.contains('svg_preview_structural_module_selected') ){
         //g.TEMP.selected_modules[r][c] = true;
-        //layer = g.drawing.layer_attr.preview_structural_module;
+        //layer = g.drawing_settings.layer_attr.preview_structural_module;
         //element.setAttribute("class", "svg_preview_structural_module");
     } else {
         g.TEMP.selected_modules = g.TEMP.selected_modules +1 || 1;
-        //layer = g.drawing.layer_attr.preview_structural_module_selected;
+        //layer = g.drawing_settings.layer_attr.preview_structural_module_selected;
         //element.setAttribute("class", "svg_preview_structural_module_selected");
     }
     //*/
@@ -575,6 +575,24 @@ f.toggle_module = function(element){
         elem.addClass("svg_preview_structural_module");
     }
     */
+};
+
+
+f.clear_object = function(obj){
+    for( var id in obj ){
+        if( obj.hasOwnProperty(id)){
+            delete obj[id];
+        }
+    }
+};
+
+// clear drawing
+f.clear_drawing = function() {
+    for( var id in g.drawing ){
+        if( g.drawing.hasOwnProperty(id)){
+            f.clear_object(g.drawing[id]);
+        }
+    }
 };
 
 

@@ -7,19 +7,19 @@
 
 var display_svg = function(drawing_parts, settings){
     //console.log('displaying svg');
-    var layer_attr = settings.drawing.layer_attr;
-    var fonts = settings.drawing.fonts;
+    var layer_attr = settings.drawing_settings.layer_attr;
+    var fonts = settings.drawing_settings.fonts;
     //console.log('drawing_parts: ', drawing_parts);
     //container.empty()
 
     //var svg_elem = document.getElementById('SvgjsSvg1000')
     var svg_elem = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
     svg_elem.setAttribute('class','svg_drawing');
-    //svg_elem.setAttribute('width', settings.drawing.size.drawing.w);
-    //svg_elem.setAttribute('height', settings.drawing.size.drawing.h);
+    //svg_elem.setAttribute('width', settings.drawing_settings.size.drawing.w);
+    //svg_elem.setAttribute('height', settings.drawing_settings.size.drawing.h);
     var view_box = '0 0 ' +
-                    settings.drawing.size.drawing.w + ' ' +
-                    settings.drawing.size.drawing.h + ' ';
+                    settings.drawing_settings.size.drawing.w + ' ' +
+                    settings.drawing_settings.size.drawing.h + ' ';
     svg_elem.setAttribute('viewBox', view_box);
     //var svg = snapsvg(svg_elem).size(size.drawing.w, size.drawing.h);
     //var svg = snapsvg('#svg_drawing');

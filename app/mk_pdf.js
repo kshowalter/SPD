@@ -47,7 +47,7 @@ var mk_pdf = function(settings, callback){
     var scale = settings.page.scale;
 
     var l_attr = settings.drawing.l_attr;
-    var fonts = settings.drawing.fonts;
+    var fonts = settings.drawing_settings.fonts;
     var elements = settings.elements;
     //console.log('elements: ', elements);
     //container.empty()

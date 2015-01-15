@@ -11,8 +11,8 @@ var page = function(settings){
     var sheet_num = '02';
     d.append(mk_border(settings, sheet_section, sheet_num ));
 
-    var size = settings.drawing.size;
-    var loc = settings.drawing.loc;
+    var size = settings.drawing_settings.size;
+    var loc = settings.drawing_settings.loc;
 
 
     d.text(

@@ -11,8 +11,8 @@ var add_border = function(settings, sheet_section, sheet_num){
     //var system = settings.system;
     var system = settings.system;
 
-    var size = settings.drawing.size;
-    var loc = settings.drawing.loc;
+    var size = settings.drawing_settings.size;
+    var loc = settings.drawing_settings.loc;
 
 
 

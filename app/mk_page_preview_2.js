@@ -10,8 +10,8 @@ var page = function(settings){
 
         if( f.section_defined('DC') ){
 
-        var size = settings.drawing.size;
-        var loc = settings.drawing.loc;
+        var size = settings.drawing_settings.size;
+        var loc = settings.drawing_settings.loc;
         var system = settings.system;
 
         var x, y, h, w, section_x, section_y, length_p, scale;

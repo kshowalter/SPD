@@ -25,15 +25,17 @@ settings.config_options.NEC_tables = require('../data/tables.json');
 settings.state = {};
 settings.state.database_loaded = false;
 
-settings.i_options = {};
-settings.i_options.AC = {};
-settings.i_options.AC.types = {};
-settings.i_options.AC.types["120V"] = ["ground","neutral","L1"];
-settings.i_options.AC.types["240V"] = ["ground","neutral","L1","L2"];
-settings.i_options.AC.types["208V"] = ["ground","neutral","L1","L2"];
-settings.i_options.AC.types["277V"] = ["ground","neutral","L1"];
-settings.i_options.AC.types["480V Wye"] = ["ground","neutral","L1","L2","L3"];
-settings.i_options.AC.types["480V Delta"] = ["ground","L1","L2","L3"];
+settings.in = {};
+
+settings.in.opt = {};
+settings.in.opt.AC = {};
+settings.in.opt.AC.types = {};
+settings.in.opt.AC.types["120V"] = ["ground","neutral","L1"];
+settings.in.opt.AC.types["240V"] = ["ground","neutral","L1","L2"];
+settings.in.opt.AC.types["208V"] = ["ground","neutral","L1","L2"];
+settings.in.opt.AC.types["277V"] = ["ground","neutral","L1"];
+settings.in.opt.AC.types["480V Wye"] = ["ground","neutral","L1","L2","L3"];
+settings.in.opt.AC.types["480V Delta"] = ["ground","L1","L2","L3"];
 
 settings.inputs = {};
 settings.inputs.roof = {};
@@ -101,8 +103,12 @@ settings.system = f.blank_copy(settings.inputs); // make system section blank
 // load layers
 
 settings.drawing = {};
-settings.drawing.layer_attr = require('./settings_layers');
-settings.drawing.fonts = require('./settings_fonts');
+
+settings.drawing_settings = {};
+settings.drawing_settings.layer_attr = require('./settings_layers');
+settings.drawing_settings.fonts = require('./settings_fonts');
+
+settings.drawing.blocks = {};
 
 // Load drawing specific settings
 // TODO Fix settings_drawing with new variable locations

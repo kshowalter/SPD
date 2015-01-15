@@ -12,8 +12,8 @@ var settings_update = function(settings) {
     //console.log('---settings---', settings);
     var config_options = settings.config_options;
     var system = settings.system;
-    var loc = settings.drawing.loc;
-    var size = settings.drawing.size;
+    var loc = settings.drawing_settings.loc;
+    var size = settings.drawing_settings.size;
     var state = settings.state;
 
     var inputs = settings.inputs;
@@ -141,12 +141,12 @@ var settings_update = function(settings) {
         var loadcenter_type = system.AC.loadcenter_types;
         var AC_options = inputs.AC.loadcenter_types[loadcenter_type];
         inputs.AC.type.options = AC_options;
-        //i_options.AC.types[loadcenter_type];
+        //in.opt.AC.types[loadcenter_type];
 
-        //inputs.AC['type'] = k.obj_names( settings.i_options.AC.type );
+        //inputs.AC['type'] = k.obj_names( settings.in.opt.AC.type );
     }
     if( system.AC.type ) {
-        system.AC.conductors = settings.i_options.AC.types[system.AC.type];
+        system.AC.conductors = settings.in.opt.AC.types[system.AC.type];
         system.AC.num_conductors = system.AC.conductors.length;
 
     }
@@ -167,7 +167,7 @@ var settings_update = function(settings) {
 
 
     /*
-    //settings.drawing.size.wire_table.h = (system.AC.num_conductors+3) * settings.drawing.size.wire_table.row_h;
+    //settings.drawing_settings.size.wire_table.h = (system.AC.num_conductors+3) * settings.drawing_settings.size.wire_table.row_h;
     for( var section_name in inputs ){
         for( var input_name in settings.inputs[section_name] ){
             if( typeof settings.inputs[section_name][input_name] === 'string' ){

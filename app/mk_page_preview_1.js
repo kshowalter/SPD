@@ -9,8 +9,8 @@ var page = function(settings){
 
 
 
-    var size = settings.drawing.size;
-    var loc = settings.drawing.loc;
+    var size = settings.drawing_settings.size;
+    var loc = settings.drawing_settings.loc;
     var system = settings.system;
 
     var x, y, h, w, section_x, section_y;

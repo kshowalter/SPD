@@ -9,15 +9,15 @@ var _ = require('underscore');
 // setup drawing containers
 
 var settings = require('./settings');
-var layer_attr = settings.drawing.layer_attr;
-var fonts = settings.drawing.fonts;
+var layer_attr = settings.drawing_settings.layer_attr;
+var fonts = settings.drawing_settings.fonts;
 
 
 
 
 
 var drawing = {};
-drawing.fonts = fonts;
+
 
 
 
@@ -50,7 +50,7 @@ Blk.rotate = function(deg){
     this.rotate = deg;
 };
 
-var blocks = {};
+
 var block_active = false;
 // Create default layer,block container and functions
 
@@ -81,32 +81,18 @@ drawing.section = function(name){ // set current section
     //*/
 };
 
-/*
-var block = function(name) {// set current block
-    // if current block has been used, save it before creating a new one.
-    if( blocks[block_active].length > 0 ) { blocks.push(blocks[block_active]); }
-    if( typeof name !== 'undefined' ){ // if name argument is submitted, create new block
-        var blk = Object.create(Blk);
-        blk.name = name; // block name
-        blocks[block_active] = blk;
-    } else { // else use default block
-        blocks[block_active] = blocks[0];
-    }
-}
-block('default'); // set current block to default
-*/
+
 drawing.block_start = function(name) {
     if( typeof name === 'undefined' ){ // if name argument is submitted
         console.log('Error: name required');
     } else {
         var blk;
-        // TODO: What if the same name is submitted twice? throw error or fix?
         block_active = name;
-        if( typeof blocks[block_active] !== 'object'){
-            blk = Object.create(Blk);
-            //blk.name = name; // block name
-            blocks[block_active] = blk;
+        if( g.drawing.blocks[block_active] !== undefined ){
+            console.log('Error: block already exists');
         }
+        blk = Object.create(Blk);
+        g.drawing.blocks[block_active] = blk;
         return blk;
     }
 };
@@ -122,22 +108,14 @@ drawing.block_start = function(name) {
     }
     */
 drawing.block_end = function() {
-    var blk = blocks[block_active];
+    var blk = g.drawing.blocks[block_active];
     block_active = false;
     return blk;
 };
 
 
 
-// clear drawing
-drawing.clear_drawing = function() {
-    for( var id in blocks ){
-        if( blocks.hasOwnProperty(id)){
-            delete blocks[id];
-        }
-    }
-    this.drawing_parts.length = 0;
-};
+
 
 
 //////
@@ -210,7 +188,7 @@ drawing.add = function(type, points, layer_name, attrs) {
 
     if(block_active) {
         elem.block_name = block_active;
-        blocks[block_active].add(elem);
+        g.drawing.blocks[block_active].add(elem);
     } else {
         this.drawing_parts.push(elem);
     }
@@ -277,18 +255,29 @@ drawing.block = function(name) {// set current block
     }
 
     // TODO: what if block does not exist? print list of blocks?
-    var blk = Object.create(blocks[name]);
+    var blk = Object.create(g.drawing.blocks[name]);
     blk.x = x;
     blk.y = y;
 
     if(block_active){
-        blocks[block_active].add(blk);
+        g.drawing.blocks[block_active].add(blk);
     } else {
         this.drawing_parts.push(blk);
     }
     return blk;
 };
 
+
+
+
+
+
+
+
+
+
+//////////////
+// Tables
 
 var Cell = {
     init: function(table, R, C){
@@ -542,9 +531,9 @@ var Table = {
                     var cell = this.cell(r,c);
                     var font_name = cell.cell_font_name || 'table';
                     var coor;
-                    if( this.drawing.fonts[font_name]['text-anchor'] === 'center') coor = this.center(r,c);
-                    else if( this.drawing.fonts[font_name]['text-anchor'] === 'right') coor = this.right(r,c);
-                    else if( this.drawing.fonts[font_name]['text-anchor'] === 'left') coor = this.left(r,c);
+                    if( g.drawing_settings.fonts[font_name]['text-anchor'] === 'center') coor = this.center(r,c);
+                    else if( g.drawing_settings.fonts[font_name]['text-anchor'] === 'right') coor = this.right(r,c);
+                    else if( g.drawing_settings.fonts[font_name]['text-anchor'] === 'left') coor = this.left(r,c);
                     else coor = this.center(r,c);
 
                     this.drawing.text(
