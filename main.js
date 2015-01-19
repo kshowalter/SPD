@@ -1,6 +1,7 @@
 'use strict';
 //var version_string = 'Dev';
-var version_string = 'Alpha201401--';
+//var version_string = 'Alpha201401--';
+var version_string = 'Preview'+moment().format('YYYYMMDD');
 
 // Moved to index.html
 // TODO: look into ways to further reduce size. It seems way to big.
@@ -87,7 +88,7 @@ var update = settings.update = function(){
         value_item.elem.innerHTML = value_item.value_ref.get();
     });
 
-
+    // Determine active section based on section inputs entered by user
     var sections = g.webpage.sections;
     sections.every(function(section_name,id){ //TODO: find pre IE9 way to do this?
         if( ! g.f.section_defined(section_name) ){
@@ -100,6 +101,7 @@ var update = settings.update = function(){
             return true;
         }
     });
+    // Close section if they are not active sections, unless they have been opened by the user, open the active section
     sections.forEach(function(section_name,id){ //TODO: find pre IE9 way to do this?
         if( section_name === active_section ){
             $('.input_section#'+section_name).children('.drawer').children('.drawer_content').slideDown('fast');
