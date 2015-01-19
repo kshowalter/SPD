@@ -7,6 +7,7 @@ var page = function(settings){
 
     var d = mk_drawing();
 
+    console.log(f.section_defined('roof'));
 
     if( f.section_defined('roof') ){
 
@@ -217,70 +218,71 @@ var page = function(settings){
 
             //////
             // Module options
+            if( f.section_defined('module') && f.section_defined('array')){
 
-            var roof_length_avail = system.roof.length - (a*2);
-            var roof_width_avail = system.roof.width - (a*2);
+                var roof_length_avail = system.roof.length - (a*2);
+                var roof_width_avail = system.roof.width - (a*2);
 
-            var row_spacing;
-            if( system.module.orientation === 'Portrait' ){
-                row_spacing = Number(system.module.length) + 1;
-                col_spacing = Number(system.module.width) + 1;
-                module_w = (Number(system.module.width)  )/12;
-                module_h = (Number(system.module.length) )/12;
-            } else {
-                row_spacing = Number(system.module.width) + 1;
-                col_spacing = Number(system.module.length) + 1;
-                module_w = (Number(system.module.length))/12;
-                module_h = (Number(system.module.width) )/12;
-            }
-
-            row_spacing = row_spacing/12; //module dimentions are in inches
-            col_spacing = col_spacing/12; //module dimentions are in inches
-
-            var num_rows = Math.floor(roof_length_avail/row_spacing);
-            var num_cols = Math.floor(roof_width_avail/col_spacing);
-
-            x = detail_x + offset_a; //corner of usable space
-            y = detail_y + offset_a;
-            x += ( roof_width_avail - (col_spacing*num_cols))/2 *scale; // center array on roof
-            y += ( roof_length_avail - (row_spacing*num_rows))/2 *scale;
-            module_w = module_w * scale;
-            module_h = module_h * scale;
-
-            for( var r=0; r<num_rows; r++){
-
-                for( var c=0; c<num_cols; c++){
-
-                    var layer;
-                    if( g.TEMP.selected_modules[r][c] ) layer = 'preview_structural_module_selected';
-                    else layer = 'preview_structural_module';
-                    module_x = c * col_spacing * scale;
-                    module_y = r * row_spacing * scale;
-
-                    d.rect(
-                        [x+module_x+module_w/2, y+module_y+module_h/2],
-                        [module_w, module_h],
-                        layer,
-                        {
-                            onclick: "g.f.toggle_module(this)",
-                            module_ID:  (r) + ',' + (c)
-
-                        }
-                    );
-
+                var row_spacing;
+                if( system.module.orientation === 'Portrait' ){
+                    row_spacing = Number(system.module.length) + 1;
+                    col_spacing = Number(system.module.width) + 1;
+                    module_w = (Number(system.module.width)  )/12;
+                    module_h = (Number(system.module.length) )/12;
+                } else {
+                    row_spacing = Number(system.module.width) + 1;
+                    col_spacing = Number(system.module.length) + 1;
+                    module_w = (Number(system.module.length))/12;
+                    module_h = (Number(system.module.width) )/12;
                 }
+
+                row_spacing = row_spacing/12; //module dimentions are in inches
+                col_spacing = col_spacing/12; //module dimentions are in inches
+
+                var num_rows = Math.floor(roof_length_avail/row_spacing);
+                var num_cols = Math.floor(roof_width_avail/col_spacing);
+
+                x = detail_x + offset_a; //corner of usable space
+                y = detail_y + offset_a;
+                x += ( roof_width_avail - (col_spacing*num_cols))/2 *scale; // center array on roof
+                y += ( roof_length_avail - (row_spacing*num_rows))/2 *scale;
+                module_w = module_w * scale;
+                module_h = module_h * scale;
+
+                for( var r=0; r<num_rows; r++){
+
+                    for( var c=0; c<num_cols; c++){
+
+                        var layer;
+                        if( g.TEMP.selected_modules[r][c] ) layer = 'preview_structural_module_selected';
+                        else layer = 'preview_structural_module';
+                        module_x = c * col_spacing * scale;
+                        module_y = r * row_spacing * scale;
+
+                        d.rect(
+                            [x+module_x+module_w/2, y+module_y+module_h/2],
+                            [module_w, module_h],
+                            layer,
+                            {
+                                onclick: "g.f.toggle_module(this)",
+                                module_ID:  (r) + ',' + (c)
+
+                            }
+                        );
+
+                    }
+                }
+
+                d.text(
+                    [detail_x+detail_w/2, detail_y+detail_h+100],
+                    [
+                        "Selected modules: " + parseFloat( g.TEMP.selected_modules_total ).toFixed().toString(),
+                        "Calculated modules: " + parseFloat( g.system.array.number_of_modules ).toFixed().toString(),
+                    ],
+                    'dimention'
+                );
+
             }
-
-            d.text(
-                [detail_x+detail_w/2, detail_y+detail_h+100],
-                [
-                    "Selected modules: " + parseFloat( g.TEMP.selected_modules_total ).toFixed().toString(),
-                    "Calculated modules: " + parseFloat( g.system.array.number_of_modules ).toFixed().toString(),
-                ],
-                'dimention'
-            );
-
-
 
 //*/
         }
