@@ -85,11 +85,11 @@ settings.inputs.inverter.model = {};
 settings.inputs.AC = {};
 settings.inputs.AC.loadcenter_types = {};
 settings.inputs.AC.loadcenter_types['240V'] = {};
-settings.inputs.AC.loadcenter_types['240V'].options = ['240V','120V'];
+settings.inputs.AC.loadcenter_types['240V'] = ['240V','120V'];
 settings.inputs.AC.loadcenter_types['208/120V'] = {};
-settings.inputs.AC.loadcenter_types['208/120V'].options = ['208V','120V'];
+settings.inputs.AC.loadcenter_types['208/120V'] = ['208V','120V'];
 settings.inputs.AC.loadcenter_types['480/277V'] = {};
-settings.inputs.AC.loadcenter_types['480/277V'].options = ['480V Wye','480V Delta','277V'];
+settings.inputs.AC.loadcenter_types['480/277V'] = ['480V Wye','480V Delta','277V'];
 settings.inputs.AC.type = {};
 //settings.inputs.AC.type.options = null;
 settings.inputs.AC.distance_to_loadcenter = {};
@@ -129,8 +129,14 @@ settings.value_registry = [];
 
 //var config_options = settings.config_options = settings.config_options || {};
 
+settings.webpage = {};
+settings.webpage.selections_manual_toggled = {};
+settings.webpage.sections = Object.keys(settings.inputs);
 
 
+settings.webpage.sections.forEach( function(section_name){
+    settings.webpage.selections_manual_toggled[section_name] = false;
+});
 
 settings.components = {};
 

@@ -1,6 +1,6 @@
 'use strict';
-var version_string = 'Dev';
-//var version_string = 'Alpha20141230';
+//var version_string = 'Dev';
+var version_string = 'Alpha201401--';
 
 // Moved to index.html
 // TODO: look into ways to further reduce size. It seems way to big.
@@ -58,16 +58,12 @@ $.getJSON( database_json_URL)
     });
 
 
+var active_section = g.webpage.sections[0];
 
 var update = settings.update = function(){
     console.log('/--- begin update');
     f.clear_drawing();
 
-    var sections = k.objIdArray(settings.inputs);
-    //console.log(sections);
-    sections.forEach(function(sectionName,id){
-        //console.log( "   defined? " + sectionName, f.section_defined(sectionName) );
-    });
 
     settings.select_registry.forEach(function(selector){
         //console.log(selector.value());
@@ -90,6 +86,28 @@ var update = settings.update = function(){
     settings.value_registry.forEach(function(value_item){
         value_item.elem.innerHTML = value_item.value_ref.get();
     });
+
+
+    var sections = g.webpage.sections;
+    sections.every(function(section_name,id){ //TODO: find pre IE9 way to do this?
+        if( ! g.f.section_defined(section_name) ){
+            active_section = section_name;
+            return false;
+        } else {
+            if( id === sections.length-1 ){ //If last section is defined, there is no active section
+                active_section = false;
+            }
+            return true;
+        }
+    });
+    sections.forEach(function(section_name,id){ //TODO: find pre IE9 way to do this?
+        if( section_name === active_section ){
+            $('.input_section#'+section_name).children('.drawer').children('.drawer_content').slideDown('fast');
+        } else if( ! g.webpage.selections_manual_toggled[section_name] ){
+            $('.input_section#'+section_name).children('.drawer').children('.drawer_content').slideUp('fast');
+        }
+    });
+
 
 
     // Make preview

@@ -196,15 +196,24 @@ f.kelem_setup = function(kelem, settings){
     return kelem;
 };
 */
+f.scope_preserver = function(v){
+    return function(){
+        return v;
+    };
+};
 
 f.add_selectors = function(settings, parent_container){
     for( var section_name in settings.inputs ){
         var selection_container = $('<div>').attr('class', 'input_section').attr('id', section_name ).appendTo(parent_container);
         //selection_container.get(0).style.display = display_type;
-        var system_div = $('<div>').attr('class', 'title_bar').attr('id', 'section_'+section_name)
+        var system_div = $('<div>').attr('class', 'title_bar')
+            .attr('id', 'section_'+section_name)
+            .attr('section_nom', section_name)
             .appendTo(selection_container)
             /* jshint -W083 */
             .click(function(){
+                var name = $(this).attr('section_nom');
+                g.webpage.selections_manual_toggled[name] = true;
                 $(this).parent().children('.drawer').children('.drawer_content').slideToggle('fast');
             });
         var system_title = $('<a>')
@@ -263,6 +272,7 @@ f.add_selectors = function(settings, parent_container){
             //$('</br>').appendTo(drawer_content);
 
         }
+        $(selection_container).children('.drawer').children('.drawer_content').slideUp('fast');
     }
 };
 
