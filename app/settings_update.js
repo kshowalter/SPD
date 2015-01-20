@@ -121,6 +121,7 @@ var settings_update = function(settings) {
 
         system.array.number_of_modules = system.array.modules_per_string * system.array.num_strings;
 
+
     }
 
 

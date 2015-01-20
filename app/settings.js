@@ -9,14 +9,8 @@ var k = require('../lib/k/k.js');
 //f.mk_settings = mk_settings;
 
 var settings = {};
-settings.TEMP = {};
-settings.TEMP.selected_modules_total = 0;
-settings.TEMP.selected_modules = {};
-for( var r=0; r<100; r++){
-    settings.TEMP.selected_modules[r] = {};
 
-}
-
+settings.temp = {};
 
 settings.config_options = {};
 settings.config_options.NEC_tables = require('../data/tables.json');
@@ -137,6 +131,12 @@ settings.webpage.sections = Object.keys(settings.inputs);
 settings.webpage.sections.forEach( function(section_name){
     settings.webpage.selections_manual_toggled[section_name] = false;
 });
+
+settings.webpage.selected_modules_total = 0;
+settings.webpage.selected_modules = {};
+
+
+
 
 settings.components = {};
 

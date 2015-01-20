@@ -1,7 +1,7 @@
 'use strict';
-//var version_string = 'Dev';
+var version_string = 'Dev';
 //var version_string = 'Alpha201401--';
-var version_string = 'Preview'+moment().format('YYYYMMDD');
+//var version_string = 'Preview'+moment().format('YYYYMMDD');
 
 // Moved to index.html
 // TODO: look into ways to further reduce size. It seems way to big.
