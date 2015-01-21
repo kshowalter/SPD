@@ -81,7 +81,11 @@ var update = settings.update = function(){
     settings_update(settings);
 
     settings.select_registry.forEach(function(selector){
-        f.selector_add_options(selector);
+        if( selector.type === 'select' ){
+            f.selector_add_options(selector);
+        } else if( selector.type === 'input' ) {
+            selector.elem.value = selector.system_ref.get();
+        }
     });
 
     settings.value_registry.forEach(function(value_item){

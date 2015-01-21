@@ -76,7 +76,7 @@ var settings_update = function(settings) {
             //    system.AC.loadcenter_types[system.AC.loadcenter_types][0];
 
             system.AC.distance_to_loadcenter = system.AC.distance_to_loadcenter ||
-                inputs.AC.distance_to_loadcenter.options[3];
+                50;
 
 
             system.DC.wire_size = inputs.DC.wire_size.options[3];

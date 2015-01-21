@@ -135,13 +135,13 @@ var page = function(settings){
             //////
             // roof detail
 
-            var detail_x = 30+400;
+            var detail_x = 30+450;
             var detail_y = 30;
 
             if( Number(system.roof.width) >= Number(system.roof.length) ){
-                scale = 500/(system.roof.width);
+                scale = 450/(system.roof.width);
             } else {
-                scale = 500/(system.roof.length);
+                scale = 450/(system.roof.length);
             }
             var detail_w = system.roof.width * scale;
             var detail_h = system.roof.length * scale;

@@ -2,6 +2,7 @@
 var f = require('./functions');
 var k = require('../lib/k/k.js');
 
+var i;
 //var settingsCalculated = require('./settingsCalculated.js');
 
 // Load 'user' defined settings
@@ -34,13 +35,17 @@ settings.in.opt.AC.types["480V Delta"] = ["ground","L1","L2","L3"];
 settings.inputs = {};
 settings.inputs.roof = {};
 settings.inputs.roof.width = {};
-settings.inputs.roof.width.options = [5,10,15,20,25];
+settings.inputs.roof.width.options = [];
+//for( i=15; i<=70; i+=5 ) settings.inputs.roof.width.options.push(i);
 settings.inputs.roof.width.units = 'ft.';
 settings.inputs.roof.width.note = 'This the full size of the roof, perpendictular to the slope.';
+settings.inputs.roof.width.type = 'input';
 settings.inputs.roof.length = {};
-settings.inputs.roof.length.options = [5,10,15,20,25];
+settings.inputs.roof.length.options = [];
+//for( i=10; i<=60; i+=5 ) settings.inputs.roof.length.options.push(i);
 settings.inputs.roof.length.units = 'ft.';
 settings.inputs.roof.length.note = 'This the full length of the roof, measured from low to high.';
+settings.inputs.roof.length.type = 'input';
 settings.inputs.roof.slope = {};
 settings.inputs.roof.slope.options = ['1:12','2:12','3:12','4:12','5:12','6:12','7:12','8:12','9:12','10:12','11:12','12:12'];
 settings.inputs.roof.type = {};
@@ -56,10 +61,12 @@ settings.inputs.module.width = {};
 settings.inputs.module.width.options = [20,25,30,35,40];
 settings.inputs.module.width.units = 'in.';
 settings.inputs.module.width.note = 'This the full frame size (outer).';
+settings.inputs.module.width.type = 'input';
 settings.inputs.module.length = {};
 settings.inputs.module.length.options = [30,35,40,45,50];
 settings.inputs.module.length.units = 'in.';
 settings.inputs.module.length.note = 'This the full frame size (outer).';
+settings.inputs.module.length.type = 'input';
 settings.inputs.array = {};
 settings.inputs.array.modules_per_string = {};
 settings.inputs.array.modules_per_string.options = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
@@ -67,7 +74,8 @@ settings.inputs.array.num_strings = {};
 settings.inputs.array.num_strings.options = [1,2,3,4,5,6];
 settings.inputs.DC = {};
 settings.inputs.DC.home_run_length = {};
-settings.inputs.DC.home_run_length.options = [25,50,75,100,125,150];
+//settings.inputs.DC.home_run_length.options = [25,50,75,100,125,150];
+settings.inputs.DC.home_run_length.type = 'input';
 settings.inputs.DC.wire_size = {};
 settings.inputs.DC.wire_size.units = 'AWG';
 //settings.inputs.DC.wire_size.options = settings.inputs.DC.AWG;
@@ -87,7 +95,8 @@ settings.inputs.AC.loadcenter_types['480/277V'] = ['480V Wye','480V Delta','277V
 settings.inputs.AC.type = {};
 //settings.inputs.AC.type.options = null;
 settings.inputs.AC.distance_to_loadcenter = {};
-settings.inputs.AC.distance_to_loadcenter.options = [3,5,10,15,20,30];
+//settings.inputs.AC.distance_to_loadcenter.options = [3,5,10,15,20,30];
+settings.inputs.AC.distance_to_loadcenter.type = 'input';
 
 
 

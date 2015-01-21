@@ -237,6 +237,10 @@ f.add_selectors = function(settings, parent_container){
             } else {
                 note = false;
             }
+
+
+
+
             var selector_set = $('<span>').attr('class', 'selector_set').appendTo(drawer_content);
             var input_text = $('<span>').html(f.pretty_name(input_name) + ': ' + units ).appendTo(selector_set);
             if( note ) input_text.attr('title', note);
@@ -247,27 +251,49 @@ f.add_selectors = function(settings, parent_container){
                 .appendTo(selector_set);
             f.kelem_setup(selector, settings);
             //*/
-            var $elem = $('<select>')
-                .attr('class', 'selector')
-                .appendTo(selector_set);
             var selector = {
-                elem: $elem.get()[0],
                 system_ref: Object.create(kontainer).obj(settings).ref('system.' + section_name + '.' + input_name),
                 //input_ref: Object.create(kontainer).obj(settings).ref('inputs.' + section_name + '.' + input_name + '.value'),
                 list_ref: Object.create(kontainer).obj(settings).ref('inputs.' + section_name + '.' + input_name + '.options'),
                 interacted: false,
-                value: function(){
+            };
+            if( (settings.inputs[section_name][input_name] !== undefined) && (settings.inputs[section_name][input_name].type !== undefined) ) {
+                selector.type = settings.inputs[section_name][input_name].type;
+            } else {
+                selector.type = 'select';
+            }
+            if( selector.type === 'select' ){
+                selector.elem = $('<select>')
+                    .attr('class', 'selector')
+                    .appendTo(selector_set)
+                    .get()[0];
+                selector.value = function(){
                     //console.log( this.set_ref.refString, this.elem.selectedIndex );
-                    //console.log( this.elem.options[this.elem.selectedIndex] );
                     //if( this.interacted )
                     if( this.elem.selectedIndex >= 0) return this.elem.options[this.elem.selectedIndex].value;
                     else return false;
-                }
-            };
-            $elem.change(function(event){
+                };
+                f.selector_add_options(selector);
+
+            } else if( selector.type === 'input' ){
+                selector.elem = $('<input>')
+                    .attr('class', 'number_input')
+                    .attr('type', 'text')
+                    .appendTo(selector_set)
+                    .get()[0];
+                selector.value = function(){
+                    //console.log( this.set_ref.refString, this.elem.selectedIndex );
+                    //console.log( this.elem, this.elem.value );
+                    //if( this.interacted )
+                    //if( this.elem.selectedIndex >= 0) return this.elem.options[this.elem.selectedIndex].value;
+                    //else return false;
+                    return this.elem.value;
+                };
+                selector.elem.value = selector.system_ref.get();
+            }
+            $(selector.elem).change(function(event){
                 settings.f.update();
             });
-            f.selector_add_options(selector);
             settings.select_registry.push(selector);
             //$('</br>').appendTo(drawer_content);
 
