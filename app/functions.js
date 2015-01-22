@@ -196,34 +196,46 @@ f.kelem_setup = function(kelem, settings){
     return kelem;
 };
 */
-f.scope_preserver = function(v){
-    return function(){
-        return v;
-    };
+//f.scope_preserver = function(v){
+//    return function(){
+//        return v;
+//    };
+//};
+
+f.mk_drawer = function(title, content){
+    var drawer_container = $('<div>').attr('class', 'input_section').attr('id', title );
+    //drawer_container.get(0).style.display = display_type;
+    var system_div = $('<div>').attr('class', 'title_bar')
+        .attr('id', 'section_'+title)
+        .attr('section_nom', title)
+        .appendTo(drawer_container)
+        /* jshint -W083 */
+        .click(function(){
+            var name = $(this).attr('section_nom');
+            g.webpage.selections_manual_toggled[name] = true;
+            $(this).parent().children('.drawer').children('.drawer_content').slideToggle('fast');
+        });
+    var system_title = $('<a>')
+        .attr('class', 'title_bar_text')
+        .attr('href', '#')
+        .text(f.pretty_name(title))
+        .appendTo(system_div);
+
+    var drawer = $('<div>').attr('class', 'drawer').appendTo(drawer_container);
+    content.attr('class', 'drawer_content').appendTo(drawer);
+
+
+    return drawer_container;
+
+
 };
+
 
 f.add_selectors = function(settings, parent_container){
     for( var section_name in settings.inputs ){
-        var selection_container = $('<div>').attr('class', 'input_section').attr('id', section_name ).appendTo(parent_container);
-        //selection_container.get(0).style.display = display_type;
-        var system_div = $('<div>').attr('class', 'title_bar')
-            .attr('id', 'section_'+section_name)
-            .attr('section_nom', section_name)
-            .appendTo(selection_container)
-            /* jshint -W083 */
-            .click(function(){
-                var name = $(this).attr('section_nom');
-                g.webpage.selections_manual_toggled[name] = true;
-                $(this).parent().children('.drawer').children('.drawer_content').slideToggle('fast');
-            });
-        var system_title = $('<a>')
-            .attr('class', 'title_bar_text')
-            .attr('href', '#')
-            .text(f.pretty_name(section_name))
-            .appendTo(system_div);
-        $(this).trigger('click');
-        var drawer = $('<div>').attr('class', 'drawer').appendTo(selection_container);
-        var drawer_content = $('<div>').attr('class', 'drawer_content').appendTo(drawer);
+
+        //$(this).trigger('click');
+        var drawer_content = $('<div>');
         for( var input_name in settings.inputs[section_name] ){
             var units;
             if( (settings.inputs[section_name][input_name] !== undefined) && (settings.inputs[section_name][input_name].units !== undefined) ) {
@@ -298,6 +310,11 @@ f.add_selectors = function(settings, parent_container){
             //$('</br>').appendTo(drawer_content);
 
         }
+
+        var selection_container = f.mk_drawer(section_name, drawer_content);
+
+        selection_container.appendTo(parent_container);
+
         $(selection_container).children('.drawer').children('.drawer_content').slideUp('fast');
     }
 };
