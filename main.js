@@ -9,7 +9,7 @@ var version_string = 'Dev';
 //var moment = require('moment');
 //var $ = require('jquery');
 
-//var k = require('./lib/k/k.js');
+var k = require('./lib/k/k.js');
 //var k_data = require('./lib/k/k_data');
 
 var settings = require('./app/settings');
@@ -270,17 +270,28 @@ function page_setup(settings){
 
 
 
-    var drawing = $('<div>').attr('id', 'drawing_frame').appendTo(page);
-    //drawing.css('width', (settings.drawing_settings.size.drawing.w+20).toString() + 'px' );
-    $('<div>').html('Drawing').attr('class', 'section_title').appendTo(drawing);
 
-    var svg_container_object = $('<div>').attr('id', 'drawing').attr('class', 'drawing').css('clear', 'both').appendTo(drawing);
+    var drawing_section = $('<div>').attr('id', 'drawing_frame').appendTo(page);
+    //drawing.css('width', (settings.drawing_settings.size.drawing.w+20).toString() + 'px' );
+    $('<div>').html('Drawing').attr('class', 'section_title').appendTo(drawing_section);
+
+
+    //$('<form method="get" action="data/sample.pdf"><button type="submit">Download</button></form>').appendTo(drawing_section);
+    //$('<span>').attr('id', 'download').attr('class', 'float_right').appendTo(drawing_section);
+    $('<a>')
+        .text('Download Drawing (sample)')
+        .attr('href', 'data/sample.pdf')
+        .attr('id', 'download')
+        .attr('class', 'float_right')
+        .appendTo(drawing_section);
+
+    var svg_container_object = $('<div>').attr('id', 'drawing').attr('class', 'drawing').css('clear', 'both').appendTo(drawing_section);
     //svg_container_object.style('width', settings.drawing_settings.size.drawing.w+'px' )
     //var svg_container = svg_container_object.elem;
-    $('<br>').appendTo(drawing);
+    $('<br>').appendTo(drawing_section);
 
     ///////////////////
-    $('<div>').html(' ').attr('class', 'section_title').appendTo(drawing);
+    $('<div>').html(' ').attr('class', 'section_title').appendTo(drawing_section);
 
 }
 
