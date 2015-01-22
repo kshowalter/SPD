@@ -9,8 +9,8 @@ var version_string = 'Dev';
 //var moment = require('moment');
 //var $ = require('jquery');
 
-var k = require('./lib/k/k.js');
-var k_data = require('./lib/k/k_data');
+//var k = require('./lib/k/k.js');
+//var k_data = require('./lib/k/k_data');
 
 var settings = require('./app/settings');
 window.g = settings;
@@ -233,10 +233,10 @@ function page_setup(settings){
 
     var list_element = $('<ul>').appendTo(location_div);
     $('<li>').appendTo(list_element).append(
-        $('<a>').attr('href', 'http://www.solarabcs.org/about/publications/reports/expedited-permit/map/index.html').text('Solar ABCS Expedited Permit Map')
+        $('<a>').text('Wind Zone ').attr('href', 'http://www.solarabcs.org/about/publications/reports/expedited-permit/map/index.html')
     );
     $('<li>').appendTo(list_element).append(
-        $('<a>').attr('href', 'http://windspeed.atcouncil.org/').text('Wind Speed Web Site')
+        $('<a>').text('Climate Conditions').attr('href', 'http://windspeed.atcouncil.org/')
     );
     $('<div>').appendTo(location_div).append(
         $('<iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d3603459.854089046!2d-81.37028081834715!3d28.115916011428208!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1421954460385" width="485" height="300" frameborder="0" style="border:0"></iframe>')
