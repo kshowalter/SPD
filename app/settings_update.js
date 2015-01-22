@@ -127,6 +127,8 @@ var settings_update = function(settings) {
 
     if( f.section_defined('DC') ){
 
+        system.DC.wire_size = "-Undefined-";
+
     }
 
     inputs.inverter.make.options = k.obj_names(settings.components.inverters);
@@ -153,6 +155,7 @@ var settings_update = function(settings) {
     }
     if( f.section_defined('AC') ){
 
+        system.AC.wire_size = "-Undefined-";
     }
 
     size.wire_offset.max = size.wire_offset.min + system.array.num_strings * size.wire_offset.base;
