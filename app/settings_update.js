@@ -32,7 +32,7 @@ var settings_update = function(settings) {
 
     //var show_defaults = false;
     ///*
-    if( true && state.version_string === 'Dev'){
+    if( state.mode === 'dev'){
         //show_defaults = true;
         //console.log('Dev mode - defaults on');
 

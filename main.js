@@ -1,7 +1,7 @@
 'use strict';
-var version_string = 'Dev';
+//var version_string = 'Dev';
 //var version_string = 'Alpha201401--';
-//var version_string = 'Preview'+moment().format('YYYYMMDD');
+var version_string = 'Preview'+moment().format('YYYYMMDD');
 
 // Moved to index.html
 // TODO: look into ways to further reduce size. It seems way to big.
@@ -33,7 +33,6 @@ var settings_update = require('./app/settings_update');
 
 
 var f = require('./app/functions');
-
 f.settings = settings;
 settings.f = f;
 
@@ -42,6 +41,15 @@ var database_json_URL = 'data/fsec_copy.json';
 
 var components = settings.components;
 var system = settings.system;
+
+
+var query = f.query_string();
+//console.log(query);
+if( query['mode'] === "dev" ) {
+    g.state.mode = 'dev';
+} else {
+    g.state.mode = 'release';
+}
 
 
 
