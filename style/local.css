@@ -182,6 +182,11 @@ img { border: 0; }
 
 
 
+.float_right{
+    float: right;
+}
+
+
 
 /**************/
 /* selectors */
