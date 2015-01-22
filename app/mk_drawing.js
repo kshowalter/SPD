@@ -5,7 +5,7 @@ var f = require('./functions.js');
 
 //var settings = require('./settings.js');
 //var l_attr = settings.drawing.l_attr;
-var _ = require('underscore');
+//var _ = require('underscore');
 // setup drawing containers
 
 var settings = require('./settings');
