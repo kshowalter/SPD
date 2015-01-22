@@ -226,6 +226,26 @@ function page_setup(settings){
     var config_frame = $('<div>').attr('id', 'config_frame').appendTo(system_frame);
 
     //console.log(section_selector);
+
+
+
+    var location_div = $('<div>');
+
+    var list_element = $('<ul>').appendTo(location_div);
+    $('<li>').appendTo(list_element).append(
+        $('<a>').attr('href', 'http://www.solarabcs.org/about/publications/reports/expedited-permit/map/index.html').text('Solar ABCS Expedited Permit Map')
+    );
+    $('<li>').appendTo(list_element).append(
+        $('<a>').attr('href', 'http://windspeed.atcouncil.org/').text('Wind Speed Web Site')
+    );
+    $('<div>').appendTo(location_div).append(
+        $('<iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d3603459.854089046!2d-81.37028081834715!3d28.115916011428208!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1421954460385" width="485" height="300" frameborder="0" style="border:0"></iframe>')
+    );
+
+    var location_drawer = f.mk_drawer('Location', location_div);
+    location_drawer.appendTo(config_frame);
+
+
     f.add_selectors(settings, config_frame);
 
     // Parameters and specifications
