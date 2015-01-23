@@ -245,10 +245,16 @@ function page_setup(settings){
 
     var list_element = $('<ul>').appendTo(location_div);
     $('<li>').appendTo(list_element).append(
-        $('<a>').text('Wind Zone ').attr('href', 'http://www.solarabcs.org/about/publications/reports/expedited-permit/map/index.html')
+        $('<a>')
+            .text('Wind Zone ')
+            .attr('href', 'http://windspeed.atcouncil.org/')
+            .attr('target', '_blank')
     );
     $('<li>').appendTo(list_element).append(
-        $('<a>').text('Climate Conditions').attr('href', 'http://windspeed.atcouncil.org/')
+        $('<a>')
+            .text('Climate Conditions')
+            .attr('href', 'http://www.solarabcs.org/about/publications/reports/expedited-permit/map/index.html')
+            .attr('target', '_blank')
     );
     $('<div>').appendTo(location_div).append(
         $('<iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d3603459.854089046!2d-81.37028081834715!3d28.115916011428208!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1421954460385" width="485" height="300" frameborder="0" style="border:0"></iframe>')
