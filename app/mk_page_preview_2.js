@@ -7,8 +7,6 @@ var page = function(settings){
 
     var d = mk_drawing();
 
-    console.log(f.section_defined('roof'));
-
     if( f.section_defined('roof') ){
 
         var size = settings.drawing_settings.size;
