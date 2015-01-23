@@ -217,8 +217,8 @@ var page = function(){
     x = 0;
     y = 0;
 
-    var arrow_w = 10;
-    var letter_h = 20;
+    var arrow_w = 7;
+    var letter_h = 14;
     var arrow_h = 50;
 
     d.block_start('north arrow_up');
@@ -255,6 +255,10 @@ var page = function(){
         [x+arrow_h, y],
         [x, y],
         [x+letter_h/2, y-arrow_w/2],
+    ]);
+    d.line([
+        [x, y],
+        [x+letter_h/2, y+arrow_w/2],
     ]);
     d.layer();
     d.block_end('north arrow');
