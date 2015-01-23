@@ -112,7 +112,7 @@
         },
         {
             "MODULE_ID": "12",
-            "MAKE": "Sunmodule",
+            "MAKE": "SolarWorld",
             "MODEL": "Protect SW 265 mono",
             "PMP": 265,
             "ISC": 9.31,
@@ -122,7 +122,7 @@
         },
         {
             "MODULE_ID": "13",
-            "MAKE": "Sunmodule",
+            "MAKE": "SolarWorld",
             "MODEL": "Protect SW 270 mono",
             "PMP": 270,
             "ISC": 9.44,
@@ -132,7 +132,7 @@
         },
         {
             "MODULE_ID": "14",
-            "MAKE": "Sunmodule",
+            "MAKE": "SolarWorld",
             "MODEL": "Protect SW 275 mono",
             "PMP": 275,
             "ISC": 9.58,
