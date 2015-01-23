@@ -307,6 +307,7 @@ function page_setup(settings){
         .attr('href', 'data/sample.pdf')
         .attr('id', 'download')
         .attr('class', 'float_right')
+        .attr('target', '_blank')
         .appendTo(drawing_section);
 
     var svg_container_object = $('<div>').attr('id', 'drawing').attr('class', 'drawing').css('clear', 'both').appendTo(drawing_section);
