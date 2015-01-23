@@ -257,9 +257,14 @@ function page_setup(settings){
             .attr('href', 'http://www.solarabcs.org/about/publications/reports/expedited-permit/map/index.html')
             .attr('target', '_blank')
     );
-    $('<div>').appendTo(location_div).append(
-        $('<iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d3603459.854089046!2d-81.37028081834715!3d28.115916011428208!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1421954460385" width="485" height="300" frameborder="0" style="border:0"></iframe>')
-    );
+    $('<iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d3603459.854089046!2d-81.37028081834715!3d28.115916011428208!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1421954460385" width="485" height="300" frameborder="0" style="border:0"></iframe>')
+        .appendTo(location_div);
+    $('<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d546.6809043810994!2d-80.75649465851953!3d28.387302871406444!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2sus!4v1422038801287" width="485" height="300" frameborder="0" style="border:0"></iframe>')
+        .appendTo(location_div);
+
+
+
+
 
     var location_drawer = f.mk_drawer('Location', location_div);
     location_drawer.appendTo(config_frame);
