@@ -221,8 +221,6 @@ var page = function(settings){
             if( f.section_defined('module') && f.section_defined('array')){
                 var r,c;
 
-
-
                 var roof_length_avail = system.roof.length - (a*2);
                 var roof_width_avail = system.roof.width - (a*2);
 
@@ -308,9 +306,17 @@ var page = function(settings){
 
             }
 
+            x = detail_x + 475;
+            y = detail_y + 120;
+
+            d.block('north arrow_up', [x,y]);
+
+            x = 120;
+            y = 15;
+
+            d.block('north arrow_left', [x,y]);
 //*/
         }
-
 
 
         /*

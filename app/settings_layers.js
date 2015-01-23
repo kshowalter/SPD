@@ -144,5 +144,18 @@ layer_attr.preview_structural_module_selected = Object.assign(Object.create(laye
     stroke: '#dffaff'
 });
 
+layer_attr.north_arrow = Object.assign(Object.create(layer_attr.preview),{
+    stroke: '#000000',
+    'stroke-width': 2,
+    'stroke-linecap': "round",
+    'stroke-linejoin': "round",
+});
+layer_attr.north_letter = Object.assign(Object.create(layer_attr.preview),{
+    stroke: '#949494',
+    'stroke-width': 5,
+    'stroke-linecap': "round",
+    'stroke-linejoin': "round",
+});
+
 
 module.exports = layer_attr;
