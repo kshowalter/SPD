@@ -257,11 +257,19 @@ function page_setup(settings){
             .attr('href', 'http://www.solarabcs.org/about/publications/reports/expedited-permit/map/index.html')
             .attr('target', '_blank')
     );
+
+/*
     $('<iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d3603459.854089046!2d-81.37028081834715!3d28.115916011428208!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1421954460385" width="485" height="300" frameborder="0" style="border:0"></iframe>')
         .appendTo(location_div);
     $('<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d546.6809043810994!2d-80.75649465851953!3d28.387302871406444!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2sus!4v1422038801287" width="485" height="300" frameborder="0" style="border:0"></iframe>')
         .appendTo(location_div);
+//*/
 
+    $('<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3603348.697924068!2d-81.48660688926068!3d28.119223679502593!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88e0aa452b99af53%3A0x5e524913e44a8a65!2s1970+Michigan+Ave%2C+Cocoa%2C+FL+32922!5e0!3m2!1sen!2sus!4v1422050912489" width="485" height="300" frameborder="0" style="border:0"></iframe>')
+        .appendTo(location_div);
+
+    $('<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d323.1100977381417!2d-80.75332433820344!3d28.388875465695406!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2sus!4v1422051030319" width="485" height="300" frameborder="0" style="border:0"></iframe>')
+        .appendTo(location_div);
 
 
 
