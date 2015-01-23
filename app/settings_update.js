@@ -45,6 +45,8 @@ var settings_update = function(settings) {
         system.roof.slope  = system.roof.slope || "6:12";
         system.roof.type = system.roof.type || "Gable";
 
+        system.inverter.location = system.inverter.location  || "Inside";
+
         system.module.orientation = system.module.orientation || "Portrait";
 
 
