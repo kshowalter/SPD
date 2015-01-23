@@ -17,6 +17,8 @@ window.g = settings;
 settings.state.version_string = version_string;
 console.log('settings', settings);
 
+var mk_blocks = require('./app/mk_blocks');
+
 var mk_page = {};
 mk_page[1] = require('./app/mk_page_1');
 mk_page[2] = require('./app/mk_page_2');
@@ -123,6 +125,8 @@ var update = settings.update = function(){
     });
 
 
+    // Make blocks
+    mk_blocks();
 
     // Make preview
     settings.drawing.preview_parts = {};
