@@ -25,7 +25,6 @@ var page = function(settings){
 
 
 
-    console.log(f.section_defined('roof'));
 
     if( f.section_defined('roof') ){
 
