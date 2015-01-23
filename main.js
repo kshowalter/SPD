@@ -23,6 +23,7 @@ var mk_page = {};
 mk_page[1] = require('./app/mk_page_1');
 mk_page[2] = require('./app/mk_page_2');
 mk_page[3] = require('./app/mk_page_3');
+mk_page[4] = require('./app/mk_page_4');
 
 var mk_preview = {};
 mk_preview[1] = require('./app/mk_page_preview_1');

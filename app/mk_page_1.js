@@ -39,6 +39,8 @@ var page = function(settings){
     t.cell(1,2).text('PV system wiring diagram');
     t.cell(2,1).text('PV-02');
     t.cell(2,2).text('PV system specifications');
+    t.cell(3,1).text('S-01');
+    t.cell(3,2).text('Roof details');
 
     t.all_cells().forEach(function(cell){
         cell.font('table_large_left').border('all');
