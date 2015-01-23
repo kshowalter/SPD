@@ -46,8 +46,6 @@ var settings_update = function(settings) {
         system.roof.type = system.roof.type || "Gable";
 
         system.module.orientation = system.module.orientation || "Portrait";
-        system.module.width = system.module.width || 30;
-        system.module.length = system.module.length || 50;
 
 
         if( state.database_loaded ){
