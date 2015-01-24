@@ -8,7 +8,9 @@
             "ISC": 8.96,
             "VOC": 38.1,
             "IMP": 8.45,
-            "VMP": 30.2
+            "VMP": 30.2,
+            "WIDTH": 30.42,
+            "LENGTH": 60.42
         },
         {
             "MODULE_ID": "2",
@@ -18,7 +20,9 @@
             "ISC": 9.01,
             "VOC": 38.300000000000004,
             "IMP": 8.52,
-            "VMP": 30.5
+            "VMP": 30.5,
+            "WIDTH": 30.42,
+            "LENGTH": 60.42
         },
         {
             "MODULE_ID": "3",
@@ -28,7 +32,9 @@
             "ISC": 9.120000000000001,
             "VOC": 38.300000000000004,
             "IMP": 8.64,
-            "VMP": 30.7
+            "VMP": 30.7,
+            "WIDTH": 30.42,
+            "LENGTH": 60.42
         },
         {
             "MODULE_ID": "4",
@@ -38,7 +44,9 @@
             "ISC": 9.18,
             "VOC": 38.4,
             "IMP": 8.700000000000001,
-            "VMP": 31
+            "VMP": 31,
+            "WIDTH": 30.42,
+            "LENGTH": 60.42
         },
         {
             "MODULE_ID": "5",
@@ -48,7 +56,9 @@
             "ISC": 9.08,
             "VOC": 38.1,
             "IMP": 8.6,
-            "VMP": 30.2
+            "VMP": 30.2,
+            "WIDTH": 30.42,
+            "LENGTH": 60.42
         },
         {
             "MODULE_ID": "6",
@@ -58,7 +68,9 @@
             "ISC": 9.120000000000001,
             "VOC": 38.300000000000004,
             "IMP": 8.64,
-            "VMP": 30.7
+            "VMP": 30.7,
+            "WIDTH": 30.42,
+            "LENGTH": 60.42
         },
         {
             "MODULE_ID": "7",
@@ -68,7 +80,9 @@
             "ISC": 9.15,
             "VOC": 38.5,
             "IMP": 8.68,
-            "VMP": 31.1
+            "VMP": 31.1,
+            "WIDTH": 30.42,
+            "LENGTH": 60.42
         },
         {
             "MODULE_ID": "8",
@@ -78,7 +92,9 @@
             "ISC": 9.06,
             "VOC": 45.7,
             "IMP": 8.56,
-            "VMP": 36.2
+            "VMP": 36.2,
+            "WIDTH": 30.42,
+            "LENGTH": 60.42
         },
         {
             "MODULE_ID": "9",
@@ -88,7 +104,9 @@
             "ISC": 9.1,
             "VOC": 45.9,
             "IMP": 8.620000000000001,
-            "VMP": 36.5
+            "VMP": 36.5,
+            "WIDTH": 30.42,
+            "LENGTH": 60.42
         },
         {
             "MODULE_ID": "10",
@@ -98,7 +116,9 @@
             "ISC": 9.200000000000001,
             "VOC": 46.1,
             "IMP": 8.69,
-            "VMP": 36.800000000000004
+            "VMP": 36.800000000000004,
+            "WIDTH": 30.42,
+            "LENGTH": 60.42
         },
         {
             "MODULE_ID": "11",
@@ -108,37 +128,45 @@
             "ISC": 9.27,
             "VOC": 46.300000000000004,
             "IMP": 8.77,
-            "VMP": 37
+            "VMP": 37,
+            "WIDTH": 30.42,
+            "LENGTH": 60.42
         },
         {
             "MODULE_ID": "12",
-            "MAKE": "Sunmodule",
+            "MAKE": "SolarWorld",
             "MODEL": "Protect SW 265 mono",
             "PMP": 265,
             "ISC": 9.31,
             "VOC": 39,
             "IMP": 8.69,
-            "VMP": 30.8
+            "VMP": 30.8,
+            "WIDTH": 40.42,
+            "LENGTH": 55.42
         },
         {
             "MODULE_ID": "13",
-            "MAKE": "Sunmodule",
+            "MAKE": "SolarWorld",
             "MODEL": "Protect SW 270 mono",
             "PMP": 270,
             "ISC": 9.44,
             "VOC": 39.2,
             "IMP": 8.81,
-            "VMP": 30.900000000000002
+            "VMP": 30.900000000000002,
+            "WIDTH": 40.42,
+            "LENGTH": 55.42
         },
         {
             "MODULE_ID": "14",
-            "MAKE": "Sunmodule",
+            "MAKE": "SolarWorld",
             "MODEL": "Protect SW 275 mono",
             "PMP": 275,
             "ISC": 9.58,
             "VOC": 39.4,
             "IMP": 8.94,
-            "VMP": 31
+            "VMP": 31,
+            "WIDTH": 40.42,
+            "LENGTH": 55.42
         }
     ],
     "inverters": [
