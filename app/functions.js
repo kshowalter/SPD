@@ -208,27 +208,6 @@ f.clean_name = function(name){
     return name.split(' ')[0];
 };
 
-/*
-f.kelem_setup = function(kelem, settings){
-    if( !settings) console.log(settings);
-    if( kelem.type === 'selector' ){
-        kelem.setRefObj(settings);
-        kelem.setUpdate(settings.update);
-        settings.select_registry.push(kelem);
-        kelem.update();
-    } else if( kelem.type === 'value' ){
-        kelem.setRefObj(settings);
-        //kelem.setUpdate(settings_update);
-        settings.value_registry.push(kelem);
-    }
-    return kelem;
-};
-*/
-//f.scope_preserver = function(v){
-//    return function(){
-//        return v;
-//    };
-//};
 
 f.mk_drawer = function(title, content){
     var drawer_container = $('<div>').attr('class', 'input_section').attr('id', title );
@@ -543,18 +522,17 @@ f.loadComponents = function(string){
 
 f.load_database = function(FSEC_database_JSON){
     FSEC_database_JSON = f.lowercase_properties(FSEC_database_JSON);
-    var settings = f.settings;
-    settings.components.inverters = {};
+    g.components.inverters = {};
     FSEC_database_JSON.inverters.forEach(function(component){
-        if( settings.components.inverters[component.make] === undefined ) settings.components.inverters[component.make] = {};
-        //settings.components.inverters[component.make][component.make] = f.pretty_names(component);
-        settings.components.inverters[component.make][component.model] = component;
+        if( g.components.inverters[component.make] === undefined ) g.components.inverters[component.make] = {};
+        //g.components.inverters[component.make][component.make] = f.pretty_names(component);
+        g.components.inverters[component.make][component.model] = component;
     });
-    settings.components.modules = {};
+    g.components.modules = {};
     FSEC_database_JSON.modules.forEach(function(component){
-        if( settings.components.modules[component.make] === undefined ) settings.components.modules[component.make] = {};
-        //settings.components.modules[component.make][component.make] = f.pretty_names(component);
-        settings.components.modules[component.make][component.model] = component;
+        if( g.components.modules[component.make] === undefined ) g.components.modules[component.make] = {};
+        //g.components.modules[component.make][component.make] = f.pretty_names(component);
+        g.components.modules[component.make][component.model] = component;
     });
 
     f.update();
@@ -589,7 +567,7 @@ f.set_ref = function( object, ref_string, value ){
 
 
 f.log_if_database_loaded = function(e){
-    if(f.settings.state.database_loaded) {
+    if(f.g.state.database_loaded) {
         console.log(e);
     }
 };
