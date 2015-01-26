@@ -1,8 +1,5 @@
 'use strict';
-//var $ = require('jquery');
-var k$ = require('../lib/k/k_DOM');
-var k = require('../lib/k/k');
-var kontainer = require('../lib/k/kontainer');
+var kontainer = require('../lib/kontainer');
 
 var f = {};
 
@@ -16,6 +13,20 @@ f.setup_body = function(title, sections){
     body.insertBefore(status_bar, body.firstChild);
 };
 
+f.pad_zero = function(num, size){
+    var s = '000000000' + num;
+    return s.substr(s.length-size);
+};
+
+f.uptime = function(boot_time){
+    var uptime_seconds_total = moment().diff(boot_time, 'seconds');
+    var uptime_hours = Math.floor(  uptime_seconds_total /(60*60) );
+    var minutes_left = uptime_seconds_total %(60*60);
+    var uptime_minutes = f.pad_zero( Math.floor(  minutes_left /60 ), 2 );
+    var uptime_seconds = f.pad_zero( (minutes_left % 60), 2 );
+    return uptime_hours +":"+ uptime_minutes +":"+ uptime_seconds;
+};
+
 f.update_status_bar = function(status_id, boot_time, string) {
     var status_div = document.getElementById(status_id);
     status_div.innerHTML = string;
@@ -25,7 +36,7 @@ f.update_status_bar = function(status_id, boot_time, string) {
     clock.innerHTML = moment().format('YYYY-MM-DD HH:mm:ss');
 
     var uptime = document.createElement('span');
-    uptime.innerHTML = 'Uptime: ' + k.uptime(boot_time);
+    uptime.innerHTML = 'Uptime: ' + f.uptime(boot_time);
 
     status_div.appendChild(clock);
     status_div.innerHTML += ' | ';
