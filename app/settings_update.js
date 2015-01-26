@@ -40,8 +40,8 @@ var settings_update = function(settings) {
         system.array.modules_per_string = system.array.modules_per_string || 6;
         system.DC.home_run_length = system.DC.home_run_length || 50;
 
-        system.roof.width  = system.roof.width || 40;
-        system.roof.length = system.roof.length || 15;
+        system.roof.width  = system.roof.width || 60;
+        system.roof.length = system.roof.length || 25;
         system.roof.slope  = system.roof.slope || "6:12";
         system.roof.type = system.roof.type || "Gable";
 
