@@ -6,6 +6,34 @@ var kontainer = require('../lib/k/kontainer');
 
 var f = {};
 
+
+f.setup_body = function(title, sections){
+    document.title = title;
+    var body = document.body;
+    var status_bar = document.createElement('div');
+    status_bar.id = 'status';
+    status_bar.innerHTML = 'loading status...';
+    body.insertBefore(status_bar, body.firstChild);
+};
+
+f.update_status_bar = function(status_id, boot_time, string) {
+    var status_div = document.getElementById(status_id);
+    status_div.innerHTML = string;
+    status_div.innerHTML += ' | ';
+
+    var clock = document.createElement('span');
+    clock.innerHTML = moment().format('YYYY-MM-DD HH:mm:ss');
+
+    var uptime = document.createElement('span');
+    uptime.innerHTML = 'Uptime: ' + k.uptime(boot_time);
+
+    status_div.appendChild(clock);
+    status_div.innerHTML += ' | ';
+    status_div.appendChild(uptime);
+    status_div.innerHTML += ' | ';
+};
+
+
 f.obj_names = function( object ) {
     if( object !== undefined ) {
         var a = [];
@@ -680,5 +708,9 @@ f.query_string = function () {
   }
   return query_string;
 };
+
+
+
+
 
 module.exports = f;
