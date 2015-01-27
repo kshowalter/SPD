@@ -50,6 +50,11 @@ fonts['title2'] = {
     'font-size':     12,
     'text-anchor':   'left',
 };
+fonts['title3'] = {
+    'font-family': 'monospace',
+    'font-size':     10,
+    'text-anchor':   'left',
+};
 fonts['page'] = {
     'font-family': 'monospace',
     'font-size':     20,

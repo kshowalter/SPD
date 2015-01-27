@@ -94,17 +94,18 @@ var add_border = function(settings, sheet_section, sheet_num){
     x += 10;
     if( system.inverter.make && system.inverter.model ){
         d.text([x,y],
-             [ system.inverter.make + " " + system.inverter.model + " Inverter System" ],
+             [ 'PV System Design' ],
             'title1', 'text').rotate(-90);
 
     }
 
     x += 14;
-    if( system.module.model && system.array.num_strings && system.array.modules_per_string  ){
+    if( g.f.section_defined('location')  ){
         d.text([x,y], [
-            system.module.make + " " + system.module.model +
-                " (" + system.array.num_strings  + " strings of " + system.array.modules_per_string + " modules )"
-        ], 'title2', 'text').rotate(-90);
+            g.perm.location.address,
+            g.perm.location.city + ', ' + g.perm.location.county + ', FL, ' + g.perm.location.zip,
+
+        ], 'title3', 'text').rotate(-90);
     }
 
     x = page.left + padding;
