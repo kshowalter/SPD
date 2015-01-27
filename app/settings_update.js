@@ -92,6 +92,13 @@ var settings_update = function(settings) {
 
             system.AC_loadcenter_type = system.AC_loadcenter_type || config_options.AC_loadcenter_type_options[0];
             //*/
+
+
+            system.attachment_system.make = system.attachment_system.make ||
+                inputs.attachment_system.make.options[0];
+            system.attachment_system.model = system.attachment_system.model ||
+                inputs.attachment_system.model.options[0];
+
         }
     }
     //*/
@@ -189,9 +196,9 @@ var settings_update = function(settings) {
                     g.perm.location.zip
                 ].join(', ') );
             console.log(address);
-            $.getJSON('http://nominatim.openstreetmap.org/search?format=json&limit=5&q=' + address, function(data){
-                console.log(data);
-            });
+            //$.getJSON('http://nominatim.openstreetmap.org/search?format=json&limit=5&q=' + address, function(data){
+            //    console.log(data);
+            //});
 
         }
 

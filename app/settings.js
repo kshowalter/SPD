@@ -99,6 +99,18 @@ settings.inputs.AC.distance_to_loadcenter = {};
 //settings.inputs.AC.distance_to_loadcenter.options = [3,5,10,15,20,30];
 settings.inputs.AC.distance_to_loadcenter.type = 'number_input';
 
+settings.inputs.attachment_system = {};
+settings.inputs.attachment_system.make = {
+    options: ['UNIRAC'],
+    type: 'select',
+};
+settings.inputs.attachment_system.model = {
+    options: ['SOLARMOUNT'],
+    type: 'select',
+};
+
+
+
 
 
 //settings.inputs = settings.inputs; // copy input reference with options to inputs
