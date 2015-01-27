@@ -26,8 +26,7 @@ var PDFDocument = require('pdfkit');
 var blobStream  = require('blob-stream');
 
 
-//var $ = require("jquery");
-var $ = require('../lib/k/k_DOM');
+var $ = require("jquery");
 
 //var svgElementToPdf = require("../lib/svgToPdf");
 //var PDFDocument = require('pdfkit');

@@ -1,6 +1,5 @@
 'use strict';
 
-var k = require('../lib/k/k.js');
 var f = require('./functions.js');
 
 //var settings = require('./settings.js');

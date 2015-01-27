@@ -26,9 +26,7 @@
     "browser": {
         "jsPDF": "./lib/jspdf",
         "FileSaver": "./lib/FileSaver",
-        "svgToPdf": "./lib/svgToPdf",
-        "k": "./lib/k/k"
-
+        "svgToPdf": "./lib/svgToPdf"
     },
     "browserify-shim": {
         "FileSaver": {
@@ -42,5 +40,5 @@
             "exports": "svgToPdf",
             "depends": ["jquery:$"]
         }
-    } 
+    }
 }
