@@ -9,6 +9,7 @@
         "$": true,
         "_": true,
         "moment": true,
-        "g": true
+        "g": true,
+        "L": true
     }
 }
