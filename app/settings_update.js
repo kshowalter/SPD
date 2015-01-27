@@ -195,10 +195,8 @@ var settings_update = function(settings) {
                     'FL',
                     g.perm.location.zip
                 ].join(', ') );
-            console.log(address);
-            //$.getJSON('http://nominatim.openstreetmap.org/search?format=json&limit=5&q=' + address, function(data){
-            //    console.log(data);
-            //});
+            //console.log(address);
+            $.getJSON('http://nominatim.openstreetmap.org/search?format=json&limit=5&q=' + address, f.set_coordinates_from_geocode );
 
         }
 

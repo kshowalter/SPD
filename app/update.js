@@ -16,7 +16,7 @@ var update = function(){
 
     });
 
-
+    if( g.perm.location.lat && g.perm.location.lon) f.set_sat_map_marker();
     //copy inputs from settings.input to settings.system.
 
 

@@ -80,7 +80,11 @@ function setup_webpage(){
     var lon = -80.757833;
     var coor = [-80.757833, 28.387399];
 
-    var map_road = L.map( 'map_road', {
+
+
+
+
+    var map_road  = g.perm.maps.map_road = L.map( 'map_road', {
         center: [lat_fl_center, lon_fl_center],
         zoom: 6
     });
@@ -90,25 +94,28 @@ function setup_webpage(){
         subdomains: ['otile1','otile2','otile3','otile4']
     }).addTo( map_road );
 
-    var marker = L.marker([lat,lon]).addTo(map_road);
+    g.perm.maps.marker_road = L.marker([lat,lon]).addTo(map_road);
+
+    map_road.on('click', f.set_coordinates_from_map );
 
 
-    var map_sat = L.map( 'map_sat', {
+
+
+    var map_sat = g.perm.maps.map_sat = L.map( 'map_sat', {
         center: [lat, lon],
-        zoom: 18
+        zoom: 16
     });
     L.tileLayer( 'http://{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.png', {
         subdomains: ['otile1','otile2','otile3','otile4']
     }).addTo( map_sat );
 
-    var marker2 = L.marker([lat,lon]).addTo(map_sat);
+    g.perm.maps.marker_sat = L.marker([lat,lon]).addTo(map_sat);
 
-    map_sat.on('click', function(e){
-        console.log(e);
-        marker2.setLatLng(e.latlng);
-        g.system.location.lat = e.latlng.lat;
-        g.system.location.lon = e.latlng.lng;
-    });
+    map_sat.on('click', f.set_coordinates_from_map );
+
+
+
+
 
     //*/
     /*
@@ -187,7 +194,7 @@ function setup_webpage(){
     //$('<span>').attr('id', 'download').attr('class', 'float_right').appendTo(drawing_section);
     $('<a>')
         .text('Download Drawing (sample)')
-        .attr('href', 'data/sample.pdf')
+        .attr('href', 'sample_pdf/sample.pdf')
         .attr('id', 'download')
         .attr('class', 'float_right')
         .attr('target', '_blank')

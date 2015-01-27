@@ -14,6 +14,7 @@ settings.temp = {};
 
 settings.perm = {};
 settings.perm.location = {};
+settings.perm.maps = {};
 
 settings.config_options = {};
 settings.config_options.NEC_tables = require('../data/tables.json');

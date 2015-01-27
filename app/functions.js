@@ -701,6 +701,25 @@ f.query_string = function () {
 };
 
 
+f.set_sat_map_marker = function(){
+    var latlng = L.latLng( g.perm.location.lat, g.perm.location.lon );
+    g.perm.maps.marker_sat.setLatLng( latlng );
+    g.perm.maps.marker_road.setLatLng( latlng );
+    g.perm.maps.map_sat.setView( latlng );
+};
+
+f.set_coordinates_from_map = function(e){
+    g.perm.location.lat = e.latlng.lat;
+    g.perm.location.lon = e.latlng.lng;
+    f.update();
+};
+
+f.set_coordinates_from_geocode = function(data){
+    console.log('New location from address', data);
+    g.perm.location.lat = data[0].lat;
+    g.perm.location.lon = data[0].lon;
+    f.update();
+};
 
 
 
