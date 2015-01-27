@@ -221,10 +221,12 @@ f.clean_name = function(name){
 
 
 f.mk_drawer = function(title, content){
-    var drawer_container = $('<div>').attr('class', 'input_section').attr('id', title );
+    var drawer_container = $('<div>')
+                            .attr('class', 'input_section')
+                            .attr('id', 'section_'+title);
+                            //.attr('id', title );
     //drawer_container.get(0).style.display = display_type;
     var system_div = $('<div>').attr('class', 'title_bar')
-        .attr('id', 'section_'+title)
         .attr('section_nom', title)
         .appendTo(drawer_container)
         /* jshint -W083 */

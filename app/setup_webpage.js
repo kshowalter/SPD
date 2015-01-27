@@ -3,6 +3,7 @@
 
 function setup_webpage(){
     var settings = g;
+    var f = g.f;
 
     var system_frame_id = 'system_frame';
     var title = 'PV drawing test';
@@ -26,13 +27,22 @@ function setup_webpage(){
     $('<div>').html('System Setup').attr('class', 'section_title').appendTo(system_frame);
     var config_frame = $('<div>').attr('id', 'config_frame').appendTo(system_frame);
 
+    g.f.add_selectors(settings, config_frame);
     //console.log(section_selector);
 
 
 
-    var location_div = $('<div>');
+    //var location_drawer = $('#section_location').children('.drawer').children('.drawer_content');
+    //console.log(location_drawer);
 
-    var list_element = $('<ul>').appendTo(location_div);
+
+    var map_div = $('<div>');
+    var map_drawer = f.mk_drawer('map',map_div)
+                        //.appendTo(config_frame);
+                        .insertAfter( $('#section_location') );
+    //map_drawer.children('.drawer').children('.drawer_content').slideUp('fast');
+
+    var list_element = $('<ul>').appendTo(map_div);
     $('<li>').appendTo(list_element).append(
         $('<a>')
             .text('Wind Zone ')
@@ -46,27 +56,104 @@ function setup_webpage(){
             .attr('target', '_blank')
     );
 
-/*
-    $('<iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d3603459.854089046!2d-81.37028081834715!3d28.115916011428208!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1421954460385" width="485" height="300" frameborder="0" style="border:0"></iframe>')
-        .appendTo(location_div);
-    $('<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d546.6809043810994!2d-80.75649465851953!3d28.387302871406444!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2sus!4v1422038801287" width="485" height="300" frameborder="0" style="border:0"></iframe>')
-        .appendTo(location_div);
-//*/
-
-    $('<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3603348.697924068!2d-81.48660688926068!3d28.119223679502593!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88e0aa452b99af53%3A0x5e524913e44a8a65!2s1970+Michigan+Ave%2C+Cocoa%2C+FL+32922!5e0!3m2!1sen!2sus!4v1422050912489" width="485" height="300" frameborder="0" style="border:0"></iframe>')
-        .appendTo(location_div);
-
-    $('<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d323.1100977381417!2d-80.75332433820344!3d28.388875465695406!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2sus!4v1422051030319" width="485" height="300" frameborder="0" style="border:0"></iframe>')
-        .appendTo(location_div);
 
 
+    $('<div>')
+        .attr('id', 'map_road')
+        .attr('class', 'map_road')
+        .attr('style', 'width:485px;height:380px')
+        .appendTo(map_div);
+    $('<div>')
+        .attr('id', 'map_sat')
+        .attr('class', 'map_sat')
+        .attr('style', 'width:485px;height:380px')
+        .appendTo(map_div);
 
 
-    var location_drawer = g.f.mk_drawer('Location', location_div);
-    location_drawer.appendTo(config_frame);
 
 
-    g.f.add_selectors(settings, config_frame);
+
+    var lat_fl_center = 27.75;
+    var lon_fl_center = -84.0;
+
+    var lat = 28.387399;
+    var lon = -80.757833;
+    var coor = [-80.757833, 28.387399];
+
+    var map_road = L.map( 'map_road', {
+        center: [lat_fl_center, lon_fl_center],
+        zoom: 6
+    });
+
+    L.tileLayer( 'http://{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://osm.org/copyright" title="OpenStreetMap" target="_blank">OpenStreetMap</a> contributors | Tiles Courtesy of <a href="http://www.mapquest.com/" title="MapQuest" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png" width="16" height="16">',
+        subdomains: ['otile1','otile2','otile3','otile4']
+    }).addTo( map_road );
+
+    var marker = L.marker([lat,lon]).addTo(map_road);
+
+
+    var map_sat = L.map( 'map_sat', {
+        center: [lat, lon],
+        zoom: 18
+    });
+    L.tileLayer( 'http://{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.png', {
+        subdomains: ['otile1','otile2','otile3','otile4']
+    }).addTo( map_sat );
+
+    var marker2 = L.marker([lat,lon]).addTo(map_sat);
+
+    map_sat.on('click', function(e){
+        console.log(e);
+        marker2.setLatLng(e.latlng);
+        g.system.location.lat = e.latlng.lat;
+        g.system.location.lon = e.latlng.lng;
+    });
+
+    //*/
+    /*
+
+    var map = new ol.Map({
+        target: 'map',
+        layers: [
+            new ol.layer.Tile({
+                source: new ol.source.MapQuest({layer: 'osm'})
+            })
+        ],
+        view: new ol.View({
+            center: ol.proj.transform(coor, 'EPSG:4326', 'EPSG:3857'),
+            zoom: 6
+        })
+    });
+    map.on('change', function(e){
+        console.log(e);
+    });
+
+    var map_sat = new ol.Map({
+        target: 'map_sat',
+        layers: [
+            new ol.layer.Tile({
+                source: new ol.source.MapQuest({layer: 'sat'})
+            })
+        ],
+        view: new ol.View({
+            center: ol.proj.transform(coor, 'EPSG:4326', 'EPSG:3857'),
+            zoom: 18
+        })
+    });
+
+
+
+    //*/
+
+
+
+
+    //*/
+
+
+
+
 
     // Parameters and specifications
     /*
