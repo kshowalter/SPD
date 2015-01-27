@@ -305,9 +305,9 @@ f.add_selectors = function(settings, parent_container){
                 };
                 f.selector_add_options(selector);
 
-            } else if( selector.type === 'input' ){
+            } else if( selector.type === 'number_input' || selector.type === 'text_input'){
                 selector.elem = $('<input>')
-                    .attr('class', 'number_input')
+                    .attr('class', selector.type)
                     .attr('type', 'text')
                     .appendTo(selector_set)
                     .get()[0];

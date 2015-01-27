@@ -1,6 +1,5 @@
 "use strict";
 var f = require('./functions');
-var k = require('../lib/k/k.js');
 
 var i;
 //var settingsCalculated = require('./settingsCalculated.js');
@@ -12,6 +11,9 @@ var i;
 var settings = {};
 
 settings.temp = {};
+
+settings.perm = {};
+settings.perm.location = {};
 
 settings.config_options = {};
 settings.config_options.NEC_tables = require('../data/tables.json');
@@ -33,19 +35,29 @@ settings.in.opt.AC.types["480V Wye"] = ["ground","neutral","L1","L2","L3"];
 settings.in.opt.AC.types["480V Delta"] = ["ground","L1","L2","L3"];
 
 settings.inputs = {};
+settings.inputs.location = {};
+settings.inputs.location.county = {};
+settings.inputs.location.county.type = 'text_input';
+settings.inputs.location.address = {};
+settings.inputs.location.address.type = 'text_input';
+settings.inputs.location.city = {};
+settings.inputs.location.city.type = 'text_input';
+settings.inputs.location.zip = {};
+settings.inputs.location.zip.type = 'text_input';
+
 settings.inputs.roof = {};
 settings.inputs.roof.width = {};
 settings.inputs.roof.width.options = [];
 //for( i=15; i<=70; i+=5 ) settings.inputs.roof.width.options.push(i);
 settings.inputs.roof.width.units = 'ft.';
 settings.inputs.roof.width.note = 'This the full size of the roof, perpendictular to the slope.';
-settings.inputs.roof.width.type = 'input';
+settings.inputs.roof.width.type = 'number_input';
 settings.inputs.roof.length = {};
 settings.inputs.roof.length.options = [];
 //for( i=10; i<=60; i+=5 ) settings.inputs.roof.length.options.push(i);
 settings.inputs.roof.length.units = 'ft.';
 settings.inputs.roof.length.note = 'This the full length of the roof, measured from low to high.';
-settings.inputs.roof.length.type = 'input';
+settings.inputs.roof.length.type = 'number_input';
 settings.inputs.roof.slope = {};
 settings.inputs.roof.slope.options = ['1:12','2:12','3:12','4:12','5:12','6:12','7:12','8:12','9:12','10:12','11:12','12:12'];
 settings.inputs.roof.type = {};
@@ -65,7 +77,7 @@ settings.inputs.array.num_strings.options = [1,2,3,4,5,6];
 settings.inputs.DC = {};
 settings.inputs.DC.home_run_length = {};
 //settings.inputs.DC.home_run_length.options = [25,50,75,100,125,150];
-settings.inputs.DC.home_run_length.type = 'input';
+settings.inputs.DC.home_run_length.type = 'number_input';
 settings.inputs.inverter = {};
 settings.inputs.inverter.make = {};
 //settings.inputs.inverter.make.options = null;
@@ -85,7 +97,7 @@ settings.inputs.AC.type = {};
 //settings.inputs.AC.type.options = null;
 settings.inputs.AC.distance_to_loadcenter = {};
 //settings.inputs.AC.distance_to_loadcenter.options = [3,5,10,15,20,30];
-settings.inputs.AC.distance_to_loadcenter.type = 'input';
+settings.inputs.AC.distance_to_loadcenter.type = 'number_input';
 
 
 

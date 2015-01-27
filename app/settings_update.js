@@ -1,6 +1,5 @@
 'use strict';
 
-var k = require('../lib/k/k.js');
 var f = require('./functions');
 //var mk_drawing = require('./mk_drawing');
 //var display_svg = require('./display_svg');
@@ -25,7 +24,7 @@ var settings_update = function(settings) {
     if( state.database_loaded ){
         inputs.DC = settings.inputs.DC || {};
         inputs.DC.wire_size = settings.inputs.DC.wire_size || {};
-        inputs.DC.wire_size.options = inputs.DC.wire_size.options || k.obj_names(settings.config_options.NEC_tables['Ch 9 Table 8 Conductor Properties']);
+        inputs.DC.wire_size.options = inputs.DC.wire_size.options || f.obj_names(settings.config_options.NEC_tables['Ch 9 Table 8 Conductor Properties']);
 
 
     }
@@ -43,11 +42,16 @@ var settings_update = function(settings) {
         system.roof.width  = system.roof.width || 60;
         system.roof.length = system.roof.length || 25;
         system.roof.slope  = system.roof.slope || "6:12";
-        system.roof.type = system.roof.type || "Gable";
+        system.roof.type   = system.roof.type || "Gable";
 
         system.inverter.location = system.inverter.location  || "Inside";
 
         system.module.orientation = system.module.orientation || "Portrait";
+
+        system.location.address = system.location.address || '1679 Clearlake Road';
+        system.location.city    = system.location.city || 'Cocoa';
+        system.location.zip     = system.location.zip || '32922';
+        system.location.county   = system.location.county || 'Brevard';
 
 
         if( state.database_loaded ){
@@ -96,9 +100,9 @@ var settings_update = function(settings) {
     //console.log("settings_update");
     //console.log(system.module.make);
 
-    inputs.module.make.options = k.obj_names(settings.components.modules);
+    inputs.module.make.options = f.obj_names(settings.components.modules);
     if( system.module.make ) {
-        inputs.module.model.options  = k.obj_names( settings.components.modules[system.module.make] );
+        inputs.module.model.options  = f.obj_names( settings.components.modules[system.module.make] );
     }
 
     if( system.module.model ) {
@@ -131,9 +135,9 @@ var settings_update = function(settings) {
 
     }
 
-    inputs.inverter.make.options = k.obj_names(settings.components.inverters);
+    inputs.inverter.make.options = f.obj_names(settings.components.inverters);
     if( system.inverter.make ) {
-        inputs.inverter.model.options = k.obj_names( settings.components.inverters[system.inverter.make] );
+        inputs.inverter.model.options = f.obj_names( settings.components.inverters[system.inverter.make] );
     }
     if( f.section_defined('inverter') ){
 
@@ -146,7 +150,7 @@ var settings_update = function(settings) {
         inputs.AC.type.options = AC_options;
         //in.opt.AC.types[loadcenter_type];
 
-        //inputs.AC['type'] = k.obj_names( settings.in.opt.AC.type );
+        //inputs.AC['type'] = f.obj_names( settings.in.opt.AC.type );
     }
     if( system.AC.type ) {
         system.AC.conductors = settings.in.opt.AC.types[system.AC.type];
@@ -165,7 +169,33 @@ var settings_update = function(settings) {
 
 
 
+    if( f.section_defined('location') ){
+        console.log('address ready');
+        var address_new = false;
+        for( var name in system.location ){
 
+            if( system.location[name] !== g.perm.location[name]){
+                address_new = true;
+            }
+            g.perm.location[name] = system.location[name];
+
+        }
+        if( address_new ) {
+            console.log('new address');
+            var address = encodeURIComponent([
+                    g.perm.location.address,
+                    g.perm.location.city,
+                    'FL',
+                    g.perm.location.zip
+                ].join(', ') );
+            console.log(address);
+            $.getJSON('http://nominatim.openstreetmap.org/search?format=json&limit=5&q=' + address, function(data){
+                console.log(data);
+            });
+
+        }
+
+    }
 
 
 
@@ -176,11 +206,11 @@ var settings_update = function(settings) {
         for( var input_name in settings.inputs[section_name] ){
             if( typeof settings.inputs[section_name][input_name] === 'string' ){
                 console.log( settings.inputs[section_name][input_name] );
-                console.log( k.obj_names(
+                console.log( f.obj_names(
                     f.get_ref(settings.inputs[section_name][input_name], settings)
                 ));
 
-                var to_eval = "k.obj_names(setttings." + settings.inputs[section_name][input_name] + ")";
+                var to_eval = "f.obj_names(setttings." + settings.inputs[section_name][input_name] + ")";
                 console.log(to_eval);
                 // eval is only being used on strings defined in the settings.json file that is built into the application
                 /* jshint evil:true //*/

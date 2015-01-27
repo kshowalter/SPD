@@ -25,7 +25,7 @@ var update = function(){
     settings.select_registry.forEach(function(selector){
         if( selector.type === 'select' ){
             f.selector_add_options(selector);
-        } else if( selector.type === 'input' ) {
+        } else if( selector.type === 'number_input' || selector.type === 'text_input' ) {
             selector.elem.value = selector.system_ref.get();
         }
     });
