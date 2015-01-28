@@ -700,6 +700,32 @@ f.query_string = function () {
   return query_string;
 };
 
+f.request_geocode = function(){
+    var address_new = false;
+    for( var name in g.system.location ){
+
+        if( g.system.location[name] !== g.perm.location[name]){
+            address_new = true;
+        }
+        g.perm.location[name] = g.system.location[name];
+
+    }
+    if( address_new ) {
+        console.log('new address');
+        var address = encodeURIComponent([
+                g.perm.location.address,
+                g.perm.location.city,
+                'FL',
+                g.perm.location.zip
+            ].join(', ') );
+        //console.log(address);
+        $.getJSON('http://nominatim.openstreetmap.org/search?format=json&limit=5&q=' + address, f.set_coordinates_from_geocode );
+
+    } else {
+        f.set_coordinates_from_geocode();
+    }
+};
+
 
 f.set_sat_map_marker = function(){
     var latlng = L.latLng( g.perm.location.lat, g.perm.location.lon );

@@ -178,27 +178,7 @@ var settings_update = function(settings) {
 
     if( f.section_defined('location') ){
         console.log('address ready');
-        var address_new = false;
-        for( var name in system.location ){
-
-            if( system.location[name] !== g.perm.location[name]){
-                address_new = true;
-            }
-            g.perm.location[name] = system.location[name];
-
-        }
-        if( address_new ) {
-            console.log('new address');
-            var address = encodeURIComponent([
-                    g.perm.location.address,
-                    g.perm.location.city,
-                    'FL',
-                    g.perm.location.zip
-                ].join(', ') );
-            //console.log(address);
-            $.getJSON('http://nominatim.openstreetmap.org/search?format=json&limit=5&q=' + address, f.set_coordinates_from_geocode );
-
-        }
+        f.request_geocode();
 
     }
 
