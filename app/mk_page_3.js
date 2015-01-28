@@ -79,6 +79,12 @@ var page = function(settings){
             //*/
             y += h + 30;
 
+            if( y > ( g.drawing_settings.size.drawing.h * 0.8 ) ) {
+                y =
+                    y = size.drawing.frame_padding*6 +20;
+                    x += w*1.5;
+            }
+
         } else {
 
             //console.log('not defined: ', section_name, section);
