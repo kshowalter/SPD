@@ -440,15 +440,15 @@ f.update_values = function(settings){
     });
 };
 
-f.show_hide_params = function(page_sections, settings){
-    for( var list_name in page_sections ){
-        var id = '#'+list_name;
-        var section_name = list_name.split('_')[0];
-        var section = k$(id);
-        if( settings.status.sections[section_name].set ) section.show();
-        else section.hide();
-    }
-};
+//f.show_hide_params = function(page_sections, settings){
+//    for( var list_name in page_sections ){
+//        var id = '#'+list_name;
+//        var section_name = list_name.split('_')[0];
+//        var section = k$(id);
+//        if( settings.status.sections[section_name].set ) section.show();
+//        else section.hide();
+//    }
+//};
 
 //f.show_hide_selections = function(settings, active_section_name){
 //    $('#sectionSelector').val(active_section_name);
@@ -469,66 +469,66 @@ f.show_hide_params = function(page_sections, settings){
 //    }
 //}
 
-f.loadTables = function(string){
-    var tables = {};
-    var l = string.split('\n');
-    var title;
-    var fields;
-    var need_title = true;
-    var need_fields = true;
-    l.forEach( function(string, i){
-        var line = string.trim();
-        if( line.length === 0 ){
-            need_title = true;
-            need_fields = true;
-        } else if( need_title ) {
-            title = line;
-            tables[title] = [];
-            need_title = false;
-        } else if( need_fields ) {
-            fields = line.split(',');
-            tables[title+"_fields"] = fields;
-            need_fields = false;
-        //} else {
-        //    var entry = {};
-        //    var line_array = line.split(',');
-        //    fields.forEach( function(field, id){
-        //        entry[field.trim()] = line_array[id].trim();
-        //    });
-        //    tables[title].push( entry );
-        //}
-        } else {
-            var line_array = line.split(',');
-            tables[title][line_array[0].trim()] = line_array[1].trim();
-        }
-    });
-
-    return tables;
-};
-
-f.loadComponents = function(string){
-    var db = k.parseCSV(string);
-    var object = {};
-    for( var i in db ){
-        var component = db[i];
-        if( object[component.Make] === undefined ){
-            object[component.Make] = {};
-        }
-        if( object[component.Make][component.Model] === undefined ){
-            object[component.Make][component.Model] = {};
-        }
-
-        var fields = k.objIdArray(component);
-        fields.forEach( function( field ){
-            var param = component[field];
-            if( !( field in ['Make', 'Model'] ) && !( isNaN(parseFloat(param)) ) ){
-                component[field] = parseFloat(param);
-            }
-        })
-        object[component.Make][component.Model] = component;
-    }
-    return object;
-};
+//f.loadTables = function(string){
+//    var tables = {};
+//    var l = string.split('\n');
+//    var title;
+//    var fields;
+//    var need_title = true;
+//    var need_fields = true;
+//    l.forEach( function(string, i){
+//        var line = string.trim();
+//        if( line.length === 0 ){
+//            need_title = true;
+//            need_fields = true;
+//        } else if( need_title ) {
+//            title = line;
+//            tables[title] = [];
+//            need_title = false;
+//        } else if( need_fields ) {
+//            fields = line.split(',');
+//            tables[title+"_fields"] = fields;
+//            need_fields = false;
+//        //} else {
+//        //    var entry = {};
+//        //    var line_array = line.split(',');
+//        //    fields.forEach( function(field, id){
+//        //        entry[field.trim()] = line_array[id].trim();
+//        //    });
+//        //    tables[title].push( entry );
+//        //}
+//        } else {
+//            var line_array = line.split(',');
+//            tables[title][line_array[0].trim()] = line_array[1].trim();
+//        }
+//    });
+//
+//    return tables;
+//};
+//
+//f.loadComponents = function(string){
+//    var db = k.parseCSV(string);
+//    var object = {};
+//    for( var i in db ){
+//        var component = db[i];
+//        if( object[component.Make] === undefined ){
+//            object[component.Make] = {};
+//        }
+//        if( object[component.Make][component.Model] === undefined ){
+//            object[component.Make][component.Model] = {};
+//        }
+//
+//        var fields = k.objIdArray(component);
+//        fields.forEach( function( field ){
+//            var param = component[field];
+//            if( !( field in ['Make', 'Model'] ) && !( isNaN(parseFloat(param)) ) ){
+//                component[field] = parseFloat(param);
+//            }
+//        })
+//        object[component.Make][component.Model] = component;
+//    }
+//    return object;
+//};
 
 
 
@@ -702,13 +702,8 @@ f.query_string = function () {
 
 f.request_geocode = function(){
     if( f.section_defined('location') ){
-        var address_new = false;
-        for( var name in g.system.location ){
-            if( g.system.location[name] !== g.perm.location[name]){
-                address_new = true;
-            }
-            g.perm.location[name] = g.system.location[name];
-        }
+        var address_new = g.perm.location.new_address;
+
         if( address_new || g.perm.location.lat === undefined || g.perm.location.lat === undefined ) {
             console.log('new address');
             var address = encodeURIComponent([

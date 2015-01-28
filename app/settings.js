@@ -14,6 +14,7 @@ settings.temp = {};
 
 settings.perm = {};
 settings.perm.location = {};
+settings.perm.location.new_address = false;
 settings.perm.maps = {};
 
 settings.config_options = {};
