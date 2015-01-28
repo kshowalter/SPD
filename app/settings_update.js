@@ -179,6 +179,7 @@ var settings_update = function(settings) {
     if( f.section_defined('location') ){
         //console.log('address ready');
         //f.request_geocode();
+        g.perm.location.new_address = false;
         for( var name in g.system.location ){
             if( g.system.location[name] !== g.perm.location[name]){
                 g.perm.location.new_address = true;

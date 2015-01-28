@@ -740,11 +740,18 @@ f.set_coordinates_from_map = function(e){
 };
 
 f.set_coordinates_from_geocode = function(data){
-    if( data[0] !== undefined ){
+    if( data === undefined && g.perm.location.lat !== undefined ){ // loading last locations
+        g.perm.location.lat = g.perm.geocode.lat;
+        g.perm.location.lon = g.perm.geocode.lon;
+        f.update();
+    } else if( data[0] !== undefined ){
         $('#geocode_display').text('Address loaded');
         console.log('New location from address', data);
-        g.perm.location.lat = data[0].lat;
-        g.perm.location.lon = data[0].lon;
+        g.perm.geocode.data = data;
+        g.perm.geocode.lat = data[0].lat;
+        g.perm.geocode.lon = data[0].lon;
+        g.perm.location.lat = g.perm.geocode.lat;
+        g.perm.location.lon = g.perm.geocode.lon;
         f.update();
     } else {
         $('#geocode_display').text('Address not found');

@@ -13,6 +13,7 @@ var settings = {};
 settings.temp = {};
 
 settings.perm = {};
+settings.perm.geocode = {};
 settings.perm.location = {};
 settings.perm.location.new_address = false;
 settings.perm.maps = {};
