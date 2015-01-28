@@ -36,9 +36,11 @@ var update = function(){
 
     // Determine active section based on section inputs entered by user
     var sections = g.webpage.sections;
+    var active_section;
     sections.every(function(section_name,id){ //TODO: find pre IE9 way to do this?
         if( ! g.f.section_defined(section_name) ){
             active_section = section_name;
+            console.log('active section:', section_name);
             return false;
         } else {
             if( id === sections.length-1 ){ //If last section is defined, there is no active section
@@ -50,12 +52,16 @@ var update = function(){
     // Close section if they are not active sections, unless they have been opened by the user, open the active section
     sections.forEach(function(section_name,id){ //TODO: find pre IE9 way to do this?
         if( section_name === active_section ){
-            $('.input_section#'+section_name).children('.drawer').children('.drawer_content').slideDown('fast');
+            $('#section_'+section_name).children('.drawer').children('.drawer_content').slideDown('fast');
         } else if( ! g.webpage.selections_manual_toggled[section_name] ){
-            $('.input_section#'+section_name).children('.drawer').children('.drawer_content').slideUp('fast');
+            $('#section_'+section_name).children('.drawer').children('.drawer_content').slideUp('fast');
         }
     });
 
+    if( ! g.webpage.selections_manual_toggled.location &&  g.f.section_defined('location') ){
+            $('#section_map').children('.drawer').children('.drawer_content').slideDown('fast');
+
+    }
 
     // Make blocks
     f.mk_blocks();
