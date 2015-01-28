@@ -450,16 +450,16 @@ f.show_hide_params = function(page_sections, settings){
     }
 };
 
-f.show_hide_selections = function(settings, active_section_name){
-    $('#sectionSelector').val(active_section_name);
-    for( var list_name in settings.input ){
-        var id = '#'+list_name;
-        var section_name = list_name.split('_')[0];
-        var section = k$(id);
-        if( section_name === active_section_name ) section.show();
-        else section.hide();
-    }
-};
+//f.show_hide_selections = function(settings, active_section_name){
+//    $('#sectionSelector').val(active_section_name);
+//    for( var list_name in settings.input ){
+//        var id = '#'+list_name;
+//        var section_name = list_name.split('_')[0];
+//        var section = k$(id);
+//        if( section_name === active_section_name ) section.show();
+//        else section.hide();
+//    }
+//};
 
 //f.setDownloadLink(settings){
 //

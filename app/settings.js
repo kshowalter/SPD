@@ -164,47 +164,5 @@ settings.webpage.selected_modules = {};
 settings.components = {};
 
 
-/*
-for( var section_name in settings.inputs ){
-    for( var input_name in settings.inputs[section_name]){
-        if( typeof settings.inputs[section_name][input_name] === 'string' ){
-            console.log(settings.inputs[section_name][input_name])
-            "obj_names(setttings" + settings.inputs[section_name][input_name] + ")";
-            // eval is only being used on strings defined in the settings.json file that is built into the application
-            settings.inputs[section_name][input_name] = eval(settings.inputs[section_name][input_name]);
-        }
-    }
-}
-//*/
-
-
-/*
-settings.state.sections = {
-    modules: {},
-    array: {},
-    DC: {},
-    inverter: {},
-    AC: {},
-};
-config_options.section_options = obj_names(settings.state.sections);
-settings.state.active_section = 'modules';
-
-config_options.AC_loadcenter_type_options = obj_names( config_options.AC_loadcenter_types );
-config_options.AC_type_options = obj_names( config_options.AC_types );
-
-config_options.inverters = {};
-
-config_options.page_options = ['Page 1 of 1'];
-settings.state.active_page = config_options.page_options[0];
-
-system.inverter = {};
-
-
-config_options.DC_homerun_lengths = config_options.DC_homerun_lengths || [25,50,75,100];
-config_options.DC_homerun_AWG_options =
-    config_options.DC_homerun_AWG_options ||
-    obj_names( config_options.NEC_tables["Ch 9 Table 8 Conductor Properties"] );
-//*/
-
 
 module.exports = settings;
