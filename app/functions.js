@@ -701,28 +701,32 @@ f.query_string = function () {
 };
 
 f.request_geocode = function(){
-    var address_new = false;
-    for( var name in g.system.location ){
-
-        if( g.system.location[name] !== g.perm.location[name]){
-            address_new = true;
+    if( f.section_defined('location') ){
+        var address_new = false;
+        for( var name in g.system.location ){
+            if( g.system.location[name] !== g.perm.location[name]){
+                address_new = true;
+            }
+            g.perm.location[name] = g.system.location[name];
         }
-        g.perm.location[name] = g.system.location[name];
+        if( address_new || g.perm.location.lat === undefined || g.perm.location.lat === undefined ) {
+            console.log('new address');
+            var address = encodeURIComponent([
+                    g.perm.location.address,
+                    g.perm.location.city,
+                    'FL',
+                    g.perm.location.zip
+                ].join(', ') );
+            //console.log(address);
+            $('#geocode_display').text('Requesting coordinates...');
+            $.getJSON('http://nominatim.openstreetmap.org/search?format=json&limit=5&q=' + address, f.set_coordinates_from_geocode );
 
-    }
-    if( address_new ) {
-        console.log('new address');
-        var address = encodeURIComponent([
-                g.perm.location.address,
-                g.perm.location.city,
-                'FL',
-                g.perm.location.zip
-            ].join(', ') );
-        //console.log(address);
-        $.getJSON('http://nominatim.openstreetmap.org/search?format=json&limit=5&q=' + address, f.set_coordinates_from_geocode );
-
+        } else {
+            $('#geocode_display').text('Address unchanged');
+            f.set_coordinates_from_geocode();
+        }
     } else {
-        f.set_coordinates_from_geocode();
+        $('#geocode_display').text('Please enter address');
     }
 };
 
@@ -741,10 +745,15 @@ f.set_coordinates_from_map = function(e){
 };
 
 f.set_coordinates_from_geocode = function(data){
-    console.log('New location from address', data);
-    g.perm.location.lat = data[0].lat;
-    g.perm.location.lon = data[0].lon;
-    f.update();
+    if( data[0] !== undefined ){
+        $('#geocode_display').text('Address loaded');
+        console.log('New location from address', data);
+        g.perm.location.lat = data[0].lat;
+        g.perm.location.lon = data[0].lon;
+        f.update();
+    } else {
+        $('#geocode_display').text('Address not found');
+    }
 };
 
 

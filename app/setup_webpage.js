@@ -42,6 +42,8 @@ function setup_webpage(){
                         .insertAfter( $('#section_location') );
     map_drawer.children('.drawer').children('.drawer_content').slideUp('fast');
 
+
+
     var list_element = $('<ul>').appendTo(map_div);
     $('<li>').appendTo(list_element).append(
         $('<a>')
@@ -57,6 +59,18 @@ function setup_webpage(){
     );
 
 
+    var geocode_div = $('<div>')
+        .attr('class', 'geocode_line')
+        .appendTo(map_div);
+    $('<a>').appendTo(geocode_div)
+        .attr('class', 'geocode_button')
+        .text('Find location from address')
+        .attr('href', '#')
+        .click(f.request_geocode);
+    $('<span>').appendTo(geocode_div)
+        .attr('class', 'geocode_display')
+        .attr('id','geocode_display')
+        .text('');
 
     $('<div>')
         .attr('id', 'map_road')
@@ -70,18 +84,12 @@ function setup_webpage(){
         .appendTo(map_div);
 
 
-
-
-
     var lat_fl_center = 27.75;
     var lon_fl_center = -84.0;
 
     var lat = 28.387399;
     var lon = -80.757833;
     var coor = [-80.757833, 28.387399];
-
-
-
 
 
     var map_road  = g.perm.maps.map_road = L.map( 'map_road', {
@@ -116,65 +124,6 @@ function setup_webpage(){
 
 
 
-
-    //*/
-    /*
-
-    var map = new ol.Map({
-        target: 'map',
-        layers: [
-            new ol.layer.Tile({
-                source: new ol.source.MapQuest({layer: 'osm'})
-            })
-        ],
-        view: new ol.View({
-            center: ol.proj.transform(coor, 'EPSG:4326', 'EPSG:3857'),
-            zoom: 6
-        })
-    });
-    map.on('change', function(e){
-        console.log(e);
-    });
-
-    var map_sat = new ol.Map({
-        target: 'map_sat',
-        layers: [
-            new ol.layer.Tile({
-                source: new ol.source.MapQuest({layer: 'sat'})
-            })
-        ],
-        view: new ol.View({
-            center: ol.proj.transform(coor, 'EPSG:4326', 'EPSG:3857'),
-            zoom: 18
-        })
-    });
-
-
-
-    //*/
-
-
-
-
-    //*/
-
-
-
-
-
-    // Parameters and specifications
-    /*
-    $('<div>').html('System Parameters').attr('class', 'section_title').appendTo(system_frame);
-    var params_container = $('<div>').attr('class', 'section');
-    params_container.appendTo(system_frame);
-    f.add_params( settings, params_container );
-    //*/
-
-    //TODO: add svg display of modules
-    // http://quote.snapnrack.com/ui/o100.php#step-2
-
-    // drawing
-    //var drawing = $('div').attr('id', 'drawing_frame').attr('class', 'section').appendTo(page);
 
 
     var drawing_preview = $('<div>').attr('id', 'drawing_frame_preview').appendTo(page);

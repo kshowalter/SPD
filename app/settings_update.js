@@ -177,8 +177,8 @@ var settings_update = function(settings) {
 
 
     if( f.section_defined('location') ){
-        console.log('address ready');
-        f.request_geocode();
+        //console.log('address ready');
+        //f.request_geocode();
 
     }
 
