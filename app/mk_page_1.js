@@ -18,12 +18,21 @@ var page = function(settings){
     d.text(
         [size.drawing.w*1/2, size.drawing.h*1/3],
         [
-            'FSEC Plans Machine',
-            'DEMO'
+            'PV System Design',
         ],
         'project title'
     );
 
+    if( g.f.section_defined('location')  ){
+        d.text(
+            [size.drawing.w*1/2, size.drawing.h*1/3 +30],
+            [
+                g.perm.location.address,
+                g.perm.location.city + ', ' + g.perm.location.county + ', FL, ' + g.perm.location.zip,
+            ],
+            'project title'
+        );
+    }
     var n_rows = 4;
     var n_cols = 2;
     w = 400+80;
