@@ -40,7 +40,7 @@ function setup_webpage(){
     var map_drawer = f.mk_drawer('map',map_div)
                         //.appendTo(config_frame);
                         .insertAfter( $('#section_location') );
-    //map_drawer.children('.drawer').children('.drawer_content').slideUp('fast');
+    map_drawer.children('.drawer').children('.drawer_content').slideUp('fast');
 
     var list_element = $('<ul>').appendTo(map_div);
     $('<li>').appendTo(list_element).append(
