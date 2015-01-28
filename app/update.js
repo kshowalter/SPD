@@ -16,7 +16,9 @@ var update = function(){
 
     });
 
-    if( g.perm.location.lat && g.perm.location.lon) f.set_sat_map_marker();
+    if( g.perm.location.lat && g.perm.location.lon) {
+        f.set_sat_map_marker();
+    }
     //copy inputs from settings.input to settings.system.
 
 
@@ -57,10 +59,9 @@ var update = function(){
             $('#section_'+section_name).children('.drawer').children('.drawer_content').slideUp('fast');
         }
     });
-
-    if( ! g.webpage.selections_manual_toggled.location &&  g.f.section_defined('location') ){
+    //If the location is defined, open the map.
+    if( (! g.webpage.selections_manual_toggled.location) &&  g.f.section_defined('location') ){
             $('#section_map').children('.drawer').children('.drawer_content').slideDown('fast');
-
     }
 
     // Make blocks
