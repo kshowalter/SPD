@@ -364,3 +364,11 @@ svg {
     border-style: solid;
 
 }
+
+
+
+
+.awesome-marker i {
+    font-size: 18px;
+    margin-top: 5px;
+}
