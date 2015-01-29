@@ -102,6 +102,26 @@ var update = function(){
     }
 
 
+    //var site_plan_element = document.createElementNS("http://www.w3.org/2000/svg", "image");
+    //var site_plan_img = $(site_plan_element)
+    //    .attr('x',100)
+    //    .attr('y',100)
+    //    .prependTo(
+    //        $('#drawing').children('.svg_drawing')[0]
+    //    );
+    //L_PREFER_CANVAS = true;
+    //var map = g.perm.maps.map_road;
+    //leafletImage( map, function(err, canvas) {
+    //    // now you have canvas
+    //    // example thing to do with that canvas:
+    //    var img = document.createElement('img');
+    //    var dimensions = map.getSize();
+    //    img.width = dimensions.x;
+    //    img.height = dimensions.y;
+    //    img.src = canvas.toDataURL();
+    //    console.log(img);
+    //    $('body').append(img);
+    //});
 
 
     console.log('\\--- end update');

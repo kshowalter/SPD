@@ -91,6 +91,12 @@ function setup_webpage(){
     var lon = -80.757833;
     var coor = [-80.757833, 28.387399];
 
+    L.AwesomeMarkers.Icon.prototype.options.prefix = 'fa';
+    var sun_marker = L.AwesomeMarkers.icon({
+        icon: 'sun-o',
+        markerColor: 'blue  ',
+        iconColor: 'yellow'
+    });
 
     var map_road  = g.perm.maps.map_road = L.map( 'map_road', {
         center: [lat_fl_center, lon_fl_center],
@@ -102,7 +108,7 @@ function setup_webpage(){
         subdomains: ['otile1','otile2','otile3','otile4']
     }).addTo( map_road );
 
-    g.perm.maps.marker_road = L.marker([lat,lon]).addTo(map_road);
+    g.perm.maps.marker_road = L.marker([lat,lon], {icon: sun_marker}).addTo(map_road);
 
     map_road.on('click', f.set_coordinates_from_map );
 
@@ -117,7 +123,7 @@ function setup_webpage(){
         subdomains: ['otile1','otile2','otile3','otile4']
     }).addTo( map_sat );
 
-    g.perm.maps.marker_sat = L.marker([lat,lon]).addTo(map_sat);
+    g.perm.maps.marker_sat = L.marker([lat,lon], {icon: sun_marker}).addTo(map_sat);
 
     map_sat.on('click', f.set_coordinates_from_map );
 
