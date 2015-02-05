@@ -37,6 +37,7 @@ settings.in.opt.AC.types["277V"] = ["ground","neutral","L1"];
 settings.in.opt.AC.types["480V Wye"] = ["ground","neutral","L1","L2","L3"];
 settings.in.opt.AC.types["480V Delta"] = ["ground","L1","L2","L3"];
 
+
 settings.inputs = {};
 settings.inputs.location = {};
 settings.inputs.location.county = {};
@@ -112,6 +113,9 @@ settings.inputs.attachment_system.model = {
     type: 'select',
 };
 
+
+
+settings.user_input = f.add_sections(settings.inputs);
 
 
 

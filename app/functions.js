@@ -71,7 +71,8 @@ f.object_defined = function(object){
 f.section_defined = function(section_name){
     //console.log("-"+section_name);
     //var input_section = g.inputs[section_name];
-    var output_section = g.system[section_name];
+    //var output_section = g.system[section_name];
+    var output_section = g.user_input[section_name];
     for( var key in output_section ){
         if( output_section.hasOwnProperty(key) ){
             //console.log(key);
@@ -116,6 +117,26 @@ f.blank_copy = function(object){
     return newObject;
 };
 
+f.add_sections = function(inputs){
+    var blank_user_input = {};
+    for( var section_name in inputs ){
+        if( inputs.hasOwnProperty(section_name) ){
+            if( inputs[section_name].constructor === Object ) {
+                blank_user_input[section_name] = {};
+                for( var name in inputs[section_name] ){
+                    if( inputs[section_name].hasOwnProperty(name) ){
+                        blank_user_input[section_name][name] = null;
+                    }
+                }
+            } else {
+                console.log('error: section not object');
+            }
+        }
+    }
+    return blank_user_input;
+
+};
+
 f.blank_clean_copy = function(object){
     var newObject = {};
     for( var key in object ){
@@ -136,6 +157,21 @@ f.blank_clean_copy = function(object){
     return newObject;
 };
 
+//f.merge_objects = function merge_objects(object1, object2){
+//    for( var key in object1 ){
+//        if( object1.hasOwnProperty(key) ){
+//            //if( key === 'make' ) console.log(key, object1, typeof object1[key], typeof object2[key]);
+//            //console.log(key, object1, typeof object1[key], typeof object2[key]);
+//            if( object1[key] && object1[key].constructor === Object ) {
+//                if( object2[key] === undefined ) object2[key] = {};
+//                merge_objects( object1[key], object2[key] );
+//            } else {
+//                if( object2[key] === undefined ) object2[key] = null;
+//            }
+//        }
+//    }
+//};
+
 f.merge_objects = function merge_objects(object1, object2){
     for( var key in object1 ){
         if( object1.hasOwnProperty(key) ){
@@ -145,7 +181,7 @@ f.merge_objects = function merge_objects(object1, object2){
                 if( object2[key] === undefined ) object2[key] = {};
                 merge_objects( object1[key], object2[key] );
             } else {
-                if( object2[key] === undefined ) object2[key] = null;
+                object2[key] = object1[key];
             }
         }
     }
@@ -271,8 +307,6 @@ f.add_selectors = function(settings, parent_container){
             }
 
 
-
-
             var selector_set = $('<span>').attr('class', 'selector_set').appendTo(drawer_content);
             var input_text = $('<span>').html(f.pretty_name(input_name) + ': ' + units ).appendTo(selector_set);
             if( note ) input_text.attr('title', note);
@@ -284,9 +318,9 @@ f.add_selectors = function(settings, parent_container){
             f.kelem_setup(selector, settings);
             //*/
             var selector = {
-                system_ref: Object.create(kontainer).obj(settings).ref('system.' + section_name + '.' + input_name),
-                //input_ref: Object.create(kontainer).obj(settings).ref('inputs.' + section_name + '.' + input_name + '.value'),
-                list_ref: Object.create(kontainer).obj(settings).ref('inputs.' + section_name + '.' + input_name + '.options'),
+                system_ref: Object.create(kontainer).obj(g).ref('system.' + section_name + '.' + input_name),
+                input_ref: Object.create(kontainer).obj(g).ref('user_input.' + section_name + '.' + input_name),
+                list_ref: Object.create(kontainer).obj(g).ref('inputs.' + section_name + '.' + input_name + '.options'),
                 interacted: false,
             };
             if( (settings.inputs[section_name][input_name] !== undefined) && (settings.inputs[section_name][input_name].type !== undefined) ) {
@@ -321,7 +355,7 @@ f.add_selectors = function(settings, parent_container){
                     //else return false;
                     return this.elem.value;
                 };
-                selector.elem.value = selector.system_ref.get();
+                selector.elem.value = selector.input_ref.get();
             }
             $(selector.elem).change(function(event){
                 settings.f.update();
@@ -347,7 +381,7 @@ f.selector_add_options = function(selector){
     }
     selector.elem.innerHTML = "";
     if( list instanceof Array ){
-        var current_value = selector.system_ref.get();
+        var current_value = selector.input_ref.get();
         $('<option>').attr('selected',true).attr('disabled',true).attr('hidden',true).appendTo(selector.elem);
 
         list.forEach(function(opt_name){

@@ -10,16 +10,20 @@ var update = function(){
 
     settings.select_registry.forEach(function(selector){
         //console.log(selector.value());
-        if(selector.value()) selector.system_ref.set(selector.value());
-        //if(selector.value()) selector.input_ref.set(selector.value());
+        //if(selector.value()) selector.system_ref.set(selector.value());
+        if(selector.value()) selector.input_ref.set(selector.value());
         //console.log(selector.set_ref.refString, selector.value(), selector.set_ref.get());
 
     });
 
+    //copy inputs from settings.input to settings.system.
+    f.merge_objects(g.user_input, g.system);
+
+
+
     if( g.perm.location.lat && g.perm.location.lon) {
         f.set_sat_map_marker();
     }
-    //copy inputs from settings.input to settings.system.
 
 
     f.settings_update(settings);
