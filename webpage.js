@@ -47,7 +47,22 @@
     f.mk_svg= require('./app/mk_svg');
 
 
+    f.request_SVG = function(){
+        console.log('sending data to server');
+        var url = 'http://localhost:3000/';
+        $.getJSON( url , { data: g.user_input })
+            .done(function(res){
+                console.log('server responce?', res);
 
+            })
+            .fail(function() {
+                console.log( "error" );
+            })
+            .always(function() {
+                console.log( "complete" );
+            });
+
+    };
 
 // request external data
     //var database_json_URL = 'http://10.173.64.204:8000/temporary/';
@@ -63,6 +78,10 @@
             }
             f.update();
 
+            ////////
+            // TEMP
+            f.request_SVG();
+            ////////
         });
 
 

@@ -182,8 +182,11 @@ img { border: 0; }
 
 
 
-.float_right{
+.button_float_right{
+    padding: 2px;
+    margin: 2px;
     float: right;
+    background: #b2d6ff;
 }
 
 .geocode_line{

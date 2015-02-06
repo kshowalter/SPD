@@ -151,9 +151,17 @@ function setup_webpage(){
         .text('Download Drawing (sample)')
         .attr('href', 'sample_pdf/sample.pdf')
         .attr('id', 'download')
-        .attr('class', 'float_right')
+        .attr('class', 'button_float_right')
         .attr('target', '_blank')
         .appendTo(drawing_section);
+    $('<a>')
+        .text('Download Drawing (network test)')
+        //.attr('href', '#')
+        .attr('id', 'download')
+        .attr('class', 'button_float_right')
+        //.attr('target', '_blank')
+        .appendTo(drawing_section)
+        .click(f.request_SVG);
 
     var svg_container_object = $('<div>').attr('id', 'drawing').attr('class', 'drawing').css('clear', 'both').appendTo(drawing_section);
     //svg_container_object.style('width', settings.drawing_settings.size.drawing.w+'px' )
