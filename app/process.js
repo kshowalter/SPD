@@ -1,12 +1,12 @@
 'use strict';
 
-var f = require('./functions');
-//var mk_drawing = require('./mk_drawing');
-//var display_svg = require('./display_svg');
 
-var object_defined = f.object_defined;
+var process = function(settings) {
+    var f = g.f;
 
-var settings_update = function(settings) {
+    //copy inputs from settings.input to settings.system.
+    f.merge_objects(settings.user_input, settings.system);
+
 
     //console.log('---settings---', settings);
     var config_options = settings.config_options;
@@ -19,7 +19,7 @@ var settings_update = function(settings) {
 
 
 
-
+// Update settings and calculations
 
     if( state.database_loaded ){
         inputs.DC = settings.inputs.DC || {};
@@ -31,7 +31,7 @@ var settings_update = function(settings) {
 
 
 
-    //console.log("settings_update");
+    //console.log("process");
     //console.log(system.module.make);
 
     inputs.module.make.options = f.obj_names(settings.components.modules);
@@ -119,8 +119,29 @@ var settings_update = function(settings) {
 
 
 
+
+// Update drawing
+
+    // Make blocks
+    f.mk_blocks();
+
+    // Make drawing
+    settings.drawing.parts = {};
+    settings.drawing.svgs = {};
+    for( var p in f.mk_page ){
+        settings.drawing.parts[p] = f.mk_page[p](settings);
+        settings.drawing.svgs[p] = f.mk_svg(settings.drawing.parts[p], settings);
+        $('#drawing')
+            //.append($('<p>Page '+p+'</p>'))
+            .append($(settings.drawing.svgs[p]))
+            .append($('</br>'))
+            .append($('</br>'));
+
+    }
+
+
 };
 
 
 
-module.exports = settings_update;
+module.exports = process;

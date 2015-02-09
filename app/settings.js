@@ -10,6 +10,9 @@ var i;
 
 var settings = {};
 
+
+
+
 settings.temp = {};
 
 settings.perm = {};
@@ -147,7 +150,7 @@ settings = settings_drawing(settings);
 //settings = f.nullToObject(settings);
 
 settings.select_registry = [];
-settings.value_registry = [];
+//settings.value_registry = [];
 
 
 //var config_options = settings.config_options = settings.config_options || {};
@@ -168,6 +171,41 @@ settings.webpage.selected_modules = {};
 
 
 settings.components = {};
+
+
+
+
+
+// Load functions and add them the the global object
+var f = require('./functions');
+f.g = settings;
+settings.f = f;
+
+
+
+
+// Load modules
+
+f.setup_webpage = require('./setup_webpage');
+
+f.process = require('./process');
+f.settings_dev_defaults = require('./settings_dev_defaults');
+
+
+f.mk_blocks = require('./mk_blocks');
+
+f.mk_page = {};
+f.mk_page[1] = require('./mk_page_1');
+f.mk_page[2] = require('./mk_page_2');
+f.mk_page[3] = require('./mk_page_3');
+f.mk_page[4] = require('./mk_page_4');
+
+f.mk_preview = {};
+f.mk_preview[1] = require('./mk_page_preview_1');
+f.mk_preview[2] = require('./mk_page_preview_2');
+
+f.mk_svg= require('./mk_svg');
+
 
 
 

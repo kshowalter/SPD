@@ -1,15 +1,7 @@
 'use strict';
 
-var f = require('./functions.js');
-
-//var settings = require('./settings.js');
-//var l_attr = settings.drawing.l_attr;
-//var _ = require('underscore');
-// setup drawing containers
-
-var settings = require('./settings');
-var layer_attr = settings.drawing_settings.layer_attr;
-var fonts = settings.drawing_settings.fonts;
+var layer_attr = require('./settings_layers');
+var fonts = require('./settings_fonts');
 
 
 
@@ -530,9 +522,9 @@ var Table = {
                     var cell = this.cell(r,c);
                     var font_name = cell.cell_font_name || 'table';
                     var coor;
-                    if( g.drawing_settings.fonts[font_name]['text-anchor'] === 'center') coor = this.center(r,c);
-                    else if( g.drawing_settings.fonts[font_name]['text-anchor'] === 'right') coor = this.right(r,c);
-                    else if( g.drawing_settings.fonts[font_name]['text-anchor'] === 'left') coor = this.left(r,c);
+                    if( fonts[font_name]['text-anchor'] === 'center') coor = this.center(r,c);
+                    else if( fonts[font_name]['text-anchor'] === 'right') coor = this.right(r,c);
+                    else if( fonts[font_name]['text-anchor'] === 'left') coor = this.left(r,c);
                     else coor = this.center(r,c);
 
                     this.drawing.text(

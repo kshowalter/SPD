@@ -1,9 +1,7 @@
 'use strict';
 
-var f = g.f;
 
-
-var settings_update = function(settings) {
+var settings_dev_defaults = function(settings) {
     console.log('Dev mode - defaults on');
 
     //console.log('---settings---', settings);
@@ -17,7 +15,7 @@ var settings_update = function(settings) {
     if( state.database_loaded ){
         inputs.DC = settings.inputs.DC || {};
         inputs.DC.wire_size = settings.inputs.DC.wire_size || {};
-        inputs.DC.wire_size.options = inputs.DC.wire_size.options || f.obj_names(settings.config_options.NEC_tables['Ch 9 Table 8 Conductor Properties']);
+        inputs.DC.wire_size.options = inputs.DC.wire_size.options || g.f.obj_names(settings.config_options.NEC_tables['Ch 9 Table 8 Conductor Properties']);
 
 
     }
@@ -42,21 +40,20 @@ var settings_update = function(settings) {
 
 
     if( state.database_loaded ){
-        user_input.inverter.make = user_input.inverter.make ||
-            'SMA';
-        user_input.inverter.model = user_input.inverter.model ||
-            'SI3000';
 
         user_input.module.make = user_input.module.make ||
-            f.obj_names( settings.components.modules )[0];
-        //if( user_input.module.make) settings.config_options.moduleModelArray = k.objIdArray(settings.config_options.modules[system.module.make]);
+            g.f.obj_names( settings.components.modules )[0];
         user_input.module.model = user_input.module.model ||
-            f.obj_names( settings.components.modules[user_input.module.make] )[0];
+            g.f.obj_names( settings.components.modules[user_input.module.make] )[0];
 
+        user_input.inverter.make = user_input.inverter.make ||
+            g.f.obj_names( settings.components.inverters )[0];
+        user_input.inverter.model = user_input.inverter.model ||
+            g.f.obj_names( settings.components.inverters[user_input.inverter.make] )[0];
 
 
         user_input.AC.loadcenter_types = user_input.AC.loadcenter_types ||
-        //    f.obj_names(inputs.AC.loadcenter_types)[0];
+        //    g.f.obj_names(inputs.AC.loadcenter_types)[0];
             '480/277V';
 
 
@@ -94,4 +91,4 @@ var settings_update = function(settings) {
 
 
 
-module.exports = settings_update;
+module.exports = settings_dev_defaults;

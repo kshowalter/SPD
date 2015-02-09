@@ -1,43 +1,24 @@
 
 
-var update = function(){
+var update_webpage = function(){
     var settings = g;
     var f = g.f;
 
-    console.log('/--- begin update');
-    f.clear_drawing();
 
-
-    settings.select_registry.forEach(function(selector){
-        //console.log(selector.value());
-        //if(selector.value()) selector.system_ref.set(selector.value());
-        if(selector.value()) selector.input_ref.set(selector.value());
-        //console.log(selector.set_ref.refString, selector.value(), selector.set_ref.get());
-
-    });
-
-    //copy inputs from settings.input to settings.system.
-    f.merge_objects(g.user_input, g.system);
-
-
-
+// update web page
+    // set maps markers
     if( g.perm.location.lat && g.perm.location.lon) {
         f.set_sat_map_marker();
     }
 
-
-    f.settings_update(settings);
-
+    // change user inputs to defaults if needed.
+    // This also updates the drop list elements that are dependent on other inputs ( model list is based on selected make).
     settings.select_registry.forEach(function(selector){
         if( selector.type === 'select' ){
             f.selector_add_options(selector);
         } else if( selector.type === 'number_input' || selector.type === 'text_input' ) {
             selector.elem.value = selector.system_ref.get();
         }
-    });
-
-    settings.value_registry.forEach(function(value_item){
-        value_item.elem.innerHTML = value_item.value_ref.get();
     });
 
     // Determine active section based on section inputs entered by user
@@ -68,16 +49,18 @@ var update = function(){
             $('#section_map').children('.drawer').children('.drawer_content').slideDown('fast');
     }
 
-    // Make blocks
-    f.mk_blocks();
 
     // Make preview
     settings.drawing.preview_parts = {};
     settings.drawing.preview_svgs = {};
-    $('#drawing_preview').empty().html('');
     for( var p in f.mk_preview ){
         settings.drawing.preview_parts[p] = f.mk_preview[p](settings);
         settings.drawing.preview_svgs[p] = f.mk_svg(settings.drawing.preview_parts[p], settings);
+    }
+
+    // Add preview to page
+    $('#drawing_preview').empty().html('');
+    for( var p in f.mk_preview ){
         var section = ['','Electrical','Structural'][p];
         $('#drawing_preview')
             //.append($('<p>Page '+p+'</p>'))
@@ -89,14 +72,9 @@ var update = function(){
     }
 
 
-
-    // Make drawing
-    settings.drawing.parts = {};
-    settings.drawing.svgs = {};
+    // Add drawing to page
     $('#drawing').empty().html('Electrical');
     for( p in f.mk_page ){
-        settings.drawing.parts[p] = f.mk_page[p](settings);
-        settings.drawing.svgs[p] = f.mk_svg(settings.drawing.parts[p], settings);
         $('#drawing')
             //.append($('<p>Page '+p+'</p>'))
             .append($(settings.drawing.svgs[p]))
@@ -106,30 +84,7 @@ var update = function(){
     }
 
 
-    //var site_plan_element = document.createElementNS("http://www.w3.org/2000/svg", "image");
-    //var site_plan_img = $(site_plan_element)
-    //    .attr('x',100)
-    //    .attr('y',100)
-    //    .prependTo(
-    //        $('#drawing').children('.svg_drawing')[0]
-    //    );
-    //L_PREFER_CANVAS = true;
-    //var map = g.perm.maps.map_road;
-    //leafletImage( map, function(err, canvas) {
-    //    // now you have canvas
-    //    // example thing to do with that canvas:
-    //    var img = document.createElement('img');
-    //    var dimensions = map.getSize();
-    //    img.width = dimensions.x;
-    //    img.height = dimensions.y;
-    //    img.src = canvas.toDataURL();
-    //    console.log(img);
-    //    $('body').append(img);
-    //});
-
-
-    console.log('\\--- end update');
 };
 
 
-module.exports = update;
+module.exports = update_webpage;

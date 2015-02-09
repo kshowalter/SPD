@@ -414,66 +414,67 @@ f.add_options = function(select, array){
     });
 };
 
-f.add_params = function(settings, parent_container){
-    for( var section_name in settings.system ){
-        if( true || f.object_defined(settings.system[section_name]) ){
-            var selection_container = $('<div>').attr('class', 'param_section').attr('id', section_name ).appendTo(parent_container);
-            //selection_container.get(0).style.display = display_type;
-            var system_div = $('<div>')
-                .attr('class', 'title_line')
-                .appendTo(selection_container)
-                /* jshint -W083 */
-                .click(function(){
-                    $(this).parent().children('.drawer').children('.drawer_content').slideToggle('fast');
-                });
-            var system_title = $('<a>')
-                .attr('class', 'title_line_text')
-                .attr('href', '#')
-                .text(f.pretty_name(section_name))
-                .appendTo(system_div);
-            $(this).trigger('click');
-            var drawer = $('<div>').attr('class', '').appendTo(selection_container);
-            var drawer_content = $('<div>').attr('class', 'param_section_content').appendTo(drawer);
-            for( var input_name in settings.system[section_name] ){
-                $('<span>').html(f.pretty_name(input_name) + ': ').appendTo(drawer_content);
-                /*
-                var selector = k$('value')
-                    //.setOptionsRef( 'inputs.' + section_name + '.' + input_name )
-                    .setRef( 'system.' + section_name + '.' + input_name )
-                    .appendTo(drawer_content);
-                f.kelem_setup(selector, settings);
-                //*/
-                var value_kontainer = Object.create(kontainer)
-                    .obj(settings)
-                    .ref('system.' + section_name + '.' + input_name);
-                var $elem = $('<span>')
-                    .attr('class', '')
-                    .appendTo(drawer_content)
-                    .text(value_kontainer.get());
-                var value = {
-                    elem: $elem.get()[0],
-                    value_ref: value_kontainer
-                };
-                settings.value_registry.push(value);
-                $('</br>').appendTo(drawer_content);
-            }
-        }
-    }
-};
 
-f.update_values = function(settings){
-    settings.value_registry.forEach(function(value_item){
-        //console.log( value_item );
-        //console.log( value_item.elem.options );
-        //console.log( value_item.elem.selectedIndex );
-        if(value_item.elem.selectedIndex){
-            value_item.value = value_item.elem.options[value_item.elem.selectedIndex].value;
-            value_item.kontainer.set(value_item.value);
-
-        }
-    });
-};
-
+//f.add_params = function(settings, parent_container){
+//    for( var section_name in settings.system ){
+//        if( true || f.object_defined(settings.system[section_name]) ){
+//            var selection_container = $('<div>').attr('class', 'param_section').attr('id', section_name ).appendTo(parent_container);
+//            //selection_container.get(0).style.display = display_type;
+//            var system_div = $('<div>')
+//                .attr('class', 'title_line')
+//                .appendTo(selection_container)
+//                /* jshint -W083 */
+//                .click(function(){
+//                    $(this).parent().children('.drawer').children('.drawer_content').slideToggle('fast');
+//                });
+//            var system_title = $('<a>')
+//                .attr('class', 'title_line_text')
+//                .attr('href', '#')
+//                .text(f.pretty_name(section_name))
+//                .appendTo(system_div);
+//            $(this).trigger('click');
+//            var drawer = $('<div>').attr('class', '').appendTo(selection_container);
+//            var drawer_content = $('<div>').attr('class', 'param_section_content').appendTo(drawer);
+//            for( var input_name in settings.system[section_name] ){
+//                $('<span>').html(f.pretty_name(input_name) + ': ').appendTo(drawer_content);
+//                /*
+//                var selector = k$('value')
+//                    //.setOptionsRef( 'inputs.' + section_name + '.' + input_name )
+//                    .setRef( 'system.' + section_name + '.' + input_name )
+//                    .appendTo(drawer_content);
+//                f.kelem_setup(selector, settings);
+//                //*/
+//                var value_kontainer = Object.create(kontainer)
+//                    .obj(settings)
+//                    .ref('system.' + section_name + '.' + input_name);
+//                var $elem = $('<span>')
+//                    .attr('class', '')
+//                    .appendTo(drawer_content)
+//                    .text(value_kontainer.get());
+//                var value = {
+//                    elem: $elem.get()[0],
+//                    value_ref: value_kontainer
+//                };
+//                settings.value_registry.push(value);
+//                $('</br>').appendTo(drawer_content);
+//            }
+//        }
+//    }
+//};
+//
+//f.update_values = function(settings){
+//    settings.value_registry.forEach(function(value_item){
+//        //console.log( value_item );
+//        //console.log( value_item.elem.options );
+//        //console.log( value_item.elem.selectedIndex );
+//        if(value_item.elem.selectedIndex){
+//            value_item.value = value_item.elem.options[value_item.elem.selectedIndex].value;
+//            value_item.kontainer.set(value_item.value);
+//
+//        }
+//    });
+//};
+//
 //f.show_hide_params = function(page_sections, settings){
 //    for( var list_name in page_sections ){
 //        var id = '#'+list_name;

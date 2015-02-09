@@ -11,46 +11,49 @@
     //var version_string = 'Alpha201401--';
     var version_string = 'Preview'+moment().format('YYYYMMDD');
     g.state.version_string = version_string;
-
-    // Load functions and add them the the global object
-    var f = require('./app/functions');
-    f.g = g;
-    g.f = f;
-
     // Load and URL query variables
-    var query = f.query_string();
+    var query = g.f.query_string();
     //console.log(query);
 
+    var update_webpage = require('./app/update_webpage');
+
+    g.f.update = function(){
+        var settings = g;
+        var f = g.f;
+
+        console.log('/--- begin update');
+        g.f.clear_drawing();
+
+        settings.select_registry.forEach(function(selector){
+            if(selector.value()) selector.input_ref.set(selector.value());
+        });
+
+        // recalculate system settings
+        g.f.process(settings);
+
+        update_webpage();
+
+        console.log('\\--- end update');
+    };
 
 
-// Load modules
+// request external data
 
-    f.setup_webpage = require('./app/setup_webpage');
-
-    f.settings_update = require('./app/settings_update');
-    f.settings_dev_defaults = require('./app/settings_dev_defaults');
-    f.update = require('./app/update');
-
-
-    f.mk_blocks = require('./app/mk_blocks');
-
-    f.mk_page = {};
-    f.mk_page[1] = require('./app/mk_page_1');
-    f.mk_page[2] = require('./app/mk_page_2');
-    f.mk_page[3] = require('./app/mk_page_3');
-    f.mk_page[4] = require('./app/mk_page_4');
-
-    f.mk_preview = {};
-    f.mk_preview[1] = require('./app/mk_page_preview_1');
-    f.mk_preview[2] = require('./app/mk_page_preview_2');
-
-    f.mk_svg= require('./app/mk_svg');
-
-
-    f.request_SVG = function(){
+    g.f.request_SVG = function(){
+    /*
         console.log('sending data to server');
-        var url = 'http://localhost:3000/';
-        $.getJSON( url , { data: g.user_input })
+        var url = 'http://localhost:3000/plans_machine';
+        var user_input_json = JSON.stringify(g.user_input);
+        var data = { user_input_json: user_input_json};
+        //var data = {
+        //    test:42,
+        //    test2:23,
+        //};
+        $.ajax({
+                type: "POST",
+                url: url,
+                data: data,
+            })
             .done(function(res){
                 console.log('server responce?', res);
 
@@ -62,25 +65,25 @@
                 console.log( "complete" );
             });
 
+    //*/
     };
 
-// request external data
     //var database_json_URL = 'http://10.173.64.204:8000/temporary/';
     var database_json_URL = 'data/fsec_copy.json';
     $.getJSON( database_json_URL)
         .done(function(json){
             g.database = json;
             //console.log('database loaded', settings.database);
-            f.load_database(json);
+            g.f.load_database(json);
             g.state.database_loaded = true;
             if( g.state.mode === 'dev'){
-                f.settings_dev_defaults(g);
+                g.f.settings_dev_defaults(g);
             }
-            f.update();
+            g.f.update();
 
             ////////
             // TEMP
-            f.request_SVG();
+            g.f.request_SVG();
             ////////
         });
 
@@ -96,15 +99,15 @@
 
 
     if( g.state.mode === 'dev'){
-        f.settings_dev_defaults(g);
+        g.f.settings_dev_defaults(g);
     }
 
-    f.setup_webpage();
+    g.f.setup_webpage();
 
     // Add status bar
     var boot_time = moment();
     var status_id = 'status';
-    setInterval(function(){ f.update_status_bar(status_id, boot_time, version_string);},1000);
+    setInterval(function(){ g.f.update_status_bar(status_id, boot_time, version_string);},1000);
 
 // Update
-    f.update();
+    g.f.update();
