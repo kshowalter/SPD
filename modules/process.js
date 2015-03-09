@@ -2,7 +2,7 @@
 
 
 var process = function(settings) {
-    var f = g.f;
+    var f = settings.f;
 
     //copy inputs from settings.input to settings.system.
     f.merge_objects(settings.user_input, settings.system);
@@ -106,12 +106,12 @@ var process = function(settings) {
     if( f.section_defined('location') ){
         //console.log('address ready');
         //f.request_geocode();
-        g.perm.location.new_address = false;
-        for( var name in g.system.location ){
-            if( g.system.location[name] !== g.perm.location[name]){
-                g.perm.location.new_address = true;
+        settings.perm.location.new_address = false;
+        for( var name in settings.system.location ){
+            if( settings.system.location[name] !== settings.perm.location[name]){
+                settings.perm.location.new_address = true;
             }
-            g.perm.location[name] = g.system.location[name];
+            settings.perm.location[name] = settings.system.location[name];
         }
 
     }
