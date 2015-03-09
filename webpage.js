@@ -40,9 +40,9 @@
 // request external data
 
     g.f.request_SVG = function(){
-    /*
+    //*
         console.log('sending data to server');
-        var url = 'http://localhost:3000/plans_machine';
+        var url = 'http://localhost:4233/plans_machine';
         var user_input_json = JSON.stringify(g.user_input);
         var data = { user_input_json: user_input_json};
         //var data = {
