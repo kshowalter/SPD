@@ -1,71 +1,93 @@
 'use strict';
-//var version_string = 'Dev';
-//var version_string = 'Alpha201401--';
-var version_string = 'Preview'+moment().format('YYYYMMDD');
 
 
-
-window.g = require('./app/settings');
-console.log('settings', g);
-
-g.state.version_string = version_string;
-
-var f = require('./app/functions');
-f.g = g;
-g.f = f;
-
-var query = f.query_string();
-//console.log(query);
-if( query['mode'] === "dev" ) {
-    g.state.mode = 'dev';
-} else {
-    g.state.mode = 'release';
-}
-
-f.setup_webpage = require('./app/setup_webpage');
-
-f.settings_update = require('./app/settings_update');
-f.update = require('./app/update');
+// Setup
+    // Load and create main settings, and save them to the root global object.
+    //g = require('./modules/settings');
+    //console.log('settings', g);
 
 
-f.mk_blocks = require('./app/mk_blocks');
-
-f.mk_page = {};
-f.mk_page[1] = require('./app/mk_page_1');
-f.mk_page[2] = require('./app/mk_page_2');
-f.mk_page[3] = require('./app/mk_page_3');
-f.mk_page[4] = require('./app/mk_page_4');
-
-f.mk_preview = {};
-f.mk_preview[1] = require('./app/mk_page_preview_1');
-f.mk_preview[2] = require('./app/mk_page_preview_2');
-
-f.mk_svg= require('./app/mk_svg');
-
-
-
-
-// request external data
-//var database_json_URL = 'http://10.173.64.204:8000/temporary/';
-var database_json_URL = 'data/fsec_copy.json';
-$.getJSON( database_json_URL)
-    .done(function(json){
-        g.database = json;
-        //console.log('database loaded', settings.database);
-        f.load_database(json);
-        g.state.database_loaded = true;
-        f.update();
-
-    });
-
-
-// Build webpage
-f.setup_webpage();
-
-// Add status bar
-var boot_time = moment();
-var status_id = 'status';
-setInterval(function(){ f.update_status_bar(status_id, boot_time, version_string);},1000);
 
 // Update
-f.update();
+    //g.f.update();
+
+
+
+var sys = require("sys"),
+my_http = require("http"),
+path = require("path"),
+url = require("url"),
+filesys = require("fs");
+my_http.createServer(function(request,response){
+    var my_path = url.parse(request.url).pathname;
+    var full_path = path.join(process.cwd(),my_path);
+    path.exists(full_path,function(exists){
+        if(!exists){
+            response.writeHeader(404, {"Content-Type": "text/plain"});
+            response.write("404 Not Found\n");
+            response.end();
+        }
+        else{
+            filesys.readFile(full_path, "binary", function(err, file) {
+                 if(err) {
+                     response.writeHeader(500, {"Content-Type": "text/plain"});
+                     response.write(err + "\n");
+                     response.end();
+
+                 }
+                 else{
+                    response.writeHeader(200);
+                    response.write(file, "binary");
+                    response.end();
+                }
+
+            });
+        }
+    });
+}).listen(8080);  
+
+
+
+
+
+router.post('/', function(req, res, next) {
+
+    console.log('/ plans machine');
+
+
+    //console.log( req.body.user_input_json );
+    var user_input =  JSON.parse( req.body.user_input_json );
+    console.log('user_input', user_input);
+    console.log('address', user_input.location.address);
+    console.log('- plans machine');
+    //for( var name in user_input){
+    //    console.log( name );
+    //}
+    /*
+    // parse URL
+    var url_parts = url.parse(req.url);
+    // parse query
+    var raw = querystring.parse(url_parts.query);
+    // some juggling e.g. for data from jQuery ajax() calls.
+    console.log( 'raw', raw );
+    var data = raw ? raw : {};
+    data = raw.data ? JSON.parse(raw.data) : data;
+
+
+    console.log( data );
+    //console.log( data.user_input_json );
+    //var user_input = JSON.parse(data.user_input_json);
+
+    //*/
+
+    //console.log( user_input );
+
+    console.log('- plans machine');
+    //console.log( JSON.parse(req.data) );
+    console.log('\\ plans machine');
+
+
+    //*/
+
+    res.send('plans machine');
+});

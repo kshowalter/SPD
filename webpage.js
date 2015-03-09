@@ -3,7 +3,7 @@
 
 // Setup
     // Load and create main settings, and save them to the root global object.
-    window.g = require('./app/settings');
+    window.g = require('./modules/settings');
     console.log('settings', g);
 
 
@@ -15,7 +15,7 @@
     var query = g.f.query_string();
     //console.log(query);
 
-    var update_webpage = require('./app/update_webpage');
+    var update_webpage = require('./modules/update_webpage');
 
     g.f.update = function(){
         var settings = g;
