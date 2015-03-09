@@ -8,6 +8,8 @@
         "transform": [ "browserify-shim" ]
     },
     "dependencies": {
+        "express": "latest",
+        "body-parser": "latest",
         "underscore": "latest",
         "moment": "latest",
         "jquery": "latest",
