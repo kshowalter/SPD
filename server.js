@@ -1,14 +1,40 @@
 'use strict';
 
+    console.log('Starting server');
 
+    var f = require('./modules/functions');
+    var state = {};
 
 // Setup
     // Load and create main settings, and save them to the root global object.
-    var settings = require('./modules/settings');
-    var f = settings.f;
+    var mk_settings = require('./modules/mk_settings');
     //console.log('settings', g);
 
+    var request = require('request');
 
+    //var database_json_URL = 'http://10.173.64.204:8000/temporary/';
+    var database_json_URL = 'http://localhost:3636/plans_machine/data/fsec_copy.json';
+
+    var component_database;
+
+    request({
+            url: database_json_URL,
+            json: true
+        },
+        function (error, response, body) { // body is json string
+            if (!error && response.statusCode == 200) {
+                var database_json = body;
+                //console.log('database loaded', settings.database);
+                component_database = f.load_database(body);
+                state.database_loaded = true;
+
+
+                console.log('Database loaded' ); // Show the HTML for the Google homepage.
+            } else {
+                console.log('error', error);
+                console.log('response.statusCode', response.statusCode);
+            }
+        });
 
 // Update
     //g.f.update();
@@ -68,6 +94,11 @@
     app.post('/plans_machine', function(req, res, next) {
 
         console.log('/ plans machine');
+
+        var settings = mk_settings();
+        var f = settings.f;
+
+
 
         //console.log( 'body', req.body );
         //for( var name in req.body ){
