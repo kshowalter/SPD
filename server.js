@@ -17,7 +17,8 @@
 
     var component_database;
 
-    request({
+    function get_database() {
+        request({
             url: database_json_URL,
             json: true
         },
@@ -30,11 +31,17 @@
 
 
                 console.log('Database loaded' ); // Show the HTML for the Google homepage.
-            } else {
+            } else if(response){
                 console.log('error', error);
                 console.log('response.statusCode', response.statusCode);
+            } else {
+                console.log('error', error);
+
             }
         });
+    }
+    get_database();
+    setInterval(get_database, 600000);
 
 // Update
     //g.f.update();
@@ -70,25 +77,7 @@
         res.send('Hello Drawing!');
     });
 
-// Get database data
-    //var database_json_URL = 'http://10.173.64.204:8000/temporary/';
-    var database_json_URL = 'data/fsec_copy.json';
-    //$.getJSON( database_json_URL)
-    //    .done(function(json){
-    //        g.database = json;
-    //        //console.log('database loaded', settings.database);
-    //        g.f.load_database(json);
-    //        g.state.database_loaded = true;
-    //        if( g.state.mode === 'dev'){
-    //            g.f.settings_dev_defaults(g);
-    //        }
-    //        g.f.update();
 
-    //        ////////
-    //        // TEMP
-    //        g.f.request_SVG();
-    //        ////////
-    //    });
 
 // Plans machine function
     app.post('/plans_machine', function(req, res, next) {
