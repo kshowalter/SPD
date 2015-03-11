@@ -568,22 +568,23 @@ f.add_options = function(select, array){
 
 
 
-f.load_database = function(FSEC_database_JSON){
-    FSEC_database_JSON = f.lowercase_properties(FSEC_database_JSON);
-    g.components.inverters = {};
-    FSEC_database_JSON.inverters.forEach(function(component){
-        if( g.components.inverters[component.make] === undefined ) g.components.inverters[component.make] = {};
-        //g.components.inverters[component.make][component.make] = f.pretty_names(component);
-        g.components.inverters[component.make][component.model] = component;
+f.load_database = function(FSEC_database_obj){
+    FSEC_database_obj = f.lowercase_properties(FSEC_database_obj);
+    var components = {};
+    components.inverters = {};
+    FSEC_database_obj.inverters.forEach(function(component){
+        if( components.inverters[component.make] === undefined ) components.inverters[component.make] = {};
+        //components.inverters[component.make][component.make] = f.pretty_names(component);
+        components.inverters[component.make][component.model] = component;
     });
-    g.components.modules = {};
-    FSEC_database_JSON.modules.forEach(function(component){
-        if( g.components.modules[component.make] === undefined ) g.components.modules[component.make] = {};
-        //g.components.modules[component.make][component.make] = f.pretty_names(component);
-        g.components.modules[component.make][component.model] = component;
+    components.modules = {};
+    FSEC_database_obj.modules.forEach(function(component){
+        if( components.modules[component.make] === undefined ) components.modules[component.make] = {};
+        //components.modules[component.make][component.make] = f.pretty_names(component);
+        components.modules[component.make][component.model] = component;
     });
 
-    f.update();
+    return components;
 };
 
 

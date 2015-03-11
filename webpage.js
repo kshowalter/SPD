@@ -3,7 +3,9 @@
 
 // Setup
     // Load and create main settings, and save them to the root global object.
-    window.g = require('./modules/settings');
+    var mk_settings = require('./modules/mk_settings');
+    window.g = mk_settings();
+
     console.log('settings', g);
 
 
@@ -71,10 +73,10 @@
     //var database_json_URL = 'http://10.173.64.204:8000/temporary/';
     var database_json_URL = 'data/fsec_copy.json';
     $.getJSON( database_json_URL)
-        .done(function(json){
-            g.database = json;
+        .done(function(data){
+            g.FSEC_database = data;
             //console.log('database loaded', settings.database);
-            g.f.load_database(json);
+            g.components = g.f.load_database(data);
             g.state.database_loaded = true;
             if( g.state.mode === 'dev'){
                 g.f.settings_dev_defaults(g);
