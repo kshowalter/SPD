@@ -10,15 +10,10 @@
     "dependencies": {
         "express": "latest",
         "body-parser": "latest",
+        "request": "latest",
         "underscore": "latest",
         "moment": "latest",
-        "jquery": "latest",
-        "snapsvg": "latest",
-        "brfs": "1.0.2",
-        "pdfkit": "latest",
-        "blob-stream": "latest",
-        "js-yaml": "latest",
-        "jsoneditor": "latest"
+        "jquery": "latest"
     },
     "devDependencies": {
         "browserify": "^5.11.0",
