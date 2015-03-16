@@ -86,6 +86,7 @@
 
         var settings = mk_settings();
         var f = settings.f;
+        settings.components = component_database;
 
 
 
