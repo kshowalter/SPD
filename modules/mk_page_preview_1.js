@@ -37,7 +37,7 @@ var page = function(settings){
 
 // TODO fix: sections must be defined in order, or there are areas
 
-    if( f.section_defined('array') && f.section_defined('module') ){
+    if( f.section_defined(g, 'array') && f.section_defined(g, 'module') ){
         d.layer('preview_array');
 
         w = size.preview.module.w;
@@ -98,7 +98,7 @@ var page = function(settings){
         );
     }
 
-    if( f.section_defined('DC') ){
+    if( f.section_defined(g, 'DC') ){
         d.layer('preview_DC');
 
         //y = y;
@@ -119,7 +119,7 @@ var page = function(settings){
 
     }
 
-    if( f.section_defined('inverter') ){
+    if( f.section_defined(g, 'inverter') ){
 
         d.layer('preview_inverter');
 
@@ -143,7 +143,7 @@ var page = function(settings){
         );
     }
 
-    if( f.section_defined('AC') ){
+    if( f.section_defined(g, 'AC') ){
 
         d.layer('preview_AC');
 

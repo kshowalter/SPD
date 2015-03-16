@@ -68,11 +68,11 @@ f.object_defined = function(object){
     return true;
 };
 
-f.section_defined = function(section_name){
+f.section_defined = function(settings, section_name){
     //console.log("-"+section_name);
     //var input_section = g.inputs[section_name];
     //var output_section = g.system[section_name];
-    var output_section = g.user_input[section_name];
+    var output_section = settings.user_input[section_name];
     for( var key in output_section ){
         if( output_section.hasOwnProperty(key) ){
             //console.log(key);
@@ -737,7 +737,7 @@ f.query_string = function () {
 };
 
 f.request_geocode = function(){
-    if( f.section_defined('location') ){
+    if( f.section_defined(g, 'location') ){
         var address_new = g.perm.location.new_address;
 
         if( address_new || g.perm.location.lat === undefined || g.perm.location.lat === undefined ) {

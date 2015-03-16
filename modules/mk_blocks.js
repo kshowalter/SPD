@@ -3,18 +3,18 @@ var mk_drawing = require('./mk_drawing');
 //var drawing_parts = [];
 //d.link_drawing_parts(drawing_parts);
 
-var page = function(){
+var page = function(settings){
     console.log("** Making page 2");
     d = mk_drawing();
 
-    var f = g.f;
+    var f = settings.f;
 
-    //var components = g.components;
-    //var system = g.system;
-    var system = g.system;
+    //var components = settings.components;
+    //var system = settings.system;
+    var system = settings.system;
 
-    var size = g.drawing_settings.size;
-    var loc = g.drawing_settings.loc;
+    var size = settings.drawing_settings.size;
+    var loc = settings.drawing_settings.loc;
 
 
 

@@ -100,7 +100,7 @@ var add_border = function(settings, sheet_section, sheet_num){
     }
 
     x += 14;
-    if( g.f.section_defined('location')  ){
+    if( g.f.section_defined(g, 'location')  ){
         d.text([x,y], [
             g.perm.location.address,
             g.perm.location.city + ', ' + g.perm.location.county + ', FL, ' + g.perm.location.zip,

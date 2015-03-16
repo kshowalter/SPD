@@ -29,7 +29,7 @@ var page = function(settings){
 
 
     for( var section_name in settings.system ){
-        if( f.section_defined(section_name) ){
+        if( f.section_defined(g, section_name) ){
             var section = settings.system[section_name];
 
             var n = Object.keys(section).length;

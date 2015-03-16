@@ -33,7 +33,7 @@ var page = function(settings){
 
 ////////////////////////////////////////
 //#array
-    if( f.section_defined('module') && f.section_defined('array') ){
+    if( f.section_defined(g, 'module') && f.section_defined(g, 'array') ){
         d.section('array');
 
 
@@ -94,7 +94,7 @@ var page = function(settings){
 ///////////////////////////////
 // combiner box
 
-    if( f.section_defined('DC') ){
+    if( f.section_defined(g, 'DC') ){
 
         d.section("combiner");
 
@@ -266,7 +266,7 @@ var page = function(settings){
 
 ///////////////////////////////
 //#inverter
-    if( f.section_defined('inverter') ){
+    if( f.section_defined(g, 'inverter') ){
 
         d.section("inverter");
 
@@ -373,7 +373,7 @@ var page = function(settings){
 
 
 //#AC_discconect
-    if( f.section_defined('AC') ){
+    if( f.section_defined(g, 'AC') ){
         d.section("AC_discconect");
 
         x = loc.AC_disc.x;
@@ -467,7 +467,7 @@ var page = function(settings){
         y = loc.AC_disc.y + size.AC_disc.h/2;
         y -= padding*2;
 
-        if( system.AC.conductors.indexOf('ground')+1 ) {
+        if( system.AC.conductors && system.AC.conductors.indexOf('ground')+1 ) {
             d.layer('AC_ground');
             d.line([
                 [ x-size.AC_disc.w/2, y ],
@@ -482,7 +482,7 @@ var page = function(settings){
             ]);
         }
 
-        if( system.AC.conductors.indexOf('neutral')+1 ) {
+        if( system.AC.conductors && system.AC.conductors.indexOf('neutral')+1 ) {
             y -= padding;
             d.layer('AC_neutral');
             d.line([
@@ -498,7 +498,7 @@ var page = function(settings){
 
 
         for( var i=1; i <= 3; i++ ) {
-            if( system.AC.conductors.indexOf('L'+i)+1 ) {
+            if( system.AC.conductors && system.AC.conductors.indexOf('L'+i)+1 ) {
                 y -= padding;
                 d.layer('AC_L'+i);
                 d.line([

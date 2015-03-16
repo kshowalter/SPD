@@ -23,7 +23,7 @@ var page = function(settings){
         'project title'
     );
 
-    if( g.f.section_defined('location')  ){
+    if( g.f.section_defined(g, 'location')  ){
         d.text(
             [size.drawing.w*1/2, size.drawing.h*1/3 +30],
             [

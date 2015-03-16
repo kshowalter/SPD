@@ -7,7 +7,7 @@ var page = function(settings){
 
     var d = mk_drawing();
 
-    if( f.section_defined('roof') ){
+    if( f.section_defined(g, 'roof') ){
 
         var size = settings.drawing_settings.size;
         var loc = settings.drawing_settings.loc;
@@ -216,7 +216,7 @@ var page = function(settings){
 
             //////
             // Module options
-            if( f.section_defined('module') && f.section_defined('array')){
+            if( f.section_defined(g, 'module') && f.section_defined(g, 'array')){
                 var r,c;
 
                 var roof_length_avail = system.roof.length - (a*2);

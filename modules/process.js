@@ -49,7 +49,7 @@ var process = function(settings) {
         //system.module.specs = settings.components.modules[system.module.make][system.module.model];
     }
 
-    if( f.section_defined('array') && f.section_defined('module') ){
+    if( f.section_defined(settings, 'array') && f.section_defined(settings, 'module') ){
         system.array = system.array || {};
         system.array.isc = system.module.isc * system.array.num_strings;
         system.array.voc = system.module.voc * system.array.modules_per_string;
@@ -63,7 +63,7 @@ var process = function(settings) {
     }
 
 
-    if( f.section_defined('DC') ){
+    if( f.section_defined(settings, 'DC') ){
 
         system.DC.wire_size = "-Undefined-";
 
@@ -73,7 +73,7 @@ var process = function(settings) {
     if( system.inverter.make ) {
         inputs.inverter.model.options = f.obj_names( settings.components.inverters[system.inverter.make] );
     }
-    if( f.section_defined('inverter') ){
+    if( f.section_defined(settings, 'inverter') ){
 
     }
 
@@ -91,7 +91,7 @@ var process = function(settings) {
         system.AC.num_conductors = system.AC.conductors.length;
 
     }
-    if( f.section_defined('AC') ){
+    if( f.section_defined(settings, 'AC') ){
 
         system.AC.wire_size = "-Undefined-";
     }
@@ -103,7 +103,7 @@ var process = function(settings) {
 
 
 
-    if( f.section_defined('location') ){
+    if( f.section_defined(settings, 'location') ){
         //console.log('address ready');
         //f.request_geocode();
         settings.perm.location.new_address = false;
@@ -123,7 +123,7 @@ var process = function(settings) {
 // Update drawing
 
     // Make blocks
-    f.mk_blocks();
+    f.mk_blocks(settings);
 
     // Make drawing
     settings.drawing.parts = {};
