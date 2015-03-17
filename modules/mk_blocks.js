@@ -5,7 +5,7 @@ var mk_drawing = require('./mk_drawing');
 
 var page = function(settings){
     console.log("** Making blocks");
-    d = mk_drawing(g);
+    d = mk_drawing(settings);
 
     var f = settings.f;
 

@@ -1,3 +1,7 @@
+'use strict';
+
+var _ = require('underscore');
+
 var mk_drawing = require('./mk_drawing');
 var mk_border = require('./mk_border');
 
@@ -6,7 +10,7 @@ var mk_border = require('./mk_border');
 
 var page = function(settings){
     console.log("** Making page 2");
-    d = mk_drawing(g);
+    d = mk_drawing(settings);
     var sheet_section = 'PV';
     var sheet_num = '01';
     d.append(mk_border(settings, sheet_section, sheet_num ));

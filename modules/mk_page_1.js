@@ -4,7 +4,7 @@ var mk_border = require('./mk_border');
 var page = function(settings){
     console.log("** Making page 1");
 
-    var d = mk_drawing(g);
+    var d = mk_drawing(settings);
 
     var sheet_section = 'A';
     var sheet_num = '00';
@@ -24,12 +24,12 @@ var page = function(settings){
         'project title'
     );
 
-    if( g.f.section_defined(g, 'location')  ){
+    if( settings.f.section_defined(settings, 'location')  ){
         d.text(
             [size.drawing.w*1/2, size.drawing.h*1/3 +30],
             [
-                g.perm.location.address,
-                g.perm.location.city + ', ' + g.perm.location.county + ', FL, ' + g.perm.location.zip,
+                settings.perm.location.address,
+                settings.perm.location.city + ', ' + settings.perm.location.county + ', FL, ' + settings.perm.location.zip,
             ],
             null,
             'project title'

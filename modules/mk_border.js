@@ -4,7 +4,7 @@ var mk_drawing = require('./mk_drawing');
 //d.link_drawing_parts(drawing_parts);
 
 var add_border = function(settings, sheet_section, sheet_num){
-    d = mk_drawing(g);
+    d = mk_drawing(settings);
     var f = settings.f;
 
     //var components = settings.components;
@@ -102,10 +102,10 @@ var add_border = function(settings, sheet_section, sheet_num){
     }
 
     x += 14;
-    if( g.f.section_defined(g, 'location')  ){
+    if( settings.f.section_defined(settings, 'location')  ){
         d.text([x,y], [
-            g.perm.location.address,
-            g.perm.location.city + ', ' + g.perm.location.county + ', FL, ' + g.perm.location.zip,
+            settings.perm.location.address,
+            settings.perm.location.city + ', ' + settings.perm.location.county + ', FL, ' + settings.perm.location.zip,
 
         ], 'text', 'title3').rotate(-90);
     }
