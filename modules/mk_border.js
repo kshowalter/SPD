@@ -4,7 +4,7 @@ var mk_drawing = require('./mk_drawing');
 //d.link_drawing_parts(drawing_parts);
 
 var add_border = function(settings, sheet_section, sheet_num){
-    d = mk_drawing();
+    d = mk_drawing(g);
     var f = settings.f;
 
     //var components = settings.components;
@@ -76,8 +76,8 @@ var add_border = function(settings, sheet_section, sheet_num){
     y -= 20*2/3;
     d.text([x,y],
         [ sheet_section, sheet_num ],
-        'page',
-        'text'
+        'text',
+        'page'
         );
 
 
@@ -95,7 +95,9 @@ var add_border = function(settings, sheet_section, sheet_num){
     if( system.inverter.make && system.inverter.model ){
         d.text([x,y],
              [ 'PV System Design' ],
-            'title1', 'text').rotate(-90);
+            'text',
+            'title1'
+            ).rotate(-90);
 
     }
 
@@ -105,7 +107,7 @@ var add_border = function(settings, sheet_section, sheet_num){
             g.perm.location.address,
             g.perm.location.city + ', ' + g.perm.location.county + ', FL, ' + g.perm.location.zip,
 
-        ], 'title3', 'text').rotate(-90);
+        ], 'text', 'title3').rotate(-90);
     }
 
     x = page.left + padding;

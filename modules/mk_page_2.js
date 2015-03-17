@@ -6,7 +6,7 @@ var mk_border = require('./mk_border');
 
 var page = function(settings){
     console.log("** Making page 2");
-    d = mk_drawing();
+    d = mk_drawing(g);
     var sheet_section = 'PV';
     var sheet_num = '01';
     d.append(mk_border(settings, sheet_section, sheet_num ));
@@ -615,7 +615,7 @@ var page = function(settings){
     y -= h/2;
     y += 10;
 
-    d.text( [x,y], 'Voltage Drop', 'table', 'text');
+    d.text( [x,y], 'Voltage Drop', 'text', 'table');
 
 
 // general notes
@@ -632,7 +632,7 @@ var page = function(settings){
     y -= h/2;
     y += 10;
 
-    d.text( [x,y], 'General Notes', 'table', 'text');
+    d.text( [x,y], 'General Notes', 'text', 'table');
 
 
     d.section();

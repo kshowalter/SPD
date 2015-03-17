@@ -4,7 +4,7 @@ var mk_border = require('./mk_border');
 var page = function(settings){
     console.log("** Making page 1");
 
-    var d = mk_drawing();
+    var d = mk_drawing(g);
 
     var sheet_section = 'A';
     var sheet_num = '00';
@@ -14,12 +14,13 @@ var page = function(settings){
     var loc = settings.drawing_settings.loc;
 
     var x, y, h, w;
-
+    d.layer('text');
     d.text(
         [size.drawing.w*1/2, size.drawing.h*1/3],
         [
             'PV System Design',
         ],
+        null,
         'project title'
     );
 
@@ -30,6 +31,7 @@ var page = function(settings){
                 g.perm.location.address,
                 g.perm.location.city + ', ' + g.perm.location.county + ', FL, ' + g.perm.location.zip,
             ],
+            null,
             'project title'
         );
     }
@@ -39,8 +41,7 @@ var page = function(settings){
     h = n_rows*20;
     x = size.drawing.frame_padding*6;
     y = size.drawing.h - size.drawing.frame_padding*6 - 4*20;
-
-    d.text( [x+w/2, y-20], 'Contents','table_large' );
+    d.text( [x+w/2, y-20], 'Contents', null, 'table_large' );
 
     var t = d.table(n_rows,n_cols).loc(x,y);
     t.row_size('all', 20).col_size(2, 400).col_size(1, 80);

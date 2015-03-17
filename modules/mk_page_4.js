@@ -2,10 +2,10 @@ var mk_drawing = require('./mk_drawing');
 var mk_border = require('./mk_border');
 
 var page = function(settings){
-    console.log("** Making page 3");
+    console.log("** Making page 4");
     var f = settings.f;
 
-    d = mk_drawing();
+    d = mk_drawing(g);
 
     var sheet_section = 'S';
     var sheet_num = '01';
@@ -106,6 +106,7 @@ var page = function(settings){
             d.text(
                 [plan_x+plan_w+20, plan_y+plan_h/2],
                 system.roof.width.toString(),
+                'dimention',
                 'dimention'
             );
 
@@ -141,11 +142,13 @@ var page = function(settings){
             d.text(
                 [cs_x+cs_w-15, cs_y+cs_h*2/3],
                 parseFloat( system.roof.height ).toFixed().toString(),
+                'dimention',
                 'dimention'
             );
             d.text(
                 [cs_x+cs_w*1.5+20, cs_y+cs_h/3],
                 parseFloat( system.roof.length ).toFixed().toString(),
+                'dimention',
                 'dimention'
             );
 
@@ -202,32 +205,38 @@ var page = function(settings){
             d.text(
                 [detail_x-40, detail_y+detail_h/2],
                 parseFloat( system.roof.length ).toFixed().toString(),
+                'dimention',
                 'dimention'
             );
             d.text(
                 [detail_x+detail_w/2, detail_y+detail_h+40],
                 parseFloat( system.roof.width ).toFixed().toString(),
+                'dimention',
                 'dimention'
             );
 
             d.text(
                 [detail_x+ (offset_a)/2, detail_y+detail_h+15],
                 'a',
+                'dimention',
                 'dimention'
             );
             d.text(
                 [detail_x+detail_w-(offset_a)/2, detail_y+detail_h+15],
                 'a',
+                'dimention',
                 'dimention'
             );
             d.text(
                 [detail_x-15, detail_y+detail_h-(offset_a)/2],
                 'a',
+                'dimention',
                 'dimention'
             );
             d.text(
                 [detail_x-15, detail_y+(offset_a)/2],
                 'a',
+                'dimention',
                 'dimention'
             );
 
@@ -323,6 +332,7 @@ var page = function(settings){
                         "Selected modules: " + parseFloat( g.webpage.selected_modules_total ).toFixed().toString(),
                         "Calculated modules: " + parseFloat( g.system.array.number_of_modules ).toFixed().toString(),
                     ],
+                    'dimention',
                     'dimention'
                 );
 

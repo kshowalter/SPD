@@ -5,7 +5,7 @@ var page = function(settings){
     console.log("** Making page 3");
     var f = settings.f;
 
-    d = mk_drawing();
+    d = mk_drawing(g);
 
     var sheet_section = 'PV';
     var sheet_num = '02';
@@ -18,6 +18,7 @@ var page = function(settings){
     d.text(
         [size.drawing.w/2, size.drawing.h/2],
         'Calculation Sheet',
+        'text',
         'title2'
     );
 

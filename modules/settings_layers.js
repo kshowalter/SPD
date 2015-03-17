@@ -157,5 +157,9 @@ layer_attr.north_letter = Object.assign(Object.create(layer_attr.preview),{
     'stroke-linejoin': "round",
 });
 
+layer_attr.dimention = Object.assign(Object.create(layer_attr.text),{
+    stroke: '#1433fe',
+});
+
 
 module.exports = layer_attr;

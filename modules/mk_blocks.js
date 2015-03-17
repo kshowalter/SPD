@@ -4,8 +4,8 @@ var mk_drawing = require('./mk_drawing');
 //d.link_drawing_parts(drawing_parts);
 
 var page = function(settings){
-    console.log("** Making page 2");
-    d = mk_drawing();
+    console.log("** Making blocks");
+    d = mk_drawing(g);
 
     var f = settings.f;
 
@@ -60,12 +60,14 @@ var page = function(settings){
     d.text(
         [x+size.module.lead/2, y-size.module.lead/2],
         '+',
+        null,
         'signs'
     );
     // neg sign
     d.text(
         [x+size.module.lead/2, y+h+size.module.lead/2],
         '-',
+        null,
         'signs'
     );
     // ground

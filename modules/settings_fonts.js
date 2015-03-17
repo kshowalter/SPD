@@ -30,6 +30,12 @@ if (!Object.assign) {
 
 var fonts = {};
 
+fonts['base'] = {
+    'font-family': 'monospace',
+    'font-size':     10,
+    'text-anchor':   'middle',
+};
+
 fonts['signs'] = {
     'font-family': 'monospace',
     'font-size':     5,

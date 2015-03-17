@@ -100,10 +100,16 @@ var display_svg = function(drawing_parts, settings){
         } else if( elem.type === 'text') {
             //var t = svg.text( elem.strings ).move( elem.points[0][0], elem.points[0][1] ).attr( layer_attr[elem.layer_name] )
             var font;
-            if( elem.font ){
+            if( elem.font && fonts[elem.font] ){
                 font = fonts[elem.font];
-            } else {
+            } else if(fonts[attrs.font]){
                 font = fonts[attrs.font];
+            } else {
+                font = fonts['base'];
+            }
+            if( font === undefined){
+                console.log('Font not found', font, fonts['base']['font-size']);
+
             }
             var t = document.createElementNS("http://www.w3.org/2000/svg", 'text');
             if(elem.rotated){

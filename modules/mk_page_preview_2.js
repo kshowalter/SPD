@@ -5,7 +5,7 @@ var f = require('./functions');
 var page = function(settings){
     console.log("** Making preview 2");
 
-    var d = mk_drawing();
+    var d = mk_drawing(g);
 
     if( f.section_defined(g, 'roof') ){
 

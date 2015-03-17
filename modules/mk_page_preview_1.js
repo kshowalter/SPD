@@ -5,7 +5,7 @@ var f = require('./functions');
 var page = function(settings){
     console.log("** Making preview 1");
 
-    var d = mk_drawing();
+    var d = mk_drawing(g);
 
 
 
