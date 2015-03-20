@@ -10,7 +10,7 @@ var mk_border = require('./mk_border');
 
 var page = function(settings){
     console.log("** Making page 2");
-    d = mk_drawing(settings);
+    var d = mk_drawing(settings);
     var sheet_section = 'PV';
     var sheet_num = '01';
     d.append(mk_border(settings, sheet_section, sheet_num ));
@@ -37,7 +37,7 @@ var page = function(settings){
 
 ////////////////////////////////////////
 //#array
-    if( f.section_defined(g, 'module') && f.section_defined(g, 'array') ){
+    if( f.section_defined(settings, 'module') && f.section_defined(settings, 'array') ){
         d.section('array');
 
 
@@ -98,7 +98,7 @@ var page = function(settings){
 ///////////////////////////////
 // combiner box
 
-    if( f.section_defined(g, 'DC') ){
+    if( f.section_defined(settings, 'DC') ){
 
         d.section("combiner");
 
@@ -270,7 +270,7 @@ var page = function(settings){
 
 ///////////////////////////////
 //#inverter
-    if( f.section_defined(g, 'inverter') ){
+    if( f.section_defined(settings, 'inverter') ){
 
         d.section("inverter");
 
@@ -377,12 +377,12 @@ var page = function(settings){
 
 
 //#AC_discconect
-    if( f.section_defined(g, 'AC') ){
+    if( f.section_defined(settings, 'AC') ){
         d.section("AC_discconect");
 
         x = loc.AC_disc.x;
         y = loc.AC_disc.y;
-        padding = size.terminal_diam;
+        var padding = size.terminal_diam;
 
         d.layer('box');
         d.rect(

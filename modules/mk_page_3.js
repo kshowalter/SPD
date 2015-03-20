@@ -5,7 +5,7 @@ var page = function(settings){
     console.log("** Making page 3");
     var f = settings.f;
 
-    d = mk_drawing(g);
+    d = mk_drawing(settings);
 
     var sheet_section = 'PV';
     var sheet_num = '02';
@@ -30,7 +30,7 @@ var page = function(settings){
 
 
     for( var section_name in settings.system ){
-        if( f.section_defined(g, section_name) ){
+        if( f.section_defined(settings, section_name) ){
             var section = settings.system[section_name];
 
             var n = Object.keys(section).length;
@@ -80,7 +80,7 @@ var page = function(settings){
             //*/
             y += h + 30;
 
-            if( y > ( g.drawing_settings.size.drawing.h * 0.8 ) ) {
+            if( y > ( settings.drawing_settings.size.drawing.h * 0.8 ) ) {
                 y =
                     y = size.drawing.frame_padding*6 +20;
                     x += w*1.5;

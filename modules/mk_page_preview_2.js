@@ -5,9 +5,9 @@ var f = require('./functions');
 var page = function(settings){
     console.log("** Making preview 2");
 
-    var d = mk_drawing(g);
+    var d = mk_drawing(settings);
 
-    if( f.section_defined(g, 'roof') ){
+    if( f.section_defined(settings, 'roof') ){
 
         var size = settings.drawing_settings.size;
         var loc = settings.drawing_settings.loc;
@@ -216,7 +216,7 @@ var page = function(settings){
 
             //////
             // Module options
-            if( f.section_defined(g, 'module') && f.section_defined(g, 'array')){
+            if( f.section_defined(settings, 'module') && f.section_defined(settings, 'array')){
                 var r,c;
 
                 var roof_length_avail = system.roof.length - (a*2);
@@ -243,20 +243,20 @@ var page = function(settings){
 
                 //selected modules
 
-                if( num_cols !== g.temp.num_cols || num_rows !== g.temp.num_rows ){
-                    g.webpage.selected_modules = {};
-                    g.webpage.selected_modules_total = 0;
+                if( num_cols !== settings.temp.num_cols || num_rows !== settings.temp.num_rows ){
+                    settings.webpage.selected_modules = {};
+                    settings.webpage.selected_modules_total = 0;
 
                     for( r=1; r<=num_rows; r++){
-                        g.webpage.selected_modules[r] = {};
+                        settings.webpage.selected_modules[r] = {};
                         for( c=1; c<=num_cols; c++){
-                            g.webpage.selected_modules[r][c] = false;
+                            settings.webpage.selected_modules[r][c] = false;
                         }
                     }
 
 
-                    g.temp.num_cols = num_cols;
-                    g.temp.num_rows = num_rows;
+                    settings.temp.num_cols = num_cols;
+                    settings.temp.num_rows = num_rows;
                 }
 
 
@@ -274,7 +274,7 @@ var page = function(settings){
                     for( c=1; c<=num_cols; c++){
 
                         var layer;
-                        if( g.webpage.selected_modules[r][c] ) layer = 'preview_structural_module_selected';
+                        if( settings.webpage.selected_modules[r][c] ) layer = 'preview_structural_module_selected';
                         else layer = 'preview_structural_module';
                         module_x = (c-1) * col_spacing * scale;
                         module_y = (r-1) * row_spacing * scale;
@@ -296,8 +296,8 @@ var page = function(settings){
                 d.text(
                     [detail_x+detail_w/2, detail_y+detail_h+100],
                     [
-                        "Selected modules: " + parseFloat( g.webpage.selected_modules_total ).toFixed().toString(),
-                        "Calculated modules: " + parseFloat( g.system.array.number_of_modules ).toFixed().toString(),
+                        "Selected modules: " + parseFloat( settings.webpage.selected_modules_total ).toFixed().toString(),
+                        "Calculated modules: " + parseFloat( settings.system.array.number_of_modules ).toFixed().toString(),
                     ],
                     'dimention'
                 );

@@ -5,7 +5,7 @@ var f = require('./functions');
 var page = function(settings){
     console.log("** Making preview 1");
 
-    var d = mk_drawing(g);
+    var d = mk_drawing(settings);
 
 
 
@@ -37,7 +37,7 @@ var page = function(settings){
 
 // TODO fix: sections must be defined in order, or there are areas
 
-    if( f.section_defined(g, 'array') && f.section_defined(g, 'module') ){
+    if( f.section_defined(settings, 'array') && f.section_defined(settings, 'module') ){
         d.layer('preview_array');
 
         w = size.preview.module.w;
@@ -98,7 +98,7 @@ var page = function(settings){
         );
     }
 
-    if( f.section_defined(g, 'DC') ){
+    if( f.section_defined(settings, 'DC') ){
         d.layer('preview_DC');
 
         //y = y;
@@ -119,7 +119,7 @@ var page = function(settings){
 
     }
 
-    if( f.section_defined(g, 'inverter') ){
+    if( f.section_defined(settings, 'inverter') ){
 
         d.layer('preview_inverter');
 
@@ -143,7 +143,7 @@ var page = function(settings){
         );
     }
 
-    if( f.section_defined(g, 'AC') ){
+    if( f.section_defined(settings, 'AC') ){
 
         d.layer('preview_AC');
 
