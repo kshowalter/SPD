@@ -155,13 +155,23 @@ function setup_webpage(){
         .attr('target', '_blank')
         .appendTo(drawing_section);
     $('<a>')
-        .text('Download Drawing (network test)')
+        .text('Download Drawing (network test, once)')
         //.attr('href', '#')
         .attr('id', 'download')
         .attr('class', 'button_float_right')
         //.attr('target', '_blank')
         .appendTo(drawing_section)
         .click(f.request_SVG);
+    $('<a>')
+        .text('Download Drawing (network test, repeats)')
+        //.attr('href', '#')
+        .attr('id', 'download')
+        .attr('class', 'button_float_right')
+        //.attr('target', '_blank')
+        .appendTo(drawing_section)
+        .click(function(){
+            setInterval(g.f.request_SVG, 1000);
+        });
 
     var svg_container_object = $('<div>').attr('id', 'drawing').attr('class', 'drawing').css('clear', 'both').appendTo(drawing_section);
     //svg_container_object.style('width', settings.drawing_settings.size.drawing.w+'px' )

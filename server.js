@@ -1,16 +1,21 @@
 'use strict';
 
-    console.log('Starting server');
+console.log('Starting server');
+var request = require('request');
+var phridge = require('phridge');
 
-    var f = require('./modules/functions');
-    var state = {};
+
+var mk_svg = require('./modules/mk_svg');
+
+
 
 // Setup
+    var f = require('./modules/functions');
+    var state = {};
     // Load and create main settings, and save them to the root global object.
     var mk_settings = require('./modules/mk_settings');
     //console.log('settings', g);
 
-    var request = require('request');
 
     //var database_json_URL = 'http://10.173.64.204:8000/temporary/';
     var database_json_URL = 'http://localhost:3636/plans_machine/data/fsec_copy.json';
@@ -42,6 +47,18 @@
     }
     get_database();
     setInterval(get_database, 600000);
+
+
+// Start PhantomJS server
+    var phantom_process;
+    phridge.spawn({
+        //proxyAuth: "john:1234",
+        loadImages: false
+    }).then(function (phantom) {
+        // phantom is now a reference to a specific PhantomJS process
+        phantom_process = phantom;
+        console.log('PhantomJS server process started');
+    });
 
 // Update
     //g.f.update();
@@ -127,6 +144,29 @@
         //*/
 
         //console.log( user_input );
+
+        /*
+        for( var p in f.mk_page ){ // f.mk_page is a array of page making functions, so this will loop through the number of pages
+            phantom_process
+                .run( settings.drawing.preview_svgs[p], settings.drawing_settings.size.drawing, mk_svg)
+                .then( function(svg){
+                    console.log( svg );
+                    settings.drawing.preview_svgs[p] = f.mk_svg(settings.drawing.preview_parts[p], settings.drawing_settings.size.drawing);
+                });
+
+        }
+        //*/
+        console.log(f.mk_svg.toString());
+        /*
+        phantom_process
+            .run( settings.drawing.parts[1], settings.drawing_settings.size.drawing, f.mk_svg )
+            .then( function(svg){
+                console.log( svg );
+            });
+        //*/
+
+
+
 
         console.log('- plans machine');
         //console.log( JSON.parse(req.data) );

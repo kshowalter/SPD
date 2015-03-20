@@ -41,6 +41,8 @@
 
 // request external data
 
+    var newtwork_test = false;
+
     g.f.request_SVG = function(){
     //*
         console.log('sending data to server');
@@ -67,7 +69,6 @@
                 console.log( "complete" );
             });
 
-    //*/
     };
 
     //var database_json_URL = 'http://10.173.64.204:8000/temporary/';
@@ -85,7 +86,7 @@
 
             ////////
             // TEMP
-            g.f.request_SVG();
+            //g.f.request_SVG();
             ////////
         });
 

@@ -125,18 +125,21 @@ var process = function(settings) {
     // Make blocks
     f.mk_blocks(settings);
 
+
     // Make drawing
+    var p;
+
+    // Not needed on server
+    settings.drawing.preview_parts = {};
+    settings.drawing.preview_svgs = {};
+    for( p in f.mk_preview ){  // f.mk_page is a array of page making functions, so this will loop through the number of pages
+        settings.drawing.preview_parts[p] = f.mk_preview[p](settings);
+    }
+
     settings.drawing.parts = {};
     settings.drawing.svgs = {};
-    for( var p in f.mk_page ){
+    for( p in f.mk_page ){  // f.mk_page is a array of page making functions, so this will loop through the number of pages
         settings.drawing.parts[p] = f.mk_page[p](settings);
-        settings.drawing.svgs[p] = f.mk_svg(settings.drawing.parts[p], settings);
-        $('#drawing')
-            //.append($('<p>Page '+p+'</p>'))
-            .append($(settings.drawing.svgs[p]))
-            .append($('</br>'))
-            .append($('</br>'));
-
     }
 
 
