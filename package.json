@@ -1,41 +1,47 @@
 {
-    "name": "PV_system_drawing",
-    "version": "",
-    "author": "",
-    "description": "",
-
-    "browserify": {
-        "transform": [ "browserify-shim" ]
+  "name": "PV_system_drawing",
+  "version": "",
+  "author": "",
+  "description": "",
+  "browserify": {
+    "transform": [
+      "browserify-shim"
+    ]
+  },
+  "dependencies": {
+    "express": "latest",
+    "body-parser": "latest",
+    "request": "latest",
+    "underscore": "latest",
+    "moment": "latest",
+    "jquery": "latest",
+    "phridge": "~1.0.7"
+  },
+  "devDependencies": {
+    "browserify": "^5.11.0",
+    "browserify-shim": "^3.7.0",
+    "beefy": "latest"
+  },
+  "browser": {
+    "jsPDF": "./lib/jspdf",
+    "FileSaver": "./lib/FileSaver",
+    "svgToPdf": "./lib/svgToPdf"
+  },
+  "browserify-shim": {
+    "FileSaver": {
+      "exports": "saveAs"
     },
-    "dependencies": {
-        "express": "latest",
-        "body-parser": "latest",
-        "request": "latest",
-        "underscore": "latest",
-        "moment": "latest",
-        "jquery": "latest"
+    "jsPDF": {
+      "exports": "jsPDF",
+      "depends": [
+        "FileSaver:saveAs"
+      ]
     },
-    "devDependencies": {
-        "browserify": "^5.11.0",
-        "browserify-shim": "^3.7.0",
-        "beefy": "latest"
-    },
-    "browser": {
-        "jsPDF": "./lib/jspdf",
-        "FileSaver": "./lib/FileSaver",
-        "svgToPdf": "./lib/svgToPdf"
-    },
-    "browserify-shim": {
-        "FileSaver": {
-            "exports": "saveAs"
-        },
-        "jsPDF": {
-            "exports": "jsPDF",
-            "depends": ["FileSaver:saveAs"]
-        },
-        "svgToPdf": {
-            "exports": "svgToPdf",
-            "depends": ["jquery:$"]
-        }
+    "svgToPdf": {
+      "exports": "svgToPdf",
+      "depends": [
+        "jquery:$"
+      ]
     }
+  }
 }

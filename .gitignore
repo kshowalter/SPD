@@ -4,6 +4,7 @@ node_modules/*
 !node_modules/app
 
 reporting/gitlog.txt
+reporting/*.docx
 
 \#*
 .\#*

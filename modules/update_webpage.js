@@ -51,16 +51,12 @@ var update_webpage = function(){
 
 
     // Make preview
-    settings.drawing.preview_parts = {};
-    settings.drawing.preview_svgs = {};
-    for( var p in f.mk_preview ){
-        settings.drawing.preview_parts[p] = f.mk_preview[p](settings);
-        settings.drawing.preview_svgs[p] = f.mk_svg(settings.drawing.preview_parts[p], settings);
-    }
+    var p;
 
     // Add preview to page
     $('#drawing_preview').empty().html('');
-    for( var p in f.mk_preview ){
+    for( p in f.mk_preview ){  // f.mk_page is a array of page making functions, so this will loop through the number of pages
+        settings.drawing.preview_svgs[p] = f.mk_svg(settings.drawing.preview_parts[p], settings.drawing_settings.size.drawing);
         var section = ['','Electrical','Structural'][p];
         $('#drawing_preview')
             //.append($('<p>Page '+p+'</p>'))
@@ -71,10 +67,10 @@ var update_webpage = function(){
 
     }
 
-
     // Add drawing to page
     $('#drawing').empty().html('Electrical');
-    for( p in f.mk_page ){
+    for( p in f.mk_page ){  // f.mk_page is a array of page making functions, so this will loop through the number of pages
+        settings.drawing.svgs[p] = f.mk_svg(settings.drawing.parts[p], settings.drawing_settings.size.drawing);
         $('#drawing')
             //.append($('<p>Page '+p+'</p>'))
             .append($(settings.drawing.svgs[p]))
