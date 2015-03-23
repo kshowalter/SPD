@@ -54,7 +54,7 @@
         //    test2:23,
         //};
         $.ajax({
-                type: "POST",
+                type: 'POST',
                 url: url,
                 data: data,
             })
@@ -63,10 +63,10 @@
 
             })
             .fail(function() {
-                console.log( "error" );
+                console.log( 'error' );
             })
             .always(function() {
-                console.log( "complete" );
+                console.log( 'complete' );
             });
 
     };
@@ -94,23 +94,47 @@
 // Build webpage
 
     // Set dev mode if requested
-    if( query['mode'] === "dev" ) {
+    if( query['mode'] === 'dev' ) {
         g.state.mode = 'dev';
     } else {
         g.state.mode = 'release';
     }
 
+    if( query['password'] === 'sd723sfkbgr8yr' ) {
+        g.state.password = true;
+    } else {
+        g.state.password = false;
+    }
 
-    if( g.state.mode === 'dev'){
+
+    if( g.state.mode === 'dev' ){
         g.f.settings_dev_defaults(g);
     }
 
-    g.f.setup_webpage();
+    if( g.state.password || query['mode'] === 'dev' ){
+        g.f.setup_webpage();
 
-    // Add status bar
-    var boot_time = moment();
-    var status_id = 'status';
-    setInterval(function(){ g.f.update_status_bar(status_id, boot_time, version_string);},1000);
+        // Add status bar
+        var boot_time = moment();
+        var status_id = 'status';
+        setInterval(function(){ g.f.update_status_bar(status_id, boot_time, version_string);},1000);
 
 // Update
-    g.f.update();
+        g.f.update();
+
+    } else {
+        console.log('no password');
+        $('<img>')
+            .attr('src', 'data/PlansMachine.png')
+            //.attr('class', 'title_image')
+            .css('width', '300px')
+            .css('padding', '30px')
+            .css('display', 'block')
+            .css('margin-left', 'auto')
+            .css('margin-right', 'auto')
+            .appendTo(document.body);
+        $('<div>')
+            .attr('style', 'text-align: center')
+            .html('Demo not availible')
+            .appendTo(document.body);
+    }

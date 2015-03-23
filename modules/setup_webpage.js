@@ -17,6 +17,11 @@ function setup_webpage(){
 
 
     var header_container = $('<div>').appendTo(system_frame);
+    $('<img>')
+        .attr('src', 'data/PlansMachine.png')
+        .attr('class', 'title_image')
+        //.attr('width', '90%')
+        .appendTo(header_container);
     $('<span>').html('Please select your system spec below').attr('class', 'category_title').appendTo(header_container);
     $('<span>').html(' | ').appendTo(header_container);
     //$('<input>').attr('type', 'button').attr('value', 'clear selections').click(window.location.reload),
