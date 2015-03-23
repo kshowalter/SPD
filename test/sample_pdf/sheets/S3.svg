@@ -1,0 +1,3629 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   class="svg_drawing"
+   viewBox="0 0 1000 780 "
+   id="svg3205"
+   version="1.1"
+   inkscape:version="0.48.5 r10040"
+   width="100%"
+   height="100%"
+   sodipodi:docname="S3.svg">
+  <metadata
+     id="metadata4023">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs4021" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="984"
+     id="namedview4019"
+     showgrid="false"
+     inkscape:zoom="0.3025641"
+     inkscape:cx="86.864407"
+     inkscape:cy="390"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg3205" />
+  <rect
+     width="990"
+     height="770"
+     x="5"
+     y="5"
+     stroke="#000042"
+     fill="none"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="rect3207" />
+  <rect
+     width="50"
+     height="50"
+     x="935"
+     y="15"
+     stroke="#000042"
+     fill="none"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="rect3209" />
+  <rect
+     width="50"
+     height="615"
+     x="935"
+     y="70"
+     stroke="#000042"
+     fill="none"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="rect3211" />
+  <rect
+     width="50"
+     height="75"
+     x="935"
+     y="690"
+     stroke="#000042"
+     fill="none"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="rect3213" />
+  <text
+     x="960"
+     y="690.8333333333333"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="monospace"
+     font-size="20"
+     text-anchor="middle"
+     id="text3215">
+    <tspan
+       dy="30"
+       x="960"
+       id="tspan3217">PV</tspan>
+    <tspan
+       dy="30"
+       x="960"
+       id="tspan3219">02</tspan>
+  </text>
+  <text
+     transform="rotate(-90 950 680)"
+     x="950"
+     y="659"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="monospace"
+     font-size="14"
+     text-anchor="left"
+     id="text3221">
+    <tspan
+       dy="21"
+       x="950"
+       id="tspan3223">PV System Design</tspan>
+  </text>
+  <text
+     transform="rotate(-90 964 680)"
+     x="964"
+     y="665"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="monospace"
+     font-size="10"
+     text-anchor="left"
+     id="text3225">
+    <tspan
+       dy="15"
+       x="964"
+       id="tspan3227">1679 Clearlake Road</tspan>
+    <tspan
+       dy="15"
+       x="964"
+       id="tspan3229">Cocoa, Brevard, FL, 32922</tspan>
+  </text>
+  <text
+     x="500"
+     y="376"
+     fill="#000042"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="monospace"
+     font-size="12"
+     text-anchor="left"
+     id="text3231">
+    <tspan
+       dy="18"
+       x="500"
+       id="tspan3233">Calculation Sheet</tspan>
+  </text>
+  <text
+     x="120"
+     y="25.666666666666664"
+     fill="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3235">
+    <tspan
+       dy="12"
+       x="120"
+       id="tspan3237">Location</tspan>
+  </text>
+  <polyline
+     points="30,50 130,50"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3239" />
+  <polyline
+     points="130,50 255,50"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3241" />
+  <polyline
+     points="30,65 130,65"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3243" />
+  <polyline
+     points="130,65 255,65"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3245" />
+  <polyline
+     points="30,80 130,80"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3247" />
+  <polyline
+     points="130,80 255,80"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3249" />
+  <polyline
+     points="30,95 130,95"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3251" />
+  <polyline
+     points="130,95 255,95"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3253" />
+  <polyline
+     points="30,110 130,110"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3255" />
+  <polyline
+     points="130,110 255,110"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3257" />
+  <polyline
+     points="30,50 30,65"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3259" />
+  <polyline
+     points="30,65 30,80"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3261" />
+  <polyline
+     points="30,80 30,95"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3263" />
+  <polyline
+     points="30,95 30,110"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3265" />
+  <polyline
+     points="130,50 130,65"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3267" />
+  <polyline
+     points="130,65 130,80"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3269" />
+  <polyline
+     points="130,80 130,95"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3271" />
+  <polyline
+     points="130,95 130,110"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3273" />
+  <polyline
+     points="255,50 255,65"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3275" />
+  <polyline
+     points="255,65 255,80"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3277" />
+  <polyline
+     points="255,80 255,95"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3279" />
+  <polyline
+     points="255,95 255,110"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3281" />
+  <text
+     x="80"
+     y="48.166666666666664"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3283">
+    <tspan
+       dy="12"
+       x="80"
+       id="tspan3285">County</tspan>
+  </text>
+  <text
+     x="192.5"
+     y="48.166666666666664"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3287">
+    <tspan
+       dy="12"
+       x="192.5"
+       id="tspan3289">Brevard</tspan>
+  </text>
+  <text
+     x="80"
+     y="63.16666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3291">
+    <tspan
+       dy="12"
+       x="80"
+       id="tspan3293">Address</tspan>
+  </text>
+  <text
+     x="192.5"
+     y="63.16666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3295">
+    <tspan
+       dy="12"
+       x="192.5"
+       id="tspan3297">1679 Clearlake Road</tspan>
+  </text>
+  <text
+     x="80"
+     y="78.16666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3299">
+    <tspan
+       dy="12"
+       x="80"
+       id="tspan3301">City</tspan>
+  </text>
+  <text
+     x="192.5"
+     y="78.16666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3303">
+    <tspan
+       dy="12"
+       x="192.5"
+       id="tspan3305">Cocoa</tspan>
+  </text>
+  <text
+     x="80"
+     y="93.16666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3307">
+    <tspan
+       dy="12"
+       x="80"
+       id="tspan3309">Zip</tspan>
+  </text>
+  <text
+     x="192.5"
+     y="93.16666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3311">
+    <tspan
+       dy="12"
+       x="192.5"
+       id="tspan3313">32922.00</tspan>
+  </text>
+  <text
+     x="120"
+     y="115.66666666666667"
+     fill="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3315">
+    <tspan
+       dy="12"
+       x="120"
+       id="tspan3317">Roof</tspan>
+  </text>
+  <polyline
+     points="30,140 130,140"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3319" />
+  <polyline
+     points="130,140 255,140"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3321" />
+  <polyline
+     points="30,155 130,155"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3323" />
+  <polyline
+     points="130,155 255,155"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3325" />
+  <polyline
+     points="30,170 130,170"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3327" />
+  <polyline
+     points="130,170 255,170"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3329" />
+  <polyline
+     points="30,185 130,185"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3331" />
+  <polyline
+     points="130,185 255,185"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3333" />
+  <polyline
+     points="30,200 130,200"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3335" />
+  <polyline
+     points="130,200 255,200"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3337" />
+  <polyline
+     points="30,215 130,215"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3339" />
+  <polyline
+     points="130,215 255,215"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3341" />
+  <polyline
+     points="30,140 30,155"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3343" />
+  <polyline
+     points="30,155 30,170"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3345" />
+  <polyline
+     points="30,170 30,185"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3347" />
+  <polyline
+     points="30,185 30,200"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3349" />
+  <polyline
+     points="30,200 30,215"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3351" />
+  <polyline
+     points="130,140 130,155"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3353" />
+  <polyline
+     points="130,155 130,170"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3355" />
+  <polyline
+     points="130,170 130,185"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3357" />
+  <polyline
+     points="130,185 130,200"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3359" />
+  <polyline
+     points="130,200 130,215"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3361" />
+  <polyline
+     points="255,140 255,155"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3363" />
+  <polyline
+     points="255,155 255,170"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3365" />
+  <polyline
+     points="255,170 255,185"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3367" />
+  <polyline
+     points="255,185 255,200"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3369" />
+  <polyline
+     points="255,200 255,215"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3371" />
+  <text
+     x="80"
+     y="138.16666666666666"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3373">
+    <tspan
+       dy="12"
+       x="80"
+       id="tspan3375">Width</tspan>
+  </text>
+  <text
+     x="192.5"
+     y="138.16666666666666"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3377">
+    <tspan
+       dy="12"
+       x="192.5"
+       id="tspan3379">60.00</tspan>
+  </text>
+  <text
+     x="80"
+     y="153.16666666666666"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3381">
+    <tspan
+       dy="12"
+       x="80"
+       id="tspan3383">Length</tspan>
+  </text>
+  <text
+     x="192.5"
+     y="153.16666666666666"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3385">
+    <tspan
+       dy="12"
+       x="192.5"
+       id="tspan3387">25.00</tspan>
+  </text>
+  <text
+     x="80"
+     y="168.16666666666666"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3389">
+    <tspan
+       dy="12"
+       x="80"
+       id="tspan3391">Slope</tspan>
+  </text>
+  <text
+     x="192.5"
+     y="168.16666666666666"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3393">
+    <tspan
+       dy="12"
+       x="192.5"
+       id="tspan3395">6:12</tspan>
+  </text>
+  <text
+     x="80"
+     y="183.16666666666666"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3397">
+    <tspan
+       dy="12"
+       x="80"
+       id="tspan3399">Type</tspan>
+  </text>
+  <text
+     x="192.5"
+     y="183.16666666666666"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3401">
+    <tspan
+       dy="12"
+       x="192.5"
+       id="tspan3403">Gable</tspan>
+  </text>
+  <text
+     x="80"
+     y="198.16666666666666"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3405">
+    <tspan
+       dy="12"
+       x="80"
+       id="tspan3407">Height</tspan>
+  </text>
+  <text
+     x="192.5"
+     y="198.16666666666666"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3409">
+    <tspan
+       dy="12"
+       x="192.5"
+       id="tspan3411">11.18</tspan>
+  </text>
+  <text
+     x="120"
+     y="220.66666666666666"
+     fill="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3413">
+    <tspan
+       dy="12"
+       x="120"
+       id="tspan3415">Module</tspan>
+  </text>
+  <polyline
+     points="30,245 130,245"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3417" />
+  <polyline
+     points="130,245 255,245"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3419" />
+  <polyline
+     points="30,260 130,260"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3421" />
+  <polyline
+     points="130,260 255,260"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3423" />
+  <polyline
+     points="30,275 130,275"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3425" />
+  <polyline
+     points="130,275 255,275"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3427" />
+  <polyline
+     points="30,290 130,290"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3429" />
+  <polyline
+     points="130,290 255,290"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3431" />
+  <polyline
+     points="30,305 130,305"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3433" />
+  <polyline
+     points="130,305 255,305"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3435" />
+  <polyline
+     points="30,320 130,320"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3437" />
+  <polyline
+     points="130,320 255,320"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3439" />
+  <polyline
+     points="30,335 130,335"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3441" />
+  <polyline
+     points="130,335 255,335"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3443" />
+  <polyline
+     points="30,350 130,350"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3445" />
+  <polyline
+     points="130,350 255,350"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3447" />
+  <polyline
+     points="30,365 130,365"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3449" />
+  <polyline
+     points="130,365 255,365"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3451" />
+  <polyline
+     points="30,380 130,380"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3453" />
+  <polyline
+     points="130,380 255,380"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3455" />
+  <polyline
+     points="30,395 130,395"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3457" />
+  <polyline
+     points="130,395 255,395"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3459" />
+  <polyline
+     points="30,245 30,260"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3461" />
+  <polyline
+     points="30,260 30,275"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3463" />
+  <polyline
+     points="30,275 30,290"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3465" />
+  <polyline
+     points="30,290 30,305"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3467" />
+  <polyline
+     points="30,305 30,320"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3469" />
+  <polyline
+     points="30,320 30,335"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3471" />
+  <polyline
+     points="30,335 30,350"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3473" />
+  <polyline
+     points="30,350 30,365"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3475" />
+  <polyline
+     points="30,365 30,380"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3477" />
+  <polyline
+     points="30,380 30,395"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3479" />
+  <polyline
+     points="130,245 130,260"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3481" />
+  <polyline
+     points="130,260 130,275"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3483" />
+  <polyline
+     points="130,275 130,290"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3485" />
+  <polyline
+     points="130,290 130,305"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3487" />
+  <polyline
+     points="130,305 130,320"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3489" />
+  <polyline
+     points="130,320 130,335"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3491" />
+  <polyline
+     points="130,335 130,350"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3493" />
+  <polyline
+     points="130,350 130,365"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3495" />
+  <polyline
+     points="130,365 130,380"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3497" />
+  <polyline
+     points="130,380 130,395"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3499" />
+  <polyline
+     points="255,245 255,260"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3501" />
+  <polyline
+     points="255,260 255,275"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3503" />
+  <polyline
+     points="255,275 255,290"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3505" />
+  <polyline
+     points="255,290 255,305"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3507" />
+  <polyline
+     points="255,305 255,320"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3509" />
+  <polyline
+     points="255,320 255,335"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3511" />
+  <polyline
+     points="255,335 255,350"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3513" />
+  <polyline
+     points="255,350 255,365"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3515" />
+  <polyline
+     points="255,365 255,380"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3517" />
+  <polyline
+     points="255,380 255,395"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3519" />
+  <text
+     x="80"
+     y="243.16666666666666"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3521">
+    <tspan
+       dy="12"
+       x="80"
+       id="tspan3523">Make</tspan>
+  </text>
+  <text
+     x="192.5"
+     y="243.16666666666666"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3525">
+    <tspan
+       dy="12"
+       x="192.5"
+       id="tspan3527">Suniva</tspan>
+  </text>
+  <text
+     x="80"
+     y="258.1666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3529">
+    <tspan
+       dy="12"
+       x="80"
+       id="tspan3531">Model</tspan>
+  </text>
+  <text
+     x="192.5"
+     y="258.1666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3533">
+    <tspan
+       dy="12"
+       x="192.5"
+       id="tspan3535">255-60-4-1B0</tspan>
+  </text>
+  <text
+     x="80"
+     y="273.1666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3537">
+    <tspan
+       dy="12"
+       x="80"
+       id="tspan3539">Orientation</tspan>
+  </text>
+  <text
+     x="192.5"
+     y="273.1666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3541">
+    <tspan
+       dy="12"
+       x="192.5"
+       id="tspan3543">Portrait</tspan>
+  </text>
+  <text
+     x="80"
+     y="288.1666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3545">
+    <tspan
+       dy="12"
+       x="80"
+       id="tspan3547">Pmp</tspan>
+  </text>
+  <text
+     x="192.5"
+     y="288.1666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3549">
+    <tspan
+       dy="12"
+       x="192.5"
+       id="tspan3551">255.00</tspan>
+  </text>
+  <text
+     x="80"
+     y="303.1666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3553">
+    <tspan
+       dy="12"
+       x="80"
+       id="tspan3555">Isc</tspan>
+  </text>
+  <text
+     x="192.5"
+     y="303.1666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3557">
+    <tspan
+       dy="12"
+       x="192.5"
+       id="tspan3559">8.96</tspan>
+  </text>
+  <text
+     x="80"
+     y="318.1666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3561">
+    <tspan
+       dy="12"
+       x="80"
+       id="tspan3563">Voc</tspan>
+  </text>
+  <text
+     x="192.5"
+     y="318.1666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3565">
+    <tspan
+       dy="12"
+       x="192.5"
+       id="tspan3567">38.10</tspan>
+  </text>
+  <text
+     x="80"
+     y="333.1666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3569">
+    <tspan
+       dy="12"
+       x="80"
+       id="tspan3571">Imp</tspan>
+  </text>
+  <text
+     x="192.5"
+     y="333.1666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3573">
+    <tspan
+       dy="12"
+       x="192.5"
+       id="tspan3575">8.45</tspan>
+  </text>
+  <text
+     x="80"
+     y="348.1666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3577">
+    <tspan
+       dy="12"
+       x="80"
+       id="tspan3579">Vmp</tspan>
+  </text>
+  <text
+     x="192.5"
+     y="348.1666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3581">
+    <tspan
+       dy="12"
+       x="192.5"
+       id="tspan3583">30.20</tspan>
+  </text>
+  <text
+     x="80"
+     y="363.1666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3585">
+    <tspan
+       dy="12"
+       x="80"
+       id="tspan3587">Width</tspan>
+  </text>
+  <text
+     x="192.5"
+     y="363.1666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3589">
+    <tspan
+       dy="12"
+       x="192.5"
+       id="tspan3591">30.42</tspan>
+  </text>
+  <text
+     x="80"
+     y="378.1666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3593">
+    <tspan
+       dy="12"
+       x="80"
+       id="tspan3595">Length</tspan>
+  </text>
+  <text
+     x="192.5"
+     y="378.1666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3597">
+    <tspan
+       dy="12"
+       x="192.5"
+       id="tspan3599">60.42</tspan>
+  </text>
+  <text
+     x="120"
+     y="400.6666666666667"
+     fill="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3601">
+    <tspan
+       dy="12"
+       x="120"
+       id="tspan3603">Array</tspan>
+  </text>
+  <polyline
+     points="30,425 130,425"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3605" />
+  <polyline
+     points="130,425 255,425"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3607" />
+  <polyline
+     points="30,440 130,440"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3609" />
+  <polyline
+     points="130,440 255,440"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3611" />
+  <polyline
+     points="30,455 130,455"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3613" />
+  <polyline
+     points="130,455 255,455"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3615" />
+  <polyline
+     points="30,470 130,470"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3617" />
+  <polyline
+     points="130,470 255,470"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3619" />
+  <polyline
+     points="30,485 130,485"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3621" />
+  <polyline
+     points="130,485 255,485"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3623" />
+  <polyline
+     points="30,500 130,500"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3625" />
+  <polyline
+     points="130,500 255,500"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3627" />
+  <polyline
+     points="30,515 130,515"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3629" />
+  <polyline
+     points="130,515 255,515"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3631" />
+  <polyline
+     points="30,530 130,530"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3633" />
+  <polyline
+     points="130,530 255,530"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3635" />
+  <polyline
+     points="30,545 130,545"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3637" />
+  <polyline
+     points="130,545 255,545"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3639" />
+  <polyline
+     points="30,425 30,440"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3641" />
+  <polyline
+     points="30,440 30,455"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3643" />
+  <polyline
+     points="30,455 30,470"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3645" />
+  <polyline
+     points="30,470 30,485"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3647" />
+  <polyline
+     points="30,485 30,500"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3649" />
+  <polyline
+     points="30,500 30,515"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3651" />
+  <polyline
+     points="30,515 30,530"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3653" />
+  <polyline
+     points="30,530 30,545"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3655" />
+  <polyline
+     points="130,425 130,440"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3657" />
+  <polyline
+     points="130,440 130,455"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3659" />
+  <polyline
+     points="130,455 130,470"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3661" />
+  <polyline
+     points="130,470 130,485"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3663" />
+  <polyline
+     points="130,485 130,500"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3665" />
+  <polyline
+     points="130,500 130,515"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3667" />
+  <polyline
+     points="130,515 130,530"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3669" />
+  <polyline
+     points="130,530 130,545"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3671" />
+  <polyline
+     points="255,425 255,440"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3673" />
+  <polyline
+     points="255,440 255,455"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3675" />
+  <polyline
+     points="255,455 255,470"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3677" />
+  <polyline
+     points="255,470 255,485"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3679" />
+  <polyline
+     points="255,485 255,500"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3681" />
+  <polyline
+     points="255,500 255,515"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3683" />
+  <polyline
+     points="255,515 255,530"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3685" />
+  <polyline
+     points="255,530 255,545"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3687" />
+  <text
+     x="80"
+     y="423.1666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3689">
+    <tspan
+       dy="12"
+       x="80"
+       id="tspan3691">Modules Per String</tspan>
+  </text>
+  <text
+     x="192.5"
+     y="423.1666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3693">
+    <tspan
+       dy="12"
+       x="192.5"
+       id="tspan3695">6.00</tspan>
+  </text>
+  <text
+     x="80"
+     y="438.1666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3697">
+    <tspan
+       dy="12"
+       x="80"
+       id="tspan3699">Num Strings</tspan>
+  </text>
+  <text
+     x="192.5"
+     y="438.1666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3701">
+    <tspan
+       dy="12"
+       x="192.5"
+       id="tspan3703">4.00</tspan>
+  </text>
+  <text
+     x="80"
+     y="453.1666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3705">
+    <tspan
+       dy="12"
+       x="80"
+       id="tspan3707">Isc</tspan>
+  </text>
+  <text
+     x="192.5"
+     y="453.1666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3709">
+    <tspan
+       dy="12"
+       x="192.5"
+       id="tspan3711">35.84</tspan>
+  </text>
+  <text
+     x="80"
+     y="468.1666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3713">
+    <tspan
+       dy="12"
+       x="80"
+       id="tspan3715">Voc</tspan>
+  </text>
+  <text
+     x="192.5"
+     y="468.1666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3717">
+    <tspan
+       dy="12"
+       x="192.5"
+       id="tspan3719">228.60</tspan>
+  </text>
+  <text
+     x="80"
+     y="483.1666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3721">
+    <tspan
+       dy="12"
+       x="80"
+       id="tspan3723">Imp</tspan>
+  </text>
+  <text
+     x="192.5"
+     y="483.1666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3725">
+    <tspan
+       dy="12"
+       x="192.5"
+       id="tspan3727">33.80</tspan>
+  </text>
+  <text
+     x="80"
+     y="498.1666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3729">
+    <tspan
+       dy="12"
+       x="80"
+       id="tspan3731">Vmp</tspan>
+  </text>
+  <text
+     x="192.5"
+     y="498.1666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3733">
+    <tspan
+       dy="12"
+       x="192.5"
+       id="tspan3735">181.20</tspan>
+  </text>
+  <text
+     x="80"
+     y="513.1666666666666"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3737">
+    <tspan
+       dy="12"
+       x="80"
+       id="tspan3739">Pmp</tspan>
+  </text>
+  <text
+     x="192.5"
+     y="513.1666666666666"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3741">
+    <tspan
+       dy="12"
+       x="192.5"
+       id="tspan3743">6124.56</tspan>
+  </text>
+  <text
+     x="80"
+     y="528.1666666666666"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3745">
+    <tspan
+       dy="12"
+       x="80"
+       id="tspan3747">Number Of Modules</tspan>
+  </text>
+  <text
+     x="192.5"
+     y="528.1666666666666"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3749">
+    <tspan
+       dy="12"
+       x="192.5"
+       id="tspan3751">24.00</tspan>
+  </text>
+  <text
+     x="120"
+     y="550.6666666666666"
+     fill="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3753">
+    <tspan
+       dy="12"
+       x="120"
+       id="tspan3755">DC</tspan>
+  </text>
+  <polyline
+     points="30,575 130,575"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3757" />
+  <polyline
+     points="130,575 255,575"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3759" />
+  <polyline
+     points="30,590 130,590"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3761" />
+  <polyline
+     points="130,590 255,590"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3763" />
+  <polyline
+     points="30,605 130,605"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3765" />
+  <polyline
+     points="130,605 255,605"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3767" />
+  <polyline
+     points="30,575 30,590"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3769" />
+  <polyline
+     points="30,590 30,605"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3771" />
+  <polyline
+     points="130,575 130,590"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3773" />
+  <polyline
+     points="130,590 130,605"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3775" />
+  <polyline
+     points="255,575 255,590"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3777" />
+  <polyline
+     points="255,590 255,605"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3779" />
+  <text
+     x="80"
+     y="573.1666666666666"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3781">
+    <tspan
+       dy="12"
+       x="80"
+       id="tspan3783">Home Run Length</tspan>
+  </text>
+  <text
+     x="192.5"
+     y="573.1666666666666"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3785">
+    <tspan
+       dy="12"
+       x="192.5"
+       id="tspan3787">50.00</tspan>
+  </text>
+  <text
+     x="80"
+     y="588.1666666666666"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3789">
+    <tspan
+       dy="12"
+       x="80"
+       id="tspan3791">Wire Size</tspan>
+  </text>
+  <text
+     x="192.5"
+     y="588.1666666666666"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3793">
+    <tspan
+       dy="12"
+       x="192.5"
+       id="tspan3795">-Undefined-</tspan>
+  </text>
+  <text
+     x="390"
+     y="25.666666666666664"
+     fill="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3797">
+    <tspan
+       dy="12"
+       x="390"
+       id="tspan3799">Inverter</tspan>
+  </text>
+  <polyline
+     points="300,50 400,50"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3801" />
+  <polyline
+     points="400,50 525,50"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3803" />
+  <polyline
+     points="300,65 400,65"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3805" />
+  <polyline
+     points="400,65 525,65"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3807" />
+  <polyline
+     points="300,80 400,80"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3809" />
+  <polyline
+     points="400,80 525,80"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3811" />
+  <polyline
+     points="300,95 400,95"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3813" />
+  <polyline
+     points="400,95 525,95"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3815" />
+  <polyline
+     points="300,50 300,65"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3817" />
+  <polyline
+     points="300,65 300,80"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3819" />
+  <polyline
+     points="300,80 300,95"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3821" />
+  <polyline
+     points="400,50 400,65"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3823" />
+  <polyline
+     points="400,65 400,80"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3825" />
+  <polyline
+     points="400,80 400,95"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3827" />
+  <polyline
+     points="525,50 525,65"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3829" />
+  <polyline
+     points="525,65 525,80"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3831" />
+  <polyline
+     points="525,80 525,95"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3833" />
+  <text
+     x="350"
+     y="48.166666666666664"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3835">
+    <tspan
+       dy="12"
+       x="350"
+       id="tspan3837">Make</tspan>
+  </text>
+  <text
+     x="462.5"
+     y="48.166666666666664"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3839">
+    <tspan
+       dy="12"
+       x="462.5"
+       id="tspan3841">SMA</tspan>
+  </text>
+  <text
+     x="350"
+     y="63.16666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3843">
+    <tspan
+       dy="12"
+       x="350"
+       id="tspan3845">Model</tspan>
+  </text>
+  <text
+     x="462.5"
+     y="63.16666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3847">
+    <tspan
+       dy="12"
+       x="462.5"
+       id="tspan3849">SI3000</tspan>
+  </text>
+  <text
+     x="350"
+     y="78.16666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3851">
+    <tspan
+       dy="12"
+       x="350"
+       id="tspan3853">Location</tspan>
+  </text>
+  <text
+     x="462.5"
+     y="78.16666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3855">
+    <tspan
+       dy="12"
+       x="462.5"
+       id="tspan3857">Inside</tspan>
+  </text>
+  <text
+     x="390"
+     y="100.66666666666667"
+     fill="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3859">
+    <tspan
+       dy="12"
+       x="390"
+       id="tspan3861">AC</tspan>
+  </text>
+  <polyline
+     points="300,125 400,125"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3863" />
+  <polyline
+     points="400,125 525,125"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3865" />
+  <polyline
+     points="300,140 400,140"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3867" />
+  <polyline
+     points="400,140 525,140"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3869" />
+  <polyline
+     points="300,155 400,155"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3871" />
+  <polyline
+     points="400,155 525,155"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3873" />
+  <polyline
+     points="300,170 400,170"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3875" />
+  <polyline
+     points="400,170 525,170"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3877" />
+  <polyline
+     points="300,185 400,185"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3879" />
+  <polyline
+     points="400,185 525,185"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3881" />
+  <polyline
+     points="300,200 400,200"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3883" />
+  <polyline
+     points="400,200 525,200"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3885" />
+  <polyline
+     points="300,215 400,215"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3887" />
+  <polyline
+     points="400,215 525,215"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3889" />
+  <polyline
+     points="300,125 300,140"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3891" />
+  <polyline
+     points="300,140 300,155"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3893" />
+  <polyline
+     points="300,155 300,170"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3895" />
+  <polyline
+     points="300,170 300,185"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3897" />
+  <polyline
+     points="300,185 300,200"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3899" />
+  <polyline
+     points="300,200 300,215"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3901" />
+  <polyline
+     points="400,125 400,140"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3903" />
+  <polyline
+     points="400,140 400,155"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3905" />
+  <polyline
+     points="400,155 400,170"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3907" />
+  <polyline
+     points="400,170 400,185"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3909" />
+  <polyline
+     points="400,185 400,200"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3911" />
+  <polyline
+     points="400,200 400,215"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3913" />
+  <polyline
+     points="525,125 525,140"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3915" />
+  <polyline
+     points="525,140 525,155"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3917" />
+  <polyline
+     points="525,155 525,170"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3919" />
+  <polyline
+     points="525,170 525,185"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3921" />
+  <polyline
+     points="525,185 525,200"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3923" />
+  <polyline
+     points="525,200 525,215"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3925" />
+  <text
+     x="350"
+     y="123.16666666666666"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3927">
+    <tspan
+       dy="12"
+       x="350"
+       id="tspan3929">Loadcenter Types</tspan>
+  </text>
+  <text
+     x="462.5"
+     y="123.16666666666666"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3931">
+    <tspan
+       dy="12"
+       x="462.5"
+       id="tspan3933">480/277V</tspan>
+  </text>
+  <text
+     x="350"
+     y="138.16666666666666"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3935">
+    <tspan
+       dy="12"
+       x="350"
+       id="tspan3937">Type</tspan>
+  </text>
+  <text
+     x="462.5"
+     y="138.16666666666666"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3939">
+    <tspan
+       dy="12"
+       x="462.5"
+       id="tspan3941">480V Wye</tspan>
+  </text>
+  <text
+     x="350"
+     y="153.16666666666666"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3943">
+    <tspan
+       dy="12"
+       x="350"
+       id="tspan3945">Distance To Loadcenter</tspan>
+  </text>
+  <text
+     x="462.5"
+     y="153.16666666666666"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3947">
+    <tspan
+       dy="12"
+       x="462.5"
+       id="tspan3949">50.00</tspan>
+  </text>
+  <text
+     x="350"
+     y="168.16666666666666"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3951">
+    <tspan
+       dy="12"
+       x="350"
+       id="tspan3953">Conductors</tspan>
+  </text>
+  <text
+     x="462.5"
+     y="168.16666666666666"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3955">
+    <tspan
+       dy="12"
+       x="462.5"
+       id="tspan3957">ground,neutral,L1,L2,L3</tspan>
+  </text>
+  <text
+     x="350"
+     y="183.16666666666666"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3959">
+    <tspan
+       dy="12"
+       x="350"
+       id="tspan3961">Num Conductors</tspan>
+  </text>
+  <text
+     x="462.5"
+     y="183.16666666666666"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3963">
+    <tspan
+       dy="12"
+       x="462.5"
+       id="tspan3965">5.00</tspan>
+  </text>
+  <text
+     x="350"
+     y="198.16666666666666"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3967">
+    <tspan
+       dy="12"
+       x="350"
+       id="tspan3969">Wire Size</tspan>
+  </text>
+  <text
+     x="462.5"
+     y="198.16666666666666"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3971">
+    <tspan
+       dy="12"
+       x="462.5"
+       id="tspan3973">-Undefined-</tspan>
+  </text>
+  <text
+     x="390"
+     y="220.66666666666666"
+     fill="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text3975">
+    <tspan
+       dy="12"
+       x="390"
+       id="tspan3977">Attachment System</tspan>
+  </text>
+  <polyline
+     points="300,245 400,245"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3979" />
+  <polyline
+     points="400,245 525,245"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3981" />
+  <polyline
+     points="300,260 400,260"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3983" />
+  <polyline
+     points="400,260 525,260"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3985" />
+  <polyline
+     points="300,275 400,275"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3987" />
+  <polyline
+     points="400,275 525,275"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3989" />
+  <polyline
+     points="300,245 300,260"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3991" />
+  <polyline
+     points="300,260 300,275"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3993" />
+  <polyline
+     points="400,245 400,260"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3995" />
+  <polyline
+     points="400,260 400,275"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3997" />
+  <polyline
+     points="525,245 525,260"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline3999" />
+  <polyline
+     points="525,260 525,275"
+     fill="none"
+     stroke="#000000"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     id="polyline4001" />
+  <text
+     x="350"
+     y="243.16666666666666"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text4003">
+    <tspan
+       dy="12"
+       x="350"
+       id="tspan4005">Make</tspan>
+  </text>
+  <text
+     x="462.5"
+     y="243.16666666666666"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text4007">
+    <tspan
+       dy="12"
+       x="462.5"
+       id="tspan4009">UNIRAC</tspan>
+  </text>
+  <text
+     x="350"
+     y="258.1666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text4011">
+    <tspan
+       dy="12"
+       x="350"
+       id="tspan4013">Model</tspan>
+  </text>
+  <text
+     x="462.5"
+     y="258.1666666666667"
+     fill="#0000ff"
+     stroke-width="1px"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     stroke-opacity="1"
+     font-family="serif"
+     font-size="8"
+     text-anchor="middle"
+     id="text4015">
+    <tspan
+       dy="12"
+       x="462.5"
+       id="tspan4017">SOLARMOUNT</tspan>
+  </text>
+  <text
+     xml:space="preserve"
+     style="font-size:251.88951111px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:0.02941176;stroke:none;font-family:Sans"
+     x="-269.746"
+     y="681.10767"
+     id="text5241"
+     sodipodi:linespacing="125%"
+     transform="matrix(0.86079764,-0.50894737,0.50894737,0.86079764,0,0)"><tspan
+       sodipodi:role="line"
+       id="tspan5243"
+       x="-269.746"
+       y="681.10767">SAMPLE</tspan></text>
+</svg>

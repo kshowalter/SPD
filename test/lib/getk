@@ -1,0 +1,7 @@
+#!/bin/bash
+echo "Removing old k"
+trash-put k
+echo "Getting new k"
+cp -r ../../../../k k
+rm -rf k/.git
+echo "Done"
