@@ -5,12 +5,13 @@
 
 
 
-var mk_svg = function(drawing_parts, drawing_size){
+var mk_svg = function(drawing_parts, drawing_settings){
     //console.log('displaying svg');
     //console.log('drawing_parts: ', drawing_parts);
     //container.empty()
-    var layer_attr = require('./settings_layers');
-    var fonts = require('./settings_fonts');
+    var drawing_size = drawing_settings.size.drawing;
+    var layer_attr = drawing_settings.layer_attr;
+    var fonts = drawing_settings.fonts;
 
     //var svg_elem = document.getElementById('SvgjsSvg1000')
     var svg_elem = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
