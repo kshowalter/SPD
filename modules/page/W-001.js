@@ -2,8 +2,8 @@
 
 var _ = require('underscore');
 
-var mk_drawing = require('./mk_drawing');
-var mk_border = require('./mk_border');
+var mk_drawing = require('../mk_drawing');
+var mk_border = require('../mk_border');
 
 //var drawing_parts = [];
 //d.link_drawing_parts(drawing_parts);
@@ -13,7 +13,7 @@ var page = function(settings){
     var d = mk_drawing(settings);
     var sheet_section = 'PV';
     var sheet_num = '01';
-    d.append(mk_border(settings, sheet_section, sheet_num ));
+    //d.append(mk_border(settings, sheet_section, sheet_num ));
 
     var f = settings.f;
 
@@ -110,7 +110,6 @@ var page = function(settings){
             [size.jb_box.w,size.jb_box.h],
             'box'
         );
-
 
         for( i in _.range(system.array.num_strings)) {
             offset = size.wire_offset.min + ( size.wire_offset.base * i );

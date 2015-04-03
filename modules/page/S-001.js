@@ -1,5 +1,5 @@
-var mk_drawing = require('./mk_drawing');
-var mk_border = require('./mk_border');
+var mk_drawing = require('../mk_drawing');
+var mk_border = require('../mk_border');
 
 var page = function(settings){
     console.log("** Making page 4");
@@ -9,7 +9,7 @@ var page = function(settings){
 
     var sheet_section = 'S';
     var sheet_num = '01';
-    d.append(mk_border(settings, sheet_section, sheet_num ));
+    //d.append(mk_border(settings, sheet_section, sheet_num ));
 
     var size = settings.drawing_settings.size;
     var loc = settings.drawing_settings.loc;
