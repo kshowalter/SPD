@@ -12,9 +12,10 @@ var page = function(settings, sheet_info){
 
 
 
-    if( settings.f.mk_page[sheet_info.num] !== undefined ){
+    if( settings.f.mk_sheet_num[sheet_info.num] !== undefined ){
         //console.log('Sheet defined');
-        d.append( settings.f.mk_page[sheet_info.num](settings) );
+        d.append( settings.f.mk_sheet_num[sheet_info.num](settings) );
+        d.append( settings.f.mk_sheet_num[sheet_info.num](settings) );
     } else {
         console.log('Error: Sheet not defined');
     }

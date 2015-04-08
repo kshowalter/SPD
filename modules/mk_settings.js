@@ -198,11 +198,11 @@ var mk_settings = function() {
 
     f.mk_blocks = require('./mk_blocks');
 
-    f.mk_page = {};
-    f.mk_page['G-001'] = require('./page/G-001');
-    f.mk_page['S-001'] = require('./page/S-001');
-    f.mk_page['W-001'] = require('./page/W-001');
-    f.mk_page['W-002'] = require('./page/W-002');
+    f.mk_sheet_num = {};
+    f.mk_sheet_num['G-001'] = require('./page/G-001');
+    f.mk_sheet_num['S-001'] = require('./page/S-001');
+    f.mk_sheet_num['W-001'] = require('./page/W-001');
+    f.mk_sheet_num['W-002'] = require('./page/W-002');
 
     f.mk_preview = {};
     f.mk_preview[1] = require('./mk_page_preview_1');
