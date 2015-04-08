@@ -69,7 +69,7 @@ var update_webpage = function(){
 
     // Add drawing to page
     $('#drawing').empty().html('Electrical');
-    for( p in f.mk_page ){  // f.mk_page is a array of page making functions, so this will loop through the number of pages
+    for( p in settings.drawing.parts ){  // f.mk_page is a array of page making functions, so this will loop through the number of pages
         settings.drawing.svgs[p] = f.mk_svg(settings.drawing.parts[p], settings.drawing_settings);
         $('#drawing')
             //.append($('<p>Page '+p+'</p>'))

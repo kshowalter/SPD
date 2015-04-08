@@ -18,7 +18,17 @@ function settings_drawing(settings){
         w: 1000,
         h: 780,
         frame_padding: 5,
-        titlebox: 50,
+        titlebox: {
+            side: {
+                w: 80,
+                h: 80*3,
+            },
+            bottom: {
+                h: 40,
+                w: 650
+            }
+        }
+
     };
 
     size.module = {};
@@ -153,7 +163,7 @@ function settings_drawing(settings){
 
     // wire table
     loc.wire_table = {
-        x: size.drawing.w - size.drawing.titlebox - size.drawing.frame_padding*3 - 325,
+        x: size.drawing.w - size.drawing.frame_padding*3 - 325,
         y: size.drawing.frame_padding*3,
     };
 
@@ -162,8 +172,8 @@ function settings_drawing(settings){
     size.volt_drop_table.w = 150;
     size.volt_drop_table.h = 100;
     loc.volt_drop_table = {};
-    loc.volt_drop_table.x = size.drawing.w - size.volt_drop_table.w/2 - 90;
-    loc.volt_drop_table.y = size.drawing.h - size.volt_drop_table.h/2 - 30;
+    loc.volt_drop_table.x = size.drawing.w - size.volt_drop_table.w/2 - 30 - size.drawing.titlebox.side.w;
+    loc.volt_drop_table.y = size.drawing.h - size.volt_drop_table.h/2 - 30 - size.drawing.titlebox.bottom.h;
 
 
     // voltage drop table

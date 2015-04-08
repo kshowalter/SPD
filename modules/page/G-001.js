@@ -2,7 +2,6 @@ var mk_drawing = require('../mk_drawing');
 var mk_border = require('../mk_border');
 
 var page = function(settings){
-    console.log("** Making page 1");
 
     var d = mk_drawing(settings);
 
@@ -49,7 +48,6 @@ var page = function(settings){
     t.row_size('all', 20).col_size(2, 400).col_size(1, 80);
 
     settings.drawing_settings.sheets.forEach(function(sheet,i){
-        console.log(sheet,i);
         t.cell(i+1,1).text(sheet.num);
         t.cell(i+1,2).text(sheet.desc);
 

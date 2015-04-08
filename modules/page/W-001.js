@@ -9,7 +9,6 @@ var mk_border = require('../mk_border');
 //d.link_drawing_parts(drawing_parts);
 
 var page = function(settings){
-    console.log("** Making page 2");
     var d = mk_drawing(settings);
     var sheet_section = 'PV';
     var sheet_num = '01';

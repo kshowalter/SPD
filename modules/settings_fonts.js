@@ -61,9 +61,19 @@ fonts['title3'] = {
     'font-size':     10,
     'text-anchor':   'left',
 };
-fonts['page'] = {
+fonts['title_FSEC'] = {
     'font-family': 'monospace',
-    'font-size':     20,
+    'font-size':     8,
+    'text-anchor':   'middle',
+};
+fonts['installer_info'] = {
+    'font-family': 'monospace',
+    'font-size':     6,
+    'text-anchor':   'middle',
+};
+fonts['sheet_num'] = {
+    'font-family': 'monospace',
+    'font-size':     16,
     'text-anchor':   'middle',
 };
 fonts['table'] = {

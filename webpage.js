@@ -119,7 +119,6 @@
         var status_id = 'status';
         setInterval(function(){ g.f.update_status_bar(status_id, boot_time, version_string);},1000);
 
-// Update
         g.f.update();
 
     } else {
@@ -135,6 +134,6 @@
             .appendTo(document.body);
         $('<div>')
             .attr('style', 'text-align: center')
-            .html('Demo not availible')
+            .html('Password required for demo')
             .appendTo(document.body);
     }

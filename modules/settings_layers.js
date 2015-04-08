@@ -27,6 +27,8 @@ if (!Object.assign) {
 
 var layer_attr = {};
 
+layer_attr.image = {};
+
 layer_attr.base = {
     'fill': 'none',
     'stroke':'#000000',
@@ -63,7 +65,7 @@ layer_attr.box = Object.create(layer_attr.base);
 layer_attr.text = Object.create(layer_attr.base);
 layer_attr.text.stroke = '#0000ff';
 layer_attr.terminal = Object.create(layer_attr.base);
-layer_attr.border = Object.create(layer_attr.base);
+
 
 layer_attr.AC_ground = Object.create(layer_attr.base);
 layer_attr.AC_ground.stroke = '#009900';
@@ -159,6 +161,12 @@ layer_attr.north_letter = Object.assign(Object.create(layer_attr.preview),{
 
 layer_attr.dimention = Object.assign(Object.create(layer_attr.text),{
     stroke: '#1433fe',
+});
+
+layer_attr.border = Object.create(layer_attr.base);
+
+layer_attr['border_lines'] = Object.assign(Object.create(layer_attr.text),{
+    stroke: '#717171',
 });
 
 

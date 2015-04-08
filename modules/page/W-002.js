@@ -2,7 +2,6 @@ var mk_drawing = require('../mk_drawing');
 var mk_border = require('../mk_border');
 
 var page = function(settings){
-    console.log("** Making page 3");
     var f = settings.f;
 
     d = mk_drawing(settings);

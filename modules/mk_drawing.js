@@ -160,6 +160,8 @@ var mk_drawing = function(g){
             }
         }
 
+
+
         var elem = Object.create(SvgElem);
         elem.type = type;
         elem.layer_name = layer_name;
@@ -183,6 +185,23 @@ var mk_drawing = function(g){
         } else {
             this.drawing_parts.push(elem);
         }
+
+
+        // Temp. NaN check
+        points.forEach(function(point){
+            if( point.constructor === Array ){
+                point.forEach(function(num){
+                    if( isNaN(num) ){
+                        console.log( 'NaN alert:', elem);
+                    }
+                });
+            } else {
+                if( isNaN(point.x) || isNaN(point.y) ){
+                    console.log( 'NaN alert:', elem);
+                }
+
+            }
+        });
 
         return elem;
     };
@@ -228,6 +247,14 @@ var mk_drawing = function(g){
         txt.strings = strings;
         txt.font = font;
         return txt;
+    };
+
+    drawing.image = function(loc, size, href, layer, attrs){
+        var img = this.add('image', [loc], 'image', attrs);
+        img.w = size[0];
+        img.h = size[1];
+        img.href = href;
+        return img;
     };
 
     drawing.block = function(name) {// set current block

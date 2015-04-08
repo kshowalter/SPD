@@ -1,5 +1,5 @@
 'use strict';
-
+var mk_page = require('./mk_page');
 
 var process = function(settings) {
     var f = settings.f;
@@ -127,7 +127,7 @@ var process = function(settings) {
 
 
     // Make drawing
-    var p;
+    var i, p;
 
     // Not needed on server
     settings.drawing.preview_parts = {};
@@ -138,10 +138,12 @@ var process = function(settings) {
 
     settings.drawing.parts = {};
     settings.drawing.svgs = {};
-    for( p in f.mk_page ){  // f.mk_page is a array of page making functions, so this will loop through the number of pages
-        settings.drawing.parts[p] = f.mk_page[p](settings);
-    }
+    settings.drawing_settings.sheets.forEach(function(sheet_info, i){
+        p = i+1;
+        settings.drawing.parts[p] = mk_page(settings, sheet_info);
+//        settings.drawing.parts[p] = f.mk_page[p](settings);
 
+    });
 
 };
 
