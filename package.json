@@ -15,12 +15,17 @@
     "underscore": "latest",
     "moment": "latest",
     "jquery": "latest",
-    "phridge": "~1.0.7"
+    "phridge": "~1.0.7",
+    "jsdom": "3.1.2"
   },
   "devDependencies": {
     "browserify": "^5.11.0",
     "browserify-shim": "^3.7.0",
+    "watchify:": "latest",
     "beefy": "latest"
+  },
+  "scripts": {
+      "watchify_start": "watchify webpage.js -o index.js -d -v"
   },
   "browser": {
     "jsPDF": "./lib/jspdf",
