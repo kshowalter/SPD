@@ -182,8 +182,11 @@ img { border: 0; }
 
 
 
-.float_right{
+.button_float_right{
+    padding: 2px;
+    margin: 2px;
     float: right;
+    background: #b2d6ff;
 }
 
 .geocode_line{
@@ -371,4 +374,15 @@ svg {
 .awesome-marker i {
     font-size: 18px;
     margin-top: 5px;
+}
+
+
+.title_image {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 10px;
+
 }
