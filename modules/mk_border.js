@@ -89,25 +89,28 @@ var add_border = function(settings, sheet_info){
 
     x = w - padding - titlebox.bottom.w - titlebox.side.w;
     y = h - padding - titlebox.bottom.h;
-    x += 10;
-    y += titlebox.bottom.h *1/4;
 
 
-    d.text([x,y],
-         [ 'PV System Design' ],
-        'text',
-        'title1'
-        );
-
-
-    x += 150;
     if( settings.f.section_defined(settings, 'location')  ){
-        d.text([x,y], [
+        d.text([x+10,y+titlebox.bottom.h *1/4], [
+            'PV System Design',
             settings.perm.location.address,
             settings.perm.location.city + ', ' + settings.perm.location.county + ', FL, ' + settings.perm.location.zip,
 
-        ], 'text', 'title3');
+        ], 'text', 'border_info');
     }
+
+
+    x += 150;
+    d.line([
+        [ x , y ],
+        [ x , y+titlebox.bottom.h ],
+    ]);
+    d.text([x,y],
+         [ 'PV System Design' ],
+        'text',
+        'border_info'
+        );
 
 
 
@@ -172,7 +175,7 @@ var add_border = function(settings, sheet_info){
         [ x+titlebox.side.w , y ],
     ]);
 
-    y += titlebox.side.w /8
+    y += titlebox.side.w /8;
     d.text([x+titlebox.side.w/2,y+10], [
              [ sheet_info.num ],
         ],

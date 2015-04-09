@@ -166,7 +166,7 @@ layer_attr.dimention = Object.assign(Object.create(layer_attr.text),{
 layer_attr.border = Object.create(layer_attr.base);
 
 layer_attr['border_lines'] = Object.assign(Object.create(layer_attr.text),{
-    stroke: '#717171',
+    stroke: '#8e8e8e',
 });
 
 

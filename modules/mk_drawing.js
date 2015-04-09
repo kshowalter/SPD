@@ -578,7 +578,11 @@ var mk_drawing = function(g){
 
 
     drawing.append =  function(drawing_parts){
+        var blk = Object.create(Blk);
+        blk.drawing_parts = drawing_parts;
+        
         this.drawing_parts = this.drawing_parts.concat(drawing_parts);
+        //this.drawing_parts = this.drawing_parts.concat(drawing_parts);
         return this;
     };
 
