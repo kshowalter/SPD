@@ -1,6 +1,6 @@
-var mk_drawing = require('./mk_drawing');
-var mk_border = require('./mk_border');
-var f = require('./functions');
+var mk_drawing = require('../mk_drawing');
+var mk_border = require('../mk_border');
+var f = require('../functions');
 
 var page = function(settings){
     console.log("** Making preview 1");
@@ -94,6 +94,7 @@ var page = function(settings){
                 'Isc: ' + parseFloat(system.array.isc).toFixed(),
                 'Voc: ' + parseFloat(system.array.voc).toFixed(),
             ],
+            'text',
             'preview text'
         );
     }
@@ -139,6 +140,7 @@ var page = function(settings){
                 system.inverter.make,
                 system.inverter.model,
             ],
+            'text',
             'preview text'
         );
     }
@@ -175,6 +177,7 @@ var page = function(settings){
                 'AC',
 
             ],
+            'text',
             'preview text'
         );
 

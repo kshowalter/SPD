@@ -130,11 +130,7 @@ var process = function(settings) {
     var i, p;
 
     // Not needed on server
-    settings.drawing.preview_parts = {};
-    settings.drawing.preview_svgs = {};
-    for( p in f.mk_preview ){  // f.mk_sheet_num is a array of page making functions, so this will loop through the number of pages
-        settings.drawing.preview_parts[p] = f.mk_preview[p](settings);
-    }
+
 
     settings.drawing.parts = {};
     settings.drawing.svgs = {};

@@ -1,6 +1,6 @@
-var mk_drawing = require('./mk_drawing');
-var mk_border = require('./mk_border');
-var f = require('./functions');
+var mk_drawing = require('../mk_drawing');
+var mk_border = require('../mk_border');
+var f = require('../functions');
 
 var page = function(settings){
     console.log("** Making preview 2");

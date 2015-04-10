@@ -45,15 +45,27 @@ var update_webpage = function(){
         }
     });
     //If the location is defined, open the map.
+    /*
     if( (! g.webpage.selections_manual_toggled.location) &&  g.f.section_defined(g, 'location') ){
             $('#section_map').children('.drawer').children('.drawer_content').slideDown('fast');
     }
+    //*/
 
 
     // Make preview
-    var p;
+
 
     // Add preview to page
+    settings.drawing.preview_parts = {};
+    settings.drawing.preview_svgs = {};
+    for( var name in f.mk_preview ){  // f.mk_sheet_num is a array of page making functions, so this will loop through the number of pages
+        settings.drawing.preview_parts[name] = f.mk_preview[name](settings);
+        settings.drawing.preview_svgs[name] = f.mk_svg(settings.drawing.preview_parts[name], settings.drawing_settings);
+    }
+
+
+
+    var p;
     $('#drawing_preview').empty().html('');
     for( p in f.mk_preview ){  // f.mk_sheet_num is a array of page making functions, so this will loop through the number of pages
         settings.drawing.preview_svgs[p] = f.mk_svg(settings.drawing.preview_parts[p], settings.drawing_settings);

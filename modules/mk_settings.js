@@ -124,7 +124,7 @@ var mk_settings = function() {
 
 
     settings.user_input = f.add_sections(settings.inputs);
-
+console.log(settings.user_input);
 
 
 
@@ -205,8 +205,8 @@ var mk_settings = function() {
     f.mk_sheet_num['W-002'] = require('./page/W-002');
 
     f.mk_preview = {};
-    f.mk_preview[1] = require('./mk_page_preview_1');
-    f.mk_preview[2] = require('./mk_page_preview_2');
+    f.mk_preview['roof'] = require('./preview/mk_preview_roof');
+    f.mk_preview['elec'] = require('./preview/mk_preview_elec');
 
     f.mk_svg= require('./mk_svg');
 
