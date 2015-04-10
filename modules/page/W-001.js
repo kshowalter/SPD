@@ -288,6 +288,7 @@ var page = function(settings){
         d.text(
             [loc.inverter.x, loc.inverter.top + size.inverter.text_gap ],
             [ 'Inverter', settings.system.inverter.make + " " + settings.system.inverter.model ],
+            'text',
             'label'
         );
         d.layer();
@@ -411,8 +412,8 @@ var page = function(settings){
 
         d.text([x,y-h*0.4],
             [system.AC.loadcenter_types, 'Load Center'],
-            'label',
-            'text'
+            'text',
+            'label'
         );
         w = size.AC_loadcenter.breaker.w;
         h = size.AC_loadcenter.breaker.h;
