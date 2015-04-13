@@ -258,7 +258,7 @@ f.clean_name = function(name){
 
 f.mk_drawer = function(title, content){
     var drawer_container = $('<div>')
-                            .attr('class', 'input_section')
+                            .attr('class', 'drawer_container')
                             .attr('id', 'section_'+title);
                             //.attr('id', title );
     //drawer_container.get(0).style.display = display_type;
@@ -287,7 +287,7 @@ f.mk_drawer = function(title, content){
 };
 
 
-f.add_selectors = function(settings, parent_container){
+f.add_drawers = function(settings, parent_container){
     for( var section_name in settings.inputs ){
 
         //$(this).trigger('click');

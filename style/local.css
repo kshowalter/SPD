@@ -126,7 +126,7 @@ img { border: 0; }
 
 
 
-.input_section {
+.drawer_container {
     width: 100%;
     margin-bottom: 5px;
 }
@@ -153,6 +153,7 @@ img { border: 0; }
 .drawer {
     padding: 2px;
     background: WhiteSmoke;
+
     margin-bottom: 0px;
     border-bottom-width: 1px;
     border-bottom-style: solid;
@@ -220,7 +221,9 @@ img { border: 0; }
 
 
 .selector_set {
-    background: #d9dce6;
+    /*background: #d9dce6 */;
+    background: WhiteSmoke;
+
     display: inline-block;
     padding: 3px;
     margin: 2px;

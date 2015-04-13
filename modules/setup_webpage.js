@@ -32,7 +32,8 @@ function setup_webpage(){
     $('<div>').html('System Setup').attr('class', 'section_title').appendTo(system_frame);
     var config_frame = $('<div>').attr('id', 'config_frame').appendTo(system_frame);
 
-    g.f.add_selectors(settings, config_frame);
+    g.f.add_drawers(settings, config_frame);
+    
     //console.log(section_selector);
 
 
