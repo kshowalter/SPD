@@ -106,7 +106,7 @@ var add_border = function(settings, sheet_info){
         [ x , y ],
         [ x , y+titlebox.bottom.h ],
     ]);
-    d.text([x,y],
+    d.text([x+10,y+titlebox.bottom.h *1/4],
          [ 'PV System Design' ],
         'text',
         'border_info'

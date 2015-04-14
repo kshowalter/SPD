@@ -22,18 +22,20 @@ function setup_webpage(){
         .attr('class', 'title_image')
         //.attr('width', '90%')
         .appendTo(header_container);
-    $('<span>').html('Please select your system spec below').attr('class', 'category_title').appendTo(header_container);
-    $('<span>').html(' | ').appendTo(header_container);
-    //$('<input>').attr('type', 'button').attr('value', 'clear selections').click(window.location.reload),
-    $('<a>').attr('href', 'javascript:window.location.reload()').html('clear selections').appendTo(header_container);
+    $('<div>').attr('class', 'subtitle').appendTo(header_container).append(
+        $('<span>').html('Please select your system spec below').attr('class', 'category_title').appendTo(header_container),
+        $('<span>').html(' | ').appendTo(header_container),
+        //$('<input>').attr('type', 'button').attr('value', 'clear selections').click(window.location.reload),
+        $('<a>').attr('href', 'javascript:window.location.reload()').html('clear selections').appendTo(header_container)
+
+    );
 
 
     // System setup
-    $('<div>').html('System Setup').attr('class', 'section_title').appendTo(system_frame);
     var config_frame = $('<div>').attr('id', 'config_frame').appendTo(system_frame);
 
     g.f.add_drawers(settings, config_frame);
-    
+
     //console.log(section_selector);
 
 
@@ -64,7 +66,7 @@ function setup_webpage(){
             .attr('target', '_blank')
     );
 
-
+//*
     var geocode_div = $('<div>')
         .attr('class', 'geocode_line')
         .appendTo(map_div);
@@ -132,15 +134,9 @@ function setup_webpage(){
     g.perm.maps.marker_sat = L.marker([lat,lon], {icon: sun_marker}).addTo(map_sat);
 
     map_sat.on('click', f.set_coordinates_from_map );
+//*/
 
 
-
-
-
-
-    var drawing_preview = $('<div>').attr('id', 'drawing_frame_preview').appendTo(page);
-    $('<div>').html('Preview').attr('class', 'section_title').appendTo(drawing_preview);
-    $('<div>').attr('id', 'drawing_preview').attr('class', 'drawing').css('clear', 'both').appendTo(drawing_preview);
 
 
 
@@ -148,7 +144,6 @@ function setup_webpage(){
 
     var drawing_section = $('<div>').attr('id', 'drawing_frame').appendTo(page);
     //drawing.css('width', (settings.drawing_settings.size.drawing.w+20).toString() + 'px' );
-    $('<div>').html('Drawing').attr('class', 'section_title').appendTo(drawing_section);
 
 
     //$('<form method="get" action="data/sample.pdf"><button type="submit">Download</button></form>').appendTo(drawing_section);

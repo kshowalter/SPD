@@ -15,7 +15,7 @@ var mk_svg = function(drawing_parts, drawing_settings){
 
     //var svg_document = document.getElementById('SvgjsSvg1000')
     var svg_document = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
-    svg_document.setAttribute('class','svg_drawing');
+    //svg_document.setAttribute('class','svg_drawing');
 
 
 

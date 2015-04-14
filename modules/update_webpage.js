@@ -4,6 +4,36 @@ var update_webpage = function(){
     var settings = g;
     var f = g.f;
 
+    // Make preview
+
+
+    // create previews
+    settings.drawing.preview_parts = {};
+    settings.drawing.preview_svgs = {};
+    for( var name in f.mk_preview ){  // f.mk_sheet_num is a array of page making functions, so this will loop through the number of pages
+        settings.drawing.preview_parts[name] = f.mk_preview[name](settings);
+        settings.drawing.preview_svgs[name] = f.mk_svg(settings.drawing.preview_parts[name], settings.drawing_settings);
+    }
+
+    var preview_table = {
+        'section_location': [],
+        'section_map': [],
+        'section_roof': [ settings.drawing.preview_svgs['roof'] ],
+        'section_module': [ settings.drawing.preview_svgs['elec'], settings.drawing.preview_svgs['roof'] ],
+        'section_array': [ settings.drawing.preview_svgs['elec'] ],
+        'section_DC': [ settings.drawing.preview_svgs['elec'] ],
+        'section_inverter': [ settings.drawing.preview_svgs['elec'] ],
+        'section_AC': [ settings.drawing.preview_svgs['elec'] ],
+        'section_attachment_system': [ settings.drawing.preview_svgs['roof'] ],
+    };
+    //console.log( $('#config_frame').children().map(function(){return this.id;}).get() );
+    //$('#section_location')
+    //    .append(settings.drawing.preview_svgs['elec']);
+    //$('#section_map')
+    //    .append(settings.drawing.preview_svgs['elec']);
+
+
+
 
 // update web page
     // set maps markers
@@ -36,10 +66,22 @@ var update_webpage = function(){
             return true;
         }
     });
+
     // Close section if they are not active sections, unless they have been opened by the user, open the active section
     sections.forEach(function(section_name,id){ //TODO: find pre IE9 way to do this?
+        var svg_drawing_container = $('#section_'+section_name).children('.drawer').children('.drawer_content').children('.svg_drawing_container');
+        svg_drawing_container.empty();
+        console.log(section_name);
+        preview_table['section_'+section_name].forEach(function(preview_svg){
+            svg_drawing_container.append(
+                $(preview_svg).clone()
+                    .attr('class', 'svg_drawing_preview')
+            );
+        });
+
         if( section_name === active_section ){
             $('#section_'+section_name).children('.drawer').children('.drawer_content').slideDown('fast');
+
         } else if( ! g.webpage.selections_manual_toggled[section_name] ){
             $('#section_'+section_name).children('.drawer').children('.drawer_content').slideUp('fast');
         }
@@ -52,23 +94,14 @@ var update_webpage = function(){
     //*/
 
 
-    // Make preview
-
-
-    // Add preview to page
-    settings.drawing.preview_parts = {};
-    settings.drawing.preview_svgs = {};
-    for( var name in f.mk_preview ){  // f.mk_sheet_num is a array of page making functions, so this will loop through the number of pages
-        settings.drawing.preview_parts[name] = f.mk_preview[name](settings);
-        settings.drawing.preview_svgs[name] = f.mk_svg(settings.drawing.preview_parts[name], settings.drawing_settings);
-    }
 
 
 
     var p;
-    $('#drawing_preview').empty().html('');
+    /*
+    $('#drawing_preview').empty();
     for( p in f.mk_preview ){  // f.mk_sheet_num is a array of page making functions, so this will loop through the number of pages
-        settings.drawing.preview_svgs[p] = f.mk_svg(settings.drawing.preview_parts[p], settings.drawing_settings);
+        //settings.drawing.preview_svgs[p] = f.mk_svg(settings.drawing.preview_parts[p], settings.drawing_settings);
         var section = ['','Electrical','Structural'][p];
         $('#drawing_preview')
             //.append($('<p>Page '+p+'</p>'))
@@ -78,9 +111,10 @@ var update_webpage = function(){
             .append($('</br>'));
 
     }
+    //*/
 
     // Add drawing to page
-    $('#drawing').empty().html('Electrical');
+    $('#drawing').empty();
     for( p in settings.drawing.parts ){  // f.mk_sheet_num is a array of page making functions, so this will loop through the number of pages
         settings.drawing.svgs[p] = f.mk_svg(settings.drawing.parts[p], settings.drawing_settings);
         $('#drawing')

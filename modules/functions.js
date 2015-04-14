@@ -292,6 +292,14 @@ f.add_drawers = function(settings, parent_container){
 
         //$(this).trigger('click');
         var drawer_content = $('<div>');
+        var user_input_container = $('<div>').attr('class', 'user_input_container').appendTo(drawer_content);
+        drawer_content.append(
+            $('<div>')
+                .attr('class', 'svg_drawing_container')
+        );
+
+
+
         for( var input_name in settings.inputs[section_name] ){
             var units;
             if( (settings.inputs[section_name][input_name] !== undefined) && (settings.inputs[section_name][input_name].units !== undefined) ) {
@@ -306,15 +314,14 @@ f.add_drawers = function(settings, parent_container){
                 note = false;
             }
 
-
-            var selector_set = $('<span>').attr('class', 'selector_set').appendTo(drawer_content);
-            var input_text = $('<span>').html(f.pretty_name(input_name) + ': ' + units ).appendTo(selector_set);
+            var user_input = $('<span>').attr('class', 'user_input').appendTo(user_input_container);
+            var input_text = $('<span>').html(f.pretty_name(input_name) + ': ' + units ).appendTo(user_input);
             if( note ) input_text.attr('title', note);
             /*
             var selector = k$('selector')
                 .setOptionsRef( 'inputs.' + section_name + '.' + input_name )
                 .setRef( 'system.' + section_name + '.' + input_name )
-                .appendTo(selector_set);
+                .appendTo(user_input);
             f.kelem_setup(selector, settings);
             //*/
             var selector = {
@@ -330,8 +337,8 @@ f.add_drawers = function(settings, parent_container){
             }
             if( selector.type === 'select' ){
                 selector.elem = $('<select>')
-                    .attr('class', 'selector')
-                    .appendTo(selector_set)
+                    //.attr('class', 'selector')
+                    .appendTo(user_input)
                     .get()[0];
                 selector.value = function(){
                     //console.log( this.set_ref.refString, this.elem.selectedIndex );
@@ -345,7 +352,7 @@ f.add_drawers = function(settings, parent_container){
                 selector.elem = $('<input>')
                     .attr('class', selector.type)
                     .attr('type', 'text')
-                    .appendTo(selector_set)
+                    .appendTo(user_input)
                     .get()[0];
                 selector.value = function(){
                     //console.log( this.set_ref.refString, this.elem.selectedIndex );
@@ -364,6 +371,8 @@ f.add_drawers = function(settings, parent_container){
             //$('</br>').appendTo(drawer_content);
 
         }
+
+
 
         var selection_container = f.mk_drawer(section_name, drawer_content);
 
