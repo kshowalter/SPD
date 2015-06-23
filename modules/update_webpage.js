@@ -127,6 +127,3 @@ var update_webpage = function(){
 
 
 };
-
-
-module.exports = update_webpage;

@@ -82,12 +82,12 @@ function setup_webpage(){
 
     $('<div>')
         .attr('id', 'map_road')
-        .attr('class', 'map_road')
+        .attr('class', 'map')
         .attr('style', 'width:485px;height:380px')
         .appendTo(map_div);
     $('<div>')
         .attr('id', 'map_sat')
-        .attr('class', 'map_sat')
+        .attr('class', 'map')
         .attr('style', 'width:485px;height:380px')
         .appendTo(map_div);
 
@@ -183,7 +183,3 @@ function setup_webpage(){
     $('<div>').html(' ').attr('class', 'section_title').appendTo(drawing_section);
 
 }
-
-
-
-module.exports = setup_webpage;
