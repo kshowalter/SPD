@@ -7,7 +7,7 @@ Template.drawer.helpers({
   },
   inputs: function(){
     var section_name = this.toString();
-    var inputs = Values.find({user_input:true,section_name:section_name});
+    var inputs = Values.find({ type:"user", section_name:section_name });
     return inputs;
   },
   pretty_label: function(label){
@@ -18,9 +18,9 @@ Template.drawer.helpers({
 
 Template.drawer.events({
   'click .title_bar': function(event){
-    console.log(this);
-    //$('#' + event.currentTarget.id).slideUp('slow');
-    console.log( $(event.target).parent().children('.drawer').children('.drawer_content') );
+    //console.log(this);
+    ////$('#' + event.currentTarget.id).slideUp('slow');
+    //console.log( $(event.target).parent().children('.drawer').children('.drawer_content') );
     $(event.target).parent().children('.drawer').children('.drawer_content').slideToggle('fast');
 
   },

@@ -2,16 +2,16 @@
   <span class="user_input">
     <span>{{name}}: </span>
     {{#if isType 'select'}}
-      <select>
+      <select class="input {{this.input_type}}" >
         <option selected="selected" disabled="disabled" hidden="hidden"></option>
         {{#each this.options}}
           <option value="{{this}}">{{this}}</option>
         {{/each}}
       </select>
     {{else}} {{#if isType 'text_input'}}
-      <input class="{{input.type}}_input" type="text" value={{value}}>
+      <input class="input {{this.input_type}}" type="text" value="{{value}}">
     {{else}} {{#if isType 'number_input'}}
-      <input class="{{input.type}}_input" type="text" {{value}}>
+      <input class="input {{this.input_type}}" type="text" value="{{value}}">
     {{else}}
       <span>undefined</span>
     {{/if}}

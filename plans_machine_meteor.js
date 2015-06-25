@@ -26,17 +26,38 @@ if (Meteor.isServer) {
 
     if(dev) {
       for( var section_name in settings.user_input ){
-        for( var input_name in settings.user_input[section_name] ){
-          console.log(section_name,input_name,settings.user_input[section_name][input_name]);
-          Values.update(
-            {section_name:section_name,name:input_name},
-            {$set:{
-              value: settings.user_input[section_name][input_name]
-            }}
-          );
+        for( var value_name in settings.user_input[section_name] ){
+          console.log( section_name, value_name, settings.user_input[section_name][value_name] );
+          var new_value = settings.user_input[section_name][value_name];
+          setValue( section_name, value_name, new_value );
         }
       }
     }
+
+    Values.find({ section_name:"module", value_name:"make" }).observe({
+      changed: function(doc){
+        console.log('new value for module make: ', doc);
+        var new_options = _.uniq(Components
+          .find({
+            type:"modules",
+            make:getValue('module', 'make')
+          }).map(function(doc){return doc.model;}
+        ));
+        setOptions("module", "model", new_options );
+      },
+      //setValue = function(section_name, value_name, new_value);
+    });
+
+    f.process(settings);
+
+    Values.find({type:"user"}).observe({
+      changed: function(dic){
+        console.log("something changed, recalculating");
+        f.process(settings)
+      }
+    });
+
+
 
   });
 

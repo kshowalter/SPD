@@ -11,6 +11,7 @@ FSEC_database = f.lowercase_properties(FSEC_database);
 for( var type in FSEC_database ){
   for( var component_name in FSEC_database[type] ){
     var component = FSEC_database[type][component_name];
+    component.type = type;
     Components.upsert(component,component);
   }
 

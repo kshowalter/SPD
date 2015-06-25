@@ -5,10 +5,3 @@ Template.input_section.helpers({
     //return Settings.findOne({id:'section_list'});
   },
 });
-
-
-Template.input_section.events({
-  'submit form': function(e){
-    console.log('form submitted', e);
-  }
-});
