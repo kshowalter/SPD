@@ -14,6 +14,9 @@ Template.drawer.helpers({
     console.log(this);
     return f.pretty_name(label);
   },
+  is_section: function(name){
+    return name === this;
+  },
 });
 
 Template.drawer.events({

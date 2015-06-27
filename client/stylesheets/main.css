@@ -307,8 +307,7 @@ img { border: 0; }
 /*************/
 /* sections */
 
-
-#status {
+.status_bar{
     padding:2px;
     margin:0;
     background: Lavender;
@@ -316,6 +315,10 @@ img { border: 0; }
     border-width: 0.1em;
     border-bottom-style: solid;
     font-size: 0.7em;
+	
+}
+
+#status {
 
 
 }

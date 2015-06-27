@@ -13,7 +13,49 @@ if (Meteor.isClient) {
   // counter starts at 0
   Session.setDefault('counter', 0);
 
+  f.process(settings);
 
+  Values.find({type:"user"}).observe({
+    changed: function(dic){
+      console.log("something changed, recalculating");
+      f.process(settings);
+      $('#drawing').empty();
+      settings.drawing.svgs.forEach(function(svg){
+        $('#drawing')
+        //.append($('<p>Page '+p+'</p>'))
+          .append($(svg))
+          .append($('</br>'))
+          .append($('</br>'));
+
+      });
+    },
+  });
+
+  var version_string = 'Preview'+moment().format('YYYYMMDD');
+  //g.state.version_string = version_string;
+  var boot_time = moment();
+  var status_id = 'status';
+  Meteor.setInterval(function(){
+    f.update_status_bar(status_id, boot_time, version_string);
+  },1000);
+
+
+f.update_status_bar = function(status_id, boot_time, string) {
+    var status_div = document.getElementById(status_id);
+    status_div.innerHTML = string;
+    status_div.innerHTML += ' | ';
+
+    var clock = document.createElement('span');
+    clock.innerHTML = moment().format('YYYY-MM-DD HH:mm:ss');
+
+    var uptime = document.createElement('span');
+    uptime.innerHTML = 'Uptime: ' + f.uptime(boot_time);
+
+    status_div.appendChild(clock);
+    status_div.innerHTML += ' | ';
+    status_div.appendChild(uptime);
+    status_div.innerHTML += ' | ';
+};
 
   console.log(settings.input);
 
@@ -53,7 +95,7 @@ if (Meteor.isServer) {
     Values.find({type:"user"}).observe({
       changed: function(dic){
         console.log("something changed, recalculating");
-        f.process(settings)
+        f.process(settings);
       }
     });
 
