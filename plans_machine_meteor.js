@@ -40,22 +40,7 @@ if (Meteor.isClient) {
   },1000);
 
 
-f.update_status_bar = function(status_id, boot_time, string) {
-    var status_div = document.getElementById(status_id);
-    status_div.innerHTML = string;
-    status_div.innerHTML += ' | ';
 
-    var clock = document.createElement('span');
-    clock.innerHTML = moment().format('YYYY-MM-DD HH:mm:ss');
-
-    var uptime = document.createElement('span');
-    uptime.innerHTML = 'Uptime: ' + f.uptime(boot_time);
-
-    status_div.appendChild(clock);
-    status_div.innerHTML += ' | ';
-    status_div.appendChild(uptime);
-    status_div.innerHTML += ' | ';
-};
 
   console.log(settings.input);
 
@@ -69,7 +54,7 @@ if (Meteor.isServer) {
     if(dev) {
       for( var section_name in settings.user_input ){
         for( var value_name in settings.user_input[section_name] ){
-          console.log( section_name, value_name, settings.user_input[section_name][value_name] );
+          //console.log( section_name, value_name, settings.user_input[section_name][value_name] );
           var new_value = settings.user_input[section_name][value_name];
           setValue( section_name, value_name, new_value );
         }

@@ -1,12 +1,20 @@
 Template.input.helpers({
-  name: function(){
-    return f.pretty_name(this.value_name);
+  label: function(){
+    //console.log( "label", this.label )
+    if( typeof this.label === 'string' ){
+      return this.label;
+    } else {
+      return f.pretty_name(this.value_name);
+    }
   },
   is: function(a,b){
     return a === b;
   },
   isType: function(type){
     return this.input_type === type;
+  },
+  info_content: function(type){
+    return this.content;
   },
 });
 

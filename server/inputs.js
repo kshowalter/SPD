@@ -3,93 +3,174 @@ var settings = settings || {};
 
 settings.in = {};
 
-settings.in.opt = {};
-settings.in.opt.AC = {};
-settings.in.opt.AC.types = {};
-settings.in.opt.AC.types["120V"] = ["ground","neutral","L1"];
-settings.in.opt.AC.types["240V"] = ["ground","neutral","L1","L2"];
-settings.in.opt.AC.types["208V"] = ["ground","neutral","L1","L2"];
-settings.in.opt.AC.types["277V"] = ["ground","neutral","L1"];
-settings.in.opt.AC.types["480V Wye"] = ["ground","neutral","L1","L2","L3"];
-settings.in.opt.AC.types["480V Delta"] = ["ground","L1","L2","L3"];
+settings.in.opt = {
+  AC: {
+    types: {
+      "120V": ["ground","neutral","L1"],
+      "240V": ["ground","neutral","L1","L2"],
+      "208V": ["ground","neutral","L1","L2"],
+      "277V": ["ground","neutral","L1"],
+      "480V Wye": ["ground","neutral","L1","L2","L3"],
+      "480V Delta": ["ground","L1","L2","L3"],
 
+    },
+  },
 
-
-settings.inputs = {};
-settings.inputs.location = {};
-settings.inputs.location.county = {};
-settings.inputs.location.county.input_type = 'text_input';
-settings.inputs.location.address = {};
-settings.inputs.location.address.input_type = 'text_input';
-settings.inputs.location.city = {};
-settings.inputs.location.city.input_type = 'text_input';
-settings.inputs.location.zip = {};
-settings.inputs.location.zip.input_type = 'text_input';
-
-settings.inputs.roof = {};
-settings.inputs.roof.width = {};
-settings.inputs.roof.width.options = [];
-for( i=15; i<=70; i+=5 ) settings.inputs.roof.width.options.push(i);
-settings.inputs.roof.width.units = 'ft.';
-settings.inputs.roof.width.note = 'This the full size of the roof, perpendictular to the slope.';
-settings.inputs.roof.width.input_type = 'number_input';
-settings.inputs.roof.length = {};
-settings.inputs.roof.length.options = [];
-for( i=10; i<=60; i+=5 ) settings.inputs.roof.length.options.push(i);
-settings.inputs.roof.length.units = 'ft.';
-settings.inputs.roof.length.note = 'This the full length of the roof, measured from low to high.';
-settings.inputs.roof.length.input_type = 'number_input';
-settings.inputs.roof.slope = {};
-settings.inputs.roof.slope.options = ['1:12','2:12','3:12','4:12','5:12','6:12','7:12','8:12','9:12','10:12','11:12','12:12'];
-settings.inputs.roof.type = {};
-settings.inputs.roof.type.options = ['Gable','Shed','Hipped'];
-settings.inputs.module = {};
-settings.inputs.module.make = {};
-settings.inputs.module.make.options = _.uniq(Components.find({type:"modules"}).map(function(doc){return doc.make;}));
-settings.inputs.module.model = {};
-settings.inputs.module.model.options = ['test'];
-settings.inputs.module.orientation = {};
-settings.inputs.module.orientation.options = ['Portrait','Landscape'];
-settings.inputs.array = {};
-settings.inputs.array.modules_per_string = {};
-settings.inputs.array.modules_per_string.options = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
-settings.inputs.array.num_strings = {};
-settings.inputs.array.num_strings.options = [1,2,3,4,5,6];
-settings.inputs.DC = {};
-settings.inputs.DC.home_run_length = {};
-//settings.inputs.DC.home_run_length.options = [25,50,75,100,125,150];
-settings.inputs.DC.home_run_length.input_type = 'number_input';
-settings.inputs.inverter = {};
-settings.inputs.inverter.make = {};
-//settings.inputs.inverter.make.options = null;
-settings.inputs.inverter.model = {};
-settings.inputs.inverter.location = {};
-settings.inputs.inverter.location.options = ['Inside', 'Outside'];
-//settings.inputs.inverter.model.options = null;
-settings.inputs.AC = {};
-settings.inputs.AC.loadcenter_types = {};
-settings.inputs.AC.loadcenter_types['240V'] = {};
-settings.inputs.AC.loadcenter_types['240V'] = ['240V','120V'];
-settings.inputs.AC.loadcenter_types['208/120V'] = {};
-settings.inputs.AC.loadcenter_types['208/120V'] = ['208V','120V'];
-settings.inputs.AC.loadcenter_types['480/277V'] = {};
-settings.inputs.AC.loadcenter_types['480/277V'] = ['480V Wye','480V Delta','277V'];
-settings.inputs.AC.input_type = {};
-//settings.inputs.AC.type.options = null;
-settings.inputs.AC.distance_to_loadcenter = {};
-//settings.inputs.AC.distance_to_loadcenter.options = [3,5,10,15,20,30];
-settings.inputs.AC.distance_to_loadcenter.input_type = 'number_input';
-
-settings.inputs.attachment_system = {};
-settings.inputs.attachment_system.make = {
-    options: ['UNIRAC'],
-    type: 'select',
-};
-settings.inputs.attachment_system.model = {
-    options: ['SOLARMOUNT'],
-    type: 'select',
 };
 
+
+
+settings.inputs = {
+  location: {
+    county: {
+      input_type: 'text_input',
+    },
+    street: {
+      input_type: 'text_input',
+    },
+    number: {
+      input_type: 'text_input',
+    },
+    city: {
+      input_type: 'text_input',
+    },
+    zip_code: {
+      input_type: 'text_input',
+    },
+  },
+  map: {
+    links: {
+      type: 'raw',
+      content: '<ul> <li><a target="_blank" href= "http://windspeed.atcouncil.org/">Wind Zone<a></li> <li><a target="_blank" href= "http://www.solarabcs.org/about/publications/reports/expedited-permit/map/index.html">Climate Conditions<a></li> </ul>'
+    },
+    latitude: {
+      input_type: 'text_input',
+    },
+    longitude: {
+      input_type: 'text_input',
+    },
+    low_temp: {
+      input_type: 'text_input',
+      label: 'Extreme Min Temp',
+    },
+    high_temp_max: {
+      input_type: 'text_input',
+      label: 'Max Temp 0.4%',
+    },
+    high_temp: {
+      input_type: 'text_input',
+      label: 'Max Temp 2%',
+    },
+  },
+  wind_speed:{
+    wind_speed: {
+      input_type: 'text_input',
+    },
+  	risk_category_i: {
+      input_type: 'text_input',
+      label: 'Risk Category I	',
+    },
+  	risk_category_ii: {
+      input_type: 'text_input',
+      label: 'Risk Category II',
+    },
+  	'risk_category_iii_iv': {
+      input_type: 'text_input',
+      label: 'Risk Category III-IV',
+    },
+  	windborne_debris: {
+      input_type: 'text_input',
+    },
+  },
+//      label: '',
+  roof: {
+    width1: {
+      options: [],
+      units: 'ft.',
+      label: 'Eave Width',
+      note: 'This the full size of the roof, perpendictular to the slope.',
+      input_type: 'number_input',
+    },
+    width2: {
+      options: [],
+      units: 'ft.',
+      label: 'Ridge Width',
+      note: 'This the full size of the roof, perpendictular to the slope.',
+      input_type: 'number_input',
+    },
+    slope_length: {
+      options: [],
+      units: 'ft.',
+      label: 'Slope Length',
+      note: 'This the full length of the roof, measured from low to high.',
+      input_type: 'number_input',
+    },
+    slope: {
+      options: ['1:12','2:12','3:12','4:12','5:12','6:12','7:12','8:12','9:12','10:12','11:12','12:12'],
+    },
+    type: {
+      options: ['Gable','Shed','Hipped'],
+    },
+  },
+  module: {
+    make: {
+      options: _.uniq(Components.find({type:"modules"}).map(function(doc){return doc.make;})),
+    },
+    model: {
+      options: ['test'],
+    },
+    orientation: {
+      options: ['Portrait','Landscape'],
+    },
+  },
+  array: {
+    modules_per_string: {
+      options: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+    },
+    num_strings: {
+      options: [1,2,3,4,5,6],
+    },
+  },
+  DC: {
+    home_run_length: {
+      input_type: 'number_input',
+    },
+  },
+  inverter: {
+    make: {},
+    model: {},
+    location: {
+      options: ['Inside', 'Outside'],
+    },
+  },
+  AC: {
+    loadcenter_types: {
+      '240V': ['240V','120V'],
+      '208/120V': ['208V','120V'],
+      '480/277V': ['480V Wye','480V Delta','277V'],
+    },
+    input_type: {},
+    distance_to_loadcenter: {
+      input_type: 'number_input',
+    },
+  },
+  attachment_system: {
+    make: {
+        options: ['UNIRAC'],
+        type: 'select',
+    },
+    model: {
+        options: ['SOLARMOUNT'],
+        type: 'select',
+    },
+  },
+
+};
+
+
+for( i=15; i<=70; i+=5 ) settings.inputs.roof.width1.options.push(i);
+for( i=15; i<=70; i+=5 ) settings.inputs.roof.width2.options.push(i);
+for( i=10; i<=60; i+=5 ) settings.inputs.roof.slope_length.options.push(i);
 
 
 Values.remove({});
