@@ -315,7 +315,7 @@ img { border: 0; }
     border-width: 0.1em;
     border-bottom-style: solid;
     font-size: 0.7em;
-	
+
 }
 
 #status {
@@ -387,7 +387,7 @@ svg {
     border-color: #690000;
     border-width: 0.05em;
     border-style: solid;
-
+		background: white;
 }
 
 
