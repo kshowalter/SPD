@@ -1,3 +1,7 @@
+Meteor.subscribe('user_data');
+Meteor.subscribe('inputs');
+Meteor.subscribe('settings');
+
 
 var update = function(){
   console.log('updateing');
@@ -17,7 +21,7 @@ var update = function(){
 
 };
 
-Values.find({type:"user"}).observe({
+User_data.find({type:"user"}).observe({
   changed: function(doc){
     console.log("something changed, recalculating");
     update();
@@ -41,6 +45,11 @@ var status_id = 'status';
 Meteor.setInterval(function(){
   f.update_status_bar(status_id, boot_time, version_string);
 },1000);
+
+Meteor.call('connect', function(err, id){
+  console.log('ID: ', id);
+});
+
 
 
 

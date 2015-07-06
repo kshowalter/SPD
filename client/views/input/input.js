@@ -1,6 +1,6 @@
 Template.input.helpers({
   label: function(){
-    //console.log( "label", this.label )
+    console.log( "label", this.label );
     if( typeof this.label === 'string' ){
       return this.label;
     } else {
@@ -28,6 +28,6 @@ Template.input.events({
     //console.log('input changed', event.target.value);
     //console.log(event);
     //console.log('this', this._id, this);
-    Values.upsert(this._id, {$set: {value: event.target.value}});
+    User_data.upsert(this._id, {$set: {value: event.target.value}});
   },
 });

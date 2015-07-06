@@ -1,10 +1,9 @@
 Meteor.startup(function () {
   // code to run on server at startup
   Settings.remove({});
-  Values.remove({});
+  Inputs.remove({});
   NEC_tables.remove({});
 
-  Modules.remove({});
   Components.remove({});
 
 
@@ -27,7 +26,7 @@ Meteor.startup(function () {
 
   f.process(settings);
 
-  Values.find({type:"user"}).observe({
+  Inputs.find({type:"user"}).observe({
     changed: function(dic){
       console.log("something changed, recalculating");
       f.process(settings);
@@ -38,9 +37,43 @@ Meteor.startup(function () {
   var server_ready = true;
 
   Meteor.methods({
-    server_ready: function(){
-      return server_ready;
+     connect: function(){
+      console.log(this.userId, Meteor.user());
+
+      Inputs.find().forEach(function(input){
+        User_data.upsert({
+          user_id: this.userId,
+          type: 'input',
+          value_name: input.value_name,
+          section_name: input.section_name,
+        });
+      });
+
+      return Random.id();
+    },
+    reset: function(){
+      console.log(this.userId, Meteor.user());
+      return Random.id();
     }
+  });
+
+
+  Meteor.publish("user_data", function () {
+    return User_data.find({user_id:this.userId});
+  });
+
+  Meteor.publish("inputs", function () {
+    return Inputs.find();
+  });
+
+  Meteor.publish("settings", function () {
+    return Settings.find();
+  });
+
+
+  Accounts.onLogin(function(login){
+    console.log('User login: ', login.user._id, login.user.emails[0].address );
+    setup_user_data(login.user._id);
   });
 
 });

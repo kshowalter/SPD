@@ -1,4 +1,4 @@
-Values.find({ section_name:"module", value_name:"make" }).observe({
+Inputs.find({ section_name:"module", value_name:"make" }).observe({
   changed: function(doc){
     console.log('new value for module make: ', doc);
     var new_options = _.uniq(Components
@@ -13,11 +13,11 @@ Values.find({ section_name:"module", value_name:"make" }).observe({
 });
 
 
-Values.find({ section_name:"module", value_name:"model" }).observe({
+Inputs.find({ section_name:"module", value_name:"model" }).observe({
   changed: function(doc){
     var make  = getValue('module', 'make');
     var model = doc.model;
-    console.log(make, model);
+    console.log('new value for module model: ', doc, make, model);
     var specs = Components.findOne({ make:make, model:model });
     if(specs){
 
@@ -36,7 +36,7 @@ Values.find({ section_name:"module", value_name:"model" }).observe({
 });
 
 
-Values.find({ section_name:"inverter", value_name:"make" }).observe({
+Inputs.find({ section_name:"inverter", value_name:"make" }).observe({
   changed: function(doc){
     console.log('new value for inverter make: ', doc);
     var new_options = _.uniq(Components

@@ -6,7 +6,12 @@ mk_inputs = function(settings){
 
   settings.in.opt = {
     AC: {
-      types: {
+      loadcenter: {
+        '240V': ['240V','120V'],
+        '208/120V': ['208V','120V'],
+        '480/277V': ['480V Wye','480V Delta','277V'],
+      },
+      voltage: {
         "120V": ["ground","neutral","L1"],
         "240V": ["ground","neutral","L1","L2"],
         "208V": ["ground","neutral","L1","L2"],
@@ -118,7 +123,7 @@ mk_inputs = function(settings){
         options: _.uniq(Components.find({type:"modules"}).map(function(doc){return doc.make;})),
       },
       model: {
-        options: ['test'],
+        options: "TBD",
       },
       orientation: {
         options: ['Portrait','Landscape'],
@@ -138,19 +143,23 @@ mk_inputs = function(settings){
       },
     },
     inverter: {
-      make: {},
-      model: {},
+      make: {
+        options: _.uniq(Components.find({type:"inverters"}).map(function(doc){return doc.make;})),
+      },
+      model: {
+        options: "TBD",
+      },
       location: {
         options: ['Inside', 'Outside'],
       },
     },
     AC: {
-      loadcenter_types: {
-        '240V': ['240V','120V'],
-        '208/120V': ['208V','120V'],
-        '480/277V': ['480V Wye','480V Delta','277V'],
+      loadcenter_type: {
+        options: ['240V', '208/120V', '480/277V'],
       },
-      input_type: {},
+      voltage: {
+        options: "TBD",
+      },
       distance_to_loadcenter: {
         input_type: 'number_input',
       },
@@ -174,7 +183,7 @@ mk_inputs = function(settings){
   for( i=10; i<=60; i+=5 ) settings.inputs.roof.slope_length.options.push(i);
 
 
-  Values.remove({});
+  Inputs.remove({});
 
   var section_list_alt = [];
 
@@ -184,18 +193,21 @@ mk_inputs = function(settings){
       if( input.options ){
         input.input_type = 'select';
       }
+      if( input.options === 'TBD'){
+        input.options = false;
+      }
       input.value_name = value_name;
       input.section_name = section_name;
       input.value = null;
       input.type = "user";
-      Values.insert(input);
+      Inputs.insert(input);
       section_list_alt.push(section_name);
     }
 
   }
 
   /*
-  var section_list = Values.find({}).map(function(doc){
+  var section_list = Inputs.find({}).map(function(doc){
     return doc.section_name;
   });
   section_list = _.uniq(section_list);
