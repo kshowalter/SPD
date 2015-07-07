@@ -11,6 +11,7 @@ Meteor.startup(function () {
   settings = mk_inputs(settings);
 
 
+
   /*
     if(dev) {
       for( var section_name in settings.user_input ){
@@ -38,16 +39,16 @@ Meteor.startup(function () {
 
   Meteor.methods({
      connect: function(){
-      console.log(this.userId, Meteor.user());
+      //console.log(this.userId, Meteor.user());
 
-      Inputs.find().forEach(function(input){
-        User_data.upsert({
-          user_id: this.userId,
-          type: 'input',
-          value_name: input.value_name,
-          section_name: input.section_name,
-        });
-      });
+      //Inputs.find().forEach(function(input){
+      //  User_data.upsert({
+      //    user_id: this.userId,
+      //    type: 'input',
+      //    value_name: input.value_name,
+      //    section_name: input.section_name,
+      //  });
+      //});
 
       return Random.id();
     },

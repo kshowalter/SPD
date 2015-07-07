@@ -1,6 +1,6 @@
 Template.input.helpers({
   label: function(){
-    console.log( "label", this.label );
+    //console.log( "label", this.label );
     if( typeof this.label === 'string' ){
       return this.label;
     } else {
@@ -12,9 +12,6 @@ Template.input.helpers({
   },
   isType: function(type){
     return this.input_type === type;
-  },
-  info_content: function(type){
-    return this.content;
   },
 });
 

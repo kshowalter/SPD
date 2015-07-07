@@ -4,7 +4,7 @@ Meteor.subscribe('settings');
 
 
 var update = function(){
-  console.log('updateing');
+  console.log('updating');
   f.process(settings);
   update_drawing();
 

@@ -1,9 +1,7 @@
 <template name="input">
   <span class="user_input">
-    <span>{{label}}: </span>
-    {{#if isType raw}}
-      {{{info_content}}}
-    {{else}} {{#if isType 'select'}}
+    <span title="{{note}}">{{label}}: </span>
+    {{#if isType 'select'}}
       <select class="input {{this.input_type}}" >
         <option selected="selected" disabled="disabled" hidden="hidden"></option>
         {{#each this.options}}
@@ -16,7 +14,6 @@
       <input class="input {{this.input_type}}" type="text" value="{{value}}">
     {{else}}
       <span>undefined</span>
-    {{/if}}
     {{/if}}
     {{/if}}
     {{/if}}

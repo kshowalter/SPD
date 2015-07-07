@@ -7,12 +7,20 @@ Template.drawer.helpers({
   },
   inputs: function(){
     var section_name = this.toString();
-    var inputs = User_data.find({ type:"user", section_name:section_name });
-    console.log(section_name, 'inputs:', inputs.fetch());
+    var inputs = User_data.find({ type:'user', section_name:section_name });
+    //console.log(section_name, 'inputs:', inputs.fetch());
     return inputs;
   },
+  info: function(){
+    //console.log("info: ", settings.section_info[this]);
+    if( settings.section_info[this] ){
+      return settings.section_info[this].join('\n');
+    } else {
+      return '';
+    }
+  },
   pretty_label: function(label){
-    console.log(this);
+    //console.log(this);
     return f.pretty_name(label);
   },
   is_section: function(name){
