@@ -1,3 +1,4 @@
+
 setup_user_data = function(user_id){
   console.log( Meteor.users.findOne({ _id:user_id }) );
 
@@ -13,3 +14,10 @@ setup_user_data = function(user_id){
     }
   });
 };
+
+
+
+Accounts.onLogin(function(login){
+  console.log('User login: ', login.user._id, login.user.emails[0].address );
+  setup_user_data(login.user._id);
+});

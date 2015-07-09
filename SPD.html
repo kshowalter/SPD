@@ -19,6 +19,7 @@
 
   <div class="page">
 
+  {{#if currentUser}}
     <div class="titl_Section">
       <img src="data/PlansMachine.png" class="title_image">
       <div class="subtitle">
@@ -31,6 +32,21 @@
     {{> input_section}}
 
     {{> drawing_section}}
+  {{else}}
+    <br>
+    <br>
+    This is only a demonstration, and in not intented for use in permitting.
+    <br>
+    <br>
+    <br>
+    Please log in above.
+    <br>
+
+
+  {{/if}}
+
+
+
 
   </div>
 

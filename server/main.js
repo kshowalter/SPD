@@ -52,9 +52,6 @@ Meteor.startup(function () {
   });
 
 
-  Accounts.onLogin(function(login){
-    console.log('User login: ', login.user._id, login.user.emails[0].address );
-    setup_user_data(login.user._id);
-  });
+
 
 });
