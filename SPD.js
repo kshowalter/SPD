@@ -10,8 +10,8 @@ settings.f = f;
 
 settings = mk_section_info(settings);
 
-var dev = true;
-if(dev) g = f.settings_dev_defaults(g);
+//var dev = true;
+//if(dev) g = f.settings_dev_defaults(g);
 
 
 

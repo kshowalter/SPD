@@ -1,4 +1,5 @@
 mk_inputs = function(settings){
+  console.log('I will now create the initial input settings....');
   settings = settings || {};
 
 
@@ -119,7 +120,7 @@ mk_inputs = function(settings){
         options: _.uniq(Components.find({type:"modules"}).map(function(doc){return doc.make;})),
       },
       model: {
-        options: "TBD",
+        options: ["TBD", 'tbded'],
       },
       orientation: {
         options: ['Portrait','Landscape'],
@@ -179,7 +180,7 @@ mk_inputs = function(settings){
   for( i=10; i<=60; i+=5 ) settings.inputs.roof.slope_length.options.push(i);
 
 
-  Inputs.remove({});
+
 
   var section_list_alt = [];
 
@@ -223,7 +224,7 @@ mk_inputs = function(settings){
   //  return doc.model;
   //});
 
-  settings.user_input = f.add_sections(settings.inputs);
+  //settings.user_input = f.add_sections(settings.inputs);
   //console.log(settings.user_input);
 
 

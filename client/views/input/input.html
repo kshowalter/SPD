@@ -4,8 +4,8 @@
     {{#if isType 'select'}}
       <select class="input {{this.input_type}}" >
         <option selected="selected" disabled="disabled" hidden="hidden"></option>
-        {{#each this.options}}
-          <option value="{{this}}">{{this}}</option>
+        {{#each options}}
+          <option value="{{option_value}}" selected={{selected}}>{{option_value}}</option>
         {{/each}}
       </select>
     {{else}} {{#if isType 'text_input'}}

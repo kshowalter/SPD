@@ -2,7 +2,7 @@ console.log('/-- main');
 
 
 
-var ready = f.mk_ready(['user_data','settings',]);
+var ready = f.mk_ready(['user_data','settings','components']);
 
 Meteor.subscribe('user_data', function(){
   if( ready('user_data') ) {
@@ -14,32 +14,14 @@ Meteor.subscribe('settings', function(){
     update();
   }
 });
-
-
-var update = function(){
-  console.log('updating');
-  f.process(settings);
-  calculate();
-  update_drawing();
-
-  $('#drawing').empty();
-  settings.drawing.svgs.forEach(function(svg){
-    $('#drawing')
-    //.append($('<p>Page '+p+'</p>'))
-      .append($(svg))
-      .append($('</br>'))
-      .append($('</br>'));
-
-  });
-
-};
-
-User_data.find({type:"user"}).observe({
-  changed: function(doc){
-    console.log("something changed, recalculating");
+Meteor.subscribe('components', function(){
+  if( ready('components') ) {
     update();
-  },
+  }
 });
+
+
+
 
 Settings.find({id:'process'}).observe({
   changed: function(doc){
@@ -68,7 +50,5 @@ Meteor.call('connect', function(err, id){
 
 
 console.log("first process");
-
 console.log(settings.input);
-
 console.log('\\--- main');

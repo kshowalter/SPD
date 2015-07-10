@@ -8,6 +8,7 @@ Meteor.startup(function () {
 
 
   load_data();
+  Inputs.remove({});
   settings = mk_inputs(settings);
 
 
@@ -27,29 +28,16 @@ Meteor.startup(function () {
 
   //f.process(settings);
 
-  Inputs.find({type:"user"}).observe({
-    changed: function(dic){
-      console.log("something changed, recalculating");
-      f.process(settings);
-    }
-  });
+  //Inputs.find({type:"user"}).observe({
+  //  changed: function(dic){
+  //    console.log("something changed, recalculating");
+  //    f.process(settings);
+  //  }
+  //});
 
 
   var server_ready = true;
 
-
-
-  Meteor.publish("user_data", function () {
-    return User_data.find({user_id:this.userId});
-  });
-
-  Meteor.publish("inputs", function () {
-    return Inputs.find();
-  });
-
-  Meteor.publish("settings", function () {
-    return Settings.find();
-  });
 
 
 
