@@ -16,7 +16,7 @@ User_data.find({ section_name:"module", value_name:"make" }).observe({
   //setValue = function(section_name, value_name, new_value);
 });
 
-/*
+///*
 User_data.find({ section_name:"module", value_name:"model" }).observe({
   changed: function(doc){
     var make  = getValue('module', 'make');
@@ -60,6 +60,6 @@ User_data.find({type:"user"}).observe({
   changed: function(doc){
     console.log("something changed, recalculating", doc);
     //settings.system[doc.section_name][doc.value_name] = doc.value;
-    //update();
+    update();
   },
 });

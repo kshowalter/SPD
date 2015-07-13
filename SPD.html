@@ -8,20 +8,23 @@
 <template name="SPD">
 
   <div class='status_bar'>
+    <span class='login'>
+      User: {{> loginButtons}}
+    </span>
     <span id="status">
       Preview20150626
       | <span>2015-06-26 14:58:55</span>
       | <span>Uptime: 0:00:15</span>
     </span>
-    | {{> loginButtons}}
 
   </div>
 
   <div class="page">
 
   {{#if currentUser}}
-    <div class="titl_Section">
-      <img src="data/PlansMachine.png" class="title_image">
+    <div class="title_Section">
+      <h2>Solar Plans Designer</h2>
+      <!-- <img src="data/PlansMachine.png" class="title_image"> -->
       <div class="subtitle">
         <span class="category_title">Please select your system spec below</span>
         <span> | </span>
