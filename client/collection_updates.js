@@ -1,6 +1,6 @@
 User_data.find({ section_name:"module", value_name:"make" }).observe({
   changed: function(doc){
-    console.log('new value for module make: ');
+    console.log('new module make');
     var new_options = _.uniq(Components
       .find({
         type:"modules",
@@ -8,8 +8,16 @@ User_data.find({ section_name:"module", value_name:"make" }).observe({
       }).map(function(doc){return doc.model;}
     ));
 
-    var confirm = setOptions("module", "model", new_options );
-    //console.log( User_data.findOne({ section_name:"module", value_name:"model" }) );
+    //console.log(Meteor.userId(), new_options);
+    //var confirm = setOptions("module", "model", new_options );
+    //console.log( User_data.findOne( { section_name:'module', value_name:'model', user_id: Meteor.userId() } ) );
+    var confirm = User_data.update(
+      { section_name:'module', value_name:'model', user_id: Meteor.userId() },
+      {'$set':{
+        options: new_options,
+      }}
+    );
+    console.log( confirm, 'new value', User_data.findOne({ section_name:"module", value_name:"model" }) );
 
 
   },
@@ -58,8 +66,8 @@ User_data.find({ section_name:"inverter", value_name:"make" }).observe({
 
 User_data.find({type:"user"}).observe({
   changed: function(doc){
-    console.log("something changed, recalculating", doc);
+    console.log("something changed, recalculating", doc.options);
     //settings.system[doc.section_name][doc.value_name] = doc.value;
-    update();
+    //update();
   },
 });

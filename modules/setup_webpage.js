@@ -1,7 +1,6 @@
 
 
-
-function setup_webpage(){
+var setup_webpage = function setup_webpage(){
     var settings = g;
     var f = g.f;
 

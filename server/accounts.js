@@ -35,7 +35,6 @@ setup_user_data = function(user_id){
     }
     local_doc.user_id = user_id;
 
-
     User_data.insert(local_doc);
 
 

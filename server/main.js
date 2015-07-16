@@ -1,14 +1,13 @@
 Meteor.startup(function () {
   // code to run on server at startup
   Settings.remove({});
-  Inputs.remove({});
   NEC_tables.remove({});
 
   Components.remove({});
 
+  Inputs.remove({});
 
   load_data();
-  Inputs.remove({});
   settings = mk_inputs(settings);
 
 

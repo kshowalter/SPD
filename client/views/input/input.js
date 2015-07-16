@@ -52,6 +52,6 @@ Template.input.events({
     console.log('input changed', event.target.value);
     //console.log(event);
     //console.log('this', this._id, this);
-    User_data.upsert(this._id, {$set: {value: event.target.value}});
+    User_data.update(this._id, {$set: {value: event.target.value}});
   },
 });
