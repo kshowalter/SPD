@@ -1,7 +1,8 @@
 
 setup_user_data = function(user_id){
-  console.log('updating user data from inputs');
+  console.log('updating user data from inputs', Tracker.active);
   //console.log( Meteor.users.findOne({ _id:user_id }) );
+
 
   var user_settings = mk_settings();
   user_settings.f = f;
@@ -16,7 +17,6 @@ setup_user_data = function(user_id){
   User_data.remove({user_id: user_id});
 
   Inputs.find({type:'user'}).forEach(function(doc){
-
     var user_data_document = User_data.findOne({
       user_id: user_id,
       section_name: doc.section_name,
@@ -65,6 +65,7 @@ setup_user_data = function(user_id){
     //);
 
   });
+  //*/
 };
 
 

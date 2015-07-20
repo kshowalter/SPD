@@ -120,7 +120,7 @@ mk_inputs = function(settings){
         options: _.uniq(Components.find({type:"modules"}).map(function(doc){return doc.make;})),
       },
       model: {
-        options: ["TBD", 'tbded'],
+        options: [],
       },
       orientation: {
         options: ['Portrait','Landscape'],
@@ -167,7 +167,7 @@ mk_inputs = function(settings){
           type: 'select',
       },
       model: {
-          options: ['SOLARMOUNT'],
+          options: ['SOLUNIRACARMOUNT'],
           type: 'select',
       },
     },

@@ -5,10 +5,10 @@
 # but you can also edit it by hand.
 
 meteor-platform
-mrt:redirect-ie-7-lower
 underscore
 accounts-password
 accounts-ui
 momentjs:moment
 houston:admin
 iron:router
+insecure
