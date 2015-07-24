@@ -49,16 +49,7 @@ Template.input.events({
     console.log('[] form submitted', e);
   },
   'change .input': function(event){
-    console.log('[] input changed', event.target.value);
-    //console.log(event);
-    //console.log('this', this._id, this);
-    console.log(this);
     User_data.update(this._id, {$set: {value: event.target.value}});
-
     update_options(this.section_name, this.value_name);
-
-    if(this.section_name === 'module' && this.value_name === 'make'){
-
-    }
   },
 });

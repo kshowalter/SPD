@@ -11,4 +11,3 @@ accounts-ui
 momentjs:moment
 houston:admin
 iron:router
-insecure

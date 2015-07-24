@@ -184,7 +184,9 @@ mk_inputs = function(settings){
 
   var section_list_alt = [];
 
+  var order;
   for( var section_name in settings.inputs ){
+    order = 0;
     for( var value_name in settings.inputs[section_name]){
       var input = settings.inputs[section_name][value_name];
       if( input.options ){
@@ -197,6 +199,7 @@ mk_inputs = function(settings){
       input.section_name = section_name;
       input.value = null;
       input.type = "user";
+      input.order = order++;
       Inputs.insert(input);
       section_list_alt.push(section_name);
     }

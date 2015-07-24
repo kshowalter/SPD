@@ -7,7 +7,7 @@ Template.drawer.helpers({
   },
   inputs: function(){
     var section_name = this.toString();
-    var inputs = User_data.find({ type:'user', section_name:section_name });
+    var inputs = User_data.find({ type:'user', section_name:section_name }, {sort:['order']} );
     //console.log(section_name, 'inputs:', inputs.fetch());
     return inputs;
   },
