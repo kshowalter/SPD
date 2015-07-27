@@ -1,9 +1,10 @@
 update = function(){
   console.log('+ updating');
-  console.log('  ...but not doing anything');
 
   //f.process(settings);
   calculate();
+
+  /*
   update_drawing();
 
   $('#drawing').empty();
@@ -15,5 +16,5 @@ update = function(){
       .append($('</br>'));
 
   });
-
+  //*/
 };

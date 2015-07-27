@@ -1,8 +1,5 @@
 console.log('/-- main');
 
-
-
-
 //----status bar ----//
   var version_string = 'Preview'+moment().format('YYYYMMDD');
   //g.state.version_string = version_string;
@@ -19,27 +16,21 @@ Meteor.call('connect', function(err, id){
 
 });
 
-
-
-Template.body.helpers({
-  create: function(){
-
-  },
-  rendered: function(){
-    setup_webpage();
-  },
-  destroyed: function(){
-
-  },
-});
-
 Template.body.events({
-  "click #foo": function(event, template){
-
+  'click .reset': function(){
+    console.log('reset');
   }
 });
 
 
+Template.body.onRendered(function(){
+  setup_webpage();
+});
+
+
+if( ready('main') ) {
+  update();
+}
 
 
 //console.log("first process");

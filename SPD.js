@@ -17,11 +17,7 @@ settings = mk_section_info(settings);
 
 
 if (Meteor.isClient) {
-  Template.body.events({
-    'click .reset': function(){
-      console.log('reset');
-    }
-  });
+
 
 }
 

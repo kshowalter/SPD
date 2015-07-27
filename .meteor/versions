@@ -4,6 +4,7 @@ accounts-ui@1.1.5
 accounts-ui-unstyled@1.1.7
 autoupdate@1.2.1
 base64@1.0.3
+bevanhunt:leaflet@0.3.18
 binary-heap@1.0.3
 blaze@2.1.2
 blaze-tools@1.0.3
@@ -17,6 +18,7 @@ deps@1.0.7
 ejson@1.0.6
 email@1.0.6
 fastclick@1.0.3
+fortawesome:fontawesome@4.3.0
 geojson-utils@1.0.3
 houston:admin@2.0.3
 html-tools@1.0.4

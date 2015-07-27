@@ -1,4 +1,5 @@
-var ready = f.mk_ready(['user_data','settings','components']);
+ready = f.mk_ready(['main', 'user_data','settings','components']);
+
 Meteor.subscribe('user_data', function(){
   if( ready('user_data') ) {
     update();
