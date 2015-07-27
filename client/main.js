@@ -21,6 +21,27 @@ Meteor.call('connect', function(err, id){
 
 
 
+Template.body.helpers({
+  create: function(){
+
+  },
+  rendered: function(){
+    setup_webpage();
+  },
+  destroyed: function(){
+
+  },
+});
+
+Template.body.events({
+  "click #foo": function(event, template){
+
+  }
+});
+
+
+
+
 //console.log("first process");
 //console.log(settings.input);
 console.log('\\--- main');

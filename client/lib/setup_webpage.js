@@ -1,74 +1,14 @@
 
-
-var setup_webpage = function setup_webpage(){
-    var settings = g;
-    var f = g.f;
-
-    var system_frame_id = 'system_frame';
-    var title = 'PV drawing test';
-
-    g.f.setup_body(title);
-
-    var page = $('<div>').attr('class', 'page').appendTo($(document.body));
-    //page.style('width', (settings.drawing_settings.size.drawing.w+20).toString() + 'px' )
-
-    var system_frame = $('<div>').attr('id', system_frame_id).appendTo(page);
-
-
-    var header_container = $('<div>').appendTo(system_frame);
-    $('<img>')
-        .attr('src', 'data/PlansMachine.png')
-        .attr('class', 'title_image')
-        //.attr('width', '90%')
-        .appendTo(header_container);
-    $('<div>').attr('class', 'subtitle').appendTo(header_container).append(
-        $('<span>').html('Please select your system spec below').attr('class', 'category_title').appendTo(header_container),
-        $('<span>').html(' | ').appendTo(header_container),
-        //$('<input>').attr('type', 'button').attr('value', 'clear selections').click(window.location.reload),
-        $('<a>').attr('href', 'javascript:window.location.reload()').html('clear selections').appendTo(header_container)
-
-    );
-
-
-    // System setup
-    var config_frame = $('<div>').attr('id', 'config_frame').appendTo(system_frame);
-
-    g.f.add_drawers(settings, config_frame);
-
-    //console.log(section_selector);
+setup_webpage = function setup_webpage(){
 
 
 
-    //var location_drawer = $('#section_location').children('.drawer').children('.drawer_content');
-    //console.log(location_drawer);
 
+    var map_drawer_content = $('#section_map').children('.drawer').children('.drawer_content');
 
-    var map_div = $('<div>');
-    var map_drawer = f.mk_drawer('map',map_div)
-                        //.appendTo(config_frame);
-                        .insertAfter( $('#section_location') );
-    map_drawer.children('.drawer').children('.drawer_content').slideUp('fast');
-
-
-
-    var list_element = $('<ul>').appendTo(map_div);
-    $('<li>').appendTo(list_element).append(
-        $('<a>')
-            .text('Wind Zone ')
-            .attr('href', 'http://windspeed.atcouncil.org/')
-            .attr('target', '_blank')
-    );
-    $('<li>').appendTo(list_element).append(
-        $('<a>')
-            .text('Climate Conditions')
-            .attr('href', 'http://www.solarabcs.org/about/publications/reports/expedited-permit/map/index.html')
-            .attr('target', '_blank')
-    );
-
-//*
     var geocode_div = $('<div>')
         .attr('class', 'geocode_line')
-        .appendTo(map_div);
+        .appendTo(map_drawer_content);
     $('<a>').appendTo(geocode_div)
         .attr('class', 'geocode_button')
         .text('Find location from address')
@@ -90,13 +30,13 @@ var setup_webpage = function setup_webpage(){
         .attr('style', 'width:485px;height:380px')
         .appendTo(map_div);
 
-
     var lat_fl_center = 27.75;
     var lon_fl_center = -84.0;
 
     var lat = 28.387399;
     var lon = -80.757833;
     var coor = [-80.757833, 28.387399];
+/*
 
     L.AwesomeMarkers.Icon.prototype.options.prefix = 'fa';
     var sun_marker = L.AwesomeMarkers.icon({
@@ -133,7 +73,6 @@ var setup_webpage = function setup_webpage(){
     g.perm.maps.marker_sat = L.marker([lat,lon], {icon: sun_marker}).addTo(map_sat);
 
     map_sat.on('click', f.set_coordinates_from_map );
-//*/
 
 
 
@@ -174,11 +113,9 @@ var setup_webpage = function setup_webpage(){
         });
 
     var svg_container_object = $('<div>').attr('id', 'drawing').attr('class', 'drawing').css('clear', 'both').appendTo(drawing_section);
-    //svg_container_object.style('width', settings.drawing_settings.size.drawing.w+'px' )
-    //var svg_container = svg_container_object.elem;
     $('<br>').appendTo(drawing_section);
 
     ///////////////////
     $('<div>').html(' ').attr('class', 'section_title').appendTo(drawing_section);
-
-}
+//*/
+};
