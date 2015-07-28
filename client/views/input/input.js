@@ -49,7 +49,12 @@ Template.input.events({
     console.log('[] form submitted', e);
   },
   'change .input': function(event){
-    User_data.update(this._id, {$set: {value: event.target.value}});
+    var value = event.target.value;
+    number = Number(value);
+    if( ! isNaN(number) ){
+      value = number;
+    }
+    User_data.update(this._id, {$set: {value: value}});
     update_options(this.section_name, this.value_name);
   },
 });

@@ -55,7 +55,7 @@ var update_webpage = function(){
     var sections = g.webpage.sections;
     var active_section;
     sections.every(function(section_name,id){ //TODO: find pre IE9 way to do this?
-        if( ! g.f.section_defined(g, section_name) ){
+        if( ! g.f.section_defined(section_name) ){
             active_section = section_name;
             console.log('active section:', section_name);
             return false;
@@ -88,7 +88,7 @@ var update_webpage = function(){
     });
     //If the location is defined, open the map.
     /*
-    if( (! g.webpage.selections_manual_toggled.location) &&  g.f.section_defined(g, 'location') ){
+    if( (! g.webpage.selections_manual_toggled.location) &&  g.f.section_defined('location') ){
             $('#section_map').children('.drawer').children('.drawer_content').slideDown('fast');
     }
     //*/

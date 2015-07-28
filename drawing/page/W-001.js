@@ -26,7 +26,7 @@ f.mk_sheet_num['W-001'] = function(settings){
 
 ////////////////////////////////////////
 //#array
-    if( f.section_defined(settings, 'module') && f.section_defined(settings, 'array') ){
+    if( f.section_defined('module') && f.section_defined('array') ){
         d.section('array');
 
 
@@ -87,7 +87,7 @@ f.mk_sheet_num['W-001'] = function(settings){
 ///////////////////////////////
 // combiner box
 
-    if( f.section_defined(settings, 'DC') ){
+    if( f.section_defined('DC') ){
 
         d.section("combiner");
 
@@ -258,7 +258,7 @@ f.mk_sheet_num['W-001'] = function(settings){
 
 ///////////////////////////////
 //#inverter
-    if( f.section_defined(settings, 'inverter') ){
+    if( f.section_defined('inverter') ){
 
         d.section("inverter");
 
@@ -366,7 +366,7 @@ f.mk_sheet_num['W-001'] = function(settings){
 
 
 //#AC_discconect
-    if( f.section_defined(settings, 'AC') ){
+    if( f.section_defined('AC') ){
         d.section("AC_discconect");
 
         x = loc.AC_disc.x;

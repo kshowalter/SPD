@@ -22,7 +22,7 @@ f.mk_sheet_num['S-001'] = function(settings){
 
 
 
-    if( f.section_defined(settings, 'roof') ){
+    if( f.section_defined('roof') ){
 
 
 
@@ -245,7 +245,7 @@ f.mk_sheet_num['S-001'] = function(settings){
 
             //////
             // Module options
-            if( f.section_defined(settings, 'module') && f.section_defined(settings, 'array')){
+            if( f.section_defined('module') && f.section_defined('array')){
                 var r,c;
 
                 var roof_length_avail = system.roof.length - (a*2);

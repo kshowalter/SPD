@@ -14,6 +14,10 @@ setup_user_data = function(user_id){
   //);
 
   the_user_data = {};
+  Inputs.find({}).forEach(function(doc){
+    the_user_data[doc.section_name] = the_user_data[doc.section_name] || {};
+    the_user_data[doc.section_name][doc.value_name] = doc.value;
+  });
   User_data.find({}).forEach(function(doc){
     the_user_data[doc.section_name] = the_user_data[doc.section_name] || {};
     the_user_data[doc.section_name][doc.value_name] = doc.value;
