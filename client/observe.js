@@ -93,7 +93,7 @@ User_data.find({type:"user"}).observe({
   changed: function(doc){
     console.log("something changed, recalculating", doc);
     //settings.system[doc.section_name][doc.value_name] = doc.value;
-    //update();
+    update();
   },
 });
 //*/
