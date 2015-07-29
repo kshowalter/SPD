@@ -88,7 +88,7 @@ User_data.find({ section_name:"module", value_name:"model" }).observe({
 //
 //*/
 
-/*
+///*
 User_data.find({type:"user"}).observe({
   changed: function(doc){
     console.log("something changed, recalculating", doc);

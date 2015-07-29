@@ -22,11 +22,11 @@ f.mk_sheet_num['S-001'] = function(settings){
     //angle_rad = angle * (Math.PI/180);
 
 
-    length_p = system.roof.length * Math.cos(angle_rad);
-    system.roof.height = system.roof.length * Math.sin(angle_rad);
+    length_p = system.roof.slope_length * Math.cos(angle_rad);
+    system.roof.height = system.roof.slope_length * Math.sin(angle_rad);
 
-    var roof_ratio = system.roof.length / system.roof.width;
-    var roof_plan_ratio = length_p / system.roof.width;
+    var roof_ratio = system.roof.slope_length / system.roof.width1;
+    var roof_plan_ratio = length_p / system.roof.width1;
 
 
     if( system.roof.type === "Gable"){
@@ -38,14 +38,14 @@ f.mk_sheet_num['S-001'] = function(settings){
       var plan_y = 60;
 
       var plan_w, plan_h;
-      if( length_p*2 > system.roof.width ){
+      if( length_p*2 > system.roof.width1 ){
         scale = 200/(length_p*2);
         plan_w = (length_p*2) * scale;
-        plan_h = plan_w / (length_p*2 / system.roof.width);
+        plan_h = plan_w / (length_p*2 / system.roof.width1);
       } else {
-        scale = 300/(system.roof.width);
-        plan_h = system.roof.width * scale;
-        plan_w = plan_h * (length_p*2 / system.roof.width);
+        scale = 300/(system.roof.width1);
+        plan_h = system.roof.width1 * scale;
+        plan_w = plan_h * (length_p*2 / system.roof.width1);
       }
 
       d.rect(
@@ -83,14 +83,14 @@ f.mk_sheet_num['S-001'] = function(settings){
 /*
 d.text(
 [plan_x-20, plan_y+plan_h/2],
-system.roof.length.toString(),
+system.roof.slope_length.toString(),
 'dimention'
 );
 */
 
 d.text(
   [plan_x+plan_w+20, plan_y+plan_h/2],
-  system.roof.width.toString(),
+  system.roof.width1.toString(),
   'dimention',
   'dimention'
 );
@@ -132,7 +132,7 @@ d.text(
 );
 d.text(
   [cs_x+cs_w*1.5+20, cs_y+cs_h/3],
-  parseFloat( system.roof.length ).toFixed().toString(),
+  parseFloat( system.roof.slope_length ).toFixed().toString(),
   'dimention',
   'dimention'
 );
@@ -145,13 +145,13 @@ d.text(
 var detail_x = 30+400;
 var detail_y = 30;
 
-if( Number(system.roof.width) >= Number(system.roof.length) ){
-  scale = 350/(system.roof.width);
+if( Number(system.roof.width1) >= Number(system.roof.slope_length) ){
+  scale = 350/(system.roof.width1);
 } else {
-  scale = 350/(system.roof.length);
+  scale = 350/(system.roof.slope_length);
 }
-var detail_w = system.roof.width * scale;
-var detail_h = system.roof.length * scale;
+var detail_w = system.roof.width1 * scale;
+var detail_h = system.roof.slope_length * scale;
 
 d.rect(
   [detail_x+detail_w/2, detail_y+detail_h/2],
@@ -189,13 +189,13 @@ d.line([
 
 d.text(
   [detail_x-40, detail_y+detail_h/2],
-  parseFloat( system.roof.length ).toFixed().toString(),
+  parseFloat( system.roof.slope_length ).toFixed().toString(),
   'dimention',
   'dimention'
 );
 d.text(
   [detail_x+detail_w/2, detail_y+detail_h+40],
-  parseFloat( system.roof.width ).toFixed().toString(),
+  parseFloat( system.roof.width1 ).toFixed().toString(),
   'dimention',
   'dimention'
 );
@@ -237,8 +237,8 @@ d.block('north arrow_up', [x,y]);
 if( f.section_defined('module') && f.section_defined('array')){
   var r,c;
 
-  var roof_length_avail = system.roof.length - (a*2);
-  var roof_width_avail = system.roof.width - (a*2);
+  var roof_length_avail = system.roof.slope_length - (a*2);
+  var roof_width_avail = system.roof.width1 - (a*2);
 
   var row_spacing;
   if( system.module.orientation === 'Portrait' ){
