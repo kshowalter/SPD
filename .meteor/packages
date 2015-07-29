@@ -10,6 +10,5 @@ accounts-password
 accounts-ui
 momentjs:moment
 houston:admin
-iron:router
 fortawesome:fontawesome
 bevanhunt:leaflet
