@@ -5,6 +5,11 @@ Meteor.subscribe('user_data', function(){
     update();
   }
 });
+Meteor.subscribe('user_systems', function(){
+  if( ready('user_data') ) {
+    update();
+  }
+});
 Meteor.subscribe('settings', function(){
   if( ready('settings') ) {
     update();

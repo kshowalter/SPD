@@ -12,13 +12,38 @@ console.log('/-- main');
 //----status bar ----//
 
 Meteor.call('connect', function(err, id){
-  console.log('connected ID: ', id);
+  //console.log('connected ID: ', id);
 
 });
 
-Template.body.events({
-  'click .reset': function(){
+
+Template.main.helpers({
+  user_info: function(){
+    var user = Meteor.user();
+    return user.emails[0].address;
+  },
+  system_ids: function(){
+    return User_systems.find({});
+  }
+
+});
+
+
+
+Template.main.events({
+  'click #reset': function(){
     console.log('reset');
+    Meteor.call('reset', function(err, id){
+      console.log('reset ID: ', id);
+    });
+  },
+  'click #new_system': function(){
+    Meteor.call('new_system', function(err, id){
+      console.log('created ID: ', id);
+    });
+  },
+  'change #system_id': function(){
+    console.log(this);
   }
 });
 

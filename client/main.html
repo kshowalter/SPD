@@ -4,11 +4,11 @@
 
 <body>
 
-  {{> SPD}}
+  {{> main}}
 
 </body>
 
-<template name="SPD">
+<template name="main">
 
   <div class='status_bar'>
     <span class='login'>
@@ -28,12 +28,26 @@
     <div class="title_Section">
       <h2>Solar Plans Designer</h2>
       <!-- <img src="data/PlansMachine.png" class="title_image"> -->
+      <div>
+        <span>
+          Logged in as: {{user_info}} |
+          Designing system:
+          <select class="" id='system_id' >
+            <option selected="selected" disabled="disabled" hidden="hidden"></option>
+            {{#each system_ids}}
+              <option value="{{system_id}}" selected={{selected}}>{{system_number}} [{{system_id}}]</option>
+            {{/each}}
+          </select>
+          <a class='button' href='#' id='new_system'>create new system</a>
+        </span>
+      </div>
       <div class="subtitle">
         <span class="category_title">Please select your system spec below</span>
         <span> | </span>
-        <a href="#" class="reset">clear selections</a>
+        <a class='button' href="#" id="reset">clear selections</a>
       </div>
     </div>
+    <br>
 
     {{> input_section}}
 

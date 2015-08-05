@@ -14,10 +14,25 @@ Meteor.methods({
     return Random.id();
   },
   reset: function(){
-    console.log(this.userId, Meteor.user());
-    return Random.id();
-  },
+    var user_id = this.userId;
+    //console.log(user_id, Meteor.user());
+    User_data.remove({user_id: user_id});
+    setup_user_data(user_id);
 
+    return user_id;
+  },
+  'new_system': function(){
+    var user_id = this.userId;
+    var system_number = User_systems.find({user_id:user_id}).count() + 1;
+    var new_system_info = {
+      system_number: system_number,
+      user_id: user_id,
+      system_id: Random.id()
+    };
+    User_systems.insert(new_system_info);
+
+    return new_system_info;
+  },
 //  update_user_data: function(v){
 //    console.log('I will now update the user data');
 //

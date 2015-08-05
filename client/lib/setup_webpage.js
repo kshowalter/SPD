@@ -1,5 +1,5 @@
 setup_webpage = function(){
-  console.log('setup_webpage');
+  //console.log('setup_webpage');
 
   /*
   var map_drawer_content = $('#section_map').children('.drawer').children('.drawer_content');

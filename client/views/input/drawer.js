@@ -2,6 +2,14 @@ Template.drawer.helpers({
   section_name: function(){
     return this;
   },
+  title_bar_class: function(){
+    section_activated = Session.get('section_activated');
+    if( section_activated[this] ){
+      return 'title_bar_active';
+    } else {
+      return 'title_bar_inactive';
+    }
+  },
   section_label: function(){
     return f.pretty_name(this);
   },
@@ -30,10 +38,15 @@ Template.drawer.helpers({
 
 Template.drawer.events({
   'click .title_bar': function(event){
-    //console.log(this);
+    console.log(this);
     ////$('#' + event.currentTarget.id).slideUp('slow');
     //console.log( $(event.target).parent().children('.drawer').children('.drawer_content') );
     $(event.target).parent().children('.drawer').children('.drawer_content').slideToggle('fast');
+
+
+    //var name = $(this).attr('section_nom');
+    //g.webpage.section_manual_toggled[name] = true;
+    //$(this).parent().children('.drawer').children('.drawer_content').slideToggle('fast');
 
   },
 });

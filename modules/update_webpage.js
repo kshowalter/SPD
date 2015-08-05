@@ -53,15 +53,15 @@ var update_webpage = function(){
 
     // Determine active section based on section inputs entered by user
     var sections = g.webpage.sections;
-    var active_section;
+    var active_section_name;
     sections.every(function(section_name,id){ //TODO: find pre IE9 way to do this?
         if( ! g.f.section_defined(section_name) ){
-            active_section = section_name;
+            active_section_name = section_name;
             console.log('active section:', section_name);
             return false;
         } else {
             if( id === sections.length-1 ){ //If last section is defined, there is no active section
-                active_section = false;
+                active_section_name = false;
             }
             return true;
         }
@@ -79,16 +79,16 @@ var update_webpage = function(){
             );
         });
 
-        if( section_name === active_section ){
+        if( section_name === active_section_name ){
             $('#section_'+section_name).children('.drawer').children('.drawer_content').slideDown('fast');
 
-        } else if( ! g.webpage.selections_manual_toggled[section_name] ){
+        } else if( ! g.webpage.section_manual_toggled[section_name] ){
             $('#section_'+section_name).children('.drawer').children('.drawer_content').slideUp('fast');
         }
     });
     //If the location is defined, open the map.
     /*
-    if( (! g.webpage.selections_manual_toggled.location) &&  g.f.section_defined('location') ){
+    if( (! g.webpage.section_manual_toggled.location) &&  g.f.section_defined('location') ){
             $('#section_map').children('.drawer').children('.drawer_content').slideDown('fast');
     }
     //*/
