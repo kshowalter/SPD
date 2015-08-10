@@ -64,9 +64,9 @@ if (Meteor.isServer) {
 }
 
 
-//Router.route('/', function () {
-//  this.render('SPD');
-//});
+Router.route('/', function () {
+  this.render('main');
+});
 
 
 console.log('   /\\   ');

@@ -1,5 +1,10 @@
 console.log('/-- main');
 
+if(top != window) {
+  top.location = window.location;
+}
+
+
 //----status bar ----//
   var version_string = 'Preview'+moment().format('YYYYMMDD');
   //g.state.version_string = version_string;
@@ -44,7 +49,8 @@ Template.main.events({
   },
   'change #system_id': function(){
     console.log(this);
-  }
+  },
+
 });
 
 
@@ -56,6 +62,16 @@ Template.body.onRendered(function(){
 if( ready('main') ) {
   update();
 }
+
+
+Meteor.call("generate", 'settings', function(error, result){
+  if(error){
+    console.log("error", error);
+  }
+  if(result){
+    console.log('result: ', result);
+  }
+});
 
 
 //console.log("first process");

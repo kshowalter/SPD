@@ -3,9 +3,7 @@ update = function(){
 
   //f.process(settings);
   calculate();
-
-  ///*
-  update_drawing();
+  update_drawing(settings);
 
   var list = getSetting('section_list');
   var active_section_name = list[0];
@@ -29,7 +27,7 @@ update = function(){
   });
   active_section_name = not_defined[0];
   settings.webpage.section_activated[active_section_name] = true;
-  
+
   Session.set('active_section_name', active_section_name);
   Session.set('section_activated', settings.webpage.section_activated);
 

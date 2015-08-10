@@ -1,3 +1,5 @@
+
+
 Meteor.startup(function () {
   // code to run on server at startup
   Settings.remove({});
@@ -10,6 +12,16 @@ Meteor.startup(function () {
   load_data();
   settings = mk_inputs(settings);
 
+
+  //var jsdom = Meteor.npmRequire('moment');
+  var jsdom = Meteor.npmRequire("jsdom").jsdom;
+
+  document = jsdom();
+  var window = document.defaultView;
+
+  var div = document.createElement('div');
+  document.body.appendChild(div);
+  console.log('body: ', document.body.innerHTML);
 
 
   /*

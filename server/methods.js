@@ -69,9 +69,14 @@ Meteor.methods({
     console.log('*** just_checking_in');
     console.log('  * special message: ', message);
     return 'server recieved: ' + message ;
-  }
+  },
 
+  generate: function(settings){
+    console.log('generate based on: ', settings);
 
+    return true;
+
+  },
 
 
 

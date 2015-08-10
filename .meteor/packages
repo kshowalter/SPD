@@ -11,3 +11,8 @@ accounts-ui
 momentjs:moment
 fortawesome:fontawesome
 bevanhunt:leaflet
+iron:router
+meteorhacks:npm
+
+
+npm-container
