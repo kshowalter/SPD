@@ -1,12 +1,17 @@
-ready = f.mk_ready(['main', 'user_data','settings','components']);
+ready = f.mk_ready(['main', 'system_data', 'user_systems', 'settings','components']);
 
-Meteor.subscribe('user_data', function(){
-  if( ready('user_data') ) {
+Meteor.subscribe('system_data', function(){
+  if( ready('system_data') ) {
     update();
   }
 });
 Meteor.subscribe('user_systems', function(){
-  if( ready('user_data') ) {
+  if( ready('user_systems') ) {
+    update();
+  }
+});
+Meteor.subscribe('components', function(){
+  if( ready('components') ) {
     update();
   }
 });
@@ -15,8 +20,8 @@ Meteor.subscribe('settings', function(){
     update();
   }
 });
-Meteor.subscribe('components', function(){
-  if( ready('components') ) {
-    update();
+Meteor.subscribe('userData', function(){
+  if( ready('settings') ) {
+    console.log('user loaded');
   }
 });

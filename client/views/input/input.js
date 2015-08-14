@@ -54,7 +54,7 @@ Template.input.events({
     if( ! isNaN(number) ){
       value = number;
     }
-    User_data.update(this._id, {$set: {value: value}});
+    System_data.update(this._id, {$set: {value: value}});
     update_options(this.section_name, this.value_name);
   },
 });

@@ -1,5 +1,3 @@
-console.log('/-- main');
-
 if(top != window) {
   top.location = window.location;
 }
@@ -29,8 +27,31 @@ Template.main.helpers({
   },
   system_ids: function(){
     return User_systems.find({});
-  }
+  },
+  system_ready: function(){
+    console.log('returning list');
+    return ( Meteor.user().active_system !== undefined );
 
+  },
+  sections: function(){
+    //var section_list = Settings.findOne({id:'section_list'});
+    var active_system = Meteor.user().active_system;
+    if ( active_system ){
+      return settings.webpage.sections;
+    } else {
+      return false;
+    }
+
+    //return section_list ? section_list.value : [];
+    //return Settings.findOne({id:'section_list'});
+  },
+  system_selected: function(){
+    if( this.system_id === Meteor.user().active_system ){
+      return 'selected';
+    } else {
+      return false;
+    }
+  },
 });
 
 
@@ -47,8 +68,10 @@ Template.main.events({
       console.log('created ID: ', id);
     });
   },
-  'change #system_id': function(){
-    console.log(this);
+  'change #system_id': function(event){
+    Meteor.call('new_active_system', event.target.value, function(err, returned){
+      //console.log('returned: ', returned);
+    });
   },
 
 });
@@ -72,8 +95,3 @@ Meteor.call("generate", 'settings', function(error, result){
     console.log('result: ', result);
   }
 });
-
-
-//console.log("first process");
-//console.log(settings.input);
-console.log('\\--- main');

@@ -1,7 +1,7 @@
 
 
 /*
-User_data.find({ section_name:"module", value_name:"make" }).observe({
+System_data.find({ section_name:"module", value_name:"make" }).observe({
   changed: function(doc){
     console.log(': new module make', Tracker.active);
 
@@ -16,13 +16,13 @@ User_data.find({ section_name:"module", value_name:"make" }).observe({
 
     //console.log(Meteor.userId(), new_options);
     //var confirm = setOptions("module", "model", new_options );
-    //console.log( User_data.findOne( { section_name:'module', value_name:'model', user_id: Meteor.userId() } ) );
-    //var id = User_data.findOne( { section_name:'module', value_name:'model'} )._id;
+    //console.log( System_data.findOne( { section_name:'module', value_name:'model', user_id: Meteor.userId() } ) );
+    //var id = System_data.findOne( { section_name:'module', value_name:'model'} )._id;
     //console.log(id);
 
 
-    console.log( '| doc:', User_data.findOne({ section_name:"module", value_name:"model" }) );
-    var confirm = User_data.update(
+    console.log( '| doc:', System_data.findOne({ section_name:"module", value_name:"model" }) );
+    var confirm = System_data.update(
       //{ section_name:'module', value_name:'model', user_id: Meteor.userId() },
       { section_name:'module', value_name:'model'},
       {'$set':{
@@ -35,10 +35,10 @@ User_data.find({ section_name:"module", value_name:"make" }).observe({
 
     Meteor.call('change_model_options', function(error, result){
       console.log('result: ', error, result);
-      console.log( '| new doc:', User_data.findOne({ section_name:"module", value_name:"model" }) );
+      console.log( '| new doc:', System_data.findOne({ section_name:"module", value_name:"model" }) );
 
     });
-    console.log( '| doc:', User_data.findOne({ section_name:"module", value_name:"model" }) );
+    console.log( '| doc:', System_data.findOne({ section_name:"module", value_name:"model" }) );
 
   },
   //setValue = function(section_name, value_name, new_value);
@@ -46,7 +46,7 @@ User_data.find({ section_name:"module", value_name:"make" }).observe({
 //*/
 
 /*
-User_data.find({ section_name:"module", value_name:"model" }).observe({
+System_data.find({ section_name:"module", value_name:"model" }).observe({
   changed: function(doc){
     //var make  = getValue('module', 'make');
     //var model = doc.model;
@@ -72,7 +72,7 @@ User_data.find({ section_name:"module", value_name:"model" }).observe({
     //*/
 
 
-//User_data.find({ section_name:"inverter", value_name:"make" }).observe({
+//System_data.find({ section_name:"inverter", value_name:"make" }).observe({
 //  changed: function(doc){
 //    console.log('new value for inverter make: ', doc);
 //    var new_options = _.uniq(Components
@@ -89,9 +89,17 @@ User_data.find({ section_name:"module", value_name:"model" }).observe({
 //*/
 
 ///*
-User_data.find({type:"user"}).observe({
+System_data.find({type:"user"}).observe({
   changed: function(doc){
     console.log("something changed, recalculating", doc);
+    //settings.system[doc.section_name][doc.value_name] = doc.value;
+    update();
+  },
+});
+
+Meteor.users.find({ _id: Meteor.userId() }).observe({
+  changed: function(doc){
+    console.log("user's data changed: ", doc);
     //settings.system[doc.section_name][doc.value_name] = doc.value;
     update();
   },

@@ -1,65 +1,67 @@
 update = function(){
   //console.log('+ updating');
-
-  //f.process(settings);
-  calculate();
-  update_drawing(settings);
-
-  var list = getSetting('section_list');
-  var active_section_name = list[0];
-  //console.log('list', list);
-  var not_defined = [];
-  list.forEach(function(section_name){
-    //console.log('testing: ', section_name, defined('section_name'));
-    if( defined(section_name) ){
-
-      //console.log('    not ready', section_name, active_section_name);
-      settings.webpage.section_activated[section_name] = true;
-      //return true;
-
-    } else {
-      not_defined.push(section_name);
-      //console.log('    ready', section_name, active_section_name);
-      settings.webpage.section_activated[section_name] = false;
-      //return false;
-    }
-
-  });
-  active_section_name = not_defined[0];
-  settings.webpage.section_activated[active_section_name] = true;
-
-  Session.set('active_section_name', active_section_name);
-  Session.set('section_activated', settings.webpage.section_activated);
-
-  console.log('@active: ', set_active() );
+  var active_system = Meteor.user().active_system;
+  console.log('active system: ', active_system);
 
 
-  //show_hide_selections();
-  active_section_name = Session.get('active_section_name');
-  list.forEach(function(section_name){
-    if( section_name === active_section_name ) {
-      console.log('opening: ', section_name);
-      $('#section_'+section_name).children('.drawer').children('.drawer_content').slideDown();
-    } else if(true) {
-      console.log('not equal: ', section_name, active_section_name);
-      $('#section_'+section_name).children('.drawer').children('.drawer_content').slideUp();
+  //values = System_data.find({}).fetch();
+  //var v = {};
+  //var v;
+  //v = system = settings.system = {};
 
-    }
-  });
-  //console.log('sections', getSetting('section_list'));
-  //getSetting('section_list').forEach(function(section_name){
-  //  //console.log(section_name, ready('section_name'));
-  //  console.log(section_name, f.section_defined(section_name));
-  //});
+  if( active_system){
 
-///*
-  $('#drawing').empty();
-  settings.drawing.svgs.forEach(function(svg){
-    $('#drawing')
-      .append($(svg))
-      .append($('</br>'))
-      .append($('</br>'));
+    System_data.find({system_id: active_system}).forEach(function(input_doc){
+      settings.system[input_doc.section_name] = settings.system[input_doc.section_name] || {};
+      settings.system[input_doc.section_name][input_doc.value_name] = input_doc.value;
+    });
 
-  });
-  //*/
+    settings = calculate(settings);
+    settings = update_drawing(settings);
+
+    var section_list = settings.webpage.sections;
+    var active_section_name = section_list[0];
+    //console.log('section_list', section_list);
+    var not_defined = [];
+    section_list.forEach(function(section_name){
+      if( defined(section_name) ){
+        settings.webpage.section_activated[section_name] = true;
+
+      } else {
+        not_defined.push(section_name);
+        settings.webpage.section_activated[section_name] = false;
+      }
+
+    });
+    active_section_name = not_defined[0];
+    settings.webpage.section_activated[active_section_name] = true;
+
+    Session.set('active_section_name', active_section_name);
+    Session.set('section_activated', settings.webpage.section_activated);
+
+    //show_hide_selections();
+    active_section_name = Session.get('active_section_name');
+    section_list.forEach(function(section_name){
+      if( section_name === active_section_name ) {
+        //console.log('opening: ', section_name);
+        $('#section_'+section_name).children('.drawer').children('.drawer_content').slideDown();
+      } else if(true) {
+        //console.log('not equal: ', section_name, active_section_name);
+        $('#section_'+section_name).children('.drawer').children('.drawer_content').slideUp();
+
+      }
+    });
+
+    $('#drawing').empty();
+    settings.drawing.svgs.forEach(function(svg){
+      $('#drawing')
+        .append($(svg))
+        .append($('</br>'))
+        .append($('</br>'));
+
+    });
+
+  }
+//*/
+
 };

@@ -34,24 +34,32 @@
           <select class="" id='system_id' >
             <option selected="selected" disabled="disabled" hidden="hidden"></option>
             {{#each system_ids}}
-              <option value="{{system_id}}" selected={{selected}}>{{system_number}} [{{system_id}}]</option>
+              <option value="{{system_id}}" selected={{system_selected}}>{{system_number}} [{{system_id}}]</option>
             {{/each}}
           </select>
           <a class='button' href='#' id='new_system'>create new system</a>
         </span>
       </div>
+    </div>
     <br>
+
+    {{#if system_ready}}
       <div class="subtitle">
         <span class="category_title">Please select your system spec below</span>
         <span> | </span>
         <a class='button' href="#" id="reset">clear selections</a>
       </div>
-    </div>
-    <br>
+      <br>
 
-    {{> input_section}}
+      {{#each sections}}
+        {{> drawer}}
+      {{/each}}
 
-    {{> drawing_section}}
+      {{> drawing_section}}
+
+
+    {{/if}}
+
   {{else}}
     <br>
     <br>

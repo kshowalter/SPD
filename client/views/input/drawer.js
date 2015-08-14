@@ -4,6 +4,9 @@ Template.drawer.helpers({
   },
   title_bar_class: function(){
     section_activated = Session.get('section_activated');
+    //section_activated = settings.webpage.section_activated;
+
+    //console.log(section_activated, this);
     if( section_activated[this] ){
       return 'title_bar_active';
     } else {
@@ -15,7 +18,7 @@ Template.drawer.helpers({
   },
   inputs: function(){
     var section_name = this.toString();
-    var inputs = User_data.find({ type:'user', section_name:section_name }, {sort:['order']} );
+    var inputs = System_data.find({ type:'user', system_id: Meteor.user().active_system, section_name:section_name }, {sort:['order']} );
     //console.log(section_name, 'inputs:', inputs.fetch());
     return inputs;
   },
@@ -38,7 +41,7 @@ Template.drawer.helpers({
 
 Template.drawer.events({
   'click .title_bar': function(event){
-    console.log(this);
+    //console.log(this);
     ////$('#' + event.currentTarget.id).slideUp('slow');
     //console.log( $(event.target).parent().children('.drawer').children('.drawer_content') );
     $(event.target).parent().children('.drawer').children('.drawer_content').slideToggle('fast');

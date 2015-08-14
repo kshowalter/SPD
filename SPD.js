@@ -1,10 +1,11 @@
-console.log(' ______  ');
-console.log(' \\    / ');
-console.log('  \\  /  ');
-console.log('   \\/   ');
+//console.log(' ______  ');
+//console.log(' \\    / ');
+//console.log('  \\  /  ');
+//console.log('   \\/   ');
 
 
 settings = mk_settings();
+settings = mk_inputs(settings);
 f.g = settings;
 settings.f = f;
 
@@ -69,7 +70,7 @@ Router.route('/', function () {
 });
 
 
-console.log('   /\\   ');
-console.log('  /  \\  ');
-console.log(' /    \\ ');
-console.log(' ------  ');
+//console.log('   /\\   ');
+//console.log('  /  \\  ');
+//console.log(' /    \\ ');
+//console.log(' ------  ');
