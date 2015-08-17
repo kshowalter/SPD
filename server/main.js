@@ -1,4 +1,5 @@
-
+var jsdom = Meteor.npmRequire("jsdom").jsdom;
+document = jsdom();
 
 Meteor.startup(function () {
   // code to run on server at startup
@@ -14,14 +15,11 @@ Meteor.startup(function () {
 
 
   //var jsdom = Meteor.npmRequire('moment');
-  var jsdom = Meteor.npmRequire("jsdom").jsdom;
 
-  document = jsdom();
-  var window = document.defaultView;
-
-  var div = document.createElement('div');
-  document.body.appendChild(div);
-  console.log('body: ', document.body.innerHTML);
+  //var window = document.defaultView;
+  //var div = document.createElement('div');
+  //document.body.appendChild(div);
+  //console.log('body: ', document.body.innerHTML);
 
 
   /*

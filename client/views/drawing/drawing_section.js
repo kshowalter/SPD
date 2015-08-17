@@ -7,8 +7,7 @@ Template.drawing_section.helpers({
 
 Template.drawing_section.events({
   'click #request_drawing': function(){
-    console.log(this);
-    Meteor.call("generate", 'settings', function(error, result){
+    Meteor.call("generate", function(error, result){
       if(error){
         console.log("error", error);
       }

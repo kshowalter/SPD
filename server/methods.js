@@ -15,7 +15,7 @@ Meteor.methods({
   },
   reset: function(){
     var user_id = this.userId;
-    var active_system = Meteor.users.findOne({system_id:active_system}).active_system
+    var active_system = Meteor.users.findOne({_id:user_id}).active_system;
     //console.log(user_id, Meteor.user());
     System_data.remove({system_id:active_system});
     //setup_user_data(user_id);
@@ -80,16 +80,12 @@ Meteor.methods({
     );
     return 'server did something';
   },
-  just_checking_in: function(message){
-    console.log('*** just_checking_in');
-    console.log('  * special message: ', message);
-    return 'server recieved: ' + message ;
-  },
 
-  generate: function(settings){
-    console.log('generate based on: ', settings);
-
-    return true;
+  generate: function(){
+    var active_system = Meteor.users.findOne({_id:this.userId}).active_system;
+    svgs = mk_drawing(active_system);
+    console.log(svgs[0].outerHTML);
+    return svgs[0].outerHTML;
 
   },
 
