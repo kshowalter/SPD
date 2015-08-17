@@ -1,5 +1,5 @@
 update = function(){
-  //console.log('+ updating');
+  console.log('+ updating');
   var active_system = Meteor.user().active_system;
   console.log('active system: ', active_system);
 

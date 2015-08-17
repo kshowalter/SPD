@@ -1,7 +1,7 @@
 f.mk_preview['elec'] = function(settings){
     //console.log("** Making preview 1");
 
-    var d = mk_drawing(settings);
+    var d = Drawing(settings);
 
 
 

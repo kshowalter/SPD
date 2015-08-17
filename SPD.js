@@ -65,9 +65,21 @@ if (Meteor.isServer) {
 }
 
 
+Router.onBeforeAction( function(){
+    subscribe['main']();
+    this.next();
+  },
+  {only: ['main']}
+);
+
 Router.route('/', function () {
   this.render('main');
+},{
+  name: 'main'
 });
+
+
+
 
 
 //console.log('   /\\   ');

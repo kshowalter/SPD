@@ -1,7 +1,7 @@
 f.mk_preview['roof'] = function(settings){
     //console.log("** Making preview 2");
 
-    var d = mk_drawing(settings);
+    var d = Drawing(settings);
 
     if( f.section_defined('roof') ){
 

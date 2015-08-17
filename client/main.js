@@ -77,21 +77,27 @@ Template.main.events({
 });
 
 
-Template.body.onRendered(function(){
+Template.main.onRendered(function(){
   setup_webpage();
+
+  if( ready('main') ) {
+    update();
+  }
+
+  Meteor.call("generate", 'settings', function(error, result){
+    if(error){
+      console.log("error", error);
+    }
+    if(result){
+      console.log('result: ', result);
+    }
+  });
 });
 
 
-if( ready('main') ) {
-  update();
-}
-
-
-Meteor.call("generate", 'settings', function(error, result){
-  if(error){
-    console.log("error", error);
-  }
-  if(result){
-    console.log('result: ', result);
-  }
-});
+Router.onBeforeAction( function(){
+    subscribe['drawing']();
+    //this.next();
+  },
+  {only: ['drawing']}
+);

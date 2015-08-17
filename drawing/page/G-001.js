@@ -1,6 +1,6 @@
 f.mk_sheet_num['G-001'] = function(settings){
 
-    var d = mk_drawing(settings);
+    var d = Drawing(settings);
 
     var sheet_section = 'A';
     var sheet_num = '00';
