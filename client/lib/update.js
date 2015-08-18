@@ -1,13 +1,7 @@
 update = function(){
-  console.log('+ updating');
   var active_system = Meteor.user().active_system;
-  console.log('active system: ', active_system);
+  console.log('...updating active system: ', active_system);
 
-
-  //values = System_data.find({}).fetch();
-  //var v = {};
-  //var v;
-  //v = system = settings.system = {};
 
   if( active_system){
 

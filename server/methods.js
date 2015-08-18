@@ -82,10 +82,10 @@ Meteor.methods({
   },
 
   generate: function(){
+    console.log('generate drawing method');
     var active_system = Meteor.users.findOne({_id:this.userId}).active_system;
-    svgs = mk_drawing(active_system);
-    console.log(svgs[0].outerHTML);
-    return svgs[0].outerHTML;
+    var result = mk_drawing(active_system);
+    return result;
 
   },
 

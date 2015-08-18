@@ -1,6 +1,8 @@
 var jsdom = Meteor.npmRequire("jsdom").jsdom;
 document = jsdom();
 
+wkhtmltopdf = Meteor.npmRequire("wkhtmltopdf");
+
 Meteor.startup(function () {
   // code to run on server at startup
   Settings.remove({});

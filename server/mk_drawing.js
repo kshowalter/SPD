@@ -16,6 +16,10 @@ mk_drawing = function(system_id){
   system_settings = calculate(system_settings);
   system_settings = update_drawing(system_settings);
 
-  return system_settings.drawing.svgs;
+  var svgs = system_settings.drawing.svgs;
+
+
+
+  return svgs;
 
 };

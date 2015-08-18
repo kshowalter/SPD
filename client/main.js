@@ -29,7 +29,7 @@ Template.main.helpers({
     return User_systems.find({});
   },
   system_ready: function(){
-    console.log('returning list');
+    //console.log('returning list');
     return ( Meteor.user().active_system !== undefined );
 
   },
@@ -84,14 +84,16 @@ Template.main.onRendered(function(){
     update();
   }
 
-  Meteor.call("generate", 'settings', function(error, result){
-    if(error){
-      console.log("error", error);
-    }
-    if(result){
-      console.log('result: ', result);
-    }
-  });
+  //Meteor.call("generate", 'settings', function(error, result){
+  //  if(error){
+  //    console.log("error", error);
+  //  }
+  //  if(result){
+  //    console.log('result: ', result);
+  //  }
+  //});
+
+
 });
 
 

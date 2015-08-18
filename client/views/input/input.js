@@ -49,12 +49,14 @@ Template.input.events({
     console.log('[] form submitted', e);
   },
   'change .input': function(event){
+    var active_system = Meteor.users.findOne({_id:Meteor.userId()}).active_system;
     var value = event.target.value;
+
     number = Number(value);
     if( ! isNaN(number) ){
       value = number;
     }
     System_data.update(this._id, {$set: {value: value}});
-    update_options(this.section_name, this.value_name);
+    update_options(active_system, this.section_name, this.value_name);
   },
 });

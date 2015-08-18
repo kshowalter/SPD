@@ -331,6 +331,14 @@
           }
         }
       }
+    },
+    "wkhtmltopdf": {
+      "version": "0.1.5",
+      "dependencies": {
+        "slang": {
+          "version": "0.3.0"
+        }
+      }
     }
   }
 }
