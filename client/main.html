@@ -31,10 +31,11 @@
         <span>
           Logged in as: {{user_info}} |
           Designing system:
+          <input id="system_name" type="text" value="{{system_name}}">
           <select class="" id='system_id' >
             <option selected="selected" disabled="disabled" hidden="hidden"></option>
             {{#each system_ids}}
-              <option value="{{system_id}}" selected={{system_selected}}>{{system_number}} [{{system_id}}]</option>
+              <option value="{{system_id}}" selected={{system_selected}}>{{system_number}} [{{name}}]</option>
             {{/each}}
           </select>
           <a class='button' href='#' id='new_system'>create new system</a>

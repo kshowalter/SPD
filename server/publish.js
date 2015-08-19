@@ -26,7 +26,7 @@
   //});
 
 
-  Meteor.publish("userData", function () {
+  Meteor.publish("users", function () {
     if (this.userId) {
       return Meteor.users.find({_id: this.userId},
                                {fields: {'active_system': 1}});

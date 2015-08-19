@@ -33,7 +33,7 @@ f.mk_preview['elec'] = function(settings){
 
 // TODO fix: sections must be defined in order, or there are areas
 
-    if( f.section_defined('array') && f.section_defined('module') ){
+    if( section_defined(settings.state.active_system, 'array') && section_defined(settings.state.active_system, 'module') ){
         d.layer('preview_array');
 
         w = size.preview.module.w;
@@ -95,7 +95,7 @@ f.mk_preview['elec'] = function(settings){
         );
     }
 
-    if( f.section_defined('DC') ){
+    if( section_defined(settings.state.active_system, 'DC') ){
         d.layer('preview_DC');
 
         //y = y;
@@ -116,7 +116,7 @@ f.mk_preview['elec'] = function(settings){
 
     }
 
-    if( f.section_defined('inverter') ){
+    if( section_defined(settings.state.active_system, 'inverter') ){
 
         d.layer('preview_inverter');
 
@@ -141,7 +141,7 @@ f.mk_preview['elec'] = function(settings){
         );
     }
 
-    if( f.section_defined('AC') ){
+    if( section_defined(settings.state.active_system, 'AC') ){
 
         d.layer('preview_AC');
 

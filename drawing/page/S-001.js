@@ -13,7 +13,7 @@ f.mk_sheet_num['S-001'] = function(settings){
 
 
 
-  if( f.section_defined('roof') ){
+  if( section_defined(settings.state.active_system, 'roof') ){
 
     var x, y, h, w, section_x, section_y, length_p, scale;
 
@@ -234,7 +234,7 @@ d.block('north arrow_up', [x,y]);
 
 //////
 // Module options
-if( f.section_defined('module') && f.section_defined('array')){
+if( section_defined(settings.state.active_system, 'module') && section_defined(settings.state.active_system, 'array')){
   var r,c;
 
   var roof_length_avail = system.roof.slope_length - (a*2);

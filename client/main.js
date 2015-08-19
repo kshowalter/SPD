@@ -28,6 +28,23 @@ Template.main.helpers({
   system_ids: function(){
     return User_systems.find({});
   },
+  active_system: function(){
+    return Meteor.user().active_system;
+  },
+  system_name: function(){
+    /*
+    //*/
+    var active_system = Meteor.user().active_system;
+    var system_info = User_systems.findOne({system_id:active_system});
+    var name;
+    if(system_info){
+      name = system_info.name || '';
+    } else {
+      name = '';
+    }
+    console.log('name', name);
+    return name;
+  },
   system_ready: function(){
     //console.log('returning list');
     return ( Meteor.user().active_system !== undefined );
@@ -68,6 +85,17 @@ Template.main.events({
       console.log('created ID: ', id);
     });
   },
+  'change #system_name': function(){
+    var id = User_systems.findOne({system_id: Meteor.user().active_system })._id;
+    console.log('setting: ', id, event.target.value);
+    User_systems.update(
+      id,
+      {$set:
+        {name:event.target.value}
+      }
+    );
+
+  },
   'change #system_id': function(event){
     Meteor.call('new_active_system', event.target.value, function(err, returned){
       //console.log('returned: ', returned);
@@ -77,7 +105,7 @@ Template.main.events({
 });
 
 
-Template.main.onRendered(function(){
+Template.body.onRendered(function(){
   setup_webpage();
 
   if( ready('main') ) {
@@ -95,11 +123,3 @@ Template.main.onRendered(function(){
 
 
 });
-
-
-Router.onBeforeAction( function(){
-    subscribe['drawing']();
-    //this.next();
-  },
-  {only: ['drawing']}
-);

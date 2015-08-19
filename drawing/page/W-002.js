@@ -26,7 +26,7 @@ f.mk_sheet_num['W-002'] = function(settings){
 
 
     for( var section_name in settings.system ){
-        if( f.section_defined(section_name) ){
+        if( section_defined(settings.state.active_system, section_name) ){
             var section = settings.system[section_name];
 
             var n = Object.keys(section).length;

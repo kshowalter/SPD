@@ -47,8 +47,9 @@ Template.drawer.events({
     $(event.target).parent().children('.drawer').children('.drawer_content').slideToggle('fast');
 
 
-    //var name = $(this).attr('section_nom');
-    //g.webpage.section_manual_toggled[name] = true;
+    var name = $(event.target).attr('section_nom');
+    //console.log(name);
+    settings.webpage.section_manual_toggled[name] = true;
     //$(this).parent().children('.drawer').children('.drawer_content').slideToggle('fast');
 
   },

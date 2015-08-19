@@ -3,7 +3,7 @@ f.mk_preview['roof'] = function(settings){
 
     var d = Drawing(settings);
 
-    if( f.section_defined('roof') ){
+    if( section_defined(settings.state.active_system, 'roof') ){
 
         var size = settings.drawing_settings.size;
         var loc = settings.drawing_settings.loc;
@@ -212,7 +212,7 @@ f.mk_preview['roof'] = function(settings){
 
             //////
             // Module options
-            if( f.section_defined('module') && f.section_defined('array')){
+            if( section_defined(settings.state.active_system, 'module') && section_defined(settings.state.active_system, 'array')){
                 var r,c;
 
                 var roof_length_avail = system.roof.slope_length - (a*2);

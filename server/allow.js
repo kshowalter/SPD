@@ -5,3 +5,10 @@ System_data.allow({
   },
 
 });
+User_systems.allow({
+  update: function (userId, doc, fieldNames, modifier) {
+    console.log('update request', userId, fieldNames, modifier);
+    return true;
+  },
+
+});

@@ -1,10 +1,6 @@
-ready = f.mk_ready(['main', 'system_data', 'user_systems', 'components', 'settings']);
-
-
 subscribe = {};
 
 subscribe['main'] = function(){
-  console.log('sub main');
   Meteor.subscribe('system_data', function(){
     if( ready('system_data') ) {
       update();
@@ -25,10 +21,10 @@ subscribe['main'] = function(){
       update();
     }
   });
-  Meteor.subscribe('userData', function(){
-    //if( ready('userData') ) {
-      console.log('user loaded');
-    //}
+  Meteor.subscribe('users', function(){
+    if( ready('users') ) {
+      update();
+    }
   });
 
 };

@@ -18,7 +18,7 @@ update = function(){
     //console.log('section_list', section_list);
     var not_defined = [];
     section_list.forEach(function(section_name){
-      if( defined(section_name) ){
+      if( section_defined(settings.state.active_system, section_name) ){
         settings.webpage.section_activated[section_name] = true;
 
       } else {
@@ -37,9 +37,9 @@ update = function(){
     active_section_name = Session.get('active_section_name');
     section_list.forEach(function(section_name){
       if( section_name === active_section_name ) {
-        //console.log('opening: ', section_name);
+        //console.log('opening: ', section_name, $('#section_'+section_name).children('.drawer').children('.drawer_content'));
         $('#section_'+section_name).children('.drawer').children('.drawer_content').slideDown();
-      } else if(true) {
+      } else if( ! settings.webpage.section_manual_toggled[section_name] ) {
         //console.log('not equal: ', section_name, active_section_name);
         $('#section_'+section_name).children('.drawer').children('.drawer_content').slideUp();
 

@@ -20,7 +20,7 @@ f.mk_sheet_num['G-001'] = function(settings){
         'project title'
     );
 
-    if( settings.f.section_defined('location')  ){
+    if( section_defined(settings.state.active_system, 'location')  ){
         d.text(
             [size.drawing.w*1/2, size.drawing.h*1/3 +30],
             [

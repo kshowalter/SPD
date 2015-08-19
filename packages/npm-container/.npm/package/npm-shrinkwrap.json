@@ -332,6 +332,28 @@
         }
       }
     },
+    "pdf-merge": {
+      "version": "0.0.2",
+      "dependencies": {
+        "async": {
+          "version": "1.4.2"
+        },
+        "q": {
+          "version": "1.4.1"
+        },
+        "tmp": {
+          "version": "0.0.26",
+          "dependencies": {
+            "os-tmpdir": {
+              "version": "1.0.1"
+            }
+          }
+        },
+        "underscore": {
+          "version": "1.8.3"
+        }
+      }
+    },
     "wkhtmltopdf": {
       "version": "0.1.5",
       "dependencies": {
