@@ -27,8 +27,20 @@ Router.route('/drawing/:system_id', function () {
 
   response.end(html);
 
+},{
+  name: 'drawing',
+  where: 'server',
+});
+
+Router.route('/drawing/pdf_sample/:system_id', function () {
 /////////
 // PDF option
+  var response = this.response;
+  console.log('server route', this.params.system_id);
+
+  var system_id = this.params.system_id;
+
+  var svgs = mk_drawing(system_id);
 
   /*
   var pdfs = [];
@@ -50,26 +62,27 @@ Router.route('/drawing/:system_id', function () {
     );
 
   });
-
-  //var pdf = wkhtmltopdf(
-  //  htmls[1],
-  //  {
-  //    pageSize: 'letter',
-  //    orientation: 'landscape',
-  //    marginBottom: 0,
-  //    marginLeft: 0,
-  //    marginRight: 0,
-  //    marginTop: 0,
-  //  }
-  //).pipe(
-  //  response
-  //);
-
   //*/
+
+  var html = '<!doctype html><html><head></head><body style="width:1554px; height:1198px;"><div>' + svgs[1].outerHTML + '</div></body></html>';
+  var pdf = wkhtmltopdf(
+    html,
+    {
+      pageSize: 'letter',
+      orientation: 'landscape',
+      marginBottom: 0,
+      marginLeft: 0,
+      marginRight: 0,
+      marginTop: 0,
+    }
+  ).pipe(
+    response
+  );
+
 
 
 
 },{
-  name: 'drawing',
+  name: 'pdf_sample',
   where: 'server',
 });

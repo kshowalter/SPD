@@ -12,6 +12,10 @@ if(top != window) {
   Meteor.setInterval(function(){
     f.update_status_bar(status_id, boot_time, version_string);
   },1000);
+
+  Meteor.setTimeout(function(){
+    update();
+  }, 2000);
 //----status bar ----//
 
 Meteor.call('connect', function(err, id){
@@ -47,7 +51,12 @@ Template.main.helpers({
   },
   system_ready: function(){
     //console.log('returning list');
-    return ( Meteor.user().active_system !== undefined );
+    var active_system =  Meteor.user().active_system;
+    if( active_system ) {
+      return User_systems.find({system_id:active_system}).count();
+    } else {
+      return false;
+    }
 
   },
   sections: function(){
@@ -82,6 +91,12 @@ Template.main.events({
   },
   'click #new_system': function(){
     Meteor.call('new_system', function(err, id){
+      console.log('created ID: ', id);
+    });
+    subscribe['main']();
+  },
+  'click #delete_system': function(){
+    Meteor.call('delete_system', function(err, id){
       console.log('created ID: ', id);
     });
   },

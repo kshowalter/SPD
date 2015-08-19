@@ -35,10 +35,11 @@
           <select class="" id='system_id' >
             <option selected="selected" disabled="disabled" hidden="hidden"></option>
             {{#each system_ids}}
-              <option value="{{system_id}}" selected={{system_selected}}>{{system_number}} [{{name}}]</option>
+              <option value="{{system_id}}" selected={{system_selected}}>{{name}} [{{system_number}}]</option>
             {{/each}}
           </select>
           <a class='button' href='#' id='new_system'>create new system</a>
+          <a class='button' href='#' id='delete_system'>delete system {{name}} [{{system_number}}]</a>
         </span>
       </div>
     </div>

@@ -41,6 +41,20 @@ Meteor.methods({
       { $set: {active_system: system_id } }
     );
   },
+  delete_system: function(){
+    var active_system = Meteor.users.findOne({_id:this.userId}).active_system;
+    System_data.remove({system_id:active_system});
+    User_systems.remove({system_id:active_system});
+
+    var user_id = this.userId;
+    var user_system_list = User_systems.find({system_id:active_system}).fetch();
+    var new_system_id = user_system_list[user_system_list.length-1];
+
+    Meteor.users.update(
+      user_id,
+      { $set: {active_system: new_system_id } }
+    );
+  },
   new_active_system: function(system_id){
     var user_id = this.userId;
     Meteor.users.update(
@@ -68,8 +82,9 @@ Meteor.methods({
       }).map(function(doc){return doc.model;}
     ));
 
+    var active_system = Meteor.users.findOne({_id:this.userId}).active_system;
     System_data.update(
-      { section_name:section_name, value_name:'model', user_id: this.userId() },
+      { section_name:section_name, value_name:'model', system_id: active_system },
       //{ section_name:'module', value_name:'model'},
       {'$set':{
         options: new_options

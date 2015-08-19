@@ -3,7 +3,7 @@
     var systems = User_systems.find({user_id: user_id}).map(function(doc){
       return doc.system_id;
     });
-    console.log(systems);
+    console.log('current systems for '+this.userId + ': ', systems);
     return System_data.find({
       system_id: {$in: systems}
     });
