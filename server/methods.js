@@ -96,11 +96,12 @@ Meteor.methods({
     return 'server did something';
   },
 
-  generate: function(){
+  download: function(){
     console.log('generate drawing method');
     var active_system = Meteor.users.findOne({_id:this.userId}).active_system;
     var result = mk_drawing(active_system);
-    return result;
+    //return result;
+    return active_system;
 
   },
 

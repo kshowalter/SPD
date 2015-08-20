@@ -9,6 +9,9 @@ Router.route('/drawing/:system_id', function () {
   var system_id = this.params.system_id;
 
   var svgs = mk_drawing(system_id);
+
+
+
   //console.log(svgs[0].outerHTML);
 
   //var htmls = [];
@@ -29,6 +32,29 @@ Router.route('/drawing/:system_id', function () {
 
 },{
   name: 'drawing',
+  where: 'server',
+});
+
+Router.route('/drawing/:system_id/:page', function () {
+  console.log('server route', this.params.system_id);
+  var response = this.response;
+  var page_num = this.params.page;
+  var system_id = this.params.system_id;
+
+  //var svgs = mk_drawing(system_id);
+
+  html = '<!doctype html><html><head></head><body style="width:1554px; height:1198px;"><div> ';
+
+  var svg_string = User_systems.findOne({system_id:system_id}).svgs[page_num];
+  svg_string = svg_string.replace(/<svg /g, '<svg style="position:absolute; top:0px; left:0px;" ');
+  html += svg_string;
+
+  html += ' </div></body></html>';
+
+  response.end(html);
+
+},{
+  name: 'drawing_page',
   where: 'server',
 });
 

@@ -78,6 +78,13 @@ Template.main.helpers({
       return false;
     }
   },
+  is_admin: function(){
+    if( Meteor.user().email[0] in ['kshowalter@fsec.ucf.edu'] ){
+      return true;
+    } else {
+      return false;
+    }
+  },
 });
 
 
@@ -116,15 +123,55 @@ Template.main.events({
       //console.log('returned: ', returned);
     });
   },
+  'click #request_drawing': function(){
+    console.log('request_drawing');
+    var active_system = Meteor.user().active_system;
+    $('#drawing_loading').show(1000);
+    Meteor.call("download", function(error, result){
+      if(error){
+        console.log("error", error);
+      }
+      if(result){
+        console.log('result: ', result);
+        $('#drawing_loading').append(
+          $('<div>').append(
+            $('<a>', {
+              id: 'view_drawing',
+              class: 'button',
+              href: 'drawing/'+active_system,
+              text: 'view SVG drawing',
+              target: '_blank',
+
+            })
+          )
+
+        );
+      }
+    });
+  },
+});
+
+
+Accounts.onLogin(function(){
+  setup_webpage();
+
+  if( ready('main') ) {
+    update();
+  }
+
 
 });
 
 
 Template.body.onRendered(function(){
-  setup_webpage();
 
-  if( ready('main') ) {
-    update();
+  if(Meteor.user()){
+    setup_webpage();
+
+    if( ready('main') ) {
+      update();
+    }
+
   }
 
   //Meteor.call("generate", 'settings', function(error, result){
