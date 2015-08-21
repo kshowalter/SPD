@@ -45,7 +45,7 @@ Router.route('/drawing/:system_id/:page', function () {
 
   html = '<!doctype html><html><head></head><body style="width:1554px; height:1198px;"><div> ';
 
-  var svg_string = User_systems.findOne({system_id:system_id}).svgs[page_num];
+  var svg_string = User_systems.findOne({system_id:system_id}).svgs[page_num-1];
   svg_string = svg_string.replace(/<svg /g, '<svg style="position:absolute; top:0px; left:0px;" ');
   html += svg_string;
 
