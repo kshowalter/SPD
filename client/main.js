@@ -143,9 +143,18 @@ Template.main.events({
               id: 'view_drawing',
               class: 'button',
               href: 'drawing/'+active_system,
-              text: 'view SVG drawing',
+              text: 'view drawing',
               target: '_blank',
 
+            })
+          )
+          .append(
+            $('<a>', {
+              id: 'view_drawing',
+              class: 'button',
+              href: 'http://10.173.64.204:8004/drawing/'+active_system,
+              text: 'print drawing',
+              target: '_blank',
             })
           );
       }
