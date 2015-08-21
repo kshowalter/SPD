@@ -51,12 +51,7 @@ Template.main.helpers({
   },
   system_ready: function(){
     //console.log('returning list');
-    var active_system =  Meteor.user().active_system;
-    if( active_system ) {
-      return User_systems.find({system_id:active_system}).count();
-    } else {
-      return false;
-    }
+    return system_ready();
 
   },
   sections: function(){
@@ -172,7 +167,7 @@ Accounts.onLogin(function(){
 
 Template.body.onRendered(function(){
 
-  if(Meteor.user()){
+  if( Meteor.user() && system_ready() ){
     setup_webpage();
 
     if( ready('main') ) {
@@ -192,3 +187,14 @@ Template.body.onRendered(function(){
 
 
 });
+
+
+
+system_ready = function(){
+  var active_system =  Meteor.user().active_system;
+  if( active_system ) {
+    return User_systems.find({system_id:active_system}).count();
+  } else {
+    return false;
+  }
+};

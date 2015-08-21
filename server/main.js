@@ -14,10 +14,17 @@ Meteor.startup(function () {
 
   Components.remove({});
 
-  Inputs.remove({});
 
   load_data();
   settings = mk_inputs(settings);
+
+  Inputs.remove({});
+  for( var section_name in settings.inputs ){
+    for( var value_name in settings.inputs[section_name]){
+      var input = settings.inputs[section_name][value_name];
+      Inputs.insert(input);
+    }
+  }
 
 
   //var jsdom = Meteor.npmRequire('moment');
