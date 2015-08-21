@@ -123,18 +123,27 @@ Template.main.events({
       //console.log('returned: ', returned);
     });
   },
+  'click #close_download_box': function(){
+    $('#drawing_loading').fadeOut(420);
+  },
   'click #request_drawing': function(){
     console.log('request_drawing');
     var active_system = Meteor.user().active_system;
-    $('#drawing_loading').show(1000);
+    $('#drawing_loading').fadeIn(420);
+    $('#drawing_download_status')
+      .empty()
+      .append(
+        $('<p>').html('generating drawing files...')
+      );
     Meteor.call("download", function(error, result){
       if(error){
         console.log("error", error);
       }
       if(result){
         console.log('result: ', result);
-        $('#drawing_loading').append(
-          $('<div>').append(
+        $('#drawing_download_status')
+          .empty()
+          .append(
             $('<a>', {
               id: 'view_drawing',
               class: 'button',
@@ -143,9 +152,7 @@ Template.main.events({
               target: '_blank',
 
             })
-          )
-
-        );
+          );
       }
     });
   },

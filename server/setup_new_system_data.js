@@ -1,4 +1,5 @@
 setup_new_system_data = function(system_id){
+  console.log('Creating new system: ', system_id);
 
   Inputs.find({type:'user'}).forEach(function(doc){
     //var user_value = the_user_data[doc.section_name][doc.value_name];

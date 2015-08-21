@@ -1,6 +1,13 @@
 setup_webpage = function(){
   //console.log('setup_webpage');
 
+  $('#drawing_loading')
+    .on('blur',function(){
+      console.log('blur');
+      $(this).fadeOut(300);
+    });
+
+
   /*
   var map_drawer_content = $('#section_map').children('.drawer').children('.drawer_content');
 

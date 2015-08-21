@@ -362,7 +362,7 @@ img { border: 0; }
 	position: fixed;
 	top: 20px;
 	width: 300px;
-	height: 60px;
+	height: 140px;
 
   position: fixed;
 
@@ -379,7 +379,9 @@ img { border: 0; }
 	text-align: center;
 }
 
-
+#close_download_box{
+	clear: both;
+}
 
 #status {
 	float: right;
