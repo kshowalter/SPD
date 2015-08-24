@@ -433,7 +433,7 @@ f.mk_sheet_num['W-001'] = function(settings){
 
 
     // AC d.lines
-        d.section("AC d.lines");
+        d.section("AC lines");
 
         x = loc.inverter.bottom_right.x;
         y = loc.inverter.bottom_right.y;

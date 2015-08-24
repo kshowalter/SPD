@@ -143,7 +143,7 @@ Template.main.events({
               id: 'view_drawing',
               class: 'button',
               href: 'drawing/'+active_system,
-              text: 'view drawing',
+              text: 'View drawing',
               target: '_blank',
 
             })
@@ -153,7 +153,7 @@ Template.main.events({
               id: 'view_drawing',
               class: 'button',
               href: 'http://10.173.64.204:8004/drawing/'+active_system,
-              text: 'print drawing',
+              text: 'Download drawing',
               target: '_blank',
             })
           );
@@ -164,6 +164,7 @@ Template.main.events({
 
 
 Accounts.onLogin(function(){
+  console.log('login');
   /*
   setup_webpage();
 
@@ -173,6 +174,8 @@ Accounts.onLogin(function(){
   */
 
 });
+
+
 
 
 Template.body.onRendered(function(){
