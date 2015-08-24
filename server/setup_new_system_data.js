@@ -13,7 +13,7 @@ setup_new_system_data = function(system_id){
     System_data.insert(local_doc);
   });
 
-  System_data.find({}).forEach(function(doc){
+  System_data.find({system_id:system_id}).forEach(function(doc){
     update_options( system_id, doc.section_name, doc.value_name );
   });
 

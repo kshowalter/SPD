@@ -164,12 +164,13 @@ Template.main.events({
 
 
 Accounts.onLogin(function(){
+  /*
   setup_webpage();
 
   if( ready('main') ) {
     update();
   }
-
+  */
 
 });
 
