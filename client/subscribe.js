@@ -4,37 +4,27 @@ subscribe['main'] = function(){
 
   Tracker.autorun(function () {
     Meteor.subscribe('system_data', function(){
-      if( ready('system_data') ) {
-        update();
-      }
+      ready('system_data');
     });
   });
   Tracker.autorun(function () {
     Meteor.subscribe('user_systems', function(){
-      if( ready('user_systems') ) {
-        update();
-      }
+      ready('user_systems');
     });
   });
   Tracker.autorun(function () {
     Meteor.subscribe('components', function(){
-      if( ready('components') ) {
-        update();
-      }
+      ready('components');
     });
   });
   Tracker.autorun(function () {
     Meteor.subscribe('settings', function(){
-      if( ready('settings') ) {
-        update();
-      }
+      ready('settings');
     });
   });
   Tracker.autorun(function () {
     Meteor.subscribe('users', function(){
-      if( ready('users') ) {
-        update();
-      }
+      ready('users');
     });
   });
 

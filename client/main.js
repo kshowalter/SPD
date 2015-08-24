@@ -13,9 +13,9 @@ if(top != window) {
     f.update_status_bar(status_id, boot_time, version_string);
   },1000);
 
-  Meteor.setTimeout(function(){
-    update();
-  }, 2000);
+  //Meteor.setTimeout(function(){
+  //  update();
+  //}, 2000);
 //----status bar ----//
 
 Meteor.call('connect', function(err, id){
@@ -165,13 +165,10 @@ Template.main.events({
 
 Accounts.onLogin(function(){
   console.log('login');
-  /*
-  setup_webpage();
 
-  if( ready('main') ) {
-    update();
-  }
-  */
+  ready('login');
+
+
 
 });
 
@@ -180,12 +177,12 @@ Accounts.onLogin(function(){
 
 Template.body.onRendered(function(){
 
+  ready('main');
+
+  
   if( Meteor.user() && system_ready() ){
     setup_webpage();
 
-    if( ready('main') ) {
-      update();
-    }
 
   }
 

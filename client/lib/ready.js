@@ -1,4 +1,4 @@
-var mk_ready = function(names){
+var mk_ready = function(names, callback){
   var list = {};
   names.forEach(function(name){
     list[name] = false;
@@ -6,6 +6,7 @@ var mk_ready = function(names){
   var ready = false;
 
   return function(name){
+    console.log('name:', name);
     list[name] = true;
     for( name in list){
       if( list[name] === false ){
@@ -13,9 +14,23 @@ var mk_ready = function(names){
       }
     }
     console.log('ready!!!!!', list);
+    callback();
     return true;
   };
 
 };
 
-ready = mk_ready(['main', 'system_data', 'user_systems', 'components', 'settings', 'users']);
+var ready_callback = function(){
+  console.log('ready!');
+  update();
+  Meteor.setTimeout(function(){
+    console.log('unnecessary update');
+    update();
+  }, 1000);
+}
+
+
+ready = mk_ready(
+  ['main', 'system_data', 'user_systems', 'components', 'settings', 'users', 'login'],
+  ready_callback
+);

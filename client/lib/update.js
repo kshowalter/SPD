@@ -1,7 +1,10 @@
 update = function(){
-  var active_system = Meteor.user().active_system;
-  console.log('...updating active system: ', active_system);
-
+  if(Meteor.user()){
+    var active_system = Meteor.user().active_system;
+    console.log('...updating active system: ', active_system);
+  } else {
+    console.log('...nothing to update yet...');
+  }
 
   if( active_system){
 
