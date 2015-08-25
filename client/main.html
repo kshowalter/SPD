@@ -1,0 +1,97 @@
+<head>
+  <title>Solar Plans Designer</title>
+</head>
+
+<body>
+
+
+</body>
+
+<template name="main">
+
+  <div class='status_bar'>
+    <span class='login'>
+      User: {{> loginButtons}}
+    </span>
+
+    <span  class="button">
+      <a href="#" id="request_drawing">request drawing</a>
+    </span>
+
+    <span id="status">
+      Preview20150626
+      | <span>2015-06-26 14:58:55</span>
+      | <span>Uptime: 0:00:15</span>
+    </span>
+
+  </div>
+
+  <div class="page">
+
+  {{#if currentUser}}
+    <div class="title_Section">
+      <h2>Solar Plans Designer</h2>
+      <!-- <img src="data/PlansMachine.png" class="title_image"> -->
+      <div>
+        <span>
+          Logged in as: {{user_info}} |
+          Designing system:
+          <input id="system_name" type="text" value="{{system_name}}">
+          <select class="" id='system_id' >
+            <option selected="selected" disabled="disabled" hidden="hidden"></option>
+            {{#each system_ids}}
+              <option value="{{system_id}}" selected={{system_selected}}>{{name}} [{{system_number}}]</option>
+            {{/each}}
+          </select>
+          <a class='button' href='#' id='new_system'>create new system</a>
+          <a class='button' href='#' id='delete_system'>delete system {{name}} [{{system_number}}]</a>
+        </span>
+      </div>
+    </div>
+    <br>
+
+    {{#if system_ready}}
+      <div class="subtitle">
+        <span class="category_title">Please select your system spec below</span>
+        <span> | </span>
+        <a class='button' href="#" id="reset">clear selections</a>
+      </div>
+      <br>
+
+      {{#each sections}}
+        {{> drawer}}
+      {{/each}}
+
+      {{> drawing_section}}
+
+
+    {{/if}}
+
+  {{else}}
+    <br>
+    <br>
+    This is only a demonstration, and in not intented for use in permitting.
+    <br>
+    <br>
+    <br>
+    Please log in above.
+    <br>
+
+
+  {{/if}}
+
+
+
+
+  </div>
+
+  <div id='drawing_loading'>
+    <p>Your drawing is being loaded.</p>
+    <span id='drawing_download_status'></span>
+    <br>
+    <br>
+    <a id='close_download_box' class='button' href=#>close</a>
+  </div>
+
+
+</template>
