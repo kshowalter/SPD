@@ -3,6 +3,7 @@ if(top != window) {
 }
 
 
+
 //----status bar ----//
   var version_string = 'Preview'+moment().format('YYYYMMDD');
   //g.state.version_string = version_string;
@@ -179,11 +180,9 @@ Template.body.onRendered(function(){
 
   ready('main');
 
-  
+
   if( Meteor.user() && system_ready() ){
     setup_webpage();
-
-
   }
 
   //Meteor.call("generate", 'settings', function(error, result){
