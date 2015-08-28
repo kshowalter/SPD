@@ -32,7 +32,7 @@ Router.route('/drawing/:system_id', function () {
 
 },{
   name: 'drawing',
-  where: 'server',
+  where: 'server'
 });
 
 Router.route('/drawing/:system_id/:page', function () {
@@ -55,7 +55,7 @@ Router.route('/drawing/:system_id/:page', function () {
 
 },{
   name: 'drawing_page',
-  where: 'server',
+  where: 'server'
 });
 
 Router.route('/drawing/pdf_sample/:system_id', function () {
@@ -99,7 +99,7 @@ Router.route('/drawing/pdf_sample/:system_id', function () {
       marginBottom: 0,
       marginLeft: 0,
       marginRight: 0,
-      marginTop: 0,
+      marginTop: 0
     }
   ).pipe(
     response
@@ -110,5 +110,15 @@ Router.route('/drawing/pdf_sample/:system_id', function () {
 
 },{
   name: 'pdf_sample',
-  where: 'server',
+  where: 'server'
+});
+
+/*******************************************************************
+ * Serves the permit to the user as a PDF for the passed system_id
+ *******************************************************************/
+Router.route('/permit/:system_id', function () {
+	permit.download(this.request, this.response, this.params.system_id);
+},{
+	name: 'permit',
+	where: 'server'
 });
