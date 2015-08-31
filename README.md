@@ -19,7 +19,9 @@ To generate a selection of FSEC pre-approved PV system drawings that will cover 
   * Ghostscript
     * On Debian/Ubuntu:
 
+      ```
       sudo apt-get install ghostscript
+      ```
 
   * Phantomjs
     * Follow instructions to build phantomjs, or..
@@ -40,10 +42,11 @@ To generate a selection of FSEC pre-approved PV system drawings that will cover 
         * phantomjs-1.9.8-linux-x86_64.tar.bz2
 
     * Run:
-
-      chmod +x ubuntu14_install_phantomjs198.sh
-      sudo ./ubuntu14_install_phantomjs198.sh
-      phantomjs --version
+    ```
+    chmod +x ubuntu14_install_phantomjs198.sh
+    sudo ./ubuntu14_install_phantomjs198.sh
+    phantomjs --version
+    ```
 
 ### Start server:
 
