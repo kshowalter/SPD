@@ -47,7 +47,7 @@ Template.main.helpers({
     } else {
       name = '';
     }
-    console.log('name', name);
+    //console.log('name', name);
     return name;
   },
   system_ready: function(){
@@ -176,13 +176,16 @@ Accounts.onLogin(function(){
 
 
 
-Template.body.onRendered(function(){
+Template.main.onRendered(function(){
+  console.log('-- rendered');
+
 
   ready('main');
 
 
-  if( Meteor.user() && system_ready() ){
-    setup_webpage();
+  if( system_ready() ){
+    //console.log('setup_webpage');
+    //setup_webpage();
   }
 
   //Meteor.call("generate", 'settings', function(error, result){
@@ -200,10 +203,17 @@ Template.body.onRendered(function(){
 
 
 system_ready = function(){
-  var active_system =  Meteor.user().active_system;
+  if( Meteor.user() ) var active_system =  Meteor.user().active_system;
   if( active_system ) {
     return User_systems.find({system_id:active_system}).count();
   } else {
     return false;
   }
 };
+
+
+//$(document).ready(function () {
+//  console.log('document ready');
+//  update();
+//  setup_webpage();
+//});
