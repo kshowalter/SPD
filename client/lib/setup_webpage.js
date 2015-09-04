@@ -9,7 +9,7 @@ setup_webpage = function(){
 
 
 
-  var map_drawer = $('#section_map').children('.drawer').children('.drawer_content');
+  var map_drawer = $('#section_location').children('.drawer').children('.drawer_content');
   var maps = $('<div>').attr('id', 'maps').appendTo(map_drawer)
 
 
