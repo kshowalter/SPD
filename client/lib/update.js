@@ -58,6 +58,11 @@ update = function(){
 
     });
 
+
+    if( g.perm.location.lat && g.perm.location.lon ){
+      f.set_map_marker();
+    }
+
   }
 //*/
 

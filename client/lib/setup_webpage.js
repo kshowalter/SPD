@@ -1,5 +1,5 @@
 setup_webpage = function(){
-  //console.log('setup_webpage');
+  console.log('#setup_webpage');
 
   $('#drawing_loading')
     .on('blur',function(){
@@ -8,12 +8,14 @@ setup_webpage = function(){
     });
 
 
-  /*
-  var map_drawer_content = $('#section_map').children('.drawer').children('.drawer_content');
+
+  var map_drawer = $('#section_map').children('.drawer').children('.drawer_content');
+  var maps = $('<div>').attr('id', 'maps').appendTo(map_drawer)
+
 
   var geocode_div = $('<div>')
   .attr('class', 'geocode_line')
-  .appendTo(map_drawer_content);
+  .appendTo(maps);
   $('<a>').appendTo(geocode_div)
   .attr('class', 'geocode_button')
   .text('Find location from address')
@@ -26,7 +28,7 @@ setup_webpage = function(){
 
   var map_div = $('<div>')
   .attr('class', 'geocode_line')
-  .appendTo(map_drawer_content);
+  .appendTo(maps);
   $('<div>')
   .attr('id', 'map_road')
   .attr('class', 'map')
@@ -82,48 +84,4 @@ setup_webpage = function(){
   map_sat.on('click', f.set_coordinates_from_map );
 
 
-
-
-
-
-  /*
-
-  var drawing_section = $('<div>').attr('id', 'drawing_frame').appendTo(page);
-  //drawing.css('width', (settings.drawing_settings.size.drawing.w+20).toString() + 'px' );
-
-
-  //$('<form method="get" action="data/sample.pdf"><button type="submit">Download</button></form>').appendTo(drawing_section);
-  //$('<span>').attr('id', 'download').attr('class', 'float_right').appendTo(drawing_section);
-  $('<a>')
-  .text('Download Drawing (sample)')
-  .attr('href', 'sample_pdf/sample.pdf')
-  .attr('id', 'download')
-  .attr('class', 'button_float_right')
-  .attr('target', '_blank')
-  .appendTo(drawing_section);
-  $('<a>')
-  .text('Download Drawing (network test, once)')
-  //.attr('href', '#')
-  .attr('id', 'download')
-  .attr('class', 'button_float_right')
-  //.attr('target', '_blank')
-  .appendTo(drawing_section)
-  .click(f.request_SVG);
-  $('<a>')
-  .text('Download Drawing (network test, repeats)')
-  //.attr('href', '#')
-  .attr('id', 'download')
-  .attr('class', 'button_float_right')
-  //.attr('target', '_blank')
-  .appendTo(drawing_section)
-  .click(function(){
-  setInterval(g.f.request_SVG, 1000);
-  });
-
-  var svg_container_object = $('<div>').attr('id', 'drawing').attr('class', 'drawing').css('clear', 'both').appendTo(drawing_section);
-  $('<br>').appendTo(drawing_section);
-
-  ///////////////////
-  $('<div>').html(' ').attr('class', 'section_title').appendTo(drawing_section);
-  //*/
 };

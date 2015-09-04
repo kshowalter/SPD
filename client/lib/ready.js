@@ -13,7 +13,7 @@ var mk_ready = function(names, callback){
         return false;
       }
     }
-    console.log('ready!!!!!', list);
+    //console.log('ready!!!!!', list);
     callback();
     return true;
   };
@@ -26,8 +26,9 @@ var ready_callback = function(){
   Meteor.setTimeout(function(){
     console.log('unnecessary update');
     update();
-  }, 1000);
-}
+    setup_webpage();
+  }, 2000);
+};
 
 
 ready = mk_ready(
