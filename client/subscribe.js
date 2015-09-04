@@ -13,8 +13,8 @@ subscribe['main'] = function(){
     });
   });
   Tracker.autorun(function () {
-    Meteor.subscribe('components', function(){
-      ready('components');
+    Meteor.subscribe('pv_components', function(){
+      ready('pv_components');
     });
   });
   Tracker.autorun(function () {

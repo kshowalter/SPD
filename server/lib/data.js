@@ -14,7 +14,7 @@ load_data = function(){
     for( var component_name in FSEC_database[type] ){
       var component = FSEC_database[type][component_name];
       component.type = type;
-      Components.upsert(component,component);
+      PV_Components.upsert(component,component);
     }
 
   }

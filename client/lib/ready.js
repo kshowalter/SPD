@@ -6,7 +6,7 @@ var mk_ready = function(names, callback){
   var ready = false;
 
   return function(name){
-    console.log('name:', name);
+    //console.log('name:', name);
     list[name] = true;
     for( name in list){
       if( list[name] === false ){
@@ -22,7 +22,7 @@ var mk_ready = function(names, callback){
 
 var ready_callback = function(){
   console.log('ready!');
-  update();
+  //update();
   Meteor.setTimeout(function(){
     console.log('unnecessary update');
     update();
@@ -32,6 +32,6 @@ var ready_callback = function(){
 
 
 ready = mk_ready(
-  ['main', 'system_data', 'user_systems', 'components', 'settings', 'users', 'login'],
+  ['main', 'system_data', 'user_systems', 'pv_components', 'settings', 'users', 'login'],
   ready_callback
 );

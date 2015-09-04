@@ -13,8 +13,8 @@
     return User_systems.find({user_id:this.userId});
   });
 
-  Meteor.publish("components", function () {
-    return Components.find();
+  Meteor.publish("pv_components", function () {
+    return PV_Components.find();
   });
 
   Meteor.publish("settings", function () {

@@ -12,7 +12,7 @@ Meteor.startup(function () {
   Settings.remove({});
   NEC_tables.remove({});
 
-  Components.remove({});
+  PV_Components.remove({});
 
 
   load_data();

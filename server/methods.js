@@ -75,7 +75,7 @@ Meteor.methods({
 //  },
   change_model_options: function(section_name){
     console.log('change_model_options');
-    var new_options = _.uniq(Components
+    var new_options = _.uniq(PV_Components
       .find({
         type: section_name+'s',
         make: getValue(section_name, 'make')
