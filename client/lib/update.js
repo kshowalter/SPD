@@ -37,6 +37,7 @@ update = function(){
     Session.set('section_activated', settings.webpage.section_activated);
 
     //show_hide_selections();
+    /*
     active_section_name = Session.get('active_section_name');
     section_list.forEach(function(section_name){
       if( section_name === active_section_name ) {
@@ -48,6 +49,7 @@ update = function(){
 
       }
     });
+    */
 
     $('#drawing').empty();
     settings.drawing.svgs.forEach(function(svg){
