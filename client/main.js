@@ -2,7 +2,9 @@ if(top != window) {
   top.location = window.location;
 }
 
-
+if( ! sessionStorage.getItem('display_style') ){
+  sessionStorage.setItem('display_style', 'drawers');
+}
 
 //----status bar ----//
   var version_string = 'Preview'+moment().format('YYYYMMDD');
@@ -81,6 +83,9 @@ Template.main.helpers({
       return false;
     }
   },
+  is_display_sytle: function(style){
+    return style === sessionStorage.getItem('display_style');
+  }
 });
 
 
@@ -179,6 +184,18 @@ Accounts.onLogin(function(){
 Template.main.onRendered(function(){
   console.log('-- rendered');
 
+  $('#change_layout').click(function(){
+    var display_style = sessionStorage.getItem('display_style');
+    if( display_style === 'drawers'){
+      display_style = 'tabs';
+    } else {
+      display_style = 'drawers';
+    }
+    sessionStorage.setItem('display_style', display_style);
+  });
+
+  console.log($('#section_location'));
+  $('#section_location').css('display','block');
 
   ready('main');
 
@@ -211,6 +228,17 @@ system_ready = function(){
   }
 };
 
+show_hide = function(selected_section_name){
+  console.log(selected_section_name);
+  settings.webpage.sections.forEach(function(section_name){
+    if( section_name === selected_section_name ){
+      $('#section_'+section_name).css('display','block');
+    } else {
+      $('#section_'+section_name).css('display','none');
+    }
+  });
+
+};
 
 //$(document).ready(function () {
 //  console.log('document ready');

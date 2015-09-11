@@ -1,0 +1,34 @@
+<template name="tabs">
+
+  <div class="drawer_container">
+    <div class="title_bar {{title_bar_class}}">
+      {{#each sections}}
+        {{#with section_name}}
+          <a href='#' onclick="show_hide('{{this}}')">{{section_label}}</a>
+          <span> | </span>
+        {{/with}}
+      {{/each}}
+
+    </div>
+    <div class="drawer">
+      {{#each sections}}
+        <div class="drawer_content" id="section_{{this}}" style="display: none;">
+        {{#with section_name}}
+          <div class="info">
+            {{{info}}}
+          </div>
+          <div class="user_input_container">
+            {{#each inputs}}
+              {{> input}}
+            {{/each}}
+          </div>
+          <div class="svg_drawing_container"></div>
+        {{/with}}
+        </div>
+      {{/each}}
+    </div>
+  </div>
+
+
+
+</template>

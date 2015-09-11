@@ -12,11 +12,14 @@
   <div class='status_bar'>
     <span class='login'>
       User: {{> loginButtons}}
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <a href="#" id="change_layout">change layout</a>
     </span>
 
     <span  class="button">
       <a href="#" id="request_drawing">request drawing</a>
     </span>
+
 
     <span id="status">
       Preview20150626
@@ -58,9 +61,15 @@
       </div>
       <br>
 
-      {{#each sections}}
-        {{> drawer}}
-      {{/each}}
+      {{#if is_display_sytle 'drawers'}}
+        {{#each sections}}
+          {{> drawer}}
+        {{/each}}
+      {{else}} {{#if is_display_sytle 'tabs'}}
+        {{> tabs}}
+      {{/if}}
+      {{/if}}
+
 
       {{> drawing_section}}
 
