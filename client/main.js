@@ -233,8 +233,10 @@ show_hide = function(selected_section_name){
   settings.webpage.sections.forEach(function(section_name){
     if( section_name === selected_section_name ){
       $('#section_'+section_name).css('display','block');
+      $('#tab_'+section_name).css('background', '#DFDFDF');
     } else {
       $('#section_'+section_name).css('display','none');
+      $('#tab_'+section_name).css('background', '#7a7979');
     }
   });
 

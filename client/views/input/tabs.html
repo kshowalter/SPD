@@ -4,7 +4,9 @@
     <div class="title_bar {{title_bar_class}}">
       {{#each sections}}
         {{#with section_name}}
-          <a href='#' onclick="show_hide('{{this}}')">{{section_label}}</a>
+          <span class='tab' id="tab_{{this}}">
+            <a href='#' onclick="show_hide('{{this}}')">{{section_label}}</a>
+          </span>
           <span> | </span>
         {{/with}}
       {{/each}}
