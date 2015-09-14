@@ -1,30 +1,35 @@
+subscriptions_ready = f.mk_ready(
+  ['system_data', 'user_systems', 'pv_components', 'settings', 'users']
+);
+
+
 subscribe = {};
 
 subscribe['main'] = function(){
 
   Tracker.autorun(function () {
     Meteor.subscribe('system_data', function(){
-      ready('system_data');
+      subscriptions_ready('system_data');
     });
   });
   Tracker.autorun(function () {
     Meteor.subscribe('user_systems', function(){
-      ready('user_systems');
+      subscriptions_ready('user_systems');
     });
   });
   Tracker.autorun(function () {
     Meteor.subscribe('pv_components', function(){
-      ready('pv_components');
+      subscriptions_ready('pv_components');
     });
   });
   Tracker.autorun(function () {
     Meteor.subscribe('settings', function(){
-      ready('settings');
+      subscriptions_ready('settings');
     });
   });
   Tracker.autorun(function () {
     Meteor.subscribe('users', function(){
-      ready('users');
+      subscriptions_ready('users');
     });
   });
 
@@ -33,7 +38,7 @@ subscribe['main'] = function(){
 subscribe['drawing'] = function(){
   Tracker.autorun(function () {
     Meteor.subscribe('drawings', function(){
-      //if( ready('userData') ) {
+      //if( subscriptions_ready('userData') ) {
         console.log('user loaded');
       //}
     });

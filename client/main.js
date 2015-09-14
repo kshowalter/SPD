@@ -12,7 +12,7 @@ if( ! sessionStorage.getItem('display_style') ){
   var boot_time = moment();
   var status_id = 'status';
 
-  Meteor.setInterval(function(){
+  setInterval(function(){
     f.update_status_bar(status_id, boot_time, version_string);
   },1000);
 
@@ -20,11 +20,6 @@ if( ! sessionStorage.getItem('display_style') ){
   //  update();
   //}, 2000);
 //----status bar ----//
-
-Meteor.call('connect', function(err, id){
-  //console.log('connected ID: ', id);
-
-});
 
 
 Template.main.helpers({
@@ -53,9 +48,12 @@ Template.main.helpers({
     return name;
   },
   system_ready: function(){
-    //console.log('returning list');
-    return system_ready();
-
+    if( Meteor.user() ) var active_system =  Meteor.user().active_system;
+    if( active_system ) {
+      return User_systems.find({system_id:active_system}).count();
+    } else {
+      return false;
+    }
   },
   sections: function(){
     //var section_list = Settings.findOne({id:'section_list'});
@@ -168,65 +166,37 @@ Template.main.events({
   },
 });
 
+Template.body.onRendered(function(){
+  console.log('body rendered');
+  //setTimeout(are_we_there_yet, 1);
 
-Accounts.onLogin(function(){
-  console.log('login');
+  f.are_we_there_yet(function(){
+    return (
+      $('.drawer_content').length === 9 && subscriptions_ready() && Meteor.userId() && Meteor.user().active_system
+    );
+  },function(){
+    console.log('input divs ready');
 
-  ready('login');
+    $('#change_layout').click(function(){
+      if( ! style_changed ){
+        var display_style = sessionStorage.getItem('display_style');
+        if( display_style === 'drawers'){
+          display_style = 'tabs';
+        } else {
+          display_style = 'drawers';
+        }
+        sessionStorage.setItem('display_style', display_style);
+        window.style_changed = true;
+      }
+    });
 
+    show_hide('location');
 
+    update();
+    setup_webpage();
 
-});
-
-
-
-
-Template.main.onRendered(function(){
-  console.log('-- rendered');
-
-  $('#change_layout').click(function(){
-    var display_style = sessionStorage.getItem('display_style');
-    if( display_style === 'drawers'){
-      display_style = 'tabs';
-    } else {
-      display_style = 'drawers';
-    }
-    sessionStorage.setItem('display_style', display_style);
   });
-
-  console.log($('#section_location'));
-  $('#section_location').css('display','block');
-
-  ready('main');
-
-
-  if( system_ready() ){
-    //console.log('setup_webpage');
-    //setup_webpage();
-  }
-
-  //Meteor.call("generate", 'settings', function(error, result){
-  //  if(error){
-  //    console.log("error", error);
-  //  }
-  //  if(result){
-  //    console.log('result: ', result);
-  //  }
-  //});
-
-
 });
-
-
-
-system_ready = function(){
-  if( Meteor.user() ) var active_system =  Meteor.user().active_system;
-  if( active_system ) {
-    return User_systems.find({system_id:active_system}).count();
-  } else {
-    return false;
-  }
-};
 
 show_hide = function(selected_section_name){
   console.log(selected_section_name);
@@ -241,9 +211,3 @@ show_hide = function(selected_section_name){
   });
 
 };
-
-//$(document).ready(function () {
-//  console.log('document ready');
-//  update();
-//  setup_webpage();
-//});
