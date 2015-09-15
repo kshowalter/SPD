@@ -1,6 +1,6 @@
 
 
-    //var html = '<!doctype html><html><head></head><body style="width:1554px; height:1198px;"><div>' + svg.outerHTML + '</div></body></html>';
+//var html = '<!doctype html><html><head></head><body style="width:1554px; height:1198px;"><div>' + svg.outerHTML + '</div></body></html>';
 
 Router.route('/drawing/:system_id', function () {
   var response = this.response;
@@ -120,5 +120,20 @@ Router.route('/permit/:system_id', function () {
 	permit.download(this.request, this.response, this.params.system_id);
 },{
 	name: 'permit',
+	where: 'server'
+});
+
+/*******************************************************************
+ * Scrapes http://windspeed.atcouncil.org for the wind speed of the
+ * passed latitude and longitude
+ *******************************************************************/
+Router.route('/wind/:latitude/:longitude', function () {
+	var res = this.response;
+	permit.getWind(this.params.latitude, this.params.longitude, function(windData) {
+		res.setHeader('Content-Type', 'application/json');
+		res.end(JSON.stringify(windData));
+	});
+},{
+	name: 'wind',
 	where: 'server'
 });

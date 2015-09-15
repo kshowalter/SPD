@@ -102,5 +102,39 @@ permit = {
 			if(callback) callback(outputFile);  //pass result back to user supplied callback function
 		});
 
+	},
+
+	/*****************************************************************************************************
+	 * Renders the page at http://windspeed.atcouncil.org which contains the wind speed data.  It then
+	 * runs a few javascript commands to grab the wind data.
+	 * @param {number} latitude - location value to be used on the atcouncil site to look up wind speed
+	 * @param {number} longitude - location value to be used on the atcouncil site to look up wind speed
+	 * @param {function} callback - called with wind data grabbed from the atcouncil site
+	 *****************************************************************************************************/
+	getWind: function(latitude, longitude, callback) {
+		var url = "http://windspeed.atcouncil.org/domains/atcwindspeed/process/?zoom=4&maptype=roadmap&dec=1&latt="+latitude+"&longt="+longitude;
+		phantom.create(function (ph) {
+			ph.createPage(function (page) {
+
+				page.open(url, function (status) {
+					console.log("getWind(): Opening %s: %s", url, status);
+
+					page.evaluate(function()
+					{
+						return {
+							category1: parseInt(jQuery("b:contains('Risk Category I:')")[0].nextSibling.textContent),
+							category2: parseInt(jQuery("b:contains('Risk Category II:')")[0].nextSibling.textContent),
+							category3: parseInt(jQuery("b:contains('Risk Category III-IV:')")[0].nextSibling.textContent)
+						};
+					}, function(result) {
+						console.log('Result: ' + result);
+						ph.exit();
+
+						if(callback) callback(result);
+					});
+				});
+			});
+		});
 	}
+
 };
