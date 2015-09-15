@@ -222,7 +222,7 @@ Template.body.onRendered(function(){
     console.log('input divs ready');
 
     $('#change_layout').click(function(){
-      if( ! style_changed ){
+      if( typeof style_changed === 'undefined' ){
         var display_style = sessionStorage.getItem('display_style');
         if( display_style === 'drawers'){
           display_style = 'tabs';
@@ -234,7 +234,9 @@ Template.body.onRendered(function(){
       }
     });
 
-    show_hide('location');
+    if( sessionStorage.getItem('display_style') === 'tabs' ){
+      show_hide('location');
+    }
 
     update();
     setup_webpage();
@@ -247,10 +249,10 @@ show_hide = function(selected_section_name){
   settings.webpage.sections.forEach(function(section_name){
     if( section_name === selected_section_name ){
       $('#section_'+section_name).css('display','block');
-      $('#tab_'+section_name).css('background', '#DFDFDF');
+      $('#tab_'+section_name).css('background', 'WhiteSmoke');
     } else {
       $('#section_'+section_name).css('display','none');
-      $('#tab_'+section_name).css('background', '#7a7979');
+      $('#tab_'+section_name).css('background', '#bbc3e4');
     }
   });
 

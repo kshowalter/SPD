@@ -9,7 +9,11 @@ setup_webpage = function(){
 
 
 
-  var map_drawer = $('#section_location').children('.drawer').children('.drawer_content');
+  if( $('#section_location').children('.drawer').length === 0 ){
+    var map_drawer = $('#section_location');
+  } else {
+    var map_drawer = $('#section_location').children('.drawer').children('.drawer_content');
+  }
   var maps = $('<div>').attr('id', 'maps').appendTo(map_drawer)
 
 
