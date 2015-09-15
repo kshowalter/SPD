@@ -1,13 +1,12 @@
 <template name="tabs">
 
   <div class="drawer_container">
-    <div class="title_bar {{title_bar_class}}">
+    <div class="title_bar tab_title_bar">
       {{#each sections}}
         {{#with section_name}}
           <span class='tab' id="tab_{{this}}">
             <a href='#' onclick="show_hide('{{this}}')">{{section_label}}</a>
           </span>
-          <span> | </span>
         {{/with}}
       {{/each}}
 

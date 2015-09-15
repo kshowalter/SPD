@@ -174,7 +174,7 @@ img { border: 0; }
 	background: #bbc3e4;
 	color: #424242;
 	border: 1px solid grey;
-	padding: 2px;
+	padding: 0px;
 	padding-left: 6px;
 }
 
@@ -182,8 +182,31 @@ img { border: 0; }
 	font-weight: bold;
 	color: #424242;
 
+
 }
 
+.tab_title_bar {
+	font-weight: bold;
+	background: #DFDFDF;
+	color: #424242;
+	border: 0px;
+	padding: 0px;
+	padding-left: 5px;
+}
+.tab {
+	font-weight: bold;
+	color: #424242;
+	margin: 0px;
+	padding: 10px;
+	border-right: 1px solid grey;
+	border-left: 1px solid grey;
+	border-top: 1px solid grey;
+	display: inline-block;
+}
+.tab a{
+	color: #424242;
+	text-align: center;
+}
 .title_bar_active {
 
 }
