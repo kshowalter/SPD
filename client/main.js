@@ -2,6 +2,50 @@ if(top != window) {
   top.location = window.location;
 }
 
+
+
+////////////////////////
+/*
+|*|  IE-specific polyfill which enables the passage of arbitrary arguments to the
+|*|  callback functions of JavaScript timers (HTML5 standard syntax).
+|*|
+|*|  https://developer.mozilla.org/en-US/docs/DOM/window.setInterval
+|*|
+|*|  Syntax:
+|*|  var timeoutID = window.setTimeout(func, delay, [param1, param2, ...]);
+|*|  var timeoutID = window.setTimeout(code, delay);
+|*|  var intervalID = window.setInterval(func, delay[, param1, param2, ...]);
+|*|  var intervalID = window.setInterval(code, delay);
+*/
+
+if (document.all && !window.setTimeout.isPolyfill) {
+  var __nativeST__ = window.setTimeout;
+  window.setTimeout = function (vCallback, nDelay /*, argumentToPass1, argumentToPass2, etc. */) {
+    var aArgs = Array.prototype.slice.call(arguments, 2);
+    return __nativeST__(vCallback instanceof Function ? function () {
+      vCallback.apply(null, aArgs);
+    } : vCallback, nDelay);
+  };
+  window.setTimeout.isPolyfill = true;
+}
+
+if (document.all && !window.setInterval.isPolyfill) {
+  var __nativeSI__ = window.setInterval;
+  window.setInterval = function (vCallback, nDelay /*, argumentToPass1, argumentToPass2, etc. */) {
+    var aArgs = Array.prototype.slice.call(arguments, 2);
+    return __nativeSI__(vCallback instanceof Function ? function () {
+      vCallback.apply(null, aArgs);
+    } : vCallback, nDelay);
+  };
+  window.setInterval.isPolyfill = true;
+}
+
+// end Mozilla's IE polyfill
+//////////////////////////////
+
+
+
+
 if( ! sessionStorage.getItem('display_style') ){
   sessionStorage.setItem('display_style', 'drawers');
 }
@@ -12,7 +56,7 @@ if( ! sessionStorage.getItem('display_style') ){
   var boot_time = moment();
   var status_id = 'status';
 
-  Meteor.setInterval(function(){
+  setInterval(function(){
     f.update_status_bar(status_id, boot_time, version_string);
   },1000);
 
@@ -20,11 +64,6 @@ if( ! sessionStorage.getItem('display_style') ){
   //  update();
   //}, 2000);
 //----status bar ----//
-
-Meteor.call('connect', function(err, id){
-  //console.log('connected ID: ', id);
-
-});
 
 
 Template.main.helpers({
@@ -53,9 +92,12 @@ Template.main.helpers({
     return name;
   },
   system_ready: function(){
-    //console.log('returning list');
-    return system_ready();
-
+    if( Meteor.user() ) var active_system =  Meteor.user().active_system;
+    if( active_system ) {
+      return User_systems.find({system_id:active_system}).count();
+    } else {
+      return false;
+    }
   },
   sections: function(){
     //var section_list = Settings.findOne({id:'section_list'});
@@ -168,82 +210,50 @@ Template.main.events({
   },
 });
 
+Template.body.onRendered(function(){
+  console.log('body rendered');
+  //setTimeout(are_we_there_yet, 1);
 
-Accounts.onLogin(function(){
-  console.log('login');
+  f.are_we_there_yet(function(){
+    return (
+      $('.drawer_content').length === 9 && subscriptions_ready() && Meteor.userId() && Meteor.user().active_system
+    );
+  },function(){
+    console.log('input divs ready');
 
-  ready('login');
+    $('#change_layout').click(function(){
+      if( typeof style_changed === 'undefined' ){
+        var display_style = sessionStorage.getItem('display_style');
+        if( display_style === 'drawers'){
+          display_style = 'tabs';
+        } else {
+          display_style = 'drawers';
+        }
+        sessionStorage.setItem('display_style', display_style);
+        window.style_changed = true;
+      }
+    });
 
-
-
-});
-
-
-
-
-Template.main.onRendered(function(){
-  console.log('-- rendered');
-
-  $('#change_layout').click(function(){
-    var display_style = sessionStorage.getItem('display_style');
-    if( display_style === 'drawers'){
-      display_style = 'tabs';
-    } else {
-      display_style = 'drawers';
+    if( sessionStorage.getItem('display_style') === 'tabs' ){
+      show_hide('location');
     }
-    sessionStorage.setItem('display_style', display_style);
+
+    update();
+    setup_webpage();
+
   });
-
-  console.log($('#section_location'));
-  $('#section_location').css('display','block');
-
-  ready('main');
-
-
-  if( system_ready() ){
-    //console.log('setup_webpage');
-    //setup_webpage();
-  }
-
-  //Meteor.call("generate", 'settings', function(error, result){
-  //  if(error){
-  //    console.log("error", error);
-  //  }
-  //  if(result){
-  //    console.log('result: ', result);
-  //  }
-  //});
-
-
 });
-
-
-
-system_ready = function(){
-  if( Meteor.user() ) var active_system =  Meteor.user().active_system;
-  if( active_system ) {
-    return User_systems.find({system_id:active_system}).count();
-  } else {
-    return false;
-  }
-};
 
 show_hide = function(selected_section_name){
   console.log(selected_section_name);
   settings.webpage.sections.forEach(function(section_name){
     if( section_name === selected_section_name ){
       $('#section_'+section_name).css('display','block');
-      $('#tab_'+section_name).css('background', '#DFDFDF');
+      $('#tab_'+section_name).css('background', 'WhiteSmoke');
     } else {
       $('#section_'+section_name).css('display','none');
-      $('#tab_'+section_name).css('background', '#7a7979');
+      $('#tab_'+section_name).css('background', '#bbc3e4');
     }
   });
 
 };
-
-//$(document).ready(function () {
-//  console.log('document ready');
-//  update();
-//  setup_webpage();
-//});

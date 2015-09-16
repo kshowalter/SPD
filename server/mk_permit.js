@@ -50,7 +50,6 @@ permit = {
 				};
 
 				page.open(url, function (status) {
-					console.log("createPDF(): Opening %s: %s", url, status);
 					console.log("createPDF() FileName: %s", pdfDirectory + pdfName);
 
 					page.render(pdfDirectory + pdfName, function() {

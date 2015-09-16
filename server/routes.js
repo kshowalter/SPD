@@ -1,6 +1,6 @@
 
 
-    //var html = '<!doctype html><html><head></head><body style="width:1554px; height:1198px;"><div>' + svg.outerHTML + '</div></body></html>';
+//var html = '<!doctype html><html><head></head><body style="width:1554px; height:1198px;"><div>' + svg.outerHTML + '</div></body></html>';
 
 Router.route('/drawing/:system_id', function () {
   var response = this.response;
@@ -137,4 +137,3 @@ Router.route('/wind/:latitude/:longitude', function () {
 	name: 'wind',
 	where: 'server'
 });
-
