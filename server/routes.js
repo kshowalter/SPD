@@ -122,3 +122,19 @@ Router.route('/permit/:system_id', function () {
 	name: 'permit',
 	where: 'server'
 });
+
+/*******************************************************************
+ * Scrapes http://windspeed.atcouncil.org for the wind speed of the
+ * passed latitude and longitude
+ *******************************************************************/
+Router.route('/wind/:latitude/:longitude', function () {
+	var res = this.response;
+	permit.getWind(this.params.latitude, this.params.longitude, function(windData) {
+		res.setHeader('Content-Type', 'application/json');
+		res.end(JSON.stringify(windData));
+	});
+},{
+	name: 'wind',
+	where: 'server'
+});
+
