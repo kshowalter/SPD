@@ -216,12 +216,13 @@ Template.body.onRendered(function(){
 
   f.are_we_there_yet(function(){
     return (
-      $('.drawer_content').length === 9 && subscriptions_ready() && Meteor.userId() && Meteor.user().active_system
+      $('.drawer_content').length === Object.keys(settings.inputs).length && subscriptions_ready() && Meteor.userId() && Meteor.user().active_system
     );
   },function(){
     console.log('input divs ready');
 
     $('#change_layout').click(function(){
+      console.log('click');
       if( typeof style_changed === 'undefined' ){
         var display_style = sessionStorage.getItem('display_style');
         if( display_style === 'drawers'){
