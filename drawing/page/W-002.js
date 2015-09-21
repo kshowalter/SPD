@@ -26,7 +26,7 @@ f.mk_sheet_num['W-002'] = function(settings){
 
 
   for( var section_name in settings.system ){
-    if( section_defined(settings.state.active_system, section_name) ){
+    //if( section_defined(settings.state.active_system, section_name) ){
       var section = settings.system[section_name];
 
       var n = Object.keys(section).length;
@@ -45,10 +45,12 @@ f.mk_sheet_num['W-002'] = function(settings){
       var r = 1;
       var value;
       for( var value_name in section ){
-        var label = settings.inputs[section_name][value_name] && settings.inputs[section_name][value_name].label
+        var label = settings.inputs[section_name] &&
+            settings.inputs[section_name][value_name] &&
+            settings.inputs[section_name][value_name].label;
         var parameter_name = label || f.pretty_name(value_name);
         t.cell(r,1).text( parameter_name );
-        if( ! section[value_name]) {
+        if( typeof section[value_name] === 'undefined' ) {
           value = '-';
         } else if( section[value_name].constructor === Array ){
           value = section[value_name].toString();
@@ -84,10 +86,10 @@ f.mk_sheet_num['W-002'] = function(settings){
         x += w*1.5;
       }
 
-    } else {
+    //} else {
 
       //console.log('not defined: ', section_name, section);
-    }
+    //}
 
 
 

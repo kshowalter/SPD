@@ -61,7 +61,7 @@ update = function(){
     });
 
 
-    if( g.perm.location.lat && g.perm.location.lon ){
+    if( g.system_data.location.lat && g.system_data.location.lon ){
       f.set_map_marker();
     }
 
