@@ -50,7 +50,7 @@ f.mk_sheet_num['W-002'] = function(settings){
             settings.inputs[section_name][value_name].label;
         var parameter_name = label || f.pretty_name(value_name);
         t.cell(r,1).text( parameter_name );
-        if( typeof section[value_name] === 'undefined' ) {
+        if( typeof section[value_name] === 'undefined' || section[value_name] === null) {
           value = '-';
         } else if( section[value_name].constructor === Array ){
           value = section[value_name].toString();
