@@ -13,6 +13,8 @@ update = function(){
       settings.system[input_doc.section_name][input_doc.value_name] = input_doc.value;
     });
 
+    f.request_geocode();
+
     settings = calculate(settings);
     settings = update_drawing(settings);
 
@@ -61,9 +63,8 @@ update = function(){
     });
 
 
-    if( g.system_data.location.lat && g.system_data.location.lon ){
-      f.set_map_marker();
-    }
+
+
 
   }
 //*/

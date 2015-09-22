@@ -20,11 +20,11 @@ setup_webpage = function(){
   var geocode_div = $('<div>')
   .attr('class', 'geocode_line')
   .appendTo(maps);
-  $('<a>').appendTo(geocode_div)
-  .attr('class', 'geocode_button')
-  .text('Find location from address')
-  .attr('href', '#')
-  .click(f.request_geocode);
+  //$('<a>').appendTo(geocode_div)
+  //.attr('class', 'geocode_button')
+  //.text('Find location from address')
+  //.attr('href', '#')
+  //.click(f.request_geocode);
   $('<span>').appendTo(geocode_div)
   .attr('class', 'geocode_display')
   .attr('id','geocode_display')
@@ -71,7 +71,7 @@ setup_webpage = function(){
 
   g.system_data.maps.marker_road = L.marker([lat,lon], {icon: sun_marker}).addTo(map_road);
 
-  map_road.on('click', f.set_coordinates_from_map );
+  //map_road.on('click', f.set_coordinates_from_map );
 
 
 
@@ -86,7 +86,7 @@ setup_webpage = function(){
 
   g.system_data.maps.marker_sat = L.marker([lat,lon], {icon: sun_marker}).addTo(map_sat);
 
-  map_sat.on('click', f.set_coordinates_from_map );
+  //map_sat.on('click', f.set_coordinates_from_map );
 
 
 };
