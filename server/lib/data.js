@@ -1,5 +1,6 @@
 load_data = function(){
 
+  //http://10.173.64.204:8000/temporary/
   settings.config_options.NEC_tables = JSON.parse(Assets.getText('data/tables.json'));
   FSEC_database = JSON.parse(Assets.getText('data/fsec_copy.json'));
 

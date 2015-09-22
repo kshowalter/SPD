@@ -8,12 +8,20 @@
           <option value="{{option_value}}" selected={{selected}}>{{option_value}}</option>
         {{/each}}
       </select>
+    {{else}} {{#if isType 'radio'}}
+      <radiogroup class="input {{this.input_type}}" >
+        {{#each options}}
+          <radio label="{{this.value}}" selected={{selected}}></radio>
+          <span></span>
+        {{/each}}
+      </radiogroup>
     {{else}} {{#if isType 'text_input'}}
       <input class="input {{this.input_type}}" type="text" value="{{value}}">
     {{else}} {{#if isType 'number_input'}}
       <input class="input {{this.input_type}}" type="text" value="{{value}}">
     {{else}}
       <span>undefined</span>
+    {{/if}}
     {{/if}}
     {{/if}}
     {{/if}}

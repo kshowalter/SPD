@@ -50,7 +50,6 @@ permit = {
 				};
 
 				page.open(url, function (status) {
-					console.log("createPDF(): Opening %s: %s", url, url, status);
 					console.log("createPDF() FileName: %s", pdfDirectory + pdfName);
 
 					page.render(pdfDirectory + pdfName, function() {
@@ -122,9 +121,9 @@ permit = {
 					page.evaluate(function()
 					{
 						return {
-							category1: parseInt(jQuery("b:contains('Risk Category I:')")[0].nextSibling.textContent),
-							category2: parseInt(jQuery("b:contains('Risk Category II:')")[0].nextSibling.textContent),
-							category3: parseInt(jQuery("b:contains('Risk Category III-IV:')")[0].nextSibling.textContent)
+							risk_category1: parseInt(jQuery("b:contains('Risk Category I:')")[0].nextSibling.textContent),
+							risk_category2: parseInt(jQuery("b:contains('Risk Category II:')")[0].nextSibling.textContent),
+							risk_category3: parseInt(jQuery("b:contains('Risk Category III-IV:')")[0].nextSibling.textContent)
 						};
 					}, function(result) {
 						console.log('Result: ' + result);

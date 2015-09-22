@@ -496,3 +496,10 @@ svg {
 .map {
 	padding:5px;
 }
+
+
+
+.location_table table, th, td{
+	padding: 3px;
+	border:1px solid #9d9d9d;
+}
