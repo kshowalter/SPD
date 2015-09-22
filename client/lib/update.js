@@ -62,7 +62,46 @@ update = function(){
 
     });
 
+    var table_values = {};
+    if(
+      settings.system.wind &&
+      settings.system.wind.risk_category1 &&
+      settings.system.wind.risk_category2 &&
+      settings.system.wind.risk_category3
+    ){
+      table_values['Risk Category 1'] = settings.system.wind.risk_category1 || '-';
+      table_values['Risk Category 2'] = settings.system.wind.risk_category2 || '-';
+      table_values['Risk Category 3'] = settings.system.wind.risk_category3 || '-';
+    }
+    if(
+      settings.system.location &&
+      settings.system.location.low_temp !== undefined &&
+      settings.system.location.high_temp_max  !== undefined  &&
+      settings.system.location.high_temp !== undefined 
+    ){
+      table_values['Low Temp'] = settings.system.location.low_temp || '-';
+      table_values['High Temp Max'] = settings.system.location.high_temp_max || '-';
+      table_values['High Temp'] = settings.system.location.high_temp || '-';
+    }
 
+    var table = $('<table>');
+    $('#location_table').empty().append(table);
+
+    table.append(
+      $('<tr>').append(
+        $('<th>').text('Parameter'),
+        $('<th>').text('Value')
+      )
+    );
+
+    for( var param_name in table_values){
+      console.log(param_name);
+      table.append(
+        $('<tr>').append(
+          $('<td>').text(param_name),$('<td>').text(table_values[param_name])
+        )
+      );
+    }
 
 
 

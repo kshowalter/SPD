@@ -29,6 +29,12 @@ setup_webpage = function(){
   .attr('class', 'geocode_display')
   .attr('id','geocode_display')
   .text('');
+  $('<br>').appendTo(geocode_div)
+  $('<br>').appendTo(geocode_div)
+  $('<span>').appendTo(geocode_div)
+  .attr('class', 'location_table')
+  .attr('id','location_table')
+  .text('');
 
   var map_div = $('<div>')
   .attr('class', 'geocode_line')
