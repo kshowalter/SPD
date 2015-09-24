@@ -200,7 +200,8 @@ Template.main.events({
             $('<a>', {
               id: 'view_drawing',
               class: 'button',
-              href: 'http://10.173.64.204:8004/drawing/'+active_system,
+              //href: 'http://10.173.64.204:8004/drawing/'+active_system,
+              href: 'permit/'+active_system,
               text: 'Download drawing',
               target: '_blank',
             })
