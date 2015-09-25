@@ -26,9 +26,12 @@ update = function(){
       if( section_defined(settings.state.active_system, section_name) ){
         settings.webpage.section_activated[section_name] = true;
 
+        // '<i class="fa fa-check-square"></i> ' + section_name
+
       } else {
         not_defined.push(section_name);
         settings.webpage.section_activated[section_name] = false;
+        // '<i class="fa fa-square-o"></i> ' + section_name
       }
 
     });
@@ -53,13 +56,13 @@ update = function(){
     });
     */
 
-    $('#drawing').empty();
-    settings.drawing.svgs.forEach(function(svg){
-      $('#drawing')
-        .append($(svg))
-        .append($('</br>'))
-        .append($('</br>'));
 
+    settings.drawing_settings.sheets.forEach(function(sheet_info, index){
+      $('.tab_content#section_'+sheet_info.num)
+        .empty()
+        .append($(
+          settings.drawing.svgs[index]
+        ));
     });
 
     var table_values = {};
@@ -77,7 +80,7 @@ update = function(){
       settings.system.location &&
       settings.system.location.low_temp !== undefined &&
       settings.system.location.high_temp_max  !== undefined  &&
-      settings.system.location.high_temp !== undefined 
+      settings.system.location.high_temp !== undefined
     ){
       table_values['Low Temp'] = settings.system.location.low_temp || '-';
       table_values['High Temp Max'] = settings.system.location.high_temp_max || '-';

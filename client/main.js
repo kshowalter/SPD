@@ -47,7 +47,7 @@ if (document.all && !window.setInterval.isPolyfill) {
 
 
 if( ! sessionStorage.getItem('display_style') ){
-  sessionStorage.setItem('display_style', 'drawers');
+  sessionStorage.setItem('display_style', 'tabs');
 }
 
 //----status bar ----//
@@ -56,9 +56,9 @@ if( ! sessionStorage.getItem('display_style') ){
   var boot_time = moment();
   var status_id = 'status';
 
-  setInterval(function(){
-    f.update_status_bar(status_id, boot_time, version_string);
-  },1000);
+  //setInterval(function(){
+  //  f.update_status_bar(status_id, boot_time, version_string);
+  //},1000);
 
   //Meteor.setTimeout(function(){
   //  update();
@@ -133,12 +133,12 @@ Template.main.helpers({
 
 
 Template.main.events({
-  'click #reset': function(){
-    console.log('reset');
-    Meteor.call('reset', function(err, id){
-      console.log('reset ID: ', id);
-    });
-  },
+  //'click #reset': function(){
+  //  console.log('reset');
+  //  Meteor.call('reset', function(err, id){
+  //    console.log('reset ID: ', id);
+  //  });
+  //},
   'click #new_system': function(){
     Meteor.call('new_system', function(err, id){
       console.log('created ID: ', id);
@@ -146,9 +146,11 @@ Template.main.events({
     subscribe['main']();
   },
   'click #delete_system': function(){
-    Meteor.call('delete_system', function(err, id){
-      console.log('created ID: ', id);
-    });
+    if( confirm('delete system:'+Meteor.user().active_system) ){
+      Meteor.call('delete_system', function(err, id){
+        console.log('created ID: ', id);
+      });
+    }
   },
   'change #system_name': function(){
     var id = User_systems.findOne({system_id: Meteor.user().active_system })._id;
@@ -162,9 +164,16 @@ Template.main.events({
 
   },
   'change #system_id': function(event){
-    Meteor.call('new_active_system', event.target.value, function(err, returned){
-      //console.log('returned: ', returned);
-    });
+    if( event.target.value === 'new' ) {
+      Meteor.call('new_system', function(err, id){
+        console.log('created ID: ', id);
+      });
+      subscribe['main']();
+    } else {
+      Meteor.call('new_active_system', event.target.value, function(err, returned){
+        //console.log('returned: ', returned);
+      });
+    }
   },
   'click #close_download_box': function(){
     $('#drawing_loading').fadeOut(420);
@@ -216,10 +225,14 @@ Template.body.onRendered(function(){
 
   f.are_we_there_yet(function(){
     return (
-      $('.drawer_content').length === Object.keys(settings.inputs).length && subscriptions_ready() && Meteor.userId() && Meteor.user().active_system
+      $('.user_input_container').length === Object.keys(settings.inputs).length &&
+      subscriptions_ready() &&
+      Meteor.userId() &&
+      Meteor.user().active_system
     );
   },function(){
     console.log('input divs ready');
+
 
     $('#change_layout').click(function(){
       console.log('click');
@@ -235,8 +248,13 @@ Template.body.onRendered(function(){
       }
     });
 
+    show_input = f.Show_hide('inputs');
     if( sessionStorage.getItem('display_style') === 'tabs' ){
-      show_hide('location');
+      show_input('location');
+    }
+    show_drawing = f.Show_hide('drawing');
+    if( sessionStorage.getItem('display_style') === 'tabs' ){
+      show_drawing('G-001');
     }
 
     update();
@@ -245,16 +263,62 @@ Template.body.onRendered(function(){
   });
 });
 
-show_hide = function(selected_section_name){
-  console.log(selected_section_name);
-  settings.webpage.sections.forEach(function(section_name){
-    if( section_name === selected_section_name ){
-      $('#section_'+section_name).css('display','block');
-      $('#tab_'+section_name).css('background', 'WhiteSmoke');
-    } else {
-      $('#section_'+section_name).css('display','none');
-      $('#tab_'+section_name).css('background', '#bbc3e4');
-    }
-  });
+//f.show_hide_inputs = function(selected_section_name){
+//  //console.log(selected_section_name);
+//  settings.webpage.sections.forEach(function(section_name){
+//    if( section_name === selected_section_name ){
+//      $('#section_'+section_name).css('display','block');
+//      $('#tab_'+section_name).css('background', 'WhiteSmoke');
+//    } else {
+//      $('#section_'+section_name).css('display','none');
+//      $('#tab_'+section_name).css('background', '#bbc3e4');
+//    }
+//  });
+//
+//};
+
+f.Show_hide = function(container_id){
+  var container_section = $('#'+container_id);
+
+  return function(selected_section_name){
+    //console.log(selected_section_name);
+
+    container_section.children('.tab_title_bar').children('.tab').each(function(){
+      var section_name = $(this).attr('id').substring(4);
+      if( section_name === selected_section_name ){
+        console.log(section_name, selected_section_name);
+        $('#tab_'+section_name)
+          .removeClass('tab_inactive')
+          .addClass('tab_active');
+        $('#section_'+section_name)
+          .css('display','block');
+      } else {
+        $('#tab_'+section_name)
+          .removeClass('tab_active')
+          .addClass('tab_inactive');
+        $('#section_'+section_name)
+          .css('display','none');
+      }
+    });
+  };
 
 };
+
+
+
+document.addEventListener('keydown', function(e) {
+  // console.log(e.keyCode);
+  if( e.keyCode === 115 ){
+      if( typeof style_changed === 'undefined' ){
+        var display_style = sessionStorage.getItem('display_style');
+        if( display_style === 'drawers'){
+          display_style = 'tabs';
+        } else {
+          display_style = 'drawers';
+        }
+        sessionStorage.setItem('display_style', display_style);
+        window.style_changed = true;
+        console.log('style_changed');
+      }
+  }
+});
