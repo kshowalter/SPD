@@ -144,6 +144,7 @@ Template.main.events({
       console.log('created ID: ', id);
     });
     subscribe['main']();
+    update();
   },
   'click #delete_system': function(){
     if( confirm('delete system:'+Meteor.user().active_system) ){
@@ -169,6 +170,7 @@ Template.main.events({
         console.log('created ID: ', id);
       });
       subscribe['main']();
+      update();
     } else {
       Meteor.call('new_active_system', event.target.value, function(err, returned){
         //console.log('returned: ', returned);
@@ -249,13 +251,7 @@ Template.body.onRendered(function(){
     });
 
     show_input = f.Show_hide('inputs');
-    if( sessionStorage.getItem('display_style') === 'tabs' ){
-      show_input('location');
-    }
     show_drawing = f.Show_hide('drawing');
-    if( sessionStorage.getItem('display_style') === 'tabs' ){
-      show_drawing('G-001');
-    }
 
     update();
     setup_webpage();
@@ -263,19 +259,6 @@ Template.body.onRendered(function(){
   });
 });
 
-//f.show_hide_inputs = function(selected_section_name){
-//  //console.log(selected_section_name);
-//  settings.webpage.sections.forEach(function(section_name){
-//    if( section_name === selected_section_name ){
-//      $('#section_'+section_name).css('display','block');
-//      $('#tab_'+section_name).css('background', 'WhiteSmoke');
-//    } else {
-//      $('#section_'+section_name).css('display','none');
-//      $('#tab_'+section_name).css('background', '#bbc3e4');
-//    }
-//  });
-//
-//};
 
 f.Show_hide = function(container_id){
   var container_section = $('#'+container_id);
@@ -286,7 +269,6 @@ f.Show_hide = function(container_id){
     container_section.children('.tab_title_bar').children('.tab').each(function(){
       var section_name = $(this).attr('id').substring(4);
       if( section_name === selected_section_name ){
-        console.log(section_name, selected_section_name);
         $('#tab_'+section_name)
           .removeClass('tab_inactive')
           .addClass('tab_active');
