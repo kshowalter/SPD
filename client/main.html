@@ -11,11 +11,15 @@
 
   <div class='menu_bar'>
 
-    <span class='menu_bar_left'>
-      Solar Plans Designer <i class="fa fa-sun-o"></i> <i class="fa fa-th-large"></i> <i class="fa fa-bolt"></i>
+    <span class='menu_bar_title'>
+      Solar Plans Designer
+      <span class='menu_bar_logo'>
+        <i class="fa fa-sun-o"></i> <i class="fa fa-th-large"></i> <i class="fa fa-bolt"></i>
+      </span>
     </span>
 
-    <span class='menu_bar_center'>
+    <span class='menu_bar_right'>
+      {{> loginButtons}} &nbsp;&nbsp;
       <span>System:</span>
       <select class="" id='system_id' title="Reload page to fix display issues.">
         <!-- <option selected="selected" disabled="disabled" hidden="hidden"></option> -->
@@ -31,9 +35,6 @@
       <a class='button' href="#" id="request_drawing">request drawing</a>
     </span>
 
-    <span class='menu_bar_right'>
-      {{> loginButtons}}
-    </span>
 
   </div>
 

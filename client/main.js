@@ -233,22 +233,7 @@ Template.body.onRendered(function(){
       Meteor.user().active_system
     );
   },function(){
-    console.log('input divs ready');
-
-
-    $('#change_layout').click(function(){
-      console.log('click');
-      if( typeof style_changed === 'undefined' ){
-        var display_style = sessionStorage.getItem('display_style');
-        if( display_style === 'drawers'){
-          display_style = 'tabs';
-        } else {
-          display_style = 'drawers';
-        }
-        sessionStorage.setItem('display_style', display_style);
-        window.style_changed = true;
-      }
-    });
+    //console.log('input divs ready');
 
     show_input = f.Show_hide('inputs');
     show_drawing = f.Show_hide('drawing');
