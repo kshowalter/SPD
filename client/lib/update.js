@@ -27,13 +27,11 @@ update = function(){
         settings.webpage.section_activated[section_name] = true;
         $('#tab_'+section_name).children('a').html('<i class="fa fa-check-square"></i> ' + section_name)
         // '<i class="fa fa-check-square"></i> ' + section_name
-
       } else {
         not_defined.push(section_name);
         settings.webpage.section_activated[section_name] = false;
         $('#tab_'+section_name).children('a').html('<i class="fa fa-square-o"></i> ' + section_name)
       }
-
     });
     active_section_name = not_defined[0];
     settings.webpage.section_activated[active_section_name] = true;

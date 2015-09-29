@@ -142,38 +142,51 @@ Template.main.events({
   'click #new_system': function(){
     Meteor.call('new_system', function(err, id){
       console.log('created ID: ', id);
+      subscribe['main']();
+      update();
+
     });
-    subscribe['main']();
-    update();
   },
   'click #delete_system': function(){
-    if( confirm('delete system:'+Meteor.user().active_system) ){
+    if( confirm('delete system: '+Meteor.user().active_system+'\n\nThis is a temporary UI') ){
       Meteor.call('delete_system', function(err, id){
         console.log('created ID: ', id);
+        subscribe['main']();
+        update();
       });
     }
   },
   'change #system_name': function(){
     var id = User_systems.findOne({system_id: Meteor.user().active_system })._id;
-    console.log('setting: ', id, event.target.value);
+    //console.log('setting: ', id, event.target.value);
     User_systems.update(
       id,
       {$set:
         {name:event.target.value}
       }
     );
-
   },
   'change #system_id': function(event){
     if( event.target.value === 'new' ) {
       Meteor.call('new_system', function(err, id){
         console.log('created ID: ', id);
+        subscribe['main']();
+        update();
       });
-      subscribe['main']();
-      update();
     } else {
+      console.log('---- active_system', Meteor.user().active_system );
+      settings.webpage.new_render = true;
       Meteor.call('new_active_system', event.target.value, function(err, returned){
         //console.log('returned: ', returned);
+        console.log( 'page rendered', $('.user_input_container').length === Object.keys(settings.inputs).length );
+
+        if(settings.webpage.new_render){
+          //setup_webpage();
+          page_check();
+          settings.webpage.new_render = false;
+
+        }
+
       });
     }
   },
@@ -221,10 +234,7 @@ Template.main.events({
   },
 });
 
-Template.body.onRendered(function(){
-  console.log('body rendered');
-  //setTimeout(are_we_there_yet, 1);
-
+page_check = function(){
   f.are_we_there_yet(function(){
     return (
       $('.user_input_container').length === Object.keys(settings.inputs).length &&
@@ -234,14 +244,22 @@ Template.body.onRendered(function(){
     );
   },function(){
     //console.log('input divs ready');
-
     show_input = f.Show_hide('inputs');
     show_drawing = f.Show_hide('drawing');
-
     update();
     setup_webpage();
-
+  }, function(){
+    console.log('not ready yet');
   });
+};
+
+
+Template.body.onRendered(function(){
+  console.log('body rendered');
+  //setTimeout(are_we_there_yet, 1);
+  page_check();
+
+
 });
 
 

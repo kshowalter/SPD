@@ -158,7 +158,10 @@ img { border: 0; }
 }
 
 .menu_bar_title {
+  /*
   color: #1E367C;
+  */
+  color: #7885ac;
 	font-weight: bold;
   position: relative;
   top: 3px;
