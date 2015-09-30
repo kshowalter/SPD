@@ -96,7 +96,6 @@ update = function(){
     );
 
     for( var param_name in table_values){
-      console.log(param_name);
       table.append(
         $('<tr>').append(
           $('<td>').text(param_name),$('<td>').text(table_values[param_name])

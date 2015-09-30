@@ -1,27 +1,37 @@
 {
-  // I want to use babel-eslint for parsing!
-  "parser": "babel-eslint",
-  "env": {
-    // I write for browser
-    "browser": true,
-    // in CommonJS
-    "node": true
-  },
-
   "rules": {
-    "strict": 0
-
+    "indent": [
+      2,
+      2
+    ],
+    "quotes": [
+      2,
+      "single"
+    ],
+    "linebreak-style": [
+      2,
+      "unix"
+    ],
+    "semi": [
+      2,
+      "always"
+    ]
   },
+  "env": {
+    "node": true,
+    "browser": true
+  },
+  "extends": "eslint:recommended",
 
 
+
+  "parser": "babel-eslint",
   "globals": {
     "$": true,
     "_": true,
     "moment": true,
     "g": true,
     "L": true
-  },
-
-
+  }
 
 }

@@ -142,51 +142,36 @@ Template.main.events({
   'click #new_system': function(){
     Meteor.call('new_system', function(err, id){
       console.log('created ID: ', id);
-      subscribe['main']();
-      update();
-
     });
+    subscribe['main']();
   },
   'click #delete_system': function(){
-    if( confirm('delete system: '+Meteor.user().active_system+'\n\nThis is a temporary UI') ){
+    if( confirm('delete system:'+Meteor.user().active_system) ){
       Meteor.call('delete_system', function(err, id){
         console.log('created ID: ', id);
-        subscribe['main']();
-        update();
       });
     }
   },
   'change #system_name': function(){
     var id = User_systems.findOne({system_id: Meteor.user().active_system })._id;
-    //console.log('setting: ', id, event.target.value);
+    console.log('setting: ', id, event.target.value);
     User_systems.update(
       id,
       {$set:
         {name:event.target.value}
       }
     );
+
   },
   'change #system_id': function(event){
     if( event.target.value === 'new' ) {
       Meteor.call('new_system', function(err, id){
         console.log('created ID: ', id);
-        subscribe['main']();
-        update();
       });
+      subscribe['main']();
     } else {
-      console.log('---- active_system', Meteor.user().active_system );
-      settings.webpage.new_render = true;
       Meteor.call('new_active_system', event.target.value, function(err, returned){
         //console.log('returned: ', returned);
-        console.log( 'page rendered', $('.user_input_container').length === Object.keys(settings.inputs).length );
-
-        if(settings.webpage.new_render){
-          //setup_webpage();
-          page_check();
-          settings.webpage.new_render = false;
-
-        }
-
       });
     }
   },
@@ -224,8 +209,7 @@ Template.main.events({
             $('<a>', {
               id: 'view_drawing',
               class: 'button',
-              //href: 'http://10.173.64.204:8004/drawing/'+active_system,
-              href: 'permit/'+active_system,
+              href: 'http://10.173.64.204:8004/drawing/'+active_system,
               text: 'Download drawing',
               target: '_blank',
             })
@@ -235,7 +219,14 @@ Template.main.events({
   },
 });
 
-page_check = function(){
+Template.tabs.onRendered(function(){
+  console.log(this);
+
+
+})
+
+
+Template.body.onRendered(function(){
   f.are_we_there_yet(function(){
     return (
       $('.user_input_container').length === Object.keys(settings.inputs).length &&
@@ -244,52 +235,20 @@ page_check = function(){
       Meteor.user().active_system
     );
   },function(){
-    //console.log('input divs ready');
     show_input = f.Show_hide('inputs');
+    if( sessionStorage.getItem('display_style') === 'tabs' ){
+      show_input('location');
+    }
     show_drawing = f.Show_hide('drawing');
+    if( sessionStorage.getItem('display_style') === 'tabs' ){
+      show_drawing('G-001');
+    }
+
     update();
     setup_webpage();
-  }, function(){
-    console.log('not ready yet');
+
   });
-};
-
-
-Template.body.onRendered(function(){
-  console.log('body rendered');
-  //setTimeout(are_we_there_yet, 1);
-  page_check();
-
-
 });
-
-
-f.Show_hide = function(container_id){
-  var container_section = $('#'+container_id);
-
-  return function(selected_section_name){
-    //console.log(selected_section_name);
-
-    container_section.children('.tab_title_bar').children('.tab').each(function(){
-      var section_name = $(this).attr('id').substring(4);
-      if( section_name === selected_section_name ){
-        $('#tab_'+section_name)
-          .removeClass('tab_inactive')
-          .addClass('tab_active');
-        $('#section_'+section_name)
-          .css('display','block');
-      } else {
-        $('#tab_'+section_name)
-          .removeClass('tab_active')
-          .addClass('tab_inactive');
-        $('#section_'+section_name)
-          .css('display','none');
-      }
-    });
-  };
-
-};
-
 
 
 document.addEventListener('keydown', function(e) {
