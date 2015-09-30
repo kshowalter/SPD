@@ -7,7 +7,12 @@ setup_webpage = function(){
       $(this).fadeOut(300);
     });
 
-
+  if( sessionStorage.getItem('display_style') === 'tabs' ){
+    show_drawing('G-001');
+  }
+  if( sessionStorage.getItem('display_style') === 'tabs' ){
+    show_input('location');
+  }
 
   if( $('#section_location').children('.drawer').length === 0 ){
     var map_drawer = $('#section_location');
