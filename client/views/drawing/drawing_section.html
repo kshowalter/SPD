@@ -3,8 +3,8 @@
   <div class="tabs_container" id="drawing">
     <div class="tab_title_bar">
       {{#each sheets}}
-        <span class='tab tab_inactive' id="tab_{{this.num}}">
-          <a href='#' onclick="show_drawing('{{this.num}}')">{{this.num}}</a>
+        <span class='tab tab_inactive' id="tab_{{this.num}}" onclick="show_drawing('{{this.num}}')">
+          {{this.num}}
         </span>
       {{/each}}
     </div>

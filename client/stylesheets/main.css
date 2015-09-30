@@ -233,6 +233,7 @@ img { border: 0; }
 }
 .tab {
   font-weight: bold;
+  color: #424242;
   margin: 0px;
   padding: 10px;
   border-right: 1px solid lightgrey;
@@ -241,17 +242,12 @@ img { border: 0; }
   display: inline-block;
   text-align: center;
 }
-.tab a{
-  color: #424242;
-}
 
 .tab_active {
-  color: #424242;
   background: WhiteSmoke;
 }
 
 .tab_inactive {
-  color: #909090;
   background: #DFDFDF;
   background: #b6bed7;
 }

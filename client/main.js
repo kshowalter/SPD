@@ -220,7 +220,7 @@ Template.main.events({
 });
 
 Template.tabs.onRendered(function(){
-  console.log(this);
+  console.log('#tab rendered: ', this);
 
 
 })
