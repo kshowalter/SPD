@@ -1,0 +1,5 @@
+{
+  "user"          : "schema",
+  "password"      : "password",
+  "connectString" : "db.fsec.ucf.edu:PORT/SID"
+}
