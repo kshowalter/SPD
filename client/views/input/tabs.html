@@ -1,19 +1,19 @@
 <template name="tabs">
 
-  <div class="drawer_container">
-    <div class="title_bar tab_title_bar">
+  <div class="tabs_container" id="inputs">
+    <div class="tab_title_bar">
       {{#each sections}}
         {{#with section_name}}
-          <span class='tab' id="tab_{{this}}">
-            <a href='#' onclick="show_hide('{{this}}')">{{section_label}}</a>
+          <span class='tab tab_inactive' id="tab_{{this}}" onclick="show_input('{{this}}')">
+            <i class="fa fa-square-o"></i> {{section_label}}
           </span>
         {{/with}}
       {{/each}}
 
     </div>
-    <div class="drawer">
+    <div class="tabs_box">
       {{#each sections}}
-        <div class="drawer_content" id="section_{{this}}" style="display: none;">
+        <div class="tab_content" id="section_{{this}}" style="display: none;">
         {{#with section_name}}
           <div class="info">
             {{{info}}}
