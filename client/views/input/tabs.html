@@ -11,19 +11,23 @@
       {{/each}}
 
     </div>
-    <div class="tabs_box">
+    <div class="tabs_box table">
       {{#each sections}}
-        <div class="tab_content" id="section_{{this}}" style="display: none;">
+        <div class="tab_content row" id="section_{{this}}" style="display: none;">
         {{#with section_name}}
-          <div class="info">
-            {{{info}}}
-          </div>
-          <div class="user_input_container">
-            {{#each inputs}}
-              {{> input}}
-            {{/each}}
-          </div>
-          <div class="svg_drawing_container"></div>
+          <span class="cell">
+            <span class="info">
+              {{{info}}}
+            </span>
+            <span class="user_input_container">
+              {{#each inputs}}
+                {{> input}}<br>
+              {{/each}}
+            </span>
+          </span>
+          <span class="cell">
+            <span class="svg_drawing_container"></span>
+          </span>
         {{/with}}
         </div>
       {{/each}}

@@ -102,8 +102,38 @@ update = function(){
         )
       );
     }
-
-
   }
 
+    // create previews
+    settings.drawing.preview_parts = {};
+    settings.drawing.preview_svgs = {};
+    for( var name in f.mk_preview ){  // f.mk_sheet_num is a array of page making functions, so this will loop through the number of pages
+        settings.drawing.preview_parts[name] = f.mk_preview[name](settings);
+        settings.drawing.preview_svgs[name] = f.mk_svg(settings.drawing.preview_parts[name], settings);
+    }
+    var preview_table = {
+        'location': [],
+        'map': [],
+        'roof': [ settings.drawing.preview_svgs['roof'] ],
+        'module': [ settings.drawing.preview_svgs['elec'], settings.drawing.preview_svgs['roof'] ],
+        'array': [ settings.drawing.preview_svgs['elec'] ],
+        'DC': [ settings.drawing.preview_svgs['elec'] ],
+        'inverter': [ settings.drawing.preview_svgs['elec'] ],
+        'AC': [ settings.drawing.preview_svgs['elec'] ],
+        'attachment_system': [ settings.drawing.preview_svgs['roof'] ],
+    };
+    settings.webpage.sections.forEach(function(section_name){
+        var svg_drawing_container = $('#section_'+section_name)
+          .children('.cell')
+          .children('.svg_drawing_container');
+        svg_drawing_container.empty();
+        if(preview_table[section_name]) preview_table[section_name].forEach(function(preview_svg){
+            svg_drawing_container.append(
+                $(preview_svg).clone()
+                    .attr('class', 'svg_drawing_preview'),
+                $('<br>')
+            );
+        });
+    });
+  };
 };
