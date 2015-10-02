@@ -77,7 +77,7 @@
           "version": "1.5.0"
         },
         "request": {
-          "version": "2.60.0",
+          "version": "2.63.0",
           "dependencies": {
             "bl": {
               "version": "1.0.0",
@@ -95,7 +95,7 @@
                       "version": "0.0.1"
                     },
                     "process-nextick-args": {
-                      "version": "1.0.2"
+                      "version": "1.0.3"
                     },
                     "string_decoder": {
                       "version": "0.10.31"
@@ -120,7 +120,7 @@
               "version": "1.0.0-rc3",
               "dependencies": {
                 "async": {
-                  "version": "1.4.0"
+                  "version": "1.4.2"
                 }
               }
             },
@@ -128,10 +128,10 @@
               "version": "5.0.1"
             },
             "mime-types": {
-              "version": "2.1.4",
+              "version": "2.1.7",
               "dependencies": {
                 "mime-db": {
-                  "version": "1.16.0"
+                  "version": "1.19.0"
                 }
               }
             },
@@ -139,7 +139,7 @@
               "version": "1.4.3"
             },
             "qs": {
-              "version": "4.0.0"
+              "version": "5.1.0"
             },
             "tunnel-agent": {
               "version": "0.4.1"
@@ -168,13 +168,13 @@
               "version": "3.1.0",
               "dependencies": {
                 "hoek": {
-                  "version": "2.14.0"
+                  "version": "2.16.3"
                 },
                 "boom": {
-                  "version": "2.8.0"
+                  "version": "2.9.0"
                 },
                 "cryptiles": {
-                  "version": "2.0.4"
+                  "version": "2.0.5"
                 },
                 "sntp": {
                   "version": "1.0.9"
@@ -202,10 +202,10 @@
               "version": "1.8.0",
               "dependencies": {
                 "bluebird": {
-                  "version": "2.9.34"
+                  "version": "2.10.1"
                 },
                 "chalk": {
-                  "version": "1.1.0",
+                  "version": "1.1.1",
                   "dependencies": {
                     "ansi-styles": {
                       "version": "2.1.0"
@@ -243,7 +243,7 @@
                   }
                 },
                 "is-my-json-valid": {
-                  "version": "2.12.1",
+                  "version": "2.12.2",
                   "dependencies": {
                     "generate-function": {
                       "version": "2.0.0"
@@ -257,7 +257,7 @@
                       }
                     },
                     "jsonpointer": {
-                      "version": "1.1.0"
+                      "version": "2.0.0"
                     },
                     "xtend": {
                       "version": "4.0.0"
@@ -275,10 +275,10 @@
           "version": "1.7.0"
         },
         "acorn-globals": {
-          "version": "1.0.5",
+          "version": "1.0.6",
           "dependencies": {
             "acorn": {
-              "version": "2.2.0"
+              "version": "2.4.0"
             }
           }
         },
@@ -286,13 +286,13 @@
           "version": "0.11.0"
         },
         "escodegen": {
-          "version": "1.6.1",
+          "version": "1.7.0",
           "dependencies": {
             "estraverse": {
               "version": "1.9.3"
             },
             "esutils": {
-              "version": "1.1.6"
+              "version": "2.0.2"
             },
             "esprima": {
               "version": "1.2.5"
@@ -316,12 +316,12 @@
                   "version": "0.2.5"
                 },
                 "fast-levenshtein": {
-                  "version": "1.0.6"
+                  "version": "1.0.7"
                 }
               }
             },
             "source-map": {
-              "version": "0.1.43",
+              "version": "0.2.0",
               "dependencies": {
                 "amdefine": {
                   "version": "1.0.0"
@@ -329,6 +329,14 @@
               }
             }
           }
+        }
+      }
+    },
+    "oracledb": {
+      "version": "1.1.0",
+      "dependencies": {
+        "nan": {
+          "version": "1.9.0"
         }
       }
     },
@@ -358,7 +366,7 @@
       "version": "0.7.2",
       "dependencies": {
         "dnode": {
-          "version": "1.2.1",
+          "version": "1.2.2",
           "dependencies": {
             "dnode-protocol": {
               "version": "0.2.2"
@@ -367,13 +375,13 @@
               "version": "0.0.0"
             },
             "weak": {
-              "version": "0.4.1",
+              "version": "1.0.0",
               "dependencies": {
                 "bindings": {
                   "version": "1.2.1"
                 },
                 "nan": {
-                  "version": "1.8.4"
+                  "version": "2.0.9"
                 }
               }
             }
