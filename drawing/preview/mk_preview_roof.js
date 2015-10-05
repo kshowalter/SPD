@@ -218,18 +218,20 @@ f.mk_preview['roof'] = function(settings){
                 var roof_length_avail = system.roof.slope_length - (a*2);
                 var roof_width_avail = system.roof.width1 - (a*2);
 
-                var row_spacing;
-                if( system.module.orientation === 'Portrait' ){
-                    row_spacing = Number(system.module.length) + 1;
-                    col_spacing = Number(system.module.width) + 1;
-                    module_w = (Number(system.module.width)  )/12;
-                    module_h = (Number(system.module.length) )/12;
-                } else {
-                    row_spacing = Number(system.module.width) + 1;
-                    col_spacing = Number(system.module.length) + 1;
-                    module_w = (Number(system.module.length))/12;
-                    module_h = (Number(system.module.width) )/12;
-                }
+								var mm_to_inches = function(mm) { return mm / (25.4 /* mm per inch  */);  };
+								var row_spacing;
+								var col_spacing;
+								if( system.module.orientation === 'Portrait' ){
+									row_spacing = Number(mm_to_inches(system.module.length)) + 1;
+									col_spacing = Number(mm_to_inches(system.module.width)) + 1;
+									module_w = (Number(mm_to_inches(system.module.width)))/12;
+									module_h = (Number(mm_to_inches(system.module.length)))/12;
+								} else {
+									row_spacing = Number(mm_to_inches(system.module.width)) + 1;
+									col_spacing = Number(mm_to_inches(system.module.length)) + 1;
+									module_w = (Number(mm_to_inches(system.module.length)))/12;
+									module_h = (Number(mm_to_inches(system.module.width)))/12;
+								}
 
                 row_spacing = row_spacing/12; //module dimentions are in inches
                 col_spacing = col_spacing/12; //module dimentions are in inches
@@ -240,11 +242,11 @@ f.mk_preview['roof'] = function(settings){
                 //selected modules
 
                 if( num_cols !== settings.temp.num_cols || num_rows !== settings.temp.num_rows ){
-                    settings.webpage.selected_modules = {};
+                    settings.webpage.selected_modules =[];
                     settings.webpage.selected_modules_total = 0;
 
                     for( r=1; r<=num_rows; r++){
-                        settings.webpage.selected_modules[r] = {};
+                        settings.webpage.selected_modules[r] = [];
                         for( c=1; c<=num_cols; c++){
                             settings.webpage.selected_modules[r][c] = false;
                         }

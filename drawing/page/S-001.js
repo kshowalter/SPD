@@ -334,22 +334,25 @@ if( section_defined(settings.state.active_system, 'module') && section_defined(s
   var roof_length_avail = system.roof.slope_length - (a*2);
   var roof_width_avail = system.roof.width1 - (a*2);
 
-  var row_spacing;
+	var mm_to_inches = function(mm) { return mm / (25.4 /* mm per inch  */);  };
+	var row_spacing;
 	var col_spacing;
-  if( system.module.orientation === 'Portrait' ){
-    row_spacing = Number(system.module.length) + 1;
-    col_spacing = Number(system.module.width) + 1;
-    module_w = (Number(system.module.width)  )/12;
-    module_h = (Number(system.module.length) )/12;
-  } else {
-    row_spacing = Number(system.module.width) + 1;
-    col_spacing = Number(system.module.length) + 1;
-    module_w = (Number(system.module.length))/12;
-    module_h = (Number(system.module.width) )/12;
-  }
+	if( system.module.orientation === 'Portrait' ){
+		row_spacing = Number(mm_to_inches(system.module.length)) + 1;
+		col_spacing = Number(mm_to_inches(system.module.width)) + 1;
+		module_w = (Number(mm_to_inches(system.module.width)))/12;
+		module_h = (Number(mm_to_inches(system.module.length)))/12;
+	} else {
+		row_spacing = Number(mm_to_inches(system.module.width)) + 1;
+		col_spacing = Number(mm_to_inches(system.module.length)) + 1;
+		module_w = (Number(mm_to_inches(system.module.length)))/12;
+		module_h = (Number(mm_to_inches(system.module.width)))/12;
+	}
 
-  row_spacing = row_spacing/12; //module dimentions are in inches
-  col_spacing = col_spacing/12; //module dimentions are in inches
+	console.log(system.module, module_w, module_h);
+
+  row_spacing = row_spacing/12; //module dimensions are in inches
+  col_spacing = col_spacing/12; //module dimensions are in inches
 
   var num_rows = Math.floor(roof_length_avail/row_spacing);
   var num_cols = Math.floor(roof_width_avail/col_spacing);
@@ -381,7 +384,6 @@ if( section_defined(settings.state.active_system, 'module') && section_defined(s
   module_h = module_h * scale;
 
 
-
   for( r=1; r<=num_rows; r++){
 
     for( c=1; c<=num_cols; c++){
@@ -407,15 +409,15 @@ if( section_defined(settings.state.active_system, 'module') && section_defined(s
     }
   }
 
-  d.text(
-    [detail_x+detail_w/2, detail_y+detail_h+100],
-    [
-      "Selected modules: " + parseFloat( settings.webpage.selected_modules_total ).toFixed().toString(),
-      "Calculated modules: " + parseFloat( settings.system.array.number_of_modules ).toFixed().toString(),
-    ],
-    'dimention',
-    'dimention'
-  );
+  //d.text(
+  //  [detail_x+detail_w/2, detail_y+detail_h+100],
+  //  [
+  //    "Selected modules: " + parseFloat( settings.webpage.selected_modules_total ).toFixed().toString(),
+  //    "Calculated modules: " + parseFloat( settings.system.array.number_of_modules ).toFixed().toString(),
+  //  ],
+  //  'dimention',
+  //  'dimention'
+  //);
 
 	y = y+400;
 	rails.setModules();
@@ -467,42 +469,79 @@ if( section_defined(settings.state.active_system, 'module') && section_defined(s
 			margin: (1/12)*module_h
 		};
 
-		//Top Rail
-		d.line([
-					[x+railStart.x-offset.margin,          y+railStart.y+offset.top],
-					[x+railEnd.x+module_w+offset.margin,   y+railEnd.y+offset.top],
-				],
-				"preview_structural"
-		);
-
-		//Bottom Rail
-		d.line([
-					[x+railStart.x-offset.margin,          y+railStart.y+offset.bottom],
-					[x+railEnd.x+module_w+offset.margin,   y+railEnd.y+offset.bottom],
-				],
-				"preview_structural"
-		);
+		////Top Rail
+		//d.line([
+		//			[x+railStart.x-offset.margin,          y+railStart.y+offset.top],
+		//			[x+railEnd.x+module_w+offset.margin,   y+railEnd.y+offset.top],
+		//		],
+		//		"preview_structural"
+		//);
+		//
+		////Bottom Rail
+		//d.line([
+		//			[x+railStart.x-offset.margin,          y+railStart.y+offset.bottom],
+		//			[x+railEnd.x+module_w+offset.margin,   y+railEnd.y+offset.bottom],
+		//		],
+		//		"preview_structural"
+		//);
 
 		//Mounting Holes
 		var screwCount = 5;
 		var rail_length = railEnd.x - railStart.x + module_w;
+		var truss_spacing = 2 * scale; //2 feet between each truss
 
-
-		for(var n=0; n<screwCount+1; n++)
+		var firstScrew = true;
+		for(var n=x; n<x+(num_cols * col_spacing * scale); n+=truss_spacing)
 		{
-			d.circ(
-					[x+railStart.x+(rail_length*(n/screwCount)), y+railEnd.y+offset.top],
-					[5],
-					"preview_structural_mounting_hole"
-			);
+			if((n+truss_spacing/2 >= x+railStart.x) && (n-truss_spacing/2 <= x+railEnd.x+module_w))
+			{
+				if(firstScrew) {
+					firstScrew = false;
+					continue;
+				}
+				//Top Rail
+				d.line([
+							[n-truss_spacing-truss_spacing/4,  y+railStart.y+offset.top],
+							[n+truss_spacing/4,                y+railEnd.y+offset.top],
+						],
+						"preview_structural"
+				);
 
-			d.circ(
-					[x+railStart.x+(rail_length*(n/screwCount)), y+railEnd.y+offset.bottom],
-					[5],
-					"preview_structural_mounting_hole"
-			);
+				//Bottom Rail
+				d.line([
+							[n-truss_spacing-truss_spacing/4,  y+railStart.y+offset.bottom],
+							[n+truss_spacing/4,                y+railEnd.y+offset.bottom],
+						],
+						"preview_structural"
+				);
+
+			}
+
 		}
-	console.log("testing!")
+
+		//Mounting Holes
+		for(var n=x; n<x+(num_cols * col_spacing * scale); n+=truss_spacing)
+		{
+			if((n+truss_spacing/2 >= x+railStart.x) && (n-truss_spacing/2 <= x+railEnd.x+module_w))
+			{
+
+				d.circ(
+						[n, y+railStart.y+offset.top],
+						[5],
+						"preview_structural_mounting_hole"
+				);
+
+				d.circ(
+						[n, y+railEnd.y+offset.bottom],
+						[5],
+						"preview_structural_mounting_hole"
+				);
+
+			}
+
+		}
+
+
 
 
 
