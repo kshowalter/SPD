@@ -102,7 +102,6 @@ update = function(){
         )
       );
     }
-  }
 
     // create previews
     settings.drawing.preview_parts = {};
@@ -135,5 +134,5 @@ update = function(){
             );
         });
     });
-  };
+  }
 };
