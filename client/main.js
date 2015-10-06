@@ -214,7 +214,7 @@ Template.tabs.onRendered(function(){
   console.log('#tab rendered: ', this);
 
 
-})
+});
 
 var resize_sections = function(){
   console.log('resize');
