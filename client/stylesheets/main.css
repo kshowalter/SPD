@@ -75,16 +75,24 @@ img { border: 0; }
 	background: WhiteSmoke;
 	*/
   margin: 10px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #inputs {
-  width: 900px;
+  /*
+  width: 100%;
+  width: 1400px;
   float: left;
   margin-right: 30px;
+  */
 }
 #drawing {
+  /*
   float: left;
-
+  */
+  margin-left: auto;
+  margin-right: auto;
 }
 
 
@@ -175,7 +183,9 @@ img { border: 0; }
 
 
 .tabs_container {
+  /*
   width: 100%;
+  */
 	margin-top: 15px;
 }
 .tab_title_bar {
@@ -236,7 +246,8 @@ img { border: 0; }
   background: white;
   margin: 5px;
   /*float: left;*/
-
+  display: inline-block;
+  vertical-align: top;
 }
 
 /***********/
@@ -443,7 +454,6 @@ img { border: 0; }
 #drawing_frame_preview {
   float: left;
   background: WhiteSmoke;
-  width:600px;
 }
 
 #drawing_frame {
@@ -493,7 +503,8 @@ svg {
 .drawing_container {
   /*
   */
-
+  margin-left: auto;
+  margin-right: auto;
 }
 
 

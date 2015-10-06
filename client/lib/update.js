@@ -129,8 +129,8 @@ update = function(){
         if(preview_table[section_name]) preview_table[section_name].forEach(function(preview_svg){
             svg_drawing_container.append(
                 $(preview_svg).clone()
-                    .attr('class', 'svg_drawing_preview'),
-                $('<br>')
+                    .attr('class', 'svg_drawing_preview')
+                //$('<br>')
             );
         });
     });
