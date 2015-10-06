@@ -16,19 +16,21 @@
 
     <span class='menu_bar_right'>
       {{> loginButtons}} &nbsp;&nbsp;
-      <span>System:</span>
-      <select class="" id='system_id' title="Reload page to fix display issues.">
-        <!-- <option selected="selected" disabled="disabled" hidden="hidden"></option> -->
-        <option value="" selected="selected"></option>
-        {{#each system_ids}}
-          <option value="{{system_id}}" selected={{system_selected}}>{{name}} [{{system_number}}]</option>
-        {{/each}}
-        <option value="new">new</option>
-      </select>
-      <input id="system_name" type="text" value="{{system_name}}">
-      <a class='button' href='#' id='new_system' title='Add new system'><i class="fa fa-plus"></i></a>
-      <a class='button' href='#' id='delete_system' title='Delete current system'><i class="fa fa-trash-o"></i></a>
-      <a class='button' href="#" id="request_drawing">request drawing</a>
+      {{#if currentUser}}
+        <span>System:</span>
+        <select class="" id='system_id' title="Reload page to fix display issues.">
+          <!-- <option selected="selected" disabled="disabled" hidden="hidden"></option> -->
+          <option value="" selected="selected"></option>
+          {{#each system_ids}}
+            <option value="{{system_id}}" selected={{system_selected}}>{{name}} [{{system_number}}]</option>
+          {{/each}}
+          <option value="new">new</option>
+        </select>
+        <input id="system_name" type="text" value="{{system_name}}">
+        <a class='button' href='#' id='new_system' title='Add new system'><i class="fa fa-plus"></i></a>
+        <a class='button' href='#' id='delete_system' title='Delete current system'><i class="fa fa-trash-o"></i></a>
+        <a class='button' href="#" id="request_drawing">request drawing</a>
+      {{/if}}
     </span>
 
 

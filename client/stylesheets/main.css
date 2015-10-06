@@ -134,6 +134,10 @@ img { border: 0; }
 }
 
 
+#login-dropdown-list {
+    left: -180px; 
+}
+
 /***********/
 /* drawers */
 

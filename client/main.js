@@ -228,7 +228,7 @@ var resize_sections = function(){
   //$('#drawing').css('width', drawing_width);
 };
 
-Template.body.onRendered(function(){
+Template.tabs.onRendered(function(){
   f.are_we_there_yet(function(){
     return (
       $('.user_input_container').length === Object.keys(settings.inputs).length &&
