@@ -140,9 +140,7 @@ Template.main.events({
   //  });
   //},
   'click #new_system': function(){
-    Meteor.call('new_system', function(err, id){
-      console.log('created ID: ', id);
-    });
+    f.change_system_id('new');
     subscribe['main']();
   },
   'click #delete_system': function(){
@@ -150,6 +148,7 @@ Template.main.events({
       Meteor.call('delete_system', function(err, id){
         console.log('created ID: ', id);
       });
+      f.change_system_id('');
     }
   },
   'change #system_name': function(){
@@ -164,16 +163,7 @@ Template.main.events({
 
   },
   'change #system_id': function(event){
-    if( event.target.value === 'new' ) {
-      Meteor.call('new_system', function(err, id){
-        console.log('created ID: ', id);
-      });
-      subscribe['main']();
-    } else {
-      Meteor.call('new_active_system', event.target.value, function(err, returned){
-        //console.log('returned: ', returned);
-      });
-    }
+    f.change_system_id(event.target.value);
   },
   'click #close_download_box': function(){
     $('#drawing_loading').fadeOut(420);
@@ -264,6 +254,8 @@ Template.body.onRendered(function(){
 });
 
 
+
+
 document.addEventListener('keydown', function(e) {
   // console.log(e.keyCode);
   if( e.keyCode === 115 ){
@@ -280,3 +272,43 @@ document.addEventListener('keydown', function(e) {
       }
   }
 });
+
+
+
+f.change_system_id = function(new_id){
+  console.log(new_id === '')
+  if( new_id === 'new' ) {
+    Meteor.call('new_system', function(err, id){
+      console.log('created ID: ', id);
+    });
+    subscribe['main']();
+  } else if( new_id === '' ) {
+    console.log('unrendered');
+    settings.webpage.setup_needed = true;
+    Meteor.call('new_active_system', new_id, function(err, returned){
+      //console.log('returned: ', returned);
+    });
+  } else {
+    Meteor.call('new_active_system', new_id, function(err, returned){
+      //console.log('returned: ', returned);
+    });
+    if(settings.webpage.setup_needed){
+      f.are_we_there_yet(function(){
+        return $('.user_input_container').length === Object.keys(settings.inputs).length;
+      },function(){
+        show_input = f.Show_hide('inputs');
+        if( sessionStorage.getItem('display_style') === 'tabs' ){
+          show_input('location');
+        }
+        show_drawing = f.Show_hide('drawing');
+        if( sessionStorage.getItem('display_style') === 'tabs' ){
+          show_drawing('G-001');
+        }
+
+        update();
+        setup_webpage();
+      });
+      settings.webpage.setup_needed = false;
+    }
+  }
+};
