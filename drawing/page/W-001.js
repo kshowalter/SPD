@@ -87,8 +87,8 @@ f.mk_sheet_num['W-001'] = function(settings){
 ///////////////////////////////
 // combiner box
 
-    if( section_defined(settings.state.active_system, 'DC') ){
-
+    //if( section_defined(settings.state.active_system, 'DC') ){
+    if( section_defined(settings.state.active_system, 'inverter') ){
         d.section("combiner");
 
         x = loc.jb_box.x;
@@ -251,14 +251,13 @@ f.mk_sheet_num['W-001'] = function(settings){
             y: loc.inverter.y+size.inverter.h/2-size.terminal_diam,
         });
 
-    }
 
 
 
 
 ///////////////////////////////
 //#inverter
-    if( section_defined(settings.state.active_system, 'inverter') ){
+
 
         d.section("inverter");
 

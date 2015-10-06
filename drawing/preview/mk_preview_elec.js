@@ -95,7 +95,11 @@ f.mk_preview['elec'] = function(settings){
         );
     }
 
-    if( section_defined(settings.state.active_system, 'DC') ){
+    //if( section_defined(settings.state.active_system, 'DC') ){
+    //}
+
+    if( section_defined(settings.state.active_system, 'inverter') ){
+
         d.layer('preview_DC');
 
         //y = y;
@@ -112,11 +116,9 @@ f.mk_preview['elec'] = function(settings){
             [loc.preview.DC.center,y],
             [w,h],
             'preview_DC_box'
+
         );
 
-    }
-
-    if( section_defined(settings.state.active_system, 'inverter') ){
 
         d.layer('preview_inverter');
 
