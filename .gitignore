@@ -2,6 +2,7 @@ gitlog.txt
 share_drive
 node_modules/*
 !node_modules/app
+packages/*
 
 reporting/gitlog.txt
 reporting/*.docx

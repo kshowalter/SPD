@@ -226,6 +226,17 @@ Template.tabs.onRendered(function(){
 
 })
 
+var resize_sections = function(){
+  console.log('resize');
+  if( window.innerWidth >= 1400 ){
+    $('.page').css('width', 1400);
+  } else {
+    $('.page').css('width', '98%');
+  }
+  //var drawing_width = $('.drawing_container').children('.tab_content').children('svg').width();
+  //drawing_width += 10;
+  //$('#drawing').css('width', drawing_width);
+};
 
 Template.body.onRendered(function(){
   f.are_we_there_yet(function(){
@@ -247,7 +258,8 @@ Template.body.onRendered(function(){
 
     update();
     setup_webpage();
-
+    resize_sections();
+    window.onresize = resize_sections;
   });
 });
 
