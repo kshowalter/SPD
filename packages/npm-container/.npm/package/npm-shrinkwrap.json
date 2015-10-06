@@ -145,7 +145,7 @@
               "version": "0.4.1"
             },
             "tough-cookie": {
-              "version": "2.0.0"
+              "version": "2.1.0"
             },
             "http-signature": {
               "version": "0.11.0",
@@ -202,7 +202,7 @@
               "version": "1.8.0",
               "dependencies": {
                 "bluebird": {
-                  "version": "2.10.1"
+                  "version": "2.10.2"
                 },
                 "chalk": {
                   "version": "1.1.1",
@@ -329,14 +329,6 @@
               }
             }
           }
-        }
-      }
-    },
-    "oracledb": {
-      "version": "1.1.0",
-      "dependencies": {
-        "nan": {
-          "version": "1.9.0"
         }
       }
     },
