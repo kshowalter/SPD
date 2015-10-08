@@ -51,6 +51,12 @@ f.mk_preview['roof_dim'] = function(settings){
     'preview_structural'
   );
 
+  //d.text(
+  //    [plan_x+plan_w+20, plan_y+plan_h/2],
+  //    system.roof.width1.toString(),
+  //    'dimention'
+  //);
+
   x = 50 + roof_width + 100 + roof_width/2;
   y += roof_height/2;
   d.rect(

@@ -977,7 +977,7 @@
     },
     {
       "MODULE_ID": 96,
-      "MAKE": "sun",
+      "MAKE": "Suniva",
       "MODEL": "OPT 280-60-4-1B0",
       "PMP": 280,
       "VMP": 31.900000000000002,
@@ -2215,7 +2215,7 @@
     },
     {
       "INVERTER_ID": 142,
-      "MAKE": "sma",
+      "MAKE": "SMA",
       "MODEL": "Sunny Tripower 12000TL-US",
       "NOMINAL_INVERTER_POWER": null,
       "MAX_INVERTER_POWER": 15000,
@@ -2284,7 +2284,7 @@
     },
     {
       "INVERTER_ID": 143,
-      "MAKE": "sma",
+      "MAKE": "SMA",
       "MODEL": "Sunny Tripower 15000TL-US",
       "NOMINAL_INVERTER_POWER": null,
       "MAX_INVERTER_POWER": 18750,
@@ -2491,7 +2491,7 @@
     },
     {
       "INVERTER_ID": 146,
-      "MAKE": "sma",
+      "MAKE": "SMA",
       "MODEL": "Sunny Tripower 20000TL-US",
       "NOMINAL_INVERTER_POWER": null,
       "MAX_INVERTER_POWER": null,

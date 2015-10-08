@@ -113,7 +113,7 @@ update = function(){
     var preview_table = {
         'location': [],
         'map': [],
-        'roof': [ settings.drawing.preview_svgs['roof_dim'], settings.drawing.preview_svgs['roof'] ],
+        'roof': [ settings.drawing.preview_svgs['roof'] ],
         'module': [ settings.drawing.preview_svgs['elec'], settings.drawing.preview_svgs['roof'] ],
         'array': [ settings.drawing.preview_svgs['elec'] ],
         'DC': [ settings.drawing.preview_svgs['elec'] ],
