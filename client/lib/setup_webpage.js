@@ -8,10 +8,8 @@ setup_webpage = function(){
     });
 
   if( sessionStorage.getItem('display_style') === 'tabs' ){
-    show_drawing('G-001');
-  }
-  if( sessionStorage.getItem('display_style') === 'tabs' ){
-    show_input('location');
+    f.show_tab('inputs', storage.selected_inputs_tab || 'location' );
+    //f.show_tab('drawing', storage.selected_tab.drawing);
   }
 
   if( $('#section_location').children('.drawer').length === 0 ){
@@ -19,7 +17,7 @@ setup_webpage = function(){
   } else {
     var map_drawer = $('#section_location').children('.drawer').children('.drawer_content');
   }
-  var maps = $('<div>').attr('id', 'maps').appendTo(map_drawer)
+  var maps = $('<div>').attr('id', 'maps').appendTo(map_drawer);
 
 
   var geocode_div = $('<div>')
@@ -34,7 +32,7 @@ setup_webpage = function(){
   .attr('class', 'geocode_display')
   .attr('id','geocode_display')
   .text('');
-  $('<br>').appendTo(geocode_div)
+  $('<br>').appendTo(geocode_div);
   $('<br>').appendTo(geocode_div)
   $('<span>').appendTo(geocode_div)
   .attr('class', 'location_table')

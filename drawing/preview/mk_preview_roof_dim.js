@@ -44,6 +44,12 @@ f.mk_preview['roof_dim'] = function(settings){
     ],
     'preview_structural'
   );
+  d.poly([
+      [x+wall_width/2, y+roof_height],
+      [x-wall_width/2, y+roof_height],
+    ],
+    'preview_structural'
+  );
 
   x = 50 + roof_width + 100 + roof_width/2;
   y += roof_height/2;

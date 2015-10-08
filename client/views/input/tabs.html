@@ -4,7 +4,7 @@
     <div class="tab_title_bar">
       {{#each sections}}
         {{#with section_name}}
-          <span class='tab tab_inactive' id="tab_{{this}}" onclick="show_input('{{this}}')">
+          <span class='tab tab_inactive' id="tab_{{this}}" onclick="f.show_tab('inputs','{{this}}')">
             <i class="fa fa-square-o"></i> {{section_label}}
           </span>
         {{/with}}
