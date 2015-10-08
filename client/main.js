@@ -2,7 +2,8 @@ if(top != window) {
   top.location = window.location;
 }
 
-
+window.storage = sessionStorage;
+//storage.selected_tab = storage.selected_tab || {};
 
 ////////////////////////
 /*
@@ -237,15 +238,6 @@ Template.tabs.onRendered(function(){
       Meteor.user().active_system
     );
   },function(){
-    show_input = f.Show_hide('inputs');
-    if( sessionStorage.getItem('display_style') === 'tabs' ){
-      show_input('location');
-    }
-    show_drawing = f.Show_hide('drawing');
-    if( sessionStorage.getItem('display_style') === 'tabs' ){
-      show_drawing('G-001');
-    }
-
     update();
     setup_webpage();
     resize_sections();
@@ -276,7 +268,7 @@ document.addEventListener('keydown', function(e) {
 
 
 f.change_system_id = function(new_id){
-  console.log(new_id === '')
+  console.log(new_id === '');
   if( new_id === 'new' ) {
     Meteor.call('new_system', function(err, id){
       console.log('created ID: ', id);
@@ -296,14 +288,6 @@ f.change_system_id = function(new_id){
       f.are_we_there_yet(function(){
         return $('.user_input_container').length === Object.keys(settings.inputs).length;
       },function(){
-        show_input = f.Show_hide('inputs');
-        if( sessionStorage.getItem('display_style') === 'tabs' ){
-          show_input('location');
-        }
-        show_drawing = f.Show_hide('drawing');
-        if( sessionStorage.getItem('display_style') === 'tabs' ){
-          show_drawing('G-001');
-        }
 
         update();
         setup_webpage();
