@@ -47,7 +47,28 @@ To generate a selection of FSEC pre-approved PV system drawings that will cover 
     sudo ./ubuntu14_install_phantomjs198.sh
     phantomjs --version
     ```
-
+    
+  * Specsheet share
+    * Install cifs utils
+      ```
+      $sudo apt-get install cifs-utils
+      ```    
+      
+    * Create a directory for the share to mount to:
+      ```
+      $sudo mkdir /mnt/SPD
+      ```
+      
+    * Mount the share
+      ```
+      $mount -t cifs //shares.fsec.ucf.edu/SPD /mnt/SPD -o username=SHARE_USERNAME_HERE,noexec
+      ```
+      
+    * Create a symbolic link
+      ```
+      $ln -s /mnt/SPD/spec_sheets /your/git/directory/SPD/private/.#specsheet
+      ```
+      
 ### Start server:
 
     meteor

@@ -5,6 +5,7 @@ var phantom = Meteor.npmRequire('phantom');
 var fs = Meteor.npmRequire('fs');
 var shelljs = Meteor.npmRequire('shelljs');
 var pdfDirectory = process.env.PWD + '/private/.#pdf/';
+var specSheetDirectory = process.env.PWD + '/private/.#specsheet/';
 
 permit = {
 
@@ -16,13 +17,18 @@ permit = {
 	 *****************************************************************************************************/
 	download: function(req, res, system_id) {
 		var host = req.headers.host;
+		
+		// TODO: replace hard coded value with something like getSpecSheet()? or inputs.specsheet? whatever the syntax...
+		var specSheetFile = specSheetDirectory + "m250dsen60hz-282925.pdf"; 
+		
 		permit.createPDF("http://"+host+"/drawing/"+system_id+"/1", function(pdf1) {
 			permit.createPDF("http://"+host+"/drawing/"+system_id+"/2", function(pdf2) {
 				permit.createPDF("http://"+host+"/drawing/"+system_id+"/3", function(pdf3) {
 					permit.createPDF("http://"+host+"/drawing/"+system_id+"/4", function(pdf4) {
 						//TODO: Locate spec sheets
 						/* , 'data_sheets/' +'Suniva Optimus 60 Black 2014 01 17.pdf', 'data_sheets/' +'specsheet-1-igplusadvanced-86819.pdf'*/
-						permit.mergePDF([pdf1, pdf2, pdf3, pdf4 ], 'permit_' + system_id + (new Date()).valueOf() + '.pdf', function(pdf5) {
+						
+						permit.mergePDF([pdf1, pdf2, pdf3, pdf4, specSheetFile], 'permit_' + system_id + (new Date()).valueOf() + '.pdf', function(pdf5) {
 							permit.downloadPDF(res, pdf5);
 						});
 					});
@@ -56,7 +62,7 @@ permit = {
 						console.log('PDF File Created: ' + pdfName);
 						ph.exit();
 
-						if(callback) callback(pdfName);
+						if(callback) callback(pdfDirectory+pdfName);
 					});
 				});
 			});
@@ -89,7 +95,9 @@ permit = {
 	mergePDF: function(inputFiles, outputFile, callback)
 	{
 
-		inputFiles.forEach(function(filename, i, inputFiles) { inputFiles[i] = pdfDirectory + inputFiles[i]; });
+		// Append each input file with the #.PDF directory name
+		// This has been removed and a full path has been given to each PDF file instead
+		//inputFiles.forEach(function(filename, i, inputFiles) { inputFiles[i] = pdfDirectory + inputFiles[i]; });
 
 		var options = {silent: true, async: this.async};
 		var command = 'gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=' + pdfDirectory + outputFile + " \'" + inputFiles.join("\' \'") + "\'";
