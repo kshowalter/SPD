@@ -2,7 +2,12 @@ f.mk_preview['elec'] = function(settings){
   //console.log("** Making preview 1");
 
   var d = Drawing(settings);
+  d.size = {
+    w: 600,
+    h: 600,
+  };
 
+  settings.drawing_settings.size.drawing;
 
 
   var size = settings.drawing_settings.size;
@@ -179,5 +184,5 @@ f.mk_preview['elec'] = function(settings){
 
   y += text_spacing * ( inverter_text_array.length + 1 );
 
-  return d.drawing_parts;
+  return d;
 };

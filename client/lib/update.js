@@ -121,11 +121,13 @@ update = function(){
         'AC': [ settings.drawing.preview_svgs['elec'] ],
         'attachment_system': [ settings.drawing.preview_svgs['roof'] ],
     };
+    $('.preview_cell').remove();
     settings.webpage.sections.forEach(function(section_name){
         if(preview_table[section_name]) {
           preview_table[section_name].forEach(function(preview_svg){
             var svg_drawing_container = $('<span>')
               .addClass('cell')
+              .addClass('preview_cell');
             $('#section_'+section_name).append(svg_drawing_container)
               svg_drawing_container.append(
                   $(preview_svg).clone()

@@ -78,5 +78,5 @@ f.mk_sheet_num['G-001'] = function(settings){
 
     //*/
 
-    return d.drawing_parts;
+    return d;
 };

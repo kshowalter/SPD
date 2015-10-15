@@ -2,6 +2,10 @@ f.mk_preview['roof'] = function(settings){
     //console.log("** Making preview 2");
 
     var d = Drawing(settings);
+    d.size = {
+      w: 600,
+      h: 600,
+    };
 
     if( section_defined(settings.state.active_system, 'roof') ){
 
@@ -255,5 +259,5 @@ f.mk_preview['roof'] = function(settings){
 
     }
 
-    return d.drawing_parts;
+    return d;
 };
