@@ -29,27 +29,57 @@ f.mk_preview['roof_dim'] = function(settings){
   var wall_height = 150;
   var wall_width = 300-40;
 
-  x = 50 + roof_width/2;
-  y = 100;
+  x = 150;
+  y = 150;
+
+  x += roof_width/2;
 
   d.poly([
+      [x-roof_width/2, y+roof_height],
       [x,y],
+      [x+roof_width/2, y+roof_height],
+
+    ],
+    'preview_structural_roof_outline'
+  );
+  d.poly([
       [x+roof_width/2, y+roof_height],
       [x+wall_width/2, y+roof_height],
       [x+wall_width/2, y+roof_height+wall_height],
       [x-wall_width/2, y+roof_height+wall_height],
       [x-wall_width/2, y+roof_height],
       [x-roof_width/2, y+roof_height],
-      [x,y],
     ],
-    'preview_structural'
+    'preview_structural_roof_outline_dot'
   );
   d.poly([
       [x+wall_width/2, y+roof_height],
       [x-wall_width/2, y+roof_height],
     ],
+    'preview_structural_roof_outline_dot'
+  );
+
+  // eave height dimention
+  d.poly([
+      [x-roof_width/2 -20, y+roof_height],
+      [x-roof_width/2 -40, y+roof_height],
+    ],
     'preview_structural'
   );
+  d.poly([
+      [x-roof_width/2 -20, y+roof_height+wall_height],
+      [x-roof_width/2 -40, y+roof_height+wall_height],
+    ],
+    'preview_structural'
+  );
+  d.poly([
+      [x-roof_width/2 -30, y+roof_height+wall_height],
+      [x-roof_width/2 -30, y+roof_height],
+    ],
+    'preview_structural'
+  );
+
+
 
   //d.text(
   //    [plan_x+plan_w+20, plan_y+plan_h/2],
@@ -57,6 +87,7 @@ f.mk_preview['roof_dim'] = function(settings){
   //    'dimention'
   //);
 
+  /*
   x = 50 + roof_width + 100 + roof_width/2;
   y += roof_height/2;
   d.rect(
@@ -71,6 +102,8 @@ f.mk_preview['roof_dim'] = function(settings){
     [wall_width,wall_height],
     'preview_structural'
   );
+  //*/
+
 
   return d.drawing_parts;
 };

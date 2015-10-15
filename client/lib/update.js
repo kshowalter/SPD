@@ -113,7 +113,7 @@ update = function(){
     var preview_table = {
         'location': [],
         'map': [],
-        'roof': [ settings.drawing.preview_svgs['roof'] ],
+        'roof': [ settings.drawing.preview_svgs['roof_dim'] , settings.drawing.preview_svgs['roof'] ],
         'module': [ settings.drawing.preview_svgs['elec'], settings.drawing.preview_svgs['roof'] ],
         'array': [ settings.drawing.preview_svgs['elec'] ],
         'DC': [ settings.drawing.preview_svgs['elec'] ],
@@ -122,17 +122,18 @@ update = function(){
         'attachment_system': [ settings.drawing.preview_svgs['roof'] ],
     };
     settings.webpage.sections.forEach(function(section_name){
-        var svg_drawing_container = $('#section_'+section_name)
-          .children('.cell')
-          .children('.svg_drawing_container');
-        svg_drawing_container.empty();
-        if(preview_table[section_name]) preview_table[section_name].forEach(function(preview_svg){
-            svg_drawing_container.append(
-                $(preview_svg).clone()
-                    .attr('class', 'svg_drawing_preview')
-                //$('<br>')
-            );
-        });
+        if(preview_table[section_name]) {
+          preview_table[section_name].forEach(function(preview_svg){
+            var svg_drawing_container = $('<span>')
+              .addClass('cell')
+            $('#section_'+section_name).append(svg_drawing_container)
+              svg_drawing_container.append(
+                  $(preview_svg).clone()
+                      .attr('class', 'svg_drawing_preview')
+                  //$('<br>')
+              );
+          });
+        }
     });
   }
 };
