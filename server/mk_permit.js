@@ -4,6 +4,7 @@
 var phantom = Meteor.npmRequire('phantom');
 var fs = Meteor.npmRequire('fs');
 var shelljs = Meteor.npmRequire('shelljs');
+var _ = Meteor.npmRequire("lodash");
 var pdfDirectory = process.env.PWD + '/private/.#pdf/';
 var specSheetDirectory = process.env.PWD + '/private/.#specsheet/';
 
@@ -17,18 +18,36 @@ permit = {
 	 *****************************************************************************************************/
 	download: function(req, res, system_id) {
 		var host = req.headers.host;
-		
-		// TODO: replace hard coded value with something like getSpecSheet()? or inputs.specsheet? whatever the syntax...
-		var specSheetFile = specSheetDirectory + "m250dsen60hz-282925.pdf"; 
-		
+
+		// We need the Make/Model to look up the spec sheets
+		var moduleModel   = System_data.findOne({ system_id:system_id, section_name:"module",   value_name:"model" }).value;
+		var moduleMake    = System_data.findOne({ system_id:system_id, section_name:"module",   value_name:"make"  }).value;
+		var inverterModel = System_data.findOne({ system_id:system_id, section_name:"inverter", value_name:"model" }).value;
+		var inverterMake  = System_data.findOne({ system_id:system_id, section_name:"inverter", value_name:"make"  }).value;
+
+		// Here we search through the module/inverter data to find the module/inverter that are part of this system
+		var db = JSON.parse(Assets.getText('data/fsec_copy.json'));  //TODO: How do we look up the spec sheet file name without reloading this?
+
+		var module   = _.find(db.modules,   {'MAKE':moduleMake,   'MODEL':moduleModel  } );
+		var inverter = _.find(db.inverters, {'MAKE':inverterMake, 'MODEL':inverterModel} );
+
+		//We have the file names for the spec sheets
+		var spec_sheets = [module.SPEC_SHEET, inverter.SPEC_SHEET];
+		console.log(spec_sheets);
+
+		//Add spec sheet directory, and make sure the extension is ".pdf"
+		for(var n=0; n<spec_sheets.length; n++)
+		{
+			spec_sheets[n] = specSheetDirectory + spec_sheets[n];
+			if(!/ [.]pdf$/i.test(spec_sheets[n])) spec_sheets[n] = spec_sheets[n] + ".pdf";
+		}
+
+		//Create the permit PDF, and send it to the user
 		permit.createPDF("http://"+host+"/drawing/"+system_id+"/1", function(pdf1) {
 			permit.createPDF("http://"+host+"/drawing/"+system_id+"/2", function(pdf2) {
 				permit.createPDF("http://"+host+"/drawing/"+system_id+"/3", function(pdf3) {
 					permit.createPDF("http://"+host+"/drawing/"+system_id+"/4", function(pdf4) {
-						//TODO: Locate spec sheets
-						/* , 'data_sheets/' +'Suniva Optimus 60 Black 2014 01 17.pdf', 'data_sheets/' +'specsheet-1-igplusadvanced-86819.pdf'*/
-						
-						permit.mergePDF([pdf1, pdf2, pdf3, pdf4, specSheetFile], 'permit_' + system_id + (new Date()).valueOf() + '.pdf', function(pdf5) {
+						permit.mergePDF([pdf1, pdf2, pdf3, pdf4].concat(spec_sheets), 'permit_' + system_id + (new Date()).valueOf() + '.pdf', function(pdf5) {
 							permit.downloadPDF(res, pdf5);
 						});
 					});
@@ -94,10 +113,6 @@ permit = {
 	 *****************************************************************************************************/
 	mergePDF: function(inputFiles, outputFile, callback)
 	{
-
-		// Append each input file with the #.PDF directory name
-		// This has been removed and a full path has been given to each PDF file instead
-		//inputFiles.forEach(function(filename, i, inputFiles) { inputFiles[i] = pdfDirectory + inputFiles[i]; });
 
 		var options = {silent: true, async: this.async};
 		var command = 'gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=' + pdfDirectory + outputFile + " \'" + inputFiles.join("\' \'") + "\'";
