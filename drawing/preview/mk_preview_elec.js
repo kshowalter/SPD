@@ -3,8 +3,8 @@ f.mk_preview['elec'] = function(settings){
 
   var d = Drawing(settings);
   d.size = {
-    w: 600,
-    h: 600,
+    w: 450,
+    h: 700,
   };
 
   settings.drawing_settings.size.drawing;
@@ -16,30 +16,21 @@ f.mk_preview['elec'] = function(settings){
 
   var x, y, h, w, section_x, section_y;
 
+  loc.preview.array.top = 40;
+  loc.preview.array.left = 50;
+
   w = size.preview.module.w;
   h = size.preview.module.h;
   loc.preview.array.bottom = loc.preview.array.top + h*1.25*system.array.modules_per_string + h*3/4;
   //loc.preview.array.right = loc.preview.array.left + w*1.25*system.array.num_strings + w*2;
   loc.preview.array.right = loc.preview.array.left + w*1.25*8 + w*2;
 
-  loc.preview.inverter.center = 500 ;
-  w = size.preview.inverter.w;
-  loc.preview.inverter.left = loc.preview.inverter.center - w/2;
-  loc.preview.inverter.right = loc.preview.inverter.center + w/2;
-
-  loc.preview.DC.left = loc.preview.array.right;
-  loc.preview.DC.right = loc.preview.inverter.left;
-  loc.preview.DC.center = ( loc.preview.DC.right + loc.preview.DC.left )/2;
-
-  loc.preview.AC.left = loc.preview.inverter.right;
-  loc.preview.AC.right = loc.preview.AC.left + 300;
-  loc.preview.AC.center = ( loc.preview.AC.right + loc.preview.AC.left )/2;
-
-
   // TODO fix: sections must be defined in order, or there are areas
 
   if( section_defined(settings.state.active_system, 'array') && section_defined(settings.state.active_system, 'module') ){
-    d.layer('preview_array');
+
+
+    d.layer('preview');
 
     w = size.preview.module.w;
     h = size.preview.module.h;
@@ -61,7 +52,7 @@ f.mk_preview['elec'] = function(settings){
         d.rect(
           [ x , y ],
           [w,h],
-          'preview_module'
+          'preview_module_box'
         );
       }
     }
@@ -109,13 +100,14 @@ f.mk_preview['elec'] = function(settings){
         'Isc: ' + parseFloat(system.array.isc).toFixed(),
         'Voc: ' + parseFloat(system.array.voc).toFixed(),
       ],
-      'preview_array',
-      'preview text'
+      'preview_text',
+      'preview_text'
     );
   }
 
   //if( section_defined(settings.state.active_system, 'DC') ){
   //}
+  /*
   x = 500;
   y = 50;
 
@@ -150,7 +142,7 @@ f.mk_preview['elec'] = function(settings){
       [ x, y ],
       inverter_text_array,
       'preview_inverter',
-      'preview text'
+      'preview_text'
     );
   }
 
@@ -178,11 +170,13 @@ f.mk_preview['elec'] = function(settings){
       [ x, y ],
       AC_text_array,
       'preview_AC',
-      'preview text'
+      'preview_text'
     );
   }
 
   y += text_spacing * ( inverter_text_array.length + 1 );
+
+  //*/
 
   return d;
 };
