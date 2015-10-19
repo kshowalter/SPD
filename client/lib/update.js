@@ -25,12 +25,12 @@ update = function(){
     section_list.forEach(function(section_name){
       if( section_defined(settings.state.active_system, section_name) ){
         settings.webpage.section_activated[section_name] = true;
-        $('#tab_'+section_name).html('<i class="fa fa-check-square"></i> ' + section_name);
+        $('#tab_'+section_name).html('<i class="fa fa-check-square"></i> ' + f.pretty_name(section_name) );
         // '<i class="fa fa-check-square"></i> ' + section_name
       } else {
         not_defined.push(section_name);
         settings.webpage.section_activated[section_name] = false;
-        $('#tab_'+section_name).children('a').html('<i class="fa fa-square-o"></i> ' + section_name);
+        $('#tab_'+section_name).html('<i class="fa fa-square-o"></i> ' + f.pretty_name(section_name) );
       }
     });
     active_section_name = not_defined[0];

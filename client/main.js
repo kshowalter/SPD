@@ -272,6 +272,7 @@ f.change_system_id = function(new_id){
   if( new_id === 'new' ) {
     Meteor.call('new_system', function(err, id){
       console.log('created ID: ', id);
+      update();
     });
     subscribe['main']();
   } else if( new_id === '' ) {
@@ -288,7 +289,6 @@ f.change_system_id = function(new_id){
       f.are_we_there_yet(function(){
         return $('.user_input_container').length === Object.keys(settings.inputs).length;
       },function(){
-
         update();
         setup_webpage();
       });
