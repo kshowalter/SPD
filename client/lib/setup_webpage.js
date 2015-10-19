@@ -12,46 +12,39 @@ setup_webpage = function(){
     //f.show_tab('drawing', storage.selected_tab.drawing);
   }
 
-  if( $('#section_location').children('.drawer').length === 0 ){
-    var map_drawer = $('#section_location');
-  } else {
-    var map_drawer = $('#section_location').children('.drawer').children('.drawer_content');
-  }
-  var maps = $('<div>').attr('id', 'maps').appendTo(map_drawer);
 
 
-  var geocode_div = $('<div>')
+  var location_display = $('<span>')
   .attr('class', 'geocode_line')
-  .appendTo(maps);
-  //$('<a>').appendTo(geocode_div)
-  //.attr('class', 'geocode_button')
-  //.text('Find location from address')
-  //.attr('href', '#')
-  //.click(f.request_geocode);
-  $('<span>').appendTo(geocode_div)
-  .attr('class', 'geocode_display')
+  //.addClass('cell')
+  //.attr('style', 'width:485px;height:380px')
+  .appendTo($('#section_location').children('.cell'));
+
+  $('<span>').appendTo(location_display)
+  .addClass('geocode_display')
+  //.addClass('cell')
   .attr('id','geocode_display')
   .text('');
-  $('<br>').appendTo(geocode_div);
-  $('<br>').appendTo(geocode_div)
-  $('<span>').appendTo(geocode_div)
-  .attr('class', 'location_table')
+  $('<br>').appendTo(location_display)
+  $('<span>').appendTo(location_display)
+  .addClass('location_table')
+  //.addClass('cell')
   .attr('id','location_table')
   .text('');
 
-  var map_div = $('<div>')
-  .attr('class', 'geocode_line')
-  .appendTo(maps);
-  $('<div>')
+
+  //var map_cell = $('<span>')
+  //.addClass('cell')
+  //.appendTo($('#section_location'));
+
+  $('<span>')
   .attr('id', 'map_road')
-  .attr('class', 'map')
-  .attr('style', 'width:485px;height:380px')
-  .appendTo(map_div);
-  $('<div>')
+  .addClass('cell')
+  .appendTo($('#section_location'));
+  $('<span>')
   .attr('id', 'map_sat')
-  .attr('class', 'map')
-  .attr('style', 'width:485px;height:380px')
-  .appendTo(map_div);
+  .addClass('cell')
+  .appendTo($('#section_location'));
 
   var lat_fl_center = 27.75;
   var lon_fl_center = -84.0;
