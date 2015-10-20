@@ -13,6 +13,9 @@ update = function(){
       settings.system[input_doc.section_name][input_doc.value_name] = input_doc.value;
     });
 
+    settings.webpage.selected_modules = User_systems.findOne({system_id: active_system}).selected_modules ||
+      settings.webpage.selected_modules;
+
     f.request_geocode();
 
     settings = calculate(settings);
@@ -25,12 +28,12 @@ update = function(){
     section_list.forEach(function(section_name){
       if( section_defined(settings.state.active_system, section_name) ){
         settings.webpage.section_activated[section_name] = true;
-        $('#tab_'+section_name).html('<i class="fa fa-check-square"></i> ' + section_name);
+        $('#tab_'+section_name).html('<i class="fa fa-check-square"></i> ' + f.pretty_name(section_name) );
         // '<i class="fa fa-check-square"></i> ' + section_name
       } else {
         not_defined.push(section_name);
         settings.webpage.section_activated[section_name] = false;
-        $('#tab_'+section_name).children('a').html('<i class="fa fa-square-o"></i> ' + section_name);
+        $('#tab_'+section_name).html('<i class="fa fa-square-o"></i> ' + f.pretty_name(section_name) );
       }
     });
     active_section_name = not_defined[0];
@@ -121,11 +124,13 @@ update = function(){
         'AC': [ settings.drawing.preview_svgs['elec'] ],
         'attachment_system': [ settings.drawing.preview_svgs['roof'] ],
     };
+    $('.preview_cell').remove();
     settings.webpage.sections.forEach(function(section_name){
         if(preview_table[section_name]) {
           preview_table[section_name].forEach(function(preview_svg){
             var svg_drawing_container = $('<span>')
               .addClass('cell')
+              .addClass('preview_cell');
             $('#section_'+section_name).append(svg_drawing_container)
               svg_drawing_container.append(
                   $(preview_svg).clone()

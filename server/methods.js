@@ -61,6 +61,7 @@ Meteor.methods({
       user_id,
       { $set: {active_system: system_id } }
     );
+    return true;
   },
 //  update_user_data: function(v){
 //    console.log('I will now update the user data');
@@ -105,6 +106,13 @@ Meteor.methods({
 
   },
 
-
-
+  select_module: function(selected_modules){
+    var active_system = Meteor.users.findOne({_id:this.userId}).active_system;
+    User_systems.upsert(
+      {system_id: active_system },
+      {$set:
+        {selected_modules:selected_modules}
+      }
+    );
+  },
 });

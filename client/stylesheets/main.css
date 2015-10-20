@@ -63,6 +63,7 @@ img { border: 0; }
 .cell {
   display: inline-block;
   vertical-align: top;
+  margin: 5px;
 }
 
 
@@ -243,7 +244,7 @@ img { border: 0; }
 
 
 .svg_drawing_preview {
-  height: 500px;
+  height: 400px;
   background: white;
   margin: 5px;
   /*float: left;*/
@@ -314,6 +315,17 @@ img { border: 0; }
 
 
 }
+
+
+#map_road {
+  width: 400px;
+  height: 400px;
+}
+#map_sat {
+  width: 400px;
+  height: 400px;
+}
+
 
 
 /**************/
@@ -516,9 +528,6 @@ svg {
 }
 
 
-.map {
-  padding:5px;
-}
 
 
 

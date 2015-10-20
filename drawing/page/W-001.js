@@ -629,5 +629,5 @@ f.mk_sheet_num['W-001'] = function(settings){
 
     d.section();
 
-    return d.drawing_parts;
+    return d;
 };

@@ -99,5 +99,5 @@ f.mk_sheet_num['W-002'] = function(settings){
   d.layer();
 
 
-  return d.drawing_parts;
+  return d;
 };
