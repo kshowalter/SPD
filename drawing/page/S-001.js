@@ -263,7 +263,8 @@ f.mk_sheet_num['S-001'] = function(settings){
 
     //selected modules
 
-    if( num_cols !== settings.temp.num_cols || num_rows !== settings.temp.num_rows ){
+    if( Meteor.isClient && ( num_cols !== settings.temp.num_cols || num_rows !== settings.temp.num_rows ) ){
+      console.log('selected modules reset', num_cols, settings.temp.num_cols );
       settings.webpage.selected_modules_total = 0;
       settings.webpage.selected_modules = [];
 
@@ -273,7 +274,6 @@ f.mk_sheet_num['S-001'] = function(settings){
           settings.webpage.selected_modules[r][c] = false;
         }
       }
-
 
       settings.temp.num_cols = num_cols;
       settings.temp.num_rows = num_rows;
@@ -350,7 +350,7 @@ f.mk_sheet_num['S-001'] = function(settings){
 
       }
     }
-    console.log("rail_sections[%s]:", rail_sections.length, rail_sections);
+    //console.log("rail_sections[%s]:", rail_sections.length, rail_sections);
 
     for( var r=0; r<rail_sections.length; r++)
     {

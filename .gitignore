@@ -1,8 +1,4 @@
-gitlog.txt
-share_drive
-node_modules/*
-!node_modules/app
-packages/*
+packages/
 
 reporting/gitlog.txt
 reporting/*.docx

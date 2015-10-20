@@ -212,7 +212,7 @@ Template.main.events({
 });
 
 Template.tabs.onRendered(function(){
-  console.log('#tab rendered: ', this);
+  //console.log('#tab rendered: ', this);
 
 
 });
