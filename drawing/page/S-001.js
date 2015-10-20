@@ -486,8 +486,6 @@ if( section_defined(settings.state.active_system, 'module') && section_defined(s
 		//);
 
 		//Mounting Holes
-		var screwCount = 5;
-		var rail_length = railEnd.x - railStart.x + module_w;
 		var truss_spacing = 2 * scale; //2 feet between each truss
 
 		var firstScrew = true;
