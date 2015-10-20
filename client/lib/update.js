@@ -13,6 +13,9 @@ update = function(){
       settings.system[input_doc.section_name][input_doc.value_name] = input_doc.value;
     });
 
+    settings.webpage.selected_modules = User_systems.findOne({system_id: active_system}).selected_modules ||
+      settings.webpage.selected_modules;
+
     f.request_geocode();
 
     settings = calculate(settings);

@@ -39,7 +39,6 @@ f.mk_preview['roof'] = function(settings){
     } else {
       scale = max_height/(system.roof.slope_length);
     }
-    console.log(scale)
     var detail_w = system.roof.eave_width * scale;
     var detail_h = system.roof.slope_length * scale;
 
@@ -111,8 +110,8 @@ f.mk_preview['roof'] = function(settings){
       //selected modules
 
       if( num_cols !== settings.temp.num_cols || num_rows !== settings.temp.num_rows ){
-        settings.webpage.selected_modules =[];
         settings.webpage.selected_modules_total = 0;
+        settings.webpage.selected_modules = [];
 
         for( r=1; r<=num_rows; r++){
           settings.webpage.selected_modules[r] = [];

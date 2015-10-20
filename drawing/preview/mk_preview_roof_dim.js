@@ -12,7 +12,6 @@ var dimention = function( drawing, point1, point2, gap_length, text_string, othe
     }
   }
 
-
   var center_point = geometry.center(point1,point2);
   center_point = geometry.move_toward( center_point, point2, center_offset );
   var label_point_1 = geometry.move_toward( center_point, point1, gap_length/2);
@@ -34,7 +33,7 @@ var dimention = function( drawing, point1, point2, gap_length, text_string, othe
 
   text_point = geometry.move_toward( center_point, point2, text_offset );
   text_point = geometry.rotate( text_point, center_point, 90 );
-  drawing.text(text_point, text_string, null, 'dimention');
+  drawing.text(text_point, text_string, 'preview_text', 'dimention');
 };
 
 f.mk_preview['roof_dim'] = function(settings){
@@ -154,7 +153,7 @@ f.mk_preview['roof_dim'] = function(settings){
     w = 200;
     h = 100;
 
-    d.text( [x,y], 'Roof Section', null, 'dimention');
+    d.text( [x,y], 'Roof Section', 'preview_text', 'dimention');
     y += 20;
     y += h/2;
 
@@ -184,7 +183,7 @@ f.mk_preview['roof_dim'] = function(settings){
     h -= 20;
     d.rect( [x,y], [w,h], 'preview_structural' );
 
-    d.text( [x,y], 'PV Array', null, 'dimention');
+    d.text( [x,y], 'PV Array', 'preview_text', 'dimention');
   }
 
   // eave Width dimention
