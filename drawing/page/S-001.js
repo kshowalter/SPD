@@ -491,9 +491,9 @@ if( section_defined(settings.state.active_system, 'module') && section_defined(s
 		var truss_spacing = 2 * scale; //2 feet between each truss
 
 		var firstScrew = true;
-		for(var n=x; n<x+(num_cols * col_spacing * scale); n+=truss_spacing)
+		for(var n=x; n<x+((num_cols+1) * (col_spacing+1) * scale); n+=truss_spacing)
 		{
-			if((n+truss_spacing/2 >= x+railStart.x) && (n-truss_spacing/2 <= x+railEnd.x+module_w))
+			if((n+truss_spacing >= x+railStart.x) && (n-truss_spacing <= x+railEnd.x+module_w))
 			{
 				if(firstScrew) {
 					firstScrew = false;
@@ -520,9 +520,9 @@ if( section_defined(settings.state.active_system, 'module') && section_defined(s
 		}
 
 		//Mounting Holes
-		for(var n=x; n<x+(num_cols * col_spacing * scale); n+=truss_spacing)
+		for(var n=x; n<x+((num_cols+1) * col_spacing * scale); n+=truss_spacing)
 		{
-			if((n+truss_spacing/2 >= x+railStart.x) && (n-truss_spacing/2 <= x+railEnd.x+module_w))
+			if((n+truss_spacing >= x+railStart.x) && (n-truss_spacing <= x+railEnd.x+module_w))
 			{
 
 				d.circ(
