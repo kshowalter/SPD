@@ -13,7 +13,7 @@ f.mk_sheet_num['S-001'] = function(settings){
 
 
 
-  if(! section_defined(settings.state.active_system, 'roof') ) return d.drawing_parts;
+  if(! section_defined(settings.state.active_system, 'roof') ) return d;
 
 
 
@@ -559,5 +559,5 @@ if( section_defined(settings.state.active_system, 'module') && section_defined(s
 
 
 
-return d.drawing_parts;
+return d;
 };
