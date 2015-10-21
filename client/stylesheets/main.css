@@ -540,7 +540,6 @@ svg {
 
 .user_input select, select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
     display: inline-block;
-    padding: 4px;
     margin-bottom: 9px;
     font-size: 14px;
     line-height: 21.875px;
@@ -553,8 +552,3 @@ svg {
     transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
 }
 
-input, select, textarea {
-    font: inherit;
-    text-align: inherit;
-    vertical-align: inherit;
-}
