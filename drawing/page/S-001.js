@@ -31,11 +31,10 @@ f.mk_sheet_num['S-001'] = function(settings){
   var roof_plan_ratio = length_p / system.roof.eave_width;
 
 
-
   //////
   // roof detail
 
-  var detail_x = 80;
+  var detail_x = 30;
   var detail_y = 30;
 
   if( Number(system.roof.eave_width) >= Number(system.roof.slope_length) ){
@@ -124,24 +123,13 @@ f.mk_sheet_num['S-001'] = function(settings){
   d.block('north arrow_up', [x,y]);
 
 
-
-
-
-
-
-
-
-
-
-
-
   /**
    *  Structural mounting rails and screw holes
    */
 
     // Draw Roof
   var roofX = detail_x;
-  var roofY = detail_y+400;
+  var roofY = detail_x+400;
   var roofWidth  = scale * system.roof.eave_width;
   var roofHeight = scale * system.roof.slope_length;
 
@@ -231,9 +219,7 @@ f.mk_sheet_num['S-001'] = function(settings){
 
   //////
   // Module options
-  if( section_defined(settings.state.active_system, 'module') &&
-    section_defined(settings.state.active_system, 'array')){
-
+  if( section_defined(settings.state.active_system, 'module') && section_defined(settings.state.active_system, 'array')){
     var r,c;
 
     var roof_length_avail = system.roof.slope_length - (a*2);
@@ -254,6 +240,7 @@ f.mk_sheet_num['S-001'] = function(settings){
       module_h = (Number(mm_to_inches(system.module.width)))/12;
     }
 
+    console.log(system.module, module_w, module_h);
 
     row_spacing = row_spacing/12; //module dimensions are in inches
     col_spacing = col_spacing/12; //module dimensions are in inches
@@ -264,16 +251,16 @@ f.mk_sheet_num['S-001'] = function(settings){
     //selected modules
 
     if( Meteor.isClient && ( num_cols !== settings.temp.num_cols || num_rows !== settings.temp.num_rows ) ){
-      console.log('selected modules reset', num_cols, settings.temp.num_cols );
-      settings.webpage.selected_modules_total = 0;
       settings.webpage.selected_modules = [];
+      settings.webpage.selected_modules_total = 0;
 
       for( r=1; r<=num_rows; r++){
-        settings.webpage.selected_modules[r] = settings.webpage.selected_modules[r] || [];
+        settings.webpage.selected_modules[r] = [];
         for( c=1; c<=num_cols; c++){
           settings.webpage.selected_modules[r][c] = false;
         }
       }
+
 
       settings.temp.num_cols = num_cols;
       settings.temp.num_rows = num_rows;
@@ -350,7 +337,7 @@ f.mk_sheet_num['S-001'] = function(settings){
 
       }
     }
-    //console.log("rail_sections[%s]:", rail_sections.length, rail_sections);
+    console.log("rail_sections[%s]:", rail_sections.length, rail_sections);
 
     for( var r=0; r<rail_sections.length; r++)
     {
@@ -390,14 +377,12 @@ f.mk_sheet_num['S-001'] = function(settings){
       //);
 
       //Mounting Holes
-      var screwCount = 5;
-      var rail_length = railEnd.x - railStart.x + module_w;
       var truss_spacing = 2 * scale; //2 feet between each truss
 
       var firstScrew = true;
-      for(var n=x; n<x+(num_cols * col_spacing * scale); n+=truss_spacing)
+      for(var n=x; n<x+((num_cols+1) * (col_spacing+1) * scale); n+=truss_spacing)
       {
-        if((n+truss_spacing/2 >= x+railStart.x) && (n-truss_spacing/2 <= x+railEnd.x+module_w))
+        if((n+truss_spacing >= x+railStart.x) && (n-truss_spacing <= x+railEnd.x+module_w))
         {
           if(firstScrew) {
             firstScrew = false;
@@ -424,9 +409,9 @@ f.mk_sheet_num['S-001'] = function(settings){
       }
 
       //Mounting Holes
-      for(var n=x; n<x+(num_cols * col_spacing * scale); n+=truss_spacing)
+      for(var n=x; n<x+((num_cols+1) * col_spacing * scale); n+=truss_spacing)
       {
-        if((n+truss_spacing/2 >= x+railStart.x) && (n-truss_spacing/2 <= x+railEnd.x+module_w))
+        if((n+truss_spacing >= x+railStart.x) && (n-truss_spacing <= x+railEnd.x+module_w))
         {
 
           d.circ(
@@ -440,27 +425,10 @@ f.mk_sheet_num['S-001'] = function(settings){
               [5],
               "preview_structural_mounting_hole"
           );
-
         }
-
       }
-
-
-
-
-
     }
-
   }
 
-
-
-
-
-
-
-
-
-
-return d;
+  return d;
 };
