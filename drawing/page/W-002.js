@@ -10,93 +10,107 @@ f.mk_sheet_num['W-002'] = function(settings){
   var size = settings.drawing_settings.size;
   var loc = settings.drawing_settings.loc;
 
+  var w;
+  var h;
+  var x;
+  var y;
 
-  //d.text(
-  //  [size.drawing.w/2, size.drawing.h/2],
-  //  'Calculation Sheet',
-  //  'text',
-  //  'title2'
-  //);
+  x = 500;
+  y = 325;
 
+  var electical_notes = [
+    "1:   ALL ASPECTS OF THE ELECTRICAL WORK REQUIRED TO COMPLETE THE",
+    "      PROJECT REPRESENTED IN THIS DOCUMENT SHALL COMPLY WITH THE.",
+    "2:   MANUFACTURER'S RECOMMENDATIONS/SPECIFICATIONS AND ALL CODES,",
+    "      STATUTES, AND STANDARDS ADOPTED BY THE STATE AND THE.",
+    "3:   LOCAL AUTHORITY HAVING JURISDICTION.",
+    "4:   THE INFORMATION PROVIDED IN THESE DOCUMENTS IS NOT EXHAUSTIVE,",
+    "      IT REMAINS THE CONTRACTORS RESPONSIBILITY TO ACHIEVE THE.",
+    "5:   PROPOSED INSTALLATION IN FULL EXERCISE OF AND COMPLIANCE",
+    "      WITH THE ITEMS IDENTIFIED IN GENERAL ELECTRICAL NOTE 1.",
+    "6:   AN AC DICONNECT, AT THE ELECTRICAL SERVICE ENTRANCE,",
+    "      IS EXEMPT FROM REQUIRE MENT BY LAW, FOR TIER 1 RENEWABLE ENERGY.",
+    "7:   SYSTEMS, PER FLORIDA ADMINISTRATION CODE 25-6.065(6)(A).",
+    "      AUXILLIARY DISCONNECTS ARE A UTILIT Y CO. OPTION. IF REQUIRED BY THE.",
+    "8:   UTILITY CO., THE UTILITY CO. SHALL BEAR THE ADDITIONAL EXPENCE INCURRED,",
+    "      AS STIPULATED BY THE FLORIDA ADMINISTRATION CODE.",
+    "9:   ALL CONDUCTORS ARE TO BE CU.",
+    "10:  ALL UNIDENTIFIED CONDUCTORS UNDER MODULES ARE UL LISTED AND",
+    "      MANUFACTURER PROVIDED CABLES, CONNECTORS AND ASSEMBLIES.",
+    "11:  ALL ELECTRICAL COMPONENTS, (RACEWAYS, JUNCTION BOXES,",
+    "      DISCONNECTS, PANEL BOARDS, ETC.), SHALL BE INSTALLED PLUMB, LEVEL,.",
+    "12:  AND IN COMPLIANCE WITH ALL APPLICABLE SECTIONS OF NEC ARTICLE 110.",
+    "13:  ALL RACEWAYS SHALL BE SUPPORTED ON INTERVALS AND BY METHODS AS",
+    "      APPROVED/REQUIRED BY THE CURRENTLY ADOPTED NEC ED.",
+    "14:  ALL RACEWAYS, CABLES AND J-BOXES SHALL BE LOCATED OUT OF DIRECT SUNLIGHT.",
+    "15:  SOLAR PANELS TO BE BONDED TO RACKING, UTILIZING WEEB OR",
+    "     SELF BONDING CLAMPING COMPONENTS.",
+    "16:  RACKING SYSTEM TO HAVE CONTINUOUS BONDING, WITH #6 GND.",
+    "17:  CONTRACTOR SHALL VERIFY THE INSTALLATION OF A",
+    "      BIDIRECTIONAL UTILITY SERVICE METER.",
+    "18:  HOUSE PANEL CIRCUIT BREAKERS TO BE BACK FED SHALL BE LISTED AS",
+    "      BACK FEED CIRCUIT BREAKERS.",
+    "19:  THE CONTRACTOR SHALL SEAL ALL PENETRATIONS RESULTING FROM THIS SCOPE OF WORK.",
+    "20:  ALL SIGNAGE SHALL BE PROVIDED, AS REQUIRED BY THE CURRENTLY ADOPTED NEC ED.",
+  ]
+  d.text( [x,y], electical_notes, 'table', 'table_left' );
 
-  x = size.drawing.frame_padding*6;
-  y = size.drawing.frame_padding*6 +20;
-
-  d.layer('table');
-
-
-  for( var section_name in settings.system ){
-    //if( section_defined(settings.state.active_system, section_name) ){
-      var section = settings.system[section_name];
-
-      var n = Object.keys(section).length;
-
-      var n_rows = n+0;
-      var n_cols = 2;
-
-      var row_height = 15;
-      h = n_rows*row_height;
-
-
-      var t = d.table(n_rows,n_cols).loc(x,y);
-      t.row_size('all', row_height).col_size(1, 100).col_size(2, 125);
-      w = 100+80;
-
-      var r = 1;
-      var value;
-      for( var value_name in section ){
-        var label = settings.inputs[section_name] &&
-            settings.inputs[section_name][value_name] &&
-            settings.inputs[section_name][value_name].label;
-        var parameter_name = label || f.pretty_name(value_name);
-        t.cell(r,1).text( parameter_name );
-        if( typeof section[value_name] === 'undefined' || section[value_name] === null) {
-          value = '-';
-        } else if( section[value_name].constructor === Array ){
-          value = section[value_name].toString();
-        } else if( section[value_name].constructor === Object ){
-          value = '( )';
-        } else if( isNaN(section[value_name]) ){
-          value = section[value_name];
-        } else {
-          value = parseFloat(section[value_name]).toFixed(2);
-        }
-        t.cell(r,2).text( value );
-        r++;
-
-      }
-
-      d.text( [x+w/2, y-row_height], f.pretty_name(section_name),'table' );
+  w = 390;
+  h = 405;
+  d.rect( [ x+w/2-5 ,y+h/2-10 ], [w,h], 'table' );
 
 
+  var labels_x = 120;
+  var labels_y = 60;
+
+  x = labels_x;
+  y = labels_y;
+  w = 200;
+  h = 100;
 
 
-      t.all_cells().forEach(function(cell){
-        cell.font('table').border('all');
-      });
+  d.text( [x,y-30], 'PHENOLIC PLACARDS:', 'table', 'title_sign' );
 
-      t.mk();
+  d.text( [x,y], "APPLY TO BACK FEED BREAKER:", 'table', 'table' );
+  d.text( [x,y+25], "WARNING", 'table', 'title_sign' );
+  d.text( [x,y+45], [
+    "INVERTER OUTPUT CONNECTION",
+    "DO NOT RELOCATE THIS OVERCURRENT DEVICE ",
+  ], 'table', 'table' );
+  d.rect( [ x ,y+10+h/2 ], [w,h], 'table' );
 
-      //*/
-      y += h + 30;
+  x += 230;
+  d.text( [x,y], "APPLY TO RACEWAYS & JUNCTION BOX:", 'table', 'table' );
+  d.text( [x,y+25], "WARNING", 'table', 'title_sign' );
+  d.text( [x,y+45], [
+    "PHOTOVOLTAIC POWER SOURCE",
+  ], 'table', 'table' );
+  d.rect( [ x ,y+10+h/2 ], [w,h], 'table' );
 
-      if( y > ( settings.drawing_settings.size.drawing.h * 0.8 ) ) {
-        y =
-        y = size.drawing.frame_padding*6 +20;
-        x += w*1.5;
-      }
+  x += 230;
+  d.text( [x,y], "APPLY TO DC DISCONNECT:", 'table', 'table' );
+  d.text( [x,y+25], "WARNING", 'table', 'title_sign' );
+  d.text( [x,y+45], [
+    "ELECTRIC SHOCK HAZARD.",
+    "THE DC CONDUCTORS OF THIS",
+    "PHOTOVOLTAIC SYSTEM",
+    "ARE UNGROUNDED AND MAY BE",
+    "ENERGIZED ELECTRIC SHOCK HAZARD",
+  ], 'table', 'table' );
+  d.rect( [ x ,y+10+h/2 ], [w,h], 'table' );
 
-    //} else {
+  x += 230;
+  d.text( [x,y], "APPLY TO MAIN DISTRIBUTION PANEL & AC DISCONNECT:", 'table', 'table' );
+  d.text( [x,y+25], "WARNING", 'table', 'title_sign' );
+  d.text( [x,y+45], [
+    "ELECTRIC SHOCK HAZARD.",
+    "DO NOT TOUCH TERMINALS.",
+    "TERMINALS ON BOTH THE LINE",
+    "AND LOAD SIDE",
+    "MAY BE ENERGIZED IN THE OPEN POSITION",
+  ], 'table', 'table' );
+  d.rect( [ x ,y+10+h/2 ], [w,h], 'table' );
 
-      //console.log('not defined: ', section_name, section);
-    //}
-
-
-
-
-  }
-
-  d.layer();
 
 
   return d;
