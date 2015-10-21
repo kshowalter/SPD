@@ -25,11 +25,23 @@ f.mk_preview['roof'] = function(settings){
     var roof_ratio = system.roof.slope_length / system.roof.eave_width;
     var roof_plan_ratio = length_p / system.roof.eave_width;
 
+
+    d.text(
+      [50, 50],
+      [
+        "Array modules: " + parseFloat( settings.system.array.number_of_modules ).toFixed().toString(),
+        "Selected modules: " + parseFloat( settings.webpage.selected_modules_total ).toFixed().toString(),
+      ],
+      'dimention',
+      'preview_roof'
+    );
+
+
     //////
     // roof detail
 
     var detail_x = 50;
-    var detail_y = 50;
+    var detail_y = 120;
 
     var max_width = 700;
     var max_height = 700;
@@ -41,6 +53,8 @@ f.mk_preview['roof'] = function(settings){
     }
     var detail_w = system.roof.eave_width * scale;
     var detail_h = system.roof.slope_length * scale;
+
+
 
     d.block('north arrow_up', [
       detail_x + max_width + 50,
