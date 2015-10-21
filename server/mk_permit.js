@@ -42,13 +42,16 @@ permit = {
 			if(!/ [.]pdf$/i.test(spec_sheets[n])) spec_sheets[n] = spec_sheets[n] + ".pdf";
 		}
 
+		
 		//Create the permit PDF, and send it to the user
 		permit.createPDF("http://"+host+"/drawing/"+system_id+"/1", function(pdf1) {
 			permit.createPDF("http://"+host+"/drawing/"+system_id+"/2", function(pdf2) {
 				permit.createPDF("http://"+host+"/drawing/"+system_id+"/3", function(pdf3) {
 					permit.createPDF("http://"+host+"/drawing/"+system_id+"/4", function(pdf4) {
-						permit.mergePDF([pdf1, pdf2, pdf3, pdf4].concat(spec_sheets), 'permit_' + system_id + (new Date()).valueOf() + '.pdf', function(pdf5) {
-							permit.downloadPDF(res, pdf5);
+						permit.createPDF("http://"+host+"/drawing/"+system_id+"/5", function(pdf5) {
+							permit.mergePDF([pdf1, pdf2, pdf3, pdf4, pdf5].concat(spec_sheets), 'permit_' + system_id + (new Date()).valueOf() + '.pdf', function(pdf6) {
+								permit.downloadPDF(res, pdf6);
+							});
 						});
 					});
 				});
