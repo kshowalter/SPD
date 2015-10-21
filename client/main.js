@@ -142,7 +142,6 @@ Template.main.events({
   //},
   'click #new_system': function(){
     f.change_system_id('new');
-    subscribe['main']();
   },
   'click #delete_system': function(){
     if( confirm('delete system:'+Meteor.user().active_system) ){
@@ -272,6 +271,7 @@ f.change_system_id = function(new_id){
   if( new_id === 'new' ) {
     Meteor.call('new_system', function(err, id){
       console.log('created ID: ', id);
+      subscribe['main']();
       update();
     });
     subscribe['main']();
