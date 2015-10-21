@@ -122,7 +122,7 @@ update = function(){
         'DC': [ settings.drawing.preview_svgs['elec'] ],
         'inverter': [ settings.drawing.preview_svgs['elec'] ],
         'AC': [ settings.drawing.preview_svgs['elec'] ],
-        'attachment_system': [ settings.drawing.preview_svgs['roof'] ],
+        'attachment_system': [ settings.drawing.preview_svgs['roof_attachment'] ],
     };
     $('.preview_cell').remove();
     settings.webpage.sections.forEach(function(section_name){
