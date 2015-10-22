@@ -26,13 +26,21 @@ f.mk_preview['roof'] = function(settings){
     var roof_plan_ratio = length_p / system.roof.eave_width;
 
 
+    var array_modules = settings.system.array.number_of_modules || 0;
     d.text(
       [50, 50],
-      [
-        "Array modules: " + parseFloat( settings.system.array.number_of_modules ).toFixed().toString(),
-        "Selected modules: " + parseFloat( settings.webpage.selected_modules_total ).toFixed().toString(),
-      ],
+      "Array modules: " + parseFloat( settings.system.array.number_of_modules ).toFixed().toString(),
       'preview_text',
+      'preview_roof'
+    );
+    var font = 'preview_text';
+    if( array_modules !== settings.webpage.selected_modules_total ){
+      font = 'preview_text_warning';
+    }
+    d.text(
+      [50, 85],
+      "Selected modules: " + parseFloat( settings.webpage.selected_modules_total ).toFixed().toString(),
+      font,
       'preview_roof'
     );
 
