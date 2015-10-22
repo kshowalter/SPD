@@ -20,10 +20,10 @@ permit = {
 		var host = req.headers.host;
 
 		// We need the Make/Model to look up the spec sheets
-		var moduleModel   = System_data.findOne({ system_id:system_id, section_name:"module",   value_name:"model" }).value;
-		var moduleMake    = System_data.findOne({ system_id:system_id, section_name:"module",   value_name:"make"  }).value;
-		var inverterModel = System_data.findOne({ system_id:system_id, section_name:"inverter", value_name:"model" }).value;
-		var inverterMake  = System_data.findOne({ system_id:system_id, section_name:"inverter", value_name:"make"  }).value;
+		var moduleModel   = System_data.findOne({ system_id:system_id, section_name:"array",   value_name:"module_model" }).value;
+		var moduleMake    = System_data.findOne({ system_id:system_id, section_name:"array",   value_name:"module_make"  }).value;
+		var inverterModel = System_data.findOne({ system_id:system_id, section_name:"inverter", value_name:"inverter_model" }).value;
+		var inverterMake  = System_data.findOne({ system_id:system_id, section_name:"inverter", value_name:"inverter_make"  }).value;
 
 		// Here we search through the module/inverter data to find the module/inverter that are part of this system
 		var db = JSON.parse(Assets.getText('data/fsec_copy.json'));  //TODO: How do we look up the spec sheet file name without reloading this?
@@ -47,7 +47,7 @@ permit = {
 			if(!/[.]pdf$/i.test(spec_sheets[n])) spec_sheets[n] = spec_sheets[n] + ".pdf";
 		}
 
-		
+
 		//Create the permit PDF, and send it to the user
 		permit.createPDF("http://"+host+"/drawing/"+system_id+"/1", function(pdf1) {
 			permit.createPDF("http://"+host+"/drawing/"+system_id+"/2", function(pdf2) {
