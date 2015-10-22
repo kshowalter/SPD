@@ -96,7 +96,6 @@ f.mk_preview['roof_attachment'] = function(settings){
   x = detail_x + detail_w + 25;
   y = detail_y + 120;
 
-  d.block('north arrow_up', [x,y]);
 
 
   /**

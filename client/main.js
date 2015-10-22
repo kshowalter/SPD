@@ -218,8 +218,8 @@ Template.tabs.onRendered(function(){
 
 var resize_sections = function(){
   console.log('resize');
-  if( window.innerWidth >= 1400 ){
-    $('.page').css('width', 1400);
+  if( window.innerWidth >= 1300 ){
+    $('.page').css('width', 1300);
   } else {
     $('.page').css('width', '98%');
   }

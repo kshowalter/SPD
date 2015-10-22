@@ -41,7 +41,7 @@ f.mk_preview['roof_dim'] = function(settings){
   var d = Drawing(settings);
   d.size = {
     h: 600,
-    w: 450,
+    w: 550,
   };
 
   //var size = settings.drawing_settings.size;
@@ -122,14 +122,15 @@ f.mk_preview['roof_dim'] = function(settings){
 
   // roof height dimention
   point1 = [
-    x + 30,
+    x + 170,
     y
   ];
   point2 = [
-    x + 30,
+    x + 170,
     y+roof_height+wall_height
   ];
-  dimention( d, point1, point2, dim.label_space, 'Ridge Height', { center_offset:roof_height/2, text_offset:30 } );
+  dimention( d, point1, point2, dim.label_space, 'Ridge Height', { center_offset:-50, text_offset:0 } );
+  //dimention( d, point1, point2, dim.label_space, 'Ridge Height');
 
   // slope length dimention
   point1 = [
@@ -170,11 +171,11 @@ f.mk_preview['roof_dim'] = function(settings){
     dimention( d, point1, point2, 160, 'Eave Width' );
 
     point1 = [
-      x - w/2 - 80,
+      x - w/2 - 90,
       y - h/2
     ];
     point2 = [
-      x - w/2 - 80,
+      x - w/2 - 90,
       y + h/2
     ];
     dimention( d, point1, point2, dim.label_space, 'Slope Length' );

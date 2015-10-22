@@ -34,7 +34,7 @@ f.mk_sheet_num['S-001'] = function(settings){
   //////
   // roof detail
 
-  var detail_x = 30;
+  var detail_x = 70;
   var detail_y = 30;
 
   if( Number(system.roof.eave_width) >= Number(system.roof.slope_length) ){
@@ -120,7 +120,6 @@ f.mk_sheet_num['S-001'] = function(settings){
   x = detail_x + detail_w + 25;
   y = detail_y + 120;
 
-  d.block('north arrow_up', [x,y]);
 
 
   /**
@@ -128,8 +127,8 @@ f.mk_sheet_num['S-001'] = function(settings){
    */
 
     // Draw Roof
-  var roofX = detail_x;
-  var roofY = detail_x+400;
+  var roofX = detail_x+500;
+  var roofY = detail_y;
   var roofWidth  = scale * system.roof.eave_width;
   var roofHeight = scale * system.roof.slope_length;
 
@@ -162,58 +161,6 @@ f.mk_sheet_num['S-001'] = function(settings){
       ],
       "preview_structural_dot"
   );
-
-    // Draw Module grid
-
-    // Draw Rails
-
-
-    // Draw screw holes
-
-
-
-
-  //d.circ(
-  //    [roofX-roofWidth/2, roofY-roofHeight/2],
-  //    [2],
-  //    "preview_structural_mounting_hole"
-  //);
-  //d.circ(
-  //    [roofX+roofWidth-roofWidth/2, roofY-roofHeight/2],
-  //    [2],
-  //    "preview_structural_mounting_hole"
-  //);
-  //d.circ(
-  //    [roofX-roofWidth/2, roofY+roofHeight-roofHeight/2],
-  //    [2],
-  //    "preview_structural_mounting_hole"
-  //);
-  //d.circ(
-  //    [roofX+roofWidth-roofWidth/2, roofY+roofHeight-roofHeight/2],
-  //    [2],
-  //    "preview_structural_mounting_hole"
-  //);
-
-  //d.line([
-  //      [diagramLocationX, diagramLocationY],
-  //      [20, 20],
-  //    ],
-  //    "preview_structural_dot"
-  //);
-  //
-  //d.circ(
-  //    [diagramLocationX, diagramLocationY],
-  //    20,
-  //    "preview_structural_mounting_hole"
-  //);
-  //
-  //d.circ(
-  //    [diagramLocationX, diagramLocationY],
-  //    [200],
-  //    "preview_structural_mounting_hole"
-  //);
-
-
 
 
 
@@ -252,7 +199,7 @@ f.mk_sheet_num['S-001'] = function(settings){
 
     if( Meteor.isClient && ( num_cols !== settings.temp.num_cols || num_rows !== settings.temp.num_rows ) ){
       settings.webpage.selected_modules = [];
-      settings.webpage.selected_modules_total = 0;
+      //settings.webpage.selected_modules_total = 0;
 
       for( r=1; r<=num_rows; r++){
         settings.webpage.selected_modules[r] = [];
@@ -300,17 +247,10 @@ f.mk_sheet_num['S-001'] = function(settings){
       }
     }
 
-    //d.text(
-    //  [detail_x+detail_w/2, detail_y+detail_h+100],
-    //  [
-    //    "Selected modules: " + parseFloat( settings.webpage.selected_modules_total ).toFixed().toString(),
-    //    "Calculated modules: " + parseFloat( settings.system.array.number_of_modules ).toFixed().toString(),
-    //  ],
-    //  'dimention',
-    //  'dimention'
-    //);
 
-    y = y+400;
+
+
+    x = x+500;
     rails.setModules();
     var rail_sections = rails.getRails();
     for( r=1; r<=num_rows; r++){

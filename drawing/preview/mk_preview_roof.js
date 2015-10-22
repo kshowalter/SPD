@@ -3,8 +3,8 @@ f.mk_preview['roof'] = function(settings){
 
   var d = Drawing(settings);
   d.size = {
-    w: 780,
-    h: 780,
+    w: 800,
+    h: 800,
   };
 
   if( section_defined(settings.state.active_system, 'roof') ){
@@ -32,7 +32,7 @@ f.mk_preview['roof'] = function(settings){
         "Array modules: " + parseFloat( settings.system.array.number_of_modules ).toFixed().toString(),
         "Selected modules: " + parseFloat( settings.webpage.selected_modules_total ).toFixed().toString(),
       ],
-      'dimention',
+      'preview_text',
       'preview_roof'
     );
 
@@ -43,8 +43,8 @@ f.mk_preview['roof'] = function(settings){
     var detail_x = 50;
     var detail_y = 120;
 
-    var max_width = 700;
-    var max_height = 700;
+    var max_width = 650;
+    var max_height = 650;
 
     if( Number(system.roof.eave_width) >= Number(system.roof.slope_length) ){
       scale = max_width/(system.roof.eave_width);
@@ -55,11 +55,6 @@ f.mk_preview['roof'] = function(settings){
     var detail_h = system.roof.slope_length * scale;
 
 
-
-    d.block('north arrow_up', [
-      detail_x + max_width + 50,
-      detail_y + 120
-    ]);
 
 
     d.rect(
