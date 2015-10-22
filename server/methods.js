@@ -115,4 +115,13 @@ Meteor.methods({
       }
     );
   },
+  save_system_settings: function(system_settings){
+    var active_system = Meteor.users.findOne({_id:this.userId}).active_system;
+    User_systems.upsert(
+      {system_id: active_system },
+      {$set:
+        {system_settings:system_settings}
+      }
+    );
+  },
 });
