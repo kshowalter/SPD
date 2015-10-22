@@ -22,7 +22,7 @@ f.mk_preview['elec'] = function(settings){
   w = size.preview.module.w;
   h = size.preview.module.h;
   loc.preview.array.bottom = loc.preview.array.top + h*1.25*system.array.modules_per_string + h*3/4;
-  //loc.preview.array.right = loc.preview.array.left + w*1.25*system.array.num_strings + w*2;
+  //loc.preview.array.right = loc.preview.array.left + w*1.25*system.array.number_of_strings + w*2;
   loc.preview.array.right = loc.preview.array.left + w*1.25*8 + w*2;
 
   // TODO fix: sections must be defined in order, or there are areas
@@ -36,7 +36,7 @@ f.mk_preview['elec'] = function(settings){
     h = size.preview.module.h;
     var offset = 40;
 
-    for( var s=0; s<system.array.num_strings; s++ ){
+    for( var s=0; s<system.array.number_of_strings; s++ ){
       x = loc.preview.array.left + w*1.25*s;
       // string wiring
       d.line(
@@ -92,7 +92,7 @@ f.mk_preview['elec'] = function(settings){
       [ x, y ],
       [
         'Array DC',
-        'Strings: ' + parseFloat(system.array.num_strings).toFixed(),
+        'Strings: ' + parseFloat(system.array.number_of_strings).toFixed(),
         'Modules: ' + parseFloat(system.array.modules_per_string).toFixed(),
         'Pmp: ' + parseFloat(system.array.pmp).toFixed(),
         'Imp: ' + parseFloat(system.array.imp).toFixed(),

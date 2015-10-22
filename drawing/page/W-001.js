@@ -36,7 +36,7 @@ f.mk_sheet_num['W-001'] = function(settings){
 
 
         //for( var i=0; i<system.DC.string_num; i++ ) {
-        for( var i in _.range(system.array.num_strings)) {
+        for( var i in _.range(system.array.number_of_strings)) {
             //var offset = i * size.wire_offset.base
             var offset_wire = size.wire_offset.min + ( size.wire_offset.base * i );
 
@@ -100,7 +100,7 @@ f.mk_sheet_num['W-001'] = function(settings){
             'box'
         );
 
-        for( i in _.range(system.array.num_strings)) {
+        for( i in _.range(system.array.number_of_strings)) {
             offset = size.wire_offset.min + ( size.wire_offset.base * i );
 
             d.layer('DC_pos');
@@ -197,9 +197,9 @@ f.mk_sheet_num['W-001'] = function(settings){
         x = loc.discbox.x;
         y = loc.discbox.y + size.discbox.h/2;
 
-        if( system.array.num_strings > 1){
+        if( system.array.number_of_strings > 1){
             var offset_min = size.wire_offset.min;
-            var offset_max = size.wire_offset.min + ( (system.array.num_strings -1) * size.wire_offset.base );
+            var offset_max = size.wire_offset.min + ( (system.array.number_of_strings -1) * size.wire_offset.base );
             d.line([
                 [ x-offset_min, y-size.terminal_diam-size.terminal_diam*3],
                 [ x-offset_max, y-size.terminal_diam-size.terminal_diam*3],
