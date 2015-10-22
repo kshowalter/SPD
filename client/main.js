@@ -264,28 +264,13 @@ document.addEventListener('keydown', function(e) {
   }
 });
 
-
-
-f.change_system_id = function(new_id){
-  console.log(new_id === '');
-  if( new_id === 'new' ) {
-    Meteor.call('new_system', function(err, id){
-      console.log('created ID: ', id);
-      subscribe['main']();
-      update();
-    });
-    subscribe['main']();
-  } else if( new_id === '' ) {
-    console.log('unrendered');
-    settings.webpage.setup_needed = true;
-    Meteor.call('new_active_system', new_id, function(err, returned){
-      //console.log('returned: ', returned);
-    });
-  } else {
-    Meteor.call('new_active_system', new_id, function(err, returned){
-      //console.log('returned: ', returned);
-      update();
-    });
+var setup_system = function(){
+  //subscribe['main']();
+  Meteor.subscribe('system_data', function(){
+    //settings = mk_settings();
+    var active_system = Meteor.user().active_system
+    settings.system = User_systems.findOne({system_id: active_system}).system_settings || settings.system;
+    update();
     if(settings.webpage.setup_needed){
       f.are_we_there_yet(function(){
         return $('.user_input_container').length === Object.keys(settings.inputs).length;
@@ -295,5 +280,17 @@ f.change_system_id = function(new_id){
       });
       settings.webpage.setup_needed = false;
     }
+  });
+};
+
+f.change_system_id = function(new_id){
+  if( new_id === 'new' ) {
+    Meteor.call('new_system', setup_system);
+  } else if( new_id === '' ) {
+    console.log('unrendered');
+    settings.webpage.setup_needed = true;
+    Meteor.call('new_active_system', new_id)//, setup_system);
+  } else {
+    Meteor.call('new_active_system', new_id, setup_system);
   }
 };

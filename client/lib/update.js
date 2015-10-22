@@ -1,10 +1,13 @@
 update = function(){
-  if(Meteor.user()){
+
+  if( Meteor.user() && Meteor.user().active_system ){
     var active_system = Meteor.user().active_system;
+    settings.state.active_system = active_system;
     console.log('...updating active system: ', active_system);
   } else {
     console.log('...nothing to update yet...');
   }
+  console.log( section_defined(settings.state.active_system, 'roof') );
 
   if( active_system){
 
@@ -15,6 +18,7 @@ update = function(){
 
     settings.webpage.selected_modules = User_systems.findOne({system_id: active_system}).selected_modules ||
       settings.webpage.selected_modules;
+
 
     f.request_geocode();
 
@@ -136,5 +140,11 @@ update = function(){
           });
         }
     });
+
+    Meteor.call('save_system_settings', settings.system, function(err, returned){
+      //console.log('returned: ', returned);
+    });
+
+
   }
 };
