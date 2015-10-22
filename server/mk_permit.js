@@ -32,14 +32,19 @@ permit = {
 		var inverter = _.find(db.inverters, {'MAKE':inverterMake, 'MODEL':inverterModel} );
 
 		//We have the file names for the spec sheets
-		var spec_sheets = [module.SPEC_SHEET, inverter.SPEC_SHEET];
+		var spec_sheets = [];
+		if(module && module.SPEC_SHEET) spec_sheets.push(module.SPEC_SHEET);
+		if(inverter && inverter.SPEC_SHEET) spec_sheets.push(inverter.SPEC_SHEET);
+		spec_sheets.push("ICC_Structural_Detail.pdf");
+
 		console.log(spec_sheets);
+
 
 		//Add spec sheet directory, and make sure the extension is ".pdf"
 		for(var n=0; n<spec_sheets.length; n++)
 		{
 			spec_sheets[n] = specSheetDirectory + spec_sheets[n];
-			if(!/ [.]pdf$/i.test(spec_sheets[n])) spec_sheets[n] = spec_sheets[n] + ".pdf";
+			if(!/[.]pdf$/i.test(spec_sheets[n])) spec_sheets[n] = spec_sheets[n] + ".pdf";
 		}
 
 		
