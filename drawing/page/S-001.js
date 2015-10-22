@@ -166,7 +166,7 @@ f.mk_sheet_num['S-001'] = function(settings){
 
   //////
   // Module options
-  if( section_defined(settings.state.active_system, 'module') && section_defined(settings.state.active_system, 'array')){
+  if( section_defined(settings.state.active_system, 'array')){
     var r,c;
 
     var roof_length_avail = system.roof.slope_length - (a*2);
@@ -175,19 +175,19 @@ f.mk_sheet_num['S-001'] = function(settings){
     var mm_to_inches = function(mm) { return mm / (25.4 /* mm per inch  */);  };
     var row_spacing;
     var col_spacing;
-    if( system.module.orientation === 'Portrait' ){
-      row_spacing = Number(mm_to_inches(system.module.length)) + 1;
-      col_spacing = Number(mm_to_inches(system.module.width)) + 1;
-      module_w = (Number(mm_to_inches(system.module.width)))/12;
-      module_h = (Number(mm_to_inches(system.module.length)))/12;
+    if( system.array.module_orientation === 'Portrait' ){
+      row_spacing = Number(mm_to_inches(system.array.module.length)) + 1;
+      col_spacing = Number(mm_to_inches(system.array.module.width)) + 1;
+      module_w = (Number(mm_to_inches(system.array.module.width)))/12;
+      module_h = (Number(mm_to_inches(system.array.module.length)))/12;
     } else {
-      row_spacing = Number(mm_to_inches(system.module.width)) + 1;
-      col_spacing = Number(mm_to_inches(system.module.length)) + 1;
-      module_w = (Number(mm_to_inches(system.module.length)))/12;
-      module_h = (Number(mm_to_inches(system.module.width)))/12;
+      row_spacing = Number(mm_to_inches(system.array.module.width)) + 1;
+      col_spacing = Number(mm_to_inches(system.array.module.length)) + 1;
+      module_w = (Number(mm_to_inches(system.array.module.length)))/12;
+      module_h = (Number(mm_to_inches(system.array.module.width)))/12;
     }
 
-    console.log(system.module, module_w, module_h);
+    //console.log(system.array.module, module_w, module_h);
 
     row_spacing = row_spacing/12; //module dimensions are in inches
     col_spacing = col_spacing/12; //module dimensions are in inches
@@ -277,7 +277,7 @@ f.mk_sheet_num['S-001'] = function(settings){
 
       }
     }
-    console.log("rail_sections[%s]:", rail_sections.length, rail_sections);
+    //console.log("rail_sections[%s]:", rail_sections.length, rail_sections);
 
     for( var r=0; r<rail_sections.length; r++)
     {

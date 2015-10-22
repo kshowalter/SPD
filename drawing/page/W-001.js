@@ -26,7 +26,7 @@ f.mk_sheet_num['W-001'] = function(settings){
 
 ////////////////////////////////////////
 //#array
-    if( section_defined(settings.state.active_system, 'module') && section_defined(settings.state.active_system, 'array') ){
+    if( section_defined(settings.state.active_system, 'array') ){
         d.section('array');
 
 
@@ -365,7 +365,7 @@ f.mk_sheet_num['W-001'] = function(settings){
 
 
 //#AC_discconect
-    if( section_defined(settings.state.active_system, 'AC') ){
+    if( section_defined(settings.state.active_system, 'inverter') ){
         d.section("AC_discconect");
 
         x = loc.AC_disc.x;
@@ -400,7 +400,7 @@ f.mk_sheet_num['W-001'] = function(settings){
         );
 
         d.text([x,y-h*0.4],
-            [system.AC.loadcenter_types, 'Load Center'],
+            [system.inverter.loadcenter_types, 'Load Center'],
             'text',
             'label'
         );
@@ -436,16 +436,16 @@ f.mk_sheet_num['W-001'] = function(settings){
 
         x = loc.inverter.bottom_right.x;
         y = loc.inverter.bottom_right.y;
-        x -= size.terminal_diam * (system.AC.num_conductors+1);
+        x -= size.terminal_diam * (system.inverter.num_conductors+1);
         y -= size.terminal_diam;
 
         var conduit_y = loc.AC_conduit.y;
         padding = size.terminal_diam;
         //var AC_d.layer_names = ['AC_ground', 'AC_neutral', 'AC_L1', 'AC_L2', 'AC_L2'];
 
-        for( var i=0; i < system.AC.num_conductors; i++ ){
+        for( var i=0; i < system.inverter.num_conductors; i++ ){
             d.block('terminal', [x,y] );
-            d.layer('AC_'+system.AC.conductors[i]);
+            d.layer('AC_'+system.inverter.conductors[i]);
             d.line([
                 [x, y],
                 [x, loc.AC_disc.bottom - padding*2 - padding*i  ],
@@ -459,7 +459,7 @@ f.mk_sheet_num['W-001'] = function(settings){
         y = loc.AC_disc.y + size.AC_disc.h/2;
         y -= padding*2;
 
-        if( system.AC.conductors && system.AC.conductors.indexOf('ground')+1 ) {
+        if( system.inverter.conductors && system.inverter.conductors.indexOf('ground')+1 ) {
             d.layer('AC_ground');
             d.line([
                 [ x-size.AC_disc.w/2, y ],
@@ -474,7 +474,7 @@ f.mk_sheet_num['W-001'] = function(settings){
             ]);
         }
 
-        if( system.AC.conductors && system.AC.conductors.indexOf('neutral')+1 ) {
+        if( system.inverter.conductors && system.inverter.conductors.indexOf('neutral')+1 ) {
             y -= padding;
             d.layer('AC_neutral');
             d.line([
@@ -490,7 +490,7 @@ f.mk_sheet_num['W-001'] = function(settings){
 
 
         for( var i=1; i <= 3; i++ ) {
-            if( system.AC.conductors && system.AC.conductors.indexOf('L'+i)+1 ) {
+            if( system.inverter.conductors && system.inverter.conductors.indexOf('L'+i)+1 ) {
                 y -= padding;
                 d.layer('AC_L'+i);
                 d.line([
@@ -525,8 +525,8 @@ f.mk_sheet_num['W-001'] = function(settings){
     x = loc.wire_table.x;
     y = loc.wire_table.y;
 
-    if( system.AC.num_conductors ) {
-        var n_rows = 2 + system.AC.num_conductors;
+    if( system.inverter.num_conductors ) {
+        var n_rows = 2 + system.inverter.num_conductors;
         var n_cols = 6;
         var row_height = 15;
         var column_width = {
@@ -565,9 +565,9 @@ f.mk_sheet_num['W-001'] = function(settings){
         t.cell(2,5).font('table').text('Size');
         t.cell(2,6).font('table').text('Type');
 
-        for( i=1; i<=system.AC.num_conductors; i++){
+        for( i=1; i<=system.inverter.num_conductors; i++){
             t.cell(2+i,1).font('table').text(i.toString());
-            t.cell(2+i,2).font('table_left').text( f.pretty_word(settings.system.AC.conductors[i-1]) );
+            t.cell(2+i,2).font('table_left').text( f.pretty_word(settings.system.inverter.conductors[i-1]) );
 
         }
 

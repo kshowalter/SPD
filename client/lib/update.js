@@ -115,13 +115,9 @@ update = function(){
     }
     var preview_table = {
         'location': [],
-        'map': [],
         'roof': [ settings.drawing.preview_svgs['roof_dim'] , settings.drawing.preview_svgs['roof'] ],
-        'module': [ settings.drawing.preview_svgs['elec'], settings.drawing.preview_svgs['roof'] ],
-        'array': [ settings.drawing.preview_svgs['elec'] ],
-        'DC': [ settings.drawing.preview_svgs['elec'] ],
+        'array': [ settings.drawing.preview_svgs['elec'], settings.drawing.preview_svgs['roof'] ],
         'inverter': [ settings.drawing.preview_svgs['elec'] ],
-        'AC': [ settings.drawing.preview_svgs['elec'] ],
         'attachment_system': [ settings.drawing.preview_svgs['roof_attachment'] ],
     };
     $('.preview_cell').remove();

@@ -89,7 +89,7 @@ f.mk_preview['roof'] = function(settings){
     //*
     //////
     // Module options
-    if( section_defined(settings.state.active_system, 'module') && section_defined(settings.state.active_system, 'array')){
+    if( section_defined(settings.state.active_system, 'array')){
       var r,c;
 
       var roof_length_avail = system.roof.slope_length - (a*2);
@@ -98,16 +98,16 @@ f.mk_preview['roof'] = function(settings){
       var mm_to_inches = function(mm) { return mm / (25.4 );  }; // mm per inch
       var row_spacing;
       var col_spacing;
-      if( system.module.orientation === 'Portrait' ){
-        row_spacing = Number(mm_to_inches(system.module.length)) + 1;
-        col_spacing = Number(mm_to_inches(system.module.width)) + 1;
-        module_w = (Number(mm_to_inches(system.module.width)))/12;
-        module_h = (Number(mm_to_inches(system.module.length)))/12;
+      if( system.array.module_orientation === 'Portrait' ){
+        row_spacing = Number(mm_to_inches(system.array.module.length)) + 1;
+        col_spacing = Number(mm_to_inches(system.array.module.width)) + 1;
+        module_w = (Number(mm_to_inches(system.array.module.width)))/12;
+        module_h = (Number(mm_to_inches(system.array.module.length)))/12;
       } else {
-        row_spacing = Number(mm_to_inches(system.module.width)) + 1;
-        col_spacing = Number(mm_to_inches(system.module.length)) + 1;
-        module_w = (Number(mm_to_inches(system.module.length)))/12;
-        module_h = (Number(mm_to_inches(system.module.width)))/12;
+        row_spacing = Number(mm_to_inches(system.array.module.width)) + 1;
+        col_spacing = Number(mm_to_inches(system.array.module.length)) + 1;
+        module_w = (Number(mm_to_inches(system.array.module.length)))/12;
+        module_h = (Number(mm_to_inches(system.array.module.width)))/12;
       }
 
       row_spacing = row_spacing/12; //module dimentions are in inches

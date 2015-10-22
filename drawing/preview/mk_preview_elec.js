@@ -27,7 +27,7 @@ f.mk_preview['elec'] = function(settings){
 
   // TODO fix: sections must be defined in order, or there are areas
 
-  if( section_defined(settings.state.active_system, 'array') && section_defined(settings.state.active_system, 'module') ){
+  if( section_defined(settings.state.active_system, 'array') ){
 
 
     d.layer('preview');
@@ -79,7 +79,7 @@ f.mk_preview['elec'] = function(settings){
 
   ////////////
   // Text
-  if( section_defined(settings.state.active_system, 'array') && section_defined(settings.state.active_system, 'module') ){
+  if( section_defined(settings.state.active_system, 'array') ){
 
     x = loc.preview.array.right + 20;
     y = loc.preview.array.top;
@@ -155,8 +155,8 @@ f.mk_preview['elec'] = function(settings){
         "interconnection_voltage",
         "loadcenter_type"
       ].map(function(param_name){
-        if( system.AC[param_name] !== null && system.AC[param_name] !== undefined ){
-          return f.pretty_name(param_name) + ': ' + parseFloat(system.AC[param_name]).toFixed();
+        if( system.inverter[param_name] !== null && system.inverter[param_name] !== undefined ){
+          return f.pretty_name(param_name) + ': ' + parseFloat(system.inverter[param_name]).toFixed();
         } else {
           return false;
         }

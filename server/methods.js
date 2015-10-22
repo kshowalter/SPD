@@ -74,28 +74,28 @@ Meteor.methods({
 //      );
 //    }
 //  },
-  change_model_options: function(section_name){
-    console.log('change_model_options');
-    var new_options = _.uniq(PV_Components
-      .find({
-        type: section_name+'s',
-        make: getValue(section_name, 'make')
-      }).map(function(doc){return doc.model;}
-    ));
-
-    var active_system = Meteor.users.findOne({_id:this.userId}).active_system;
-    System_data.update(
-      { section_name:section_name, value_name:'model', system_id: active_system },
-      //{ section_name:'module', value_name:'model'},
-      {'$set':{
-        options: new_options
-      }},
-      function(a,b){
-        console.log('-changed', a, b );
-      }
-    );
-    return 'server did something';
-  },
+//  change_model_options: function(section_name){
+//    console.log('change_model_options');
+//    var new_options = _.uniq(PV_Components
+//      .find({
+//        type: section_name+'s',
+//        make: getValue(section_name, 'make')
+//      }).map(function(doc){return doc.model;}
+//    ));
+//
+//    var active_system = Meteor.users.findOne({_id:this.userId}).active_system;
+//    System_data.update(
+//      { section_name:section_name, value_name:'model', system_id: active_system },
+//      //{ section_name:'module', value_name:'model'},
+//      {'$set':{
+//        options: new_options
+//      }},
+//      function(a,b){
+//        console.log('-changed', a, b );
+//      }
+//    );
+//    return 'server did something';
+//  },
 
   download: function(){
     console.log('generate drawing method');
