@@ -25,7 +25,7 @@ f.mk_sheet_num['G-001'] = function(settings){
             [size.drawing.w*1/2, size.drawing.h*1/3 +30],
             [
                 settings.system.location.address,
-                settings.system.location.city + ', ' + settings.system.location.county + ', FL, ' + settings.system.location.zip,
+                settings.system.location.city + ', ' + settings.system.location.county + ', FL, ' + settings.system.location.zip_code,
             ],
             null,
             'project title'
