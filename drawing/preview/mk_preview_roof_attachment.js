@@ -3,8 +3,8 @@ f.mk_preview['roof_attachment'] = function(settings){
 
   var d = Drawing(settings);
   d.size = {
-    w: 500,
-    h: 400,
+    w: 800,
+    h: 800,
   };
 
 
@@ -35,18 +35,40 @@ f.mk_preview['roof_attachment'] = function(settings){
   var roof_ratio = system.roof.slope_length / system.roof.eave_width;
   var roof_plan_ratio = length_p / system.roof.eave_width;
 
+  var array_modules = settings.system.array.number_of_modules || 0;
+  d.text(
+    [50, 50],
+    "Array modules: " + parseFloat( settings.system.array.number_of_modules ).toFixed().toString(),
+    'preview_text',
+    'preview_roof'
+  );
+  var font = 'preview_text';
+  if( array_modules !== settings.webpage.selected_modules_total ){
+    font = 'preview_text_warning';
+  }
+  d.text(
+    [50, 85],
+    "Selected modules: " + parseFloat( settings.webpage.selected_modules_total ).toFixed().toString(),
+    font,
+    'preview_roof'
+  );
+
 
   //////
   // roof detail
 
-  var detail_x = 70;
-  var detail_y = 30;
+  var detail_x = 50;
+  var detail_y = 120;
+
+  var max_width = 650;
+  var max_height = 650;
 
   if( Number(system.roof.eave_width) >= Number(system.roof.slope_length) ){
-    scale = 350/(system.roof.eave_width);
+    scale = max_width/(system.roof.eave_width);
   } else {
-    scale = 350/(system.roof.slope_length);
+    scale = max_height/(system.roof.slope_length);
   }
+
   var detail_w = system.roof.eave_width * scale;
   var detail_h = system.roof.slope_length * scale;
 
@@ -55,43 +77,6 @@ f.mk_preview['roof_attachment'] = function(settings){
   var offset_a = a * scale;
 
 
-  d.text(
-    [detail_x-40, detail_y+detail_h/2],
-    parseFloat( system.roof.slope_length ).toFixed().toString(),
-    'dimention',
-    'dimention'
-  );
-  d.text(
-    [detail_x+detail_w/2, detail_y+detail_h+40],
-    parseFloat( system.roof.eave_width ).toFixed().toString(),
-    'dimention',
-    'dimention'
-  );
-
-  d.text(
-    [detail_x+ (offset_a)/2, detail_y+detail_h+15],
-    'a',
-    'dimention',
-    'dimention'
-  );
-  d.text(
-    [detail_x+detail_w-(offset_a)/2, detail_y+detail_h+15],
-    'a',
-    'dimention',
-    'dimention'
-  );
-  d.text(
-    [detail_x-15, detail_y+detail_h-(offset_a)/2],
-    'a',
-    'dimention',
-    'dimention'
-  );
-  d.text(
-    [detail_x-15, detail_y+(offset_a)/2],
-    'a',
-    'dimention',
-    'dimention'
-  );
 
   x = detail_x + detail_w + 25;
   y = detail_y + 120;
