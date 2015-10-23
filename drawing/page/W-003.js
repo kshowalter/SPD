@@ -37,6 +37,10 @@ f.mk_sheet_num['W-003'] = function(settings){
       var row_height = 15;
       h = n_rows*row_height;
 
+      if( (y+h) > ( settings.drawing_settings.size.drawing.h * 0.8 ) ) {
+        y = size.drawing.frame_padding*6 +20;
+        x += w*1.5;
+      }
 
       var t = d.table(n_rows,n_cols).loc(x,y);
       t.row_size('all', row_height).col_size(1, 100).col_size(2, 125);
@@ -80,11 +84,7 @@ f.mk_sheet_num['W-003'] = function(settings){
       //*/
       y += h + 30;
 
-      if( y > ( settings.drawing_settings.size.drawing.h * 0.8 ) ) {
-        y =
-        y = size.drawing.frame_padding*6 +20;
-        x += w*1.5;
-      }
+
 
     //} else {
 
