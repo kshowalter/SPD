@@ -337,7 +337,9 @@ img { border: 0; }
 
 /**************/
 /* selectors */
-
+input {
+  padding-left: 5px;
+}
 
 .user_input {
   /*
@@ -373,7 +375,8 @@ img { border: 0; }
 .user_input .number_input {
   background: White;
   margin: 0px 2px 0px 5px;
-  padding: 0px;
+  padding-top: 0px;
+  padding-bottom: 0px;
   width: 40px;
   border: solid 1px #dcdcdc;
   transition: box-shadow 0.3s, border 0.3s;
@@ -386,7 +389,8 @@ img { border: 0; }
 
 .user_input .text_input {
   margin: 0px 2px 0px 5px;
-  padding: 0px;
+  padding-top: 0px;
+  padding-bottom: 0px;
   width: 300px;
   border: 1px solid #dcdcdc;
   transition: box-shadow 0.3s, border 0.3s;
