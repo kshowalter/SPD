@@ -151,7 +151,7 @@ Template.main.events({
       f.change_system_id('');
     }
   },
-  'change #system_name': function(){
+  'change #system_name': function(event){
     var id = User_systems.findOne({system_id: Meteor.user().active_system })._id;
     console.log('setting: ', id, event.target.value);
     User_systems.update(
