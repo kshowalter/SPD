@@ -25,7 +25,15 @@ Meteor.methods({
   },
   new_system: function(){
     var user_id = this.userId;
-    var system_number = User_systems.find({user_id:user_id}).count() + 1;
+
+    var old_system_number = Meteor.user().last_system_number || 0;
+    var system_number = old_system_number + 1;
+    Meteor.users.update(this.userId, 
+      {$set:
+        {last_system_number: system_number}
+      }
+    );
+
     var system_id = Random.id();
     var new_system_info = {
       system_number: system_number,

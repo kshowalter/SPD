@@ -7,7 +7,6 @@ update = function(){
   } else {
     console.log('...nothing to update yet...');
   }
-  console.log( section_defined(settings.state.active_system, 'roof') );
 
   if( active_system){
 
