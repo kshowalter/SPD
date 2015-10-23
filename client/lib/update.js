@@ -95,19 +95,20 @@ update = function(){
       .addClass('param_table');
     $('#location_table').empty().append(table);
 
-    table.append(
-      $('<tr>').append(
-        $('<th>').text('Parameter'),
-        $('<th>').text('Value')
-      )
-    );
-
-    for( var param_name in table_values){
+    if( Object.keys(table_values).length ){
       table.append(
         $('<tr>').append(
-          $('<td>').text(param_name),$('<td>').text(table_values[param_name])
+          $('<th>').text('Parameter'),
+          $('<th>').text('Value')
         )
       );
+      for( var param_name in table_values){
+        table.append(
+          $('<tr>').append(
+            $('<td>').text(param_name),$('<td>').text(table_values[param_name])
+          )
+        );
+      }
     }
 
     // create previews
