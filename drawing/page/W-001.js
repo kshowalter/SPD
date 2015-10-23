@@ -276,7 +276,7 @@ f.mk_sheet_num['W-001'] = function(settings){
         d.layer('text');
         d.text(
             [loc.inverter.x, loc.inverter.top + size.inverter.text_gap ],
-            [ 'Inverter', settings.system.inverter.make + " " + settings.system.inverter.model ],
+            [ 'Inverter', settings.system.inverter.inverter_make + " " + settings.system.inverter.inverter_model ],
             'text',
             'label'
         );
