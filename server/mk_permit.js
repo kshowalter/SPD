@@ -37,31 +37,61 @@ permit = {
 		if(inverter && inverter.SPEC_SHEET) spec_sheets.push(inverter.SPEC_SHEET);
 		spec_sheets.push("ICC_Structural_Detail.pdf");
 
-		console.log(spec_sheets);
-
-
 		//Add spec sheet directory, and make sure the extension is ".pdf"
 		for(var n=0; n<spec_sheets.length; n++)
 		{
 			spec_sheets[n] = specSheetDirectory + spec_sheets[n];
 			if(!/[.]pdf$/i.test(spec_sheets[n])) spec_sheets[n] = spec_sheets[n] + ".pdf";
+			//console.log("SPEC SHEET " + n + " IS THIS >>>> " + spec_sheets[n]);
 		}
-
-
+		
 		//Create the permit PDF, and send it to the user
-		permit.createPDF("http://"+host+"/drawing/"+system_id+"/1", function(pdf1) {
-			permit.createPDF("http://"+host+"/drawing/"+system_id+"/2", function(pdf2) {
-				permit.createPDF("http://"+host+"/drawing/"+system_id+"/3", function(pdf3) {
-					permit.createPDF("http://"+host+"/drawing/"+system_id+"/4", function(pdf4) {
-						permit.createPDF("http://"+host+"/drawing/"+system_id+"/5", function(pdf5) {
-							permit.mergePDF([pdf1, pdf2, pdf3, pdf4, pdf5].concat(spec_sheets), 'permit_' + system_id + (new Date()).valueOf() + '.pdf', function(pdf6) {
-								permit.downloadPDF(res, pdf6);
-							});
+		// ---------------------------------------------------------------
+		
+		// This is a list of known svgs that we need to convert to PDFs
+		// This list can be generated dynamically beforehand and passed to here,
+		// or the createAndMergePDFs function can be modified to dynamically iterate through some array of svgs if needed.
+		var svgPDFs = ["http://"+host+"/drawing/"+system_id+"/1",
+						"http://"+host+"/drawing/"+system_id+"/2",
+						"http://"+host+"/drawing/"+system_id+"/3",
+						"http://"+host+"/drawing/"+system_id+"/4",
+						"http://"+host+"/drawing/"+system_id+"/5"];
+		
+		var outputPDFs = []; // The array that will contain all of the PDFs in their full path for merging later
+		
+		// This function will iterate through the svgPDFs array with 0 being the starting value
+		// and the length of the array (eg: 5)
+		// Once there are no more svgPDFs, it'll merge the full path of created PDFs
+		// with the full list of specsheet pdfs
+		// Then it will take that merged array, and actually perform a PDF file merger of those PDF files.
+		function createAndMergePDFs(outputPDFs,curCounter,maxTotal)
+		{
+			if((maxTotal-1)-curCounter >= 0)
+			{
+				permit.createPDF(svgPDFs[curCounter], function(pdf_full)
+				{
+					outputPDFs.push(pdf_full);
+					console.log("Adding: " + pdf_full);
+					if((maxTotal-1)-curCounter > 0)
+					{
+						createAndMergePDFs(outputPDFs, curCounter+1,maxTotal);
+					}
+					else if((maxTotal-1)-curCounter == 0)
+					{
+						console.log("Merging...");
+						outputPDFs.push.apply(outputPDFs, spec_sheets);
+						permit.mergePDF(outputPDFs, 'permit_' + system_id + (new Date()).valueOf() + '.pdf', function(pdf6) 
+						{
+							permit.downloadPDF(res, pdf6);
 						});
-					});
+					}
 				});
-			});
-		});
+			}
+			
+		}
+		
+		getPDFs(outputPDFs, 0, svgPDFs.length);
+		
 	},
 
 	/*****************************************************************************************************
