@@ -31,11 +31,23 @@ f.mk_sheet_num['S-001'] = function(settings){
   var roof_plan_ratio = length_p / system.roof.eave_width;
 
 
+  /////
+  // Title
+
+  d.text(
+    [settings.drawing_settings.size.drawing.w/2, 40],
+    'Roof section 1, ' + system.roof.direction + ' side of building',
+    'title',
+    'title1'
+  );
+
+
+
   //////
   // roof detail
 
   var detail_x = 70;
-  var detail_y = 30;
+  var detail_y = 80;
 
   if( Number(system.roof.eave_width) >= Number(system.roof.slope_length) ){
     scale = 350/(system.roof.eave_width);

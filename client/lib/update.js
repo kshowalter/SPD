@@ -1,4 +1,5 @@
 update = function(){
+  console.log('current state:', settings);
 
   if( Meteor.user() && Meteor.user().active_system ){
     var active_system = Meteor.user().active_system;
