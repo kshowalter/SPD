@@ -63,7 +63,15 @@ f.mk_sheet_num['S-001'] = function(settings){
     "preview_structural_poly_selected_framed"
   );
 
-  var a = 3;
+  var a;
+  if( system.location.building_type === 'Commercial'){
+    a = 4;
+  } else if( system.location.building_type === 'Residential'){
+    a = 3;
+  } else {
+    a = 3;
+  }
+
   var offset_a = a * scale;
 
   d.line([
