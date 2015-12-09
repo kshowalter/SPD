@@ -1,14 +1,14 @@
-f.mk_sheet_num['W-002'] = function(settings){
-  var f = settings.f;
+f.mk_sheet_num['W-002'] = function(state){
+  var f = state.f;
 
-  d = Drawing(settings);
+  d = Drawing(state);
 
   var sheet_section = 'PV';
   var sheet_num = '02';
-  //d.append(mk_border(settings, sheet_section, sheet_num ));
+  //d.append(mk_border(state, sheet_section, sheet_num ));
 
-  var size = settings.drawing_settings.size;
-  var loc = settings.drawing_settings.loc;
+  var size = state.drawing_state.size;
+  var loc = state.drawing_state.loc;
 
   var w;
   var h;

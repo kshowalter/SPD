@@ -1,7 +1,7 @@
 System_data.find({type:"user"}).observe({
   changed: function(doc){
     //console.log("something changed, recalculating", doc);
-    //settings.system[doc.section_name][doc.value_name] = doc.value;
+    //state.system[doc.section_name][doc.value_name] = doc.value;
     update();
   },
 });
@@ -9,7 +9,7 @@ System_data.find({type:"user"}).observe({
 Meteor.users.find({ _id: Meteor.userId() }).observe({
   changed: function(doc){
     //console.log("user's data changed: ", doc);
-    //settings.system[doc.section_name][doc.value_name] = doc.value;
+    //state.system[doc.section_name][doc.value_name] = doc.value;
     update();
   },
 });

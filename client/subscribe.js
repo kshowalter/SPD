@@ -1,5 +1,5 @@
 subscriptions_ready = f.mk_ready(
-  ['system_data', 'user_systems', 'pv_components', 'settings', 'users']
+  ['system_data', 'user_systems', 'pv_components', 'state', 'users']
 );
 
 
@@ -23,8 +23,8 @@ subscribe['main'] = function(){
     });
   });
   Tracker.autorun(function () {
-    Meteor.subscribe('settings', function(){
-      subscriptions_ready('settings');
+    Meteor.subscribe('state', function(){
+      subscriptions_ready('state');
     });
   });
   Tracker.autorun(function () {

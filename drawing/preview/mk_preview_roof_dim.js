@@ -1,14 +1,14 @@
 
 
-var dimention = function( drawing, point1, point2, gap_length, text_string, other_settings ){
+var dimention = function( drawing, point1, point2, gap_length, text_string, other_state ){
   var center_offset = 0;
   var text_offset = 0;
-  if( other_settings !== undefined ){
-    if( other_settings.center_offset ) {
-      center_offset = other_settings.center_offset;
+  if( other_state !== undefined ){
+    if( other_state.center_offset ) {
+      center_offset = other_state.center_offset;
     }
-    if( other_settings.text_offset ) {
-      text_offset = other_settings.text_offset;
+    if( other_state.text_offset ) {
+      text_offset = other_state.text_offset;
     }
   }
 
@@ -36,17 +36,17 @@ var dimention = function( drawing, point1, point2, gap_length, text_string, othe
   drawing.text(text_point, text_string, 'preview_text', 'dimention');
 };
 
-f.mk_preview['roof_dim'] = function(settings){
+f.mk_preview['roof_dim'] = function(state){
   //console.log("** Making preview 2");
-  var d = Drawing(settings);
+  var d = Drawing(state);
   d.size = {
     h: 600,
     w: 550,
   };
 
-  //var size = settings.drawing_settings.size;
-  //var loc = settings.drawing_settings.loc;
-  var system = settings.system;
+  //var size = state.drawing_state.size;
+  //var loc = state.drawing_state.loc;
+  var system = state.system;
 
   //var x, y, h, w, section_x, section_y, length_p, scale;
   var x, y, h, w;
@@ -147,7 +147,7 @@ f.mk_preview['roof_dim'] = function(settings){
 
 
 
-  if( settings.system.roof.section_shape === 'Rectangle'){
+  if( state.system.roof.section_shape === 'Rectangle'){
 
     x = x + 30;
     y = 400;

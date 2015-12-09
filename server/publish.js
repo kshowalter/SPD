@@ -17,7 +17,7 @@
     return PV_Components.find();
   });
 
-  Meteor.publish("settings", function () {
+  Meteor.publish("state", function () {
     return Settings.find();
   });
 

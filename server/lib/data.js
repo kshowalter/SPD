@@ -49,9 +49,9 @@ load_data = function(){
 processData = function(FSEC_database, tables) {
 
   console.log("[Loading FSEC_database] modules: %s, inverters: %s", FSEC_database.modules.length, FSEC_database.inverters.length);
-  settings.config_options.NEC_tables = tables;
+  state.config_options.NEC_tables = tables;
 
-  settings.components = f.load_database(FSEC_database);
+  state.components = f.load_database(FSEC_database);
   FSEC_database = f.lowercase_properties(FSEC_database);
   for( var type in FSEC_database ){
     for( var component_name in FSEC_database[type] ){
@@ -63,8 +63,8 @@ processData = function(FSEC_database, tables) {
     }
   }
 
-  for( var name in settings.config_options.NEC_tables){
-    var table = settings.config_options.NEC_tables[name];
+  for( var name in state.config_options.NEC_tables){
+    var table = state.config_options.NEC_tables[name];
     NEC_tables.upsert(
         {name: name},
         {
@@ -74,12 +74,12 @@ processData = function(FSEC_database, tables) {
     );
   }
 
-  settings = mk_inputs(settings);
+  state = mk_inputs(state);
 
   Inputs.remove({});
-  for( var section_name in settings.inputs ){
-    for( var value_name in settings.inputs[section_name]){
-      var input = settings.inputs[section_name][value_name];
+  for( var section_name in state.inputs ){
+    for( var value_name in state.inputs[section_name]){
+      var input = state.inputs[section_name][value_name];
       Inputs.insert(input);
     }
   }

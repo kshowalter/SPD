@@ -1,18 +1,18 @@
-f.mk_preview['elec'] = function(settings){
+f.mk_preview['elec'] = function(state){
   //console.log("** Making preview 1");
 
-  var d = Drawing(settings);
+  var d = Drawing(state);
   d.size = {
     w: 450,
     h: 700,
   };
 
-  settings.drawing_settings.size.drawing;
+  state.drawing_state.size.drawing;
 
 
-  var size = settings.drawing_settings.size;
-  var loc = settings.drawing_settings.loc;
-  var system = settings.system;
+  var size = state.drawing_state.size;
+  var loc = state.drawing_state.loc;
+  var system = state.system;
 
   var x, y, h, w, section_x, section_y;
 
@@ -27,7 +27,7 @@ f.mk_preview['elec'] = function(settings){
 
   // TODO fix: sections must be defined in order, or there are areas
 
-  if( section_defined(settings.state.active_system, 'array') ){
+  if( section_defined(state.status.active_system, 'array') ){
 
 
     d.layer('preview');
@@ -79,7 +79,7 @@ f.mk_preview['elec'] = function(settings){
 
   ////////////
   // Text
-  if( section_defined(settings.state.active_system, 'array') ){
+  if( section_defined(state.status.active_system, 'array') ){
 
     x = loc.preview.array.right + 20;
     y = loc.preview.array.top;
@@ -105,7 +105,7 @@ f.mk_preview['elec'] = function(settings){
     );
   }
 
-  //if( section_defined(settings.state.active_system, 'DC') ){
+  //if( section_defined(state.status.active_system, 'DC') ){
   //}
   /*
   x = 500;
@@ -136,7 +136,7 @@ f.mk_preview['elec'] = function(settings){
     .filter(function(t){return t;});
 
 
-  if( section_defined(settings.state.active_system, 'inverter') ){
+  if( section_defined(state.status.active_system, 'inverter') ){
     d.layer('preview_inverter');
     d.text(
       [ x, y ],
@@ -164,7 +164,7 @@ f.mk_preview['elec'] = function(settings){
     )
     .filter(function(t){return t;});
 
-  if( section_defined(settings.state.active_system, 'AC') ){
+  if( section_defined(state.status.active_system, 'AC') ){
     d.layer('preview_AC');
     d.text(
       [ x, y ],

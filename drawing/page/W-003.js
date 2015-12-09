@@ -1,14 +1,14 @@
-f.mk_sheet_num['W-003'] = function(settings){
-  var f = settings.f;
+f.mk_sheet_num['W-003'] = function(state){
+  var f = state.f;
 
-  d = Drawing(settings);
+  d = Drawing(state);
 
   var sheet_section = 'PV';
   var sheet_num = '03';
-  //d.append(mk_border(settings, sheet_section, sheet_num ));
+  //d.append(mk_border(state, sheet_section, sheet_num ));
 
-  var size = settings.drawing_settings.size;
-  var loc = settings.drawing_settings.loc;
+  var size = state.drawing_state.size;
+  var loc = state.drawing_state.loc;
 
 
   //d.text(
@@ -25,9 +25,9 @@ f.mk_sheet_num['W-003'] = function(settings){
   d.layer('table');
 
 
-  for( var section_name in settings.system ){
-    //if( section_defined(settings.state.active_system, section_name) ){
-      var section = settings.system[section_name];
+  for( var section_name in state.system ){
+    //if( section_defined(state.status.active_system, section_name) ){
+      var section = state.system[section_name];
 
       var n = Object.keys(section).length;
 
@@ -37,7 +37,7 @@ f.mk_sheet_num['W-003'] = function(settings){
       var row_height = 15;
       h = n_rows*row_height;
 
-      if( (y+h) > ( settings.drawing_settings.size.drawing.h * 0.8 ) ) {
+      if( (y+h) > ( state.drawing_state.size.drawing.h * 0.8 ) ) {
         y = size.drawing.frame_padding*6 +20;
         x += w*1.5;
       }
@@ -49,9 +49,9 @@ f.mk_sheet_num['W-003'] = function(settings){
       var r = 1;
       var value;
       for( var value_name in section ){
-        var label = settings.inputs[section_name] &&
-            settings.inputs[section_name][value_name] &&
-            settings.inputs[section_name][value_name].label;
+        var label = state.inputs[section_name] &&
+            state.inputs[section_name][value_name] &&
+            state.inputs[section_name][value_name].label;
         var parameter_name = label || f.pretty_name(value_name);
         t.cell(r,1).text( parameter_name );
         if( typeof section[value_name] === 'undefined' || section[value_name] === null) {

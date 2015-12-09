@@ -1,6 +1,6 @@
 Template.tabs.helpers({
   sections: function(){
-    return settings.webpage.sections;
+    return state.webpage.sections;
   },
 
 
@@ -9,7 +9,7 @@ Template.tabs.helpers({
   },
   title_bar_class: function(){
     section_activated = Session.get('section_activated');
-    //section_activated = settings.webpage.section_activated;
+    //section_activated = state.webpage.section_activated;
 
     //console.log(section_activated, this);
     if( section_activated[this] ){
@@ -28,9 +28,9 @@ Template.tabs.helpers({
     return inputs;
   },
   info: function(){
-    //console.log("info: ", settings.section_info[this]);
-    if( settings.section_info[this] ){
-      return settings.section_info[this].join('\n');
+    //console.log("info: ", state.section_info[this]);
+    if( state.section_info[this] ){
+      return state.section_info[this].join('\n');
     } else {
       return '';
     }

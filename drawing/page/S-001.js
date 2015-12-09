@@ -1,19 +1,19 @@
-f.mk_sheet_num['S-001'] = function(settings){
-  var f = settings.f;
+f.mk_sheet_num['S-001'] = function(state){
+  var f = state.f;
 
-  d = Drawing(settings);
+  d = Drawing(state);
 
   var sheet_section = 'S';
   var sheet_num = '01';
-  //d.append(mk_border(settings, sheet_section, sheet_num ));
+  //d.append(mk_border(state, sheet_section, sheet_num ));
 
-  var size = settings.drawing_settings.size;
-  var loc = settings.drawing_settings.loc;
-  var system = settings.system;
+  var size = state.drawing_state.size;
+  var loc = state.drawing_state.loc;
+  var system = state.system;
 
 
 
-  if(! section_defined(settings.state.active_system, 'roof') ) return d;
+  if(! section_defined(state.status.active_system, 'roof') ) return d;
 
 
 
@@ -35,7 +35,7 @@ f.mk_sheet_num['S-001'] = function(settings){
   // Title
 
   d.text(
-    [settings.drawing_settings.size.drawing.w/2, 40],
+    [state.drawing_state.size.drawing.w/2, 40],
     'Roof section 1, ' + system.roof.direction + ' side of building',
     'title',
     'title1'
@@ -186,7 +186,7 @@ f.mk_sheet_num['S-001'] = function(settings){
 
   //////
   // Module options
-  if( section_defined(settings.state.active_system, 'array')){
+  if( section_defined(state.status.active_system, 'array')){
     var r,c;
 
     var roof_length_avail = system.roof.slope_length - (a*2);
@@ -217,20 +217,20 @@ f.mk_sheet_num['S-001'] = function(settings){
 
     //selected modules
 
-    if( Meteor.isClient && ( num_cols !== settings.temp.num_cols || num_rows !== settings.temp.num_rows ) ){
-      settings.webpage.selected_modules = [];
-      //settings.webpage.selected_modules_total = 0;
+    if( Meteor.isClient && ( num_cols !== state.temp.num_cols || num_rows !== state.temp.num_rows ) ){
+      state.webpage.selected_modules = [];
+      //state.webpage.selected_modules_total = 0;
 
       for( r=1; r<=num_rows; r++){
-        settings.webpage.selected_modules[r] = [];
+        state.webpage.selected_modules[r] = [];
         for( c=1; c<=num_cols; c++){
-          settings.webpage.selected_modules[r][c] = false;
+          state.webpage.selected_modules[r][c] = false;
         }
       }
 
 
-      settings.temp.num_cols = num_cols;
-      settings.temp.num_rows = num_rows;
+      state.temp.num_cols = num_cols;
+      state.temp.num_rows = num_rows;
     }
 
 
@@ -247,7 +247,7 @@ f.mk_sheet_num['S-001'] = function(settings){
       for( c=1; c<=num_cols; c++){
 
         var layer;
-        if( settings.webpage.selected_modules[r][c] ) layer = 'preview_structural_module_selected';
+        if( state.webpage.selected_modules[r][c] ) layer = 'preview_structural_module_selected';
         else layer = 'preview_structural_module';
         module_x = (c-1) * col_spacing * scale;
         module_y = (r-1) * row_spacing * scale;
@@ -278,7 +278,7 @@ f.mk_sheet_num['S-001'] = function(settings){
       for( c=1; c<=num_cols; c++){
 
         var layer;
-        if( settings.webpage.selected_modules[r][c] ) layer = 'preview_structural_module_site_selected';
+        if( state.webpage.selected_modules[r][c] ) layer = 'preview_structural_module_site_selected';
         else layer = 'preview_structural_module_site';
         module_x = (c-1) * col_spacing * scale;
         module_y = (r-1) * row_spacing * scale;

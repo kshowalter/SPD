@@ -1,17 +1,17 @@
-f.mk_sheet_num['W-001'] = function(settings){
-    var d = Drawing(settings);
+f.mk_sheet_num['W-001'] = function(state){
+    var d = Drawing(state);
     var sheet_section = 'PV';
     var sheet_num = '01';
-    //d.append(mk_border(settings, sheet_section, sheet_num ));
+    //d.append(mk_border(state, sheet_section, sheet_num ));
 
-    var f = settings.f;
+    var f = state.f;
 
-    //var components = settings.components;
-    //var system = settings.system;
-    var system = settings.system;
+    //var components = state.components;
+    //var system = state.system;
+    var system = state.system;
 
-    var size = settings.drawing_settings.size;
-    var loc = settings.drawing_settings.loc;
+    var size = state.drawing_state.size;
+    var loc = state.drawing_state.loc;
 
 
 
@@ -26,7 +26,7 @@ f.mk_sheet_num['W-001'] = function(settings){
 
 ////////////////////////////////////////
 //#array
-    if( section_defined(settings.state.active_system, 'array') ){
+    if( section_defined(state.status.active_system, 'array') ){
         d.section('array');
 
 
@@ -87,8 +87,8 @@ f.mk_sheet_num['W-001'] = function(settings){
 ///////////////////////////////
 // combiner box
 
-    //if( section_defined(settings.state.active_system, 'DC') ){
-    if( section_defined(settings.state.active_system, 'inverter') ){
+    //if( section_defined(state.status.active_system, 'DC') ){
+    if( section_defined(state.status.active_system, 'inverter') ){
         d.section("combiner");
 
         x = loc.jb_box.x;
@@ -276,7 +276,7 @@ f.mk_sheet_num['W-001'] = function(settings){
         d.layer('text');
         d.text(
             [loc.inverter.x, loc.inverter.top + size.inverter.text_gap ],
-            [ 'Inverter', settings.system.inverter.inverter_make + " " + settings.system.inverter.inverter_model ],
+            [ 'Inverter', state.system.inverter.inverter_make + " " + state.system.inverter.inverter_model ],
             'text',
             'label'
         );
@@ -365,7 +365,7 @@ f.mk_sheet_num['W-001'] = function(settings){
 
 
 //#AC_discconect
-    if( section_defined(settings.state.active_system, 'inverter') ){
+    if( section_defined(state.status.active_system, 'inverter') ){
         d.section("AC_discconect");
 
         x = loc.AC_disc.x;
@@ -567,7 +567,7 @@ f.mk_sheet_num['W-001'] = function(settings){
 
         for( i=1; i<=system.inverter.num_conductors; i++){
             t.cell(2+i,1).font('table').text(i.toString());
-            t.cell(2+i,2).font('table_left').text( f.pretty_word(settings.system.inverter.conductors[i-1]) );
+            t.cell(2+i,2).font('table_left').text( f.pretty_word(state.system.inverter.conductors[i-1]) );
 
         }
 
