@@ -128,6 +128,18 @@ Template.main.helpers({
   },
   is_display_sytle: function(style){
     return style === sessionStorage.getItem('display_style');
+  },
+  note_count: function(){
+    console.log('notes', state.notes.length)
+    if( state.notes.length ){
+      return true;
+    } else {
+      return false;
+    }
+
+  },
+  notes: function(){
+    return state.notes;
   }
 });
 
@@ -265,6 +277,7 @@ document.addEventListener('keydown', function(e) {
 });
 
 var setup_system = function(){
+  console.log('--Switching to new system');
   //subscribe['main']();
   Meteor.subscribe('system_data', function(){
     //state = mk_state();
@@ -285,6 +298,7 @@ var setup_system = function(){
 
 f.change_system_id = function(new_id){
   if( new_id === 'new' ) {
+    storage.selected_inputs_tab = 'location';
     Meteor.call('new_system', setup_system);
   } else if( new_id === '' ) {
     console.log('unrendered');
