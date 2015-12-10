@@ -46,8 +46,29 @@ f.mk_sheet_num['S-001'] = function(state){
   //////
   // roof detail
 
+  x = state.drawing_state.size.drawing.w/2;
+  y = 120;
+
+  var rotations = {
+    'E' :90,
+    'SE':45,
+    'S' :0,
+    'SW':-45,
+    'W' :-90,
+    'NW':-135,
+    'N' :180,
+    'NE':135
+  };
+
+  d.block( 'slope_arrow_down', {x:x, y:y} );
+
+  y+=100;
+  d.block( 'north arrow_up', {x:x, y:y} ).rotate(rotations[state.system.roof.direction]);
+
+
   var detail_x = 70;
   var detail_y = 80;
+
 
   if( Number(system.roof.eave_width) >= Number(system.roof.slope_length) ){
     scale = 350/(system.roof.eave_width);
