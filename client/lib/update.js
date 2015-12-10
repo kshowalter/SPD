@@ -11,6 +11,8 @@ update = function(){
 
   if( active_system){
 
+    state.status.inCompliance = true;
+
     System_data.find({system_id: active_system}).forEach(function(input_doc){
       state.system[input_doc.section_name] = state.system[input_doc.section_name] || {};
       state.system[input_doc.section_name][input_doc.value_name] = input_doc.value;
