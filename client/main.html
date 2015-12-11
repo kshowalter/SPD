@@ -16,6 +16,7 @@
 
     <span class='menu_bar_right'>
       {{> loginButtons}} &nbsp;&nbsp;
+      <a class='button' href='#' id='help_button' title='Display help'><i class="fa fa-info-circle"></i> <i class="fa fa-question-circle"></i></a>
       {{#if currentUser}}
         <span>System:</span>
         <select class="" id='system_id' title="Reload page to fix display issues.">
@@ -91,6 +92,15 @@
     <br>
     <br>
     <a id='close_download_box' class='button' href=#>close</a>
+  </div>
+
+
+  <div id='help'>
+    <span>This is the help section.</span><a id='close_help' class='button' href=#>close</a><br>
+    <br>
+    <br>
+    <p>Good luck.</p>
+
   </div>
 
 

@@ -152,6 +152,15 @@ Template.main.events({
   //    console.log('reset ID: ', id);
   //  });
   //},
+  'click #help_button': function(){
+    $('#help').fadeToggle(500);
+  },
+  'click #close_help': function(){
+    $('#help').fadeToggle(500);
+  },
+
+
+
   'click #new_system': function(){
     f.change_system_id('new');
   },
@@ -235,6 +244,15 @@ var resize_sections = function(){
   } else {
     $('.page').css('width', '98%');
   }
+
+  if( window.innerWidth >= 1250 ){
+    $('#help').css('width', 1250);
+  } else {
+    $('#help').css('width', '95%');
+  }
+
+  $('#help').css('height', window.innerHeight-50 + 'px' );
+
   //var drawing_width = $('.drawing_container').children('.tab_content').children('svg').width();
   //drawing_width += 10;
   //$('#drawing').css('width', drawing_width);
