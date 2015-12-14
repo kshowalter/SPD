@@ -341,6 +341,13 @@ input {
   padding-left: 5px;
 }
 
+.user_input_description {
+    position: absolute;
+    display: none;
+    background: #ccc;
+    border: 1px solid;
+}
+
 .user_input {
   /*
   background: #d9dce6;
