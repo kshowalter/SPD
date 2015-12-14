@@ -44,10 +44,10 @@ permit = {
 			if(!/[.]pdf$/i.test(spec_sheets[n])) spec_sheets[n] = spec_sheets[n] + ".pdf";
 			//console.log("SPEC SHEET " + n + " IS THIS >>>> " + spec_sheets[n]);
 		}
-		
+
 		//Create the permit PDF, and send it to the user
 		// ---------------------------------------------------------------
-		
+
 		// This is a list of known svgs that we need to convert to PDFs
 		// This list can be generated dynamically beforehand and passed to here,
 		// or the createAndMergePDFs function can be modified to dynamically iterate through some array of svgs if needed.
@@ -56,9 +56,9 @@ permit = {
 						"http://"+host+"/drawing/"+system_id+"/3",
 						"http://"+host+"/drawing/"+system_id+"/4",
 						"http://"+host+"/drawing/"+system_id+"/5"];
-		
+
 		var outputPDFs = []; // The array that will contain all of the PDFs in their full path for merging later
-		
+
 		// This function will iterate through the svgPDFs array with 0 being the starting value
 		// and the length of the array (eg: 5)
 		// Once there are no more svgPDFs, it'll merge the full path of created PDFs
@@ -80,18 +80,18 @@ permit = {
 					{
 						console.log("Merging...");
 						outputPDFs.push.apply(outputPDFs, spec_sheets);
-						permit.mergePDF(outputPDFs, 'permit_' + system_id + (new Date()).valueOf() + '.pdf', function(pdf6) 
+						permit.mergePDF(outputPDFs, 'permit_' + system_id + (new Date()).valueOf() + '.pdf', function(pdf6)
 						{
 							permit.downloadPDF(res, pdf6);
 						});
 					}
 				});
 			}
-			
+
 		}
-		
-		getPDFs(outputPDFs, 0, svgPDFs.length);
-		
+
+		createAndMergePDFs(outputPDFs, 0, svgPDFs.length);
+
 	},
 
 	/*****************************************************************************************************
