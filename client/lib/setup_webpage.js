@@ -1,7 +1,7 @@
 setup_webpage = function(){
   console.log('#setup_webpage');
 
-  $('#drawing_loading')
+  $('#drawing_output')
     .on('blur',function(){
       console.log('blur');
       $(this).fadeOut(300);

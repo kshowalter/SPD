@@ -431,7 +431,7 @@ input {
   text-align: center;
 }
 
-#drawing_loading{
+#drawing_output{
   display: none;
   position: fixed;
   top: 20px;

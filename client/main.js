@@ -187,12 +187,12 @@ Template.main.events({
     f.change_system_id(event.target.value);
   },
   'click #close_download_box': function(){
-    $('#drawing_loading').fadeOut(420);
+    $('#drawing_output').fadeOut(420);
   },
   'click #request_drawing': function(){
     console.log('request_drawing');
     var active_system = Meteor.user().active_system;
-    $('#drawing_loading').fadeIn(420);
+    $('#drawing_output').fadeIn(420);
     $('#drawing_download_status')
       .empty()
       .append(
