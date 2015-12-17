@@ -13,7 +13,7 @@ f.mk_sheet_num['G-001'] = function(settings){
   d.layer('text');
 
   var x = size.drawing.w*1/2;
-  var y = size.drawing.h*1/3;
+  var y = 50;
 
   d.text(
     [x,y],
@@ -24,8 +24,35 @@ f.mk_sheet_num['G-001'] = function(settings){
     'project title'
   );
 
-  y += 50;
+  y += 30;
+  d.text(
+    [x,y],
+    [
+      'Created on: ' + moment().format('YYYY-MM-DD'),
+      'Based on ' + settings.info.building_code,
+    ],
+    'text',
+    'title2'
+  );
+
+
+  x = size.drawing.w*1/4;
+  y = 125;
+
+
   if( section_defined(settings.status.active_system, 'location')  ){
+
+    d.text(
+      [x,y],
+      [
+        settings.system.location.contractor + '(' + settings.system.location.contractor_license + ')',
+      ],
+      null,
+      'title2'
+    );
+
+    y += 30;
+
     d.text(
       [x,y],
       [
@@ -35,18 +62,34 @@ f.mk_sheet_num['G-001'] = function(settings){
       null,
       'title2'
     );
+
+
+
+
   }
 
 
-  y += 50;
+
+  x = size.drawing.w * 3/4;
+  y = 125;
+
+  y += 25;
+  w = size.drawing.w * 1/2 * 0.9;
+  //h = size.drawing.h       * 0.75;
+  h = 300;
+
+  d.rect(
+    [x, y+h/2],
+    [w,h],
+    'box'
+  );
+
+  y += 25;
   d.text(
     [x,y],
-    [
-      'Created on: ' + moment().format('YYYY-MM-DD'),
-      'Based on ' + settings.info.building_code,
-    ],
-    'text',
-    'title2'
+    'Notes',
+    'dimention',
+    'dimention'
   );
 
 
