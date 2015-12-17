@@ -43,7 +43,7 @@ f.mk_sheet_num['G-001'] = function(settings){
     [x,y],
     [
       'Created on: ' + moment().format('YYYY-MM-DD'),
-      'Based on 2011 NEC',
+      'Based on ' + settings.info.building_code,
     ],
     'text',
     'title2'

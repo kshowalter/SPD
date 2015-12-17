@@ -11,6 +11,9 @@ settings.f = f;
 
 settings = mk_section_info(settings);
 
+settings.info = {};
+settings.info.building_code = '2011 NEC & 5th Edition (2014) FBC';
+
 //var dev = true;
 //if(dev) g = f.settings_dev_defaults(g);
 
