@@ -1,14 +1,14 @@
-f.mk_sheet_num['W-002'] = function(state){
-  var f = state.f;
+f.mk_sheet_num['W-002'] = function(settings){
+  var f = settings.f;
 
-  d = Drawing(state);
+  d = Drawing(settings);
 
   var sheet_section = 'PV';
   var sheet_num = '02';
-  //d.append(mk_border(state, sheet_section, sheet_num ));
+  //d.append(mk_border(settings, sheet_section, sheet_num ));
 
-  var size = state.drawing_state.size;
-  var loc = state.drawing_state.loc;
+  var size = settings.drawing_settings.size;
+  var loc = settings.drawing_settings.loc;
 
   var w;
   var h;
@@ -22,7 +22,7 @@ f.mk_sheet_num['W-002'] = function(state){
     "1:   ALL ASPECTS OF THE ELECTRICAL WORK REQUIRED TO COMPLETE THE",
     "      PROJECT REPRESENTED IN THIS DOCUMENT SHALL COMPLY WITH THE.",
     "2:   MANUFACTURER'S RECOMMENDATIONS/SPECIFICATIONS AND ALL CODES,",
-    "      STATUTES, AND STANDARDS ADOPTED BY THE STATE AND THE.",
+    "      STATUTES, AND STANDARDS ADOPTED BY THE settings AND THE.",
     "3:   LOCAL AUTHORITY HAVING JURISDICTION.",
     "4:   THE INFORMATION PROVIDED IN THESE DOCUMENTS IS NOT EXHAUSTIVE,",
     "      IT REMAINS THE CONTRACTORS RESPONSIBILITY TO ACHIEVE THE.",

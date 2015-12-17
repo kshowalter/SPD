@@ -53,7 +53,7 @@ if( ! sessionStorage.getItem('display_style') ){
 
 //----status bar ----//
   var version_string = 'Preview'+moment().format('YYYYMMDD');
-  //g.state.version_string = version_string;
+  //g.settings.version_string = version_string;
   var boot_time = moment();
   var status_id = 'status';
 
@@ -104,7 +104,7 @@ Template.main.helpers({
     //var section_list = Settings.findOne({id:'section_list'});
     var active_system = Meteor.user().active_system;
     if ( active_system ){
-      return state.webpage.sections;
+      return settings.webpage.sections;
     } else {
       return false;
     }
@@ -130,8 +130,8 @@ Template.main.helpers({
     return style === sessionStorage.getItem('display_style');
   },
   note_count: function(){
-    console.log('notes', state.notes.length)
-    if( state.notes.length ){
+    console.log('notes', settings.notes.length)
+    if( settings.notes.length ){
       return true;
     } else {
       return false;
@@ -139,7 +139,7 @@ Template.main.helpers({
 
   },
   notes: function(){
-    return state.notes;
+    return settings.notes;
   }
 });
 
@@ -261,7 +261,7 @@ var resize_sections = function(){
 Template.tabs.onRendered(function(){
   f.are_we_there_yet(function(){
     return (
-      $('.user_input_container').length === Object.keys(state.inputs).length &&
+      $('.user_input_container').length === Object.keys(settings.inputs).length &&
       subscriptions_ready() &&
       Meteor.userId() &&
       Meteor.user().active_system
@@ -298,18 +298,18 @@ var setup_system = function(){
   console.log('--Switching to new system');
   //subscribe['main']();
   Meteor.subscribe('system_data', function(){
-    //state = mk_state();
+    //settings = mk_settings();
     var active_system = Meteor.user().active_system
-    state.system = User_systems.findOne({system_id: active_system}).system_state || state.system;
+    settings.system = User_systems.findOne({system_id: active_system}).system_settings || settings.system;
     update();
-    if(state.webpage.setup_needed){
+    if(settings.webpage.setup_needed){
       f.are_we_there_yet(function(){
-        return $('.user_input_container').length === Object.keys(state.inputs).length;
+        return $('.user_input_container').length === Object.keys(settings.inputs).length;
       },function(){
         setup_webpage();
         update();
       });
-      state.webpage.setup_needed = false;
+      settings.webpage.setup_needed = false;
     }
   });
 };
@@ -320,7 +320,7 @@ f.change_system_id = function(new_id){
     Meteor.call('new_system', setup_system);
   } else if( new_id === '' ) {
     console.log('unrendered');
-    state.webpage.setup_needed = true;
+    settings.webpage.setup_needed = true;
     Meteor.call('new_active_system', new_id)//, setup_system);
   } else {
     Meteor.call('new_active_system', new_id, setup_system);

@@ -1,13 +1,13 @@
-f.mk_sheet_num['G-001'] = function(state){
+f.mk_sheet_num['G-001'] = function(settings){
 
-  var d = Drawing(state);
+  var d = Drawing(settings);
 
   var sheet_section = 'A';
   var sheet_num = '00';
-  //d.append(mk_border(state, sheet_section, sheet_num ));
+  //d.append(mk_border(settings, sheet_section, sheet_num ));
 
-  var size = state.drawing_state.size;
-  var loc = state.drawing_state.loc;
+  var size = settings.drawing_settings.size;
+  var loc = settings.drawing_settings.loc;
 
   var x, y, h, w;
   d.layer('text');
@@ -25,12 +25,12 @@ f.mk_sheet_num['G-001'] = function(state){
   );
 
   y += 50;
-  if( section_defined(state.status.active_system, 'location')  ){
+  if( section_defined(settings.status.active_system, 'location')  ){
     d.text(
       [x,y],
       [
-        state.system.location.address,
-        state.system.location.city + ', ' + state.system.location.county + ', FL, ' + state.system.location.zip_code,
+        settings.system.location.address,
+        settings.system.location.city + ', ' + settings.system.location.county + ', FL, ' + settings.system.location.zip_code,
       ],
       null,
       'title2'
@@ -53,7 +53,7 @@ f.mk_sheet_num['G-001'] = function(state){
 
 
 
-  var n_rows = state.drawing_state.sheets.length;
+  var n_rows = settings.drawing_settings.sheets.length;
   var n_cols = 2;
   w = 400+80;
   h = n_rows*20;
@@ -66,7 +66,7 @@ f.mk_sheet_num['G-001'] = function(state){
   var t = d.table(n_rows,n_cols).loc(x,y);
   t.row_size('all', 20).col_size(2, 400).col_size(1, 80);
 
-  state.drawing_state.sheets.forEach(function(sheet,i){
+  settings.drawing_settings.sheets.forEach(function(sheet,i){
     t.cell(i+1,1).text(sheet.num);
     t.cell(i+1,2).text(sheet.desc);
 

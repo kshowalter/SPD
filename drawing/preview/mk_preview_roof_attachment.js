@@ -1,7 +1,7 @@
-f.mk_preview['roof_attachment'] = function(state){
+f.mk_preview['roof_attachment'] = function(settings){
   //console.log("** Making preview 2");
 
-  var d = Drawing(state);
+  var d = Drawing(settings);
   d.size = {
     w: 800,
     h: 800,
@@ -10,15 +10,15 @@ f.mk_preview['roof_attachment'] = function(state){
 
   var sheet_section = 'S';
   var sheet_num = '01';
-  //d.append(mk_border(state, sheet_section, sheet_num ));
+  //d.append(mk_border(settings, sheet_section, sheet_num ));
 
-  var size = state.drawing_state.size;
-  var loc = state.drawing_state.loc;
-  var system = state.system;
+  var size = settings.drawing_settings.size;
+  var loc = settings.drawing_settings.loc;
+  var system = settings.system;
 
 
 
-  if(! section_defined(state.status.active_system, 'roof') ) return d;
+  if(! section_defined(settings.status.active_system, 'roof') ) return d;
 
 
 
@@ -35,20 +35,20 @@ f.mk_preview['roof_attachment'] = function(state){
   var roof_ratio = system.roof.slope_length / system.roof.eave_width;
   var roof_plan_ratio = length_p / system.roof.eave_width;
 
-  var array_modules = state.system.array.number_of_modules || 0;
+  var array_modules = settings.system.array.number_of_modules || 0;
   d.text(
     [50, 50],
-    "Array modules: " + parseFloat( state.system.array.number_of_modules ).toFixed().toString(),
+    "Array modules: " + parseFloat( settings.system.array.number_of_modules ).toFixed().toString(),
     'preview_text',
     'preview_roof'
   );
   var font = 'preview_text';
-  if( array_modules !== state.webpage.selected_modules_total ){
+  if( array_modules !== settings.webpage.selected_modules_total ){
     font = 'preview_text_warning';
   }
   d.text(
     [50, 85],
-    "Selected modules: " + parseFloat( state.webpage.selected_modules_total ).toFixed().toString(),
+    "Selected modules: " + parseFloat( settings.webpage.selected_modules_total ).toFixed().toString(),
     font,
     'preview_roof'
   );
@@ -179,7 +179,7 @@ f.mk_preview['roof_attachment'] = function(state){
 
   //////
   // Module options
-  if( section_defined(state.status.active_system, 'array')){
+  if( section_defined(settings.status.active_system, 'array')){
     var r,c;
 
     var roof_length_avail = system.roof.slope_length - (a*2);
@@ -211,20 +211,20 @@ f.mk_preview['roof_attachment'] = function(state){
     //selected modules
 
     /*
-    if( Meteor.isClient && ( num_cols !== state.temp.num_cols || num_rows !== state.temp.num_rows ) ){
-      state.webpage.selected_modules = [];
-      state.webpage.selected_modules_total = 0;
+    if( Meteor.isClient && ( num_cols !== settings.temp.num_cols || num_rows !== settings.temp.num_rows ) ){
+      settings.webpage.selected_modules = [];
+      settings.webpage.selected_modules_total = 0;
 
       for( r=1; r<=num_rows; r++){
-        state.webpage.selected_modules[r] = [];
+        settings.webpage.selected_modules[r] = [];
         for( c=1; c<=num_cols; c++){
-          state.webpage.selected_modules[r][c] = false;
+          settings.webpage.selected_modules[r][c] = false;
         }
       }
 
 
-      state.temp.num_cols = num_cols;
-      state.temp.num_rows = num_rows;
+      settings.temp.num_cols = num_cols;
+      settings.temp.num_rows = num_rows;
     }
     */
 
@@ -247,7 +247,7 @@ f.mk_preview['roof_attachment'] = function(state){
       for( c=1; c<=num_cols; c++){
 
         var layer;
-        if( state.webpage.selected_modules[r][c] ) layer = 'preview_structural_module_site_selected';
+        if( settings.webpage.selected_modules[r][c] ) layer = 'preview_structural_module_site_selected';
         else layer = 'preview_structural_module_site';
         module_x = (c-1) * col_spacing * scale;
         module_y = (r-1) * row_spacing * scale;

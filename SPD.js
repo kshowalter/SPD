@@ -4,19 +4,19 @@
 //console.log('   \\/   ');
 
 
-state = mk_state();
-state = mk_inputs(state);
-f.g = state;
-state.f = f;
+settings = mk_settings();
+settings = mk_inputs(settings);
+f.g = settings;
+settings.f = f;
 
-state = mk_section_info(state);
+settings = mk_section_info(settings);
 
 //var dev = true;
-//if(dev) g = f.state_dev_defaults(g);
+//if(dev) g = f.settings_dev_defaults(g);
 
 if(Meteor.isClient){
-  state.webpage.window_width = window.innerWidth;
-  state.webpage.window_height = window.innerHeight;
+  settings.webpage.window_width = window.innerWidth;
+  settings.webpage.window_height = window.innerHeight;
 
 }
 
