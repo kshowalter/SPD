@@ -527,7 +527,7 @@ f.mk_sheet_num['W-001'] = function(settings){
 
     if( system.inverter.num_conductors ) {
         var n_rows = 2 + system.inverter.num_conductors;
-        var n_cols = 6;
+        var n_cols = 4;
         var row_height = 15;
         var column_width = {
             number: 25,
@@ -546,29 +546,22 @@ f.mk_sheet_num['W-001'] = function(settings){
             .col_size(2, column_width.conductor)
             .col_size(3, column_width.wire_gauge)
             .col_size(4, column_width.wire_type)
-            .col_size(5, column_width.conduit_size)
-            .col_size(6, column_width.conduit_type);
 
         t.all_cells().forEach(function(cell){
             cell.font('table').border('all');
         });
         t.cell(1,1).border('B', false);
         t.cell(1,3).border('R', false);
-        t.cell(1,5).border('R', false);
 
         t.cell(1,3).font('table_left').text('Wire');
-        t.cell(1,5).font('table_left').text('Conduit');
 
         t.cell(2,3).font('table').text('Conductors');
         t.cell(2,3).font('table').text('AWG');
         t.cell(2,4).font('table').text('Type');
-        t.cell(2,5).font('table').text('Size');
-        t.cell(2,6).font('table').text('Type');
 
         for( i=1; i<=system.inverter.num_conductors; i++){
             t.cell(2+i,1).font('table').text(i.toString());
             t.cell(2+i,2).font('table_left').text( f.pretty_word(settings.system.inverter.conductors[i-1]) );
-
         }
 
 
