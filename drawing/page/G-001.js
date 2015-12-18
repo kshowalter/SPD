@@ -37,7 +37,7 @@ f.mk_sheet_num['G-001'] = function(settings){
 
 
   x = size.drawing.w*1/4;
-  y = 125;
+  y = 140;
 
 
   if( section_defined(settings.status.active_system, 'location')  ){
@@ -71,9 +71,9 @@ f.mk_sheet_num['G-001'] = function(settings){
 
 
   x = size.drawing.w * 3/4;
-  y = 125;
+  y = 140;
 
-  y += 25;
+  y += 10;
   w = size.drawing.w * 1/2 * 0.9;
   //h = size.drawing.h       * 0.75;
   h = 300;

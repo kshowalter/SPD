@@ -626,6 +626,19 @@ f.mk_sheet_num['W-001'] = function(settings){
 
     d.text( [x,y], 'General Notes', 'text', 'table');
 
+    if( section_defined(settings.status.active_system, 'inverter') && section_defined(settings.status.active_system, 'array') ){
+      y += 20;
+      d.text(
+        [x,y],
+        [
+          "System size: " + Math.round(settings.system.array.pmp/1000, 1) + "kW",
+          settings.system.inverter.inverter_make + ", " + settings.system.inverter.inverter_model,
+          settings.system.array.module_make + ", " + settings.system.array.module_model,
+        ],
+        'text',
+        'table'
+      );
+    }
 
     d.section();
 
