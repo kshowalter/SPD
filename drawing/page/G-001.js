@@ -45,7 +45,7 @@ f.mk_sheet_num['G-001'] = function(settings){
     d.text(
       [x,y],
       [
-        settings.system.location.contractor + '(' + settings.system.location.contractor_license + ')',
+        settings.system.location.contractor + ' (licence #:' + settings.system.location.contractor_license + ')',
       ],
       null,
       'title2'
