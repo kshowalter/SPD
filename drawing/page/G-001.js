@@ -37,7 +37,7 @@ f.mk_sheet_num['G-001'] = function(settings){
 
 
   x = size.drawing.w*1/4;
-  y = 140;
+  y = 160;
 
 
   if( section_defined(settings.status.active_system, 'location')  ){
@@ -56,6 +56,7 @@ f.mk_sheet_num['G-001'] = function(settings){
     d.text(
       [x,y],
       [
+        'Site address:',
         settings.system.location.address,
         settings.system.location.city + ', ' + settings.system.location.county + ', FL, ' + settings.system.location.zip_code,
       ],
@@ -88,8 +89,8 @@ f.mk_sheet_num['G-001'] = function(settings){
   d.text(
     [x,y],
     'Notes',
-    'dimention',
-    'dimention'
+    'text',
+    'title1'
   );
 
 
