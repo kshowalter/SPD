@@ -268,7 +268,7 @@ f.mk_sheet_num['S-001'] = function(settings){
       for( c=1; c<=num_cols; c++){
 
         var layer;
-        if( settings.webpage.selected_modules[r][c] ) layer = 'preview_structural_module_selected';
+        if( settings.webpage.selected_modules[r] && settings.webpage.selected_modules[r][c] ) layer = 'preview_structural_module_selected';
         else layer = 'preview_structural_module';
         module_x = (c-1) * col_spacing * scale;
         module_y = (r-1) * row_spacing * scale;
@@ -299,7 +299,7 @@ f.mk_sheet_num['S-001'] = function(settings){
       for( c=1; c<=num_cols; c++){
 
         var layer;
-        if( settings.webpage.selected_modules[r][c] ) layer = 'preview_structural_module_site_selected';
+        if( settings.webpage.selected_modules[r] && settings.webpage.selected_modules[r][c] ) layer = 'preview_structural_module_site_selected';
         else layer = 'preview_structural_module_site';
         module_x = (c-1) * col_spacing * scale;
         module_y = (r-1) * row_spacing * scale;
