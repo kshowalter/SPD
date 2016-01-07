@@ -51,8 +51,8 @@ f.mk_sheet_num['G-001'] = function(settings){
       'title2'
     );
 
+    x -= 100;
     y += 30;
-
     d.text(
       [x,y],
       [
@@ -61,7 +61,20 @@ f.mk_sheet_num['G-001'] = function(settings){
         settings.system.location.city + ', ' + settings.system.location.county + ', FL, ' + settings.system.location.zip_code,
       ],
       null,
-      'title2'
+      'notes'
+    );
+
+    y += 60;
+    d.text(
+      [x,y],
+      [
+        'System:',
+        parseFloat(settings.system.array.pmp).toFixed(0) + ' Pmp DC',
+        settings.system.inverter.inverter_make + ' ' + settings.system.inverter.inverter_model,
+        settings.system.array.module_make + ' ' + settings.system.array.module_model,
+      ],
+      null,
+      'notes'
     );
 
 
@@ -77,7 +90,7 @@ f.mk_sheet_num['G-001'] = function(settings){
   y += 10;
   w = size.drawing.w * 1/2 * 0.9;
   //h = size.drawing.h       * 0.75;
-  h = 300;
+  h = 500;
 
   d.rect(
     [x, y+h/2],
@@ -92,6 +105,25 @@ f.mk_sheet_num['G-001'] = function(settings){
     'text',
     'title1'
   );
+
+
+  x -= ( w/2 -10 );
+  y += 25;
+  d.text(
+    [x,y],
+    [
+      'System Limitations:',
+      '10 kW maximum, grid connected, no battery backup.',
+      'Roodtop mounted, no more than 9 inches above the roof surface.',
+      '600 amps maximim DC current.',
+      '',
+      '',
+    ],
+    'text',
+    'notes'
+  );
+
+
 
 
 
