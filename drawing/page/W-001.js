@@ -95,7 +95,14 @@ f.mk_sheet_num['W-001'] = function(settings){
       ],
       'wire_callout'
     );
-
+    d.text(
+      [x +20 +3 , y+120/2 +50 ],
+      [
+        '<Roof Rated Wire>'
+      ],
+      'text',
+      'label_left'
+    );
 
 
   }// else { console.log("Drawing: array not ready")}
@@ -106,6 +113,16 @@ f.mk_sheet_num['W-001'] = function(settings){
   //if( section_defined(settings.status.active_system, 'DC') ){
   if( section_defined(settings.status.active_system, 'inverter') ){
     d.section("combiner");
+
+
+    d.text(
+      [loc.jb_box.x, loc.jb_box.y + size.jb_box.h/2 + 10],
+      [
+        'Combiner Box'
+      ],
+      'text',
+      'label_center'
+    );
 
     x = loc.jb_box.x;
     y = loc.jb_box.y;
@@ -201,6 +218,14 @@ f.mk_sheet_num['W-001'] = function(settings){
     // DC disconect
     d.section("DC diconect");
 
+    d.text(
+      [loc.discbox.x - size.discbox.w/2 - 5, loc.discbox.y],
+      [
+        'DC disconect'
+      ],
+      'text',
+      'label_right'
+    );
 
     d.rect(
       [loc.discbox.x, loc.discbox.y],
@@ -215,11 +240,20 @@ f.mk_sheet_num['W-001'] = function(settings){
       'wire_callout'
     );
     d.line([
-        [ loc.discbox.x + 5 + 120/2, loc.discbox.y + 60 ],
-        [ loc.discbox.x + 5 + 120/2 + 20, loc.discbox.y + 60 + 15 ],
+        [ loc.discbox.x + 5 - 120/2,      loc.discbox.y + 60 ],
+        [ loc.discbox.x + 5 - 120/2 - 20, loc.discbox.y + 60 + 15 ],
       ],
       'wire_callout'
     );
+    d.text(
+      [ loc.discbox.x + 5 - 120/2 - 20 - 10, loc.discbox.y + 60 + 15 ],
+      [
+        '<Wire in conduit>'
+      ],
+      'text',
+      'label_right'
+    );
+
 
     // DC disconect combiner d.lines
 
@@ -381,9 +415,17 @@ f.mk_sheet_num['W-001'] = function(settings){
   if( section_defined(settings.status.active_system, 'inverter') ){
     d.section("AC_discconect");
 
+    d.text(
+      [loc.AC_disc.x, loc.AC_disc.y + size.AC_disc.h/2 + 10],
+      [
+        'AC Disconect'
+      ],
+      'text',
+      'label_center'
+    );
 
-    // DC1 wire/conduit callout
-    x = loc.AC_disc.x - 60;
+    // AC wire/conduit callout
+    x = loc.AC_disc.x - 75;
     y = loc.AC_disc.y + 45;
     d.ellipse(
       [x, y],
@@ -392,9 +434,18 @@ f.mk_sheet_num['W-001'] = function(settings){
     );
     d.line([
         [x,      y + 40/2],
-        [x +10 , y + 40/2 + 20 ]
+        [x +10 , y + 40/2 + 30 ]
       ],
       'wire_callout'
+    );
+    d.text(
+      [x +10 +3, y + 40/2 + 30 ],
+      [
+        '<Wire in ',
+        'conduit>'
+      ],
+      'text',
+      'label_left'
     );
 
 
@@ -427,11 +478,19 @@ f.mk_sheet_num['W-001'] = function(settings){
     );
     d.line([
         [x,      y - 50/2],
-        [x -10 , y - 50/2 -20 ]
+        [x -10 , y - 50/2 -30 ]
       ],
       'wire_callout'
     );
-
+    d.text(
+      [x -10 -3 , y - 50/2 -30 ],
+      [
+        '<Wire in ',
+        'conduit>'
+      ],
+      'text',
+      'label_right'
+    );
 
     var breaker_spacing = size.AC_loadcenter.breakers.spacing;
     x = loc.AC_loadcenter.x;
