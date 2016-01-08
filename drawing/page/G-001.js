@@ -90,7 +90,7 @@ f.mk_sheet_num['G-001'] = function(settings){
   y += 10;
   w = size.drawing.w * 1/2 * 0.9;
   //h = size.drawing.h       * 0.75;
-  h = 500;
+  h = 475;
 
   d.rect(
     [x, y+h/2],
@@ -128,10 +128,14 @@ f.mk_sheet_num['G-001'] = function(settings){
 
 
 
+  //////
+  // table of contents
 
   var n_rows = settings.drawing_settings.sheets.length;
   var n_cols = 2;
-  w = 400+80;
+  var col_widths = [80,350];
+  w = 0;
+  col_widths.forEach(function(x){w+=x});
   h = n_rows*20;
   x = size.drawing.frame_padding*6;
   y = size.drawing.h - size.drawing.frame_padding - size.drawing.titlebox.bottom.h;
@@ -140,7 +144,7 @@ f.mk_sheet_num['G-001'] = function(settings){
   d.text( [x+w/2, y-20], 'Contents', null, 'table_large' );
 
   var t = d.table(n_rows,n_cols).loc(x,y);
-  t.row_size('all', 20).col_size(2, 400).col_size(1, 80);
+  t.row_size('all', 20).col_size(1, col_widths[1-1]).col_size(2, col_widths[2-1]);
 
   settings.drawing_settings.sheets.forEach(function(sheet,i){
     t.cell(i+1,1).text(sheet.num);
