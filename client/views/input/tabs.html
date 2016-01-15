@@ -24,7 +24,17 @@
                 {{> input}}<br>
               {{/each}}
             </span>
+            {{#if is_section "section_location" }}
+              <span class='geocode_line'>
+                <span class="geocode_display" id="geocode_display"></span>
+                <br>
+                <span class="location_table" id="location_table"></span>
+              </span>
+            {{/if}}
           </span>
+          {{#if is_section "section_location" }}
+            <span id="map_road" class="cell"></span>
+          {{/if}}
         {{/with}}
         </div>
       {{/each}}

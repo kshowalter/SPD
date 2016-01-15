@@ -14,38 +14,6 @@ setup_webpage = function(){
 
 
 
-  var location_display = $('<span>')
-  .attr('class', 'geocode_line')
-  //.addClass('cell')
-  //.attr('style', 'width:485px;height:380px')
-  .appendTo($('#section_location').children('.cell'));
-
-  $('<span>').appendTo(location_display)
-  .addClass('geocode_display')
-  //.addClass('cell')
-  .attr('id','geocode_display')
-  .text('');
-  $('<br>').appendTo(location_display)
-  $('<span>').appendTo(location_display)
-  .addClass('location_table')
-  //.addClass('cell')
-  .attr('id','location_table')
-  .text('');
-
-
-  //var map_cell = $('<span>')
-  //.addClass('cell')
-  //.appendTo($('#section_location'));
-
-  $('<span>')
-  .attr('id', 'map_road')
-  .addClass('cell')
-  .appendTo($('#section_location'));
-  //$('<span>')
-  //.attr('id', 'map_sat')
-  //.addClass('cell')
-  //.appendTo($('#section_location'));
-
   var lat_fl_center = 27.75;
   var lon_fl_center = -84.0;
 

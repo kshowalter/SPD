@@ -40,6 +40,6 @@ Template.tabs.helpers({
     return f.pretty_name(label);
   },
   is_section: function(name){
-    return name === this;
+    return name === 'section_' + this.toString();
   },
 });
