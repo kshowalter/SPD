@@ -153,10 +153,14 @@ Template.main.events({
   //  });
   //},
   'click #help_button': function(){
-    $('#help').fadeToggle(500);
+    $('#map_road').fadeToggle(0, function(){
+      $('#help').fadeToggle(500);
+    });
   },
   'click #close_help': function(){
-    $('#help').fadeToggle(500);
+    $('#help').fadeToggle(500, function(){
+      $('#map_road').fadeToggle();
+    });
   },
 
 
