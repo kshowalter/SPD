@@ -346,6 +346,7 @@ input {
     display: none;
     background: #ccc;
     border: 1px solid;
+    width: 1000;
 }
 
 .user_input {
@@ -363,7 +364,10 @@ input {
   height: 34px;
 
 }
+.user_input_label{
+  white-space: normal;
 
+}
 
 .user_input select {
   /*

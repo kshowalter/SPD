@@ -1,6 +1,6 @@
 <template name="input">
   <span class="user_input">
-    <span title="{{note}}">{{label}}: </span>
+    <span class="user_input_label" title="{{note}}">{{label}}: </span>
     {{#if isType 'select'}}
       <select class="input {{this.input_type}}" >
         <option selected="selected" disabled="disabled" hidden="hidden"></option>
@@ -19,8 +19,14 @@
       <input class="input {{this.input_type}}" type="text" value="{{value}}">
     {{else}} {{#if isType 'number_input'}}
       <input class="input {{this.input_type}}" type="text" value="{{value}}">
+    {{else}} {{#if isType 'confirm'}}
+      <div>
+        <input class="input {{this.input_type}}" type="checkbox" value="{this.value_name}">
+        Yes
+      </div>
     {{else}}
       <span>undefined</span>
+    {{/if}}
     {{/if}}
     {{/if}}
     {{/if}}
