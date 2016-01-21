@@ -1,4 +1,4 @@
-f.mk_sheet_num['G-001'] = function(settings){
+f.mk_sheet_num['G-002'] = function(settings){
 
   var d = Drawing(settings);
 
@@ -12,73 +12,51 @@ f.mk_sheet_num['G-001'] = function(settings){
   var x, y, h, w;
   d.layer('text');
 
-  var x = size.drawing.w*1/2;
-  var y = 50;
+
+  x = size.drawing.w * 1/2;
+  y = 50;
+
+  y += 10;
+  w = size.drawing.w * 1 * 0.95;
+  //h = size.drawing.h       * 0.75;
+  h = 475;
+
 
   d.text(
     [x,y],
-    [
-      'PV System Design',
-    ],
-    null,
-    'project title'
+    'Notes',
+    'text',
+    'title1'
   );
 
-  y += 30;
+
+  x -= ( w/2 );
+  y += 25;
   d.text(
     [x,y],
     [
-      'Created on: ' + moment().format('YYYY-MM-DD'),
-      'Based on ' + settings.info.building_code,
+      'System Limitations:',
+      '10 kW maximum, grid connected, no battery backup.',
+      'Roodtop mounted, no more than 9 inches above the roof surface.',
+      '600 amps maximim DC current.',
+      ' ',
+      'Requirments:',
+      'The Licensed Solar Installer shall comply with the requirements of the Authority Having Jurisdiction (AHJ)',
+      '    and use properly licensed subcontractors for work in conjunction with the PV installation that exceeds the scope of their license.',
+      'The supporting wood structural members spaced a maximum of 2 feet on center',
+      'The PV array design and components will:',
+      ' - Be installed on defined, permitted roof structure.',
+      ' - Comply with all requirements of the Authority Having Jurisdiction for fire ratings.',
+      ' - Comply with all of the the requirements of the 2011 version of the NEC Article 690.',
+      ' - Be listed and labeled per the requirements of UL 1703.',
+      ' - Be listed installed in accordance with the manufacturer\'s installation requirements.',
+      ' - Have a Florida Solar Energy Center System Certification.',
+      ' - Installed in Zone P(1) Field of the roof only',
+      ' - Installed on a Gable Roof only',
     ],
     'text',
-    'title2'
+    'notes'
   );
-
-  x = size.drawing.w*1/4;
-  y = 160;
-
-  if( section_defined(settings.status.active_system, 'location')  ){
-    d.text(
-      [x,y],
-      [
-        settings.system.contractor.contractor_name + ' (licence #:' + settings.system.contractor.contractor_license + ')',
-      ],
-      null,
-      'title2'
-    );
-
-    x -= 100;
-    y += 30;
-    d.text(
-      [x,y],
-      [
-        'Site address:',
-        settings.system.location.address,
-        settings.system.location.city + ', ' + settings.system.location.county + ', FL, ' + settings.system.location.zip_code,
-      ],
-      null,
-      'notes'
-    );
-
-    y += 60;
-    d.text(
-      [x,y],
-      [
-        'System:',
-        parseFloat(settings.system.array.pmp).toFixed(0) + ' Pmp DC',
-        settings.system.inverter.inverter_make + ' ' + settings.system.inverter.inverter_model,
-        settings.system.array.module_make + ' ' + settings.system.array.module_model,
-      ],
-      null,
-      'notes'
-    );
-
-
-
-
-  }
-
 
 
 
