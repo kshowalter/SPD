@@ -43,7 +43,6 @@ f.mk_sheet_num['G-002'] = function(settings){
       'Requirments:',
       'The Licensed Solar Installer shall comply with the requirements of the Authority Having Jurisdiction (AHJ)',
       '    and use properly licensed subcontractors for work in conjunction with the PV installation that exceeds the scope of their license.',
-      'The supporting wood structural members spaced a maximum of 2 feet on center',
       'The PV array design and components will:',
       ' - Be installed on defined, permitted roof structure.',
       ' - Comply with all requirements of the Authority Having Jurisdiction for fire ratings.',
@@ -53,6 +52,9 @@ f.mk_sheet_num['G-002'] = function(settings){
       ' - Have a Florida Solar Energy Center System Certification.',
       ' - Installed in Zone P(1) Field of the roof only',
       ' - Installed on a Gable Roof only',
+      ' - Meet the roof uplift pressures for installation in the Field (Zone P 1) of Roof.',
+      ' - Installed Parallel to the Roof Surface.',
+      'The supporting wood structural members spaced a maximum of 2 feet on center',
     ],
     'text',
     'notes'
