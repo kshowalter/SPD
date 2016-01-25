@@ -49,9 +49,8 @@ load_data = function(){
 processData = function(FSEC_database, tables) {
 
   console.log("[Loading FSEC_database] modules: %s, inverters: %s", FSEC_database.modules.length, FSEC_database.inverters.length);
-  settings.config_options.NEC_tables = tables;
 
-  settings.components = f.load_database(FSEC_database);
+  //settings.components = f.load_database(FSEC_database);
   FSEC_database = f.lowercase_properties(FSEC_database);
   for( var type in FSEC_database ){
     for( var component_name in FSEC_database[type] ){
@@ -63,8 +62,8 @@ processData = function(FSEC_database, tables) {
     }
   }
 
-  for( var name in settings.config_options.NEC_tables){
-    var table = settings.config_options.NEC_tables[name];
+  for( var name in tables){
+    var table = tables[name];
     NEC_tables.upsert(
         {name: name},
         {

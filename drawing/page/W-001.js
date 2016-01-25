@@ -6,8 +6,6 @@ f.mk_sheet_num['W-001'] = function(settings){
 
   var f = settings.f;
 
-  //var components = settings.components;
-  //var system = settings.system;
   var system = settings.system;
 
   var size = settings.drawing_settings.size;
