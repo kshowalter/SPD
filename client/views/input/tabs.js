@@ -1,6 +1,6 @@
 Template.tabs.helpers({
   sections: function(){
-    return settings.webpage.sections;
+    return state.webpage.sections;
   },
 
 
@@ -9,7 +9,7 @@ Template.tabs.helpers({
   },
   title_bar_class: function(){
     section_activated = Session.get('section_activated');
-    //section_activated = settings.webpage.section_activated;
+    //section_activated = state.webpage.section_activated;
 
     //console.log(section_activated, this);
     if( section_activated[this] ){

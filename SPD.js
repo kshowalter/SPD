@@ -18,8 +18,8 @@ settings = mk_section_info(settings);
 //if(dev) g = f.settings_dev_defaults(g);
 
 if(Meteor.isClient){
-  settings.webpage.window_width = window.innerWidth;
-  settings.webpage.window_height = window.innerHeight;
+  state.webpage.window_width = window.innerWidth;
+  state.webpage.window_height = window.innerHeight;
 
 }
 

@@ -4,7 +4,7 @@ Template.drawer.helpers({
   },
   title_bar_class: function(){
     section_activated = Session.get('section_activated');
-    //section_activated = settings.webpage.section_activated;
+    //section_activated = state.webpage.section_activated;
 
     //console.log(section_activated, this);
     if( section_activated[this] ){
@@ -49,7 +49,7 @@ Template.drawer.events({
 
     var name = $(event.target).attr('section_nom');
     //console.log(name);
-    settings.webpage.section_manual_toggled[name] = true;
+    state.webpage.section_manual_toggled[name] = true;
     //$(this).parent().children('.drawer').children('.drawer_content').slideToggle('fast');
 
   },

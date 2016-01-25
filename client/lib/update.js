@@ -1,5 +1,6 @@
 update = function(){
   console.log('current settings:', settings);
+  console.log('current state:', state);
 
   if( Meteor.user() && Meteor.user().active_system ){
     var active_system = Meteor.user().active_system;
@@ -18,8 +19,8 @@ update = function(){
       settings.system[input_doc.section_name][input_doc.value_name] = input_doc.value;
     });
 
-    settings.webpage.selected_modules = User_systems.findOne({system_id: active_system}).selected_modules ||
-      settings.webpage.selected_modules;
+    state.webpage.selected_modules = User_systems.findOne({system_id: active_system}).selected_modules ||
+      state.webpage.selected_modules;
 
 
     f.request_geocode();
@@ -27,26 +28,26 @@ update = function(){
     settings = calculate(settings);
     settings = update_drawing(settings);
 
-    var section_list = settings.webpage.sections;
+    var section_list = state.webpage.sections;
     var active_section_name = section_list[0];
     //console.log('section_list', section_list);
     var not_defined = [];
     section_list.forEach(function(section_name){
       if( section_defined(settings.status.active_system, section_name) ){
-        settings.webpage.section_activated[section_name] = true;
+        state.webpage.section_activated[section_name] = true;
         $('#tab_'+section_name).html('<i class="fa fa-check-square"></i> ' + f.pretty_name(section_name) );
         // '<i class="fa fa-check-square"></i> ' + section_name
       } else {
         not_defined.push(section_name);
-        settings.webpage.section_activated[section_name] = false;
+        state.webpage.section_activated[section_name] = false;
         $('#tab_'+section_name).html('<i class="fa fa-square-o"></i> ' + f.pretty_name(section_name) );
       }
     });
     active_section_name = not_defined[0];
-    settings.webpage.section_activated[active_section_name] = true;
+    state.webpage.section_activated[active_section_name] = true;
 
     Session.set('active_section_name', active_section_name);
-    Session.set('section_activated', settings.webpage.section_activated);
+    Session.set('section_activated', state.webpage.section_activated);
 
     //show_hide_selections();
     /*
@@ -55,7 +56,7 @@ update = function(){
       if( section_name === active_section_name ) {
         //console.log('opening: ', section_name, $('#section_'+section_name).children('.drawer').children('.drawer_content'));
         $('#section_'+section_name).children('.drawer').children('.drawer_content').slideDown();
-      } else if( ! settings.webpage.section_manual_toggled[section_name] ) {
+      } else if( ! state.webpage.section_manual_toggled[section_name] ) {
         //console.log('not equal: ', section_name, active_section_name);
         $('#section_'+section_name).children('.drawer').children('.drawer_content').slideUp();
 
@@ -128,7 +129,7 @@ update = function(){
         'attachment_system': [ settings.drawing.preview_svgs['roof_attachment'] ],
     };
     $('.preview_cell').remove();
-    settings.webpage.sections.forEach(function(section_name){
+    state.webpage.sections.forEach(function(section_name){
         if(preview_table[section_name]) {
           preview_table[section_name].forEach(function(preview_svg){
             var svg_drawing_container = $('<span>')

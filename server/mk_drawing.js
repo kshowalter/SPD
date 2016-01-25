@@ -14,8 +14,8 @@ mk_drawing = function(system_id){
     system_settings.system[input_doc.section_name][input_doc.value_name] = input_doc.value;
   });
 
-  settings.webpage.selected_modules = User_systems.findOne({system_id: system_id}).selected_modules ||
-    settings.webpage.selected_modules;
+  state.webpage.selected_modules = User_systems.findOne({system_id: system_id}).selected_modules ||
+    state.webpage.selected_modules;
 
 
   system_settings.status.active_system = system_id;

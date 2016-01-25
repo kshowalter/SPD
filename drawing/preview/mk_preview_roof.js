@@ -34,12 +34,12 @@ f.mk_preview['roof'] = function(settings){
       'preview_roof'
     );
     var font = 'preview_text';
-    if( array_modules !== settings.webpage.selected_modules_total ){
+    if( array_modules !== state.webpage.selected_modules_total ){
       font = 'preview_text_warning';
     }
     d.text(
       [50, 85],
-      "Selected modules: " + parseFloat( settings.webpage.selected_modules_total ).toFixed().toString(),
+      "Selected modules: " + parseFloat( state.webpage.selected_modules_total ).toFixed().toString(),
       font,
       'preview_roof'
     );
@@ -127,13 +127,13 @@ f.mk_preview['roof'] = function(settings){
       //selected modules
 
       if( num_cols !== settings.temp.num_cols || num_rows !== settings.temp.num_rows ){
-        settings.webpage.selected_modules_total = 0;
-        settings.webpage.selected_modules = [];
+        state.webpage.selected_modules_total = 0;
+        state.webpage.selected_modules = [];
 
         for( r=1; r<=num_rows; r++){
-          settings.webpage.selected_modules[r] = [];
+          state.webpage.selected_modules[r] = [];
           for( c=1; c<=num_cols; c++){
-            settings.webpage.selected_modules[r][c] = false;
+            state.webpage.selected_modules[r][c] = false;
           }
         }
 
@@ -156,7 +156,7 @@ f.mk_preview['roof'] = function(settings){
         for( c=1; c<=num_cols; c++){
 
           var layer;
-          if( settings.webpage.selected_modules[r][c] ) layer = 'preview_structural_module_selected';
+          if( state.webpage.selected_modules[r][c] ) layer = 'preview_structural_module_selected';
           else layer = 'preview_structural_module';
           module_x = (c-1) * col_spacing * scale;
           module_y = (r-1) * row_spacing * scale;
