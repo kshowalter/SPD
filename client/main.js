@@ -303,7 +303,7 @@ var setup_system = function(){
   //subscribe['main']();
   Meteor.subscribe('system_data', function(){
     var active_system = Meteor.user().active_system
-    settings.system = User_systems.findOne({system_id: active_system}).system_settings || settings.system;
+    state.system = User_systems.findOne({system_id: active_system}).system_settings || state.system;
     update();
     if(state.webpage.setup_needed){
       f.are_we_there_yet(function(){

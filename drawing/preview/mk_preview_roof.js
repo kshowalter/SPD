@@ -11,7 +11,7 @@ f.mk_preview['roof'] = function(settings){
 
     var size = settings.drawing_settings.size;
     var loc = settings.drawing_settings.loc;
-    var system = settings.system;
+    var system = state.system;
 
     var x, y, h, w, section_x, section_y, length_p, scale;
 
@@ -26,10 +26,10 @@ f.mk_preview['roof'] = function(settings){
     var roof_plan_ratio = length_p / system.roof.eave_width;
 
 
-    var array_modules = settings.system.array.number_of_modules || 0;
+    var array_modules = state.system.array.number_of_modules || 0;
     d.text(
       [50, 50],
-      "Array modules: " + parseFloat( settings.system.array.number_of_modules ).toFixed().toString(),
+      "Array modules: " + parseFloat( state.system.array.number_of_modules ).toFixed().toString(),
       'preview_text',
       'preview_roof'
     );

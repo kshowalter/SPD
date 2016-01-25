@@ -46,7 +46,7 @@ f.mk_preview['roof_dim'] = function(settings){
 
   //var size = settings.drawing_settings.size;
   //var loc = settings.drawing_settings.loc;
-  var system = settings.system;
+  var system = state.system;
 
   //var x, y, h, w, section_x, section_y, length_p, scale;
   var x, y, h, w;
@@ -147,7 +147,7 @@ f.mk_preview['roof_dim'] = function(settings){
 
 
 
-  if( settings.system.roof.section_shape === 'Rectangle'){
+  if( state.system.roof.section_shape === 'Rectangle'){
 
     x = x + 30;
     y = 400;

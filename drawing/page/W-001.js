@@ -6,7 +6,7 @@ f.mk_sheet_num['W-001'] = function(settings){
 
   var f = settings.f;
 
-  var system = settings.system;
+  var system = state.system;
 
   var size = settings.drawing_settings.size;
   var loc = settings.drawing_settings.loc;
@@ -337,7 +337,7 @@ f.mk_sheet_num['W-001'] = function(settings){
     d.layer('text');
     d.text(
       [loc.inverter.x, loc.inverter.top + size.inverter.text_gap ],
-      [ 'Inverter', settings.system.inverter.inverter_make + " " + settings.system.inverter.inverter_model ],
+      [ 'Inverter', state.system.inverter.inverter_make + " " + state.system.inverter.inverter_model ],
       'text',
       'label'
     );
@@ -658,7 +658,7 @@ f.mk_sheet_num['W-001'] = function(settings){
 
     for( i=1; i<=system.inverter.num_conductors; i++){
       t.cell(2+i,1).font('table').text(i.toString());
-      t.cell(2+i,2).font('table_left').text( f.pretty_word(settings.system.inverter.conductors[i-1]) );
+      t.cell(2+i,2).font('table_left').text( f.pretty_word(state.system.inverter.conductors[i-1]) );
     }
 
 
@@ -721,9 +721,9 @@ f.mk_sheet_num['W-001'] = function(settings){
     d.text(
       [x,y],
       [
-        "System size: " + Math.round(settings.system.array.pmp/1000, 1) + "kW",
-        settings.system.inverter.inverter_make + ", " + settings.system.inverter.inverter_model,
-        settings.system.array.module_make + ", " + settings.system.array.module_model,
+        "System size: " + Math.round(state.system.array.pmp/1000, 1) + "kW",
+        state.system.inverter.inverter_make + ", " + state.system.inverter.inverter_model,
+        state.system.array.module_make + ", " + state.system.array.module_model,
       ],
       'text',
       'table'

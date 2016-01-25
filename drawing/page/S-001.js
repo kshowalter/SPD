@@ -9,7 +9,7 @@ f.mk_sheet_num['S-001'] = function(settings){
 
   var size = settings.drawing_settings.size;
   var loc = settings.drawing_settings.loc;
-  var system = settings.system;
+  var system = state.system;
 
 
 
@@ -63,7 +63,7 @@ f.mk_sheet_num['S-001'] = function(settings){
   d.block( 'slope_arrow_down', {x:x, y:y} );
 
   y+=100;
-  d.block( 'north arrow_up', {x:x, y:y} ).rotate(rotations[settings.system.roof.direction]);
+  d.block( 'north arrow_up', {x:x, y:y} ).rotate(rotations[state.system.roof.direction]);
 
 
   var detail_x = 70;

@@ -12,7 +12,7 @@ f.mk_preview['elec'] = function(settings){
 
   var size = settings.drawing_settings.size;
   var loc = settings.drawing_settings.loc;
-  var system = settings.system;
+  var system = state.system;
 
   var x, y, h, w, section_x, section_y;
 

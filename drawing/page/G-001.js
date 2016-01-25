@@ -42,7 +42,7 @@ f.mk_sheet_num['G-001'] = function(settings){
     d.text(
       [x,y],
       [
-        settings.system.contractor.contractor_name + ' (licence #:' + settings.system.contractor.contractor_license + ')',
+        state.system.contractor.contractor_name + ' (licence #:' + state.system.contractor.contractor_license + ')',
       ],
       null,
       'title2'
@@ -54,8 +54,8 @@ f.mk_sheet_num['G-001'] = function(settings){
       [x,y],
       [
         'Site address:',
-        settings.system.location.address,
-        settings.system.location.city + ', ' + settings.system.location.county + ', FL, ' + settings.system.location.zip_code,
+        state.system.location.address,
+        state.system.location.city + ', ' + state.system.location.county + ', FL, ' + state.system.location.zip_code,
       ],
       null,
       'notes'
@@ -66,9 +66,9 @@ f.mk_sheet_num['G-001'] = function(settings){
       [x,y],
       [
         'System:',
-        parseFloat(settings.system.array.pmp).toFixed(0) + ' Pmp DC',
-        settings.system.inverter.inverter_make + ' ' + settings.system.inverter.inverter_model,
-        settings.system.array.module_make + ' ' + settings.system.array.module_model,
+        parseFloat(state.system.array.pmp).toFixed(0) + ' Pmp DC',
+        state.system.inverter.inverter_make + ' ' + state.system.inverter.inverter_model,
+        state.system.array.module_make + ' ' + state.system.array.module_model,
       ],
       null,
       'notes'

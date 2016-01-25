@@ -15,8 +15,8 @@ update = function(){
     state.status.inCompliance = true;
 
     System_data.find({system_id: active_system}).forEach(function(input_doc){
-      settings.system[input_doc.section_name] = settings.system[input_doc.section_name] || {};
-      settings.system[input_doc.section_name][input_doc.value_name] = input_doc.value;
+      state.system[input_doc.section_name] = state.system[input_doc.section_name] || {};
+      state.system[input_doc.section_name][input_doc.value_name] = input_doc.value;
     });
 
     state.webpage.selected_modules = User_systems.findOne({system_id: active_system}).selected_modules ||
@@ -75,23 +75,23 @@ update = function(){
 
     var table_values = {};
     if(
-      settings.system.wind &&
-      settings.system.wind.risk_category1 &&
-      settings.system.wind.risk_category2 &&
-      settings.system.wind.risk_category3
+      state.system.wind &&
+      state.system.wind.risk_category1 &&
+      state.system.wind.risk_category2 &&
+      state.system.wind.risk_category3
     ){
-      table_values['Risk Category 1'] = settings.system.wind.risk_category1 || '-';
-      table_values['Risk Category 2'] = settings.system.wind.risk_category2 || '-';
-      table_values['Risk Category 3'] = settings.system.wind.risk_category3 || '-';
+      table_values['Risk Category 1'] = state.system.wind.risk_category1 || '-';
+      table_values['Risk Category 2'] = state.system.wind.risk_category2 || '-';
+      table_values['Risk Category 3'] = state.system.wind.risk_category3 || '-';
     }
-    if(      settings.system.location &&
-      settings.system.location.low_temp !== undefined &&
-      settings.system.location.high_temp_max  !== undefined  &&
-      settings.system.location.high_temp !== undefined
+    if(      state.system.location &&
+      state.system.location.low_temp !== undefined &&
+      state.system.location.high_temp_max  !== undefined  &&
+      state.system.location.high_temp !== undefined
     ){
-      table_values['Low Temp'] = settings.system.location.low_temp;
-      table_values['High Temp Max'] = settings.system.location.high_temp_max;
-      table_values['High Temp'] = settings.system.location.high_temp;
+      table_values['Low Temp'] = state.system.location.low_temp;
+      table_values['High Temp Max'] = state.system.location.high_temp_max;
+      table_values['High Temp'] = state.system.location.high_temp;
     }
 
     var table = $('<table>')
@@ -145,7 +145,7 @@ update = function(){
         }
     });
 
-    Meteor.call('save_system_settings', settings.system, function(err, returned){
+    Meteor.call('save_system_settings', state.system, function(err, returned){
       //console.log('returned: ', returned);
     });
 
