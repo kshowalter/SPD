@@ -279,7 +279,7 @@ f.mk_sheet_num['S-001'] = function(settings){
           [module_w, module_h],
           layer,
           {
-            onclick: "g.f.toggle_module(this)",
+            onclick: "settings.f.toggle_module(this)",
             module_ID:  (r) + ',' + (c)
 
           }
@@ -310,7 +310,7 @@ f.mk_sheet_num['S-001'] = function(settings){
             [module_w, module_h],
             layer,
             {
-              onclick: "g.f.toggle_module(this)",
+              onclick: "settings.f.toggle_module(this)",
               module_ID:  (r) + ',' + (c)
 
             }
