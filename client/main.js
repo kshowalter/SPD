@@ -130,8 +130,8 @@ Template.main.helpers({
     return style === sessionStorage.getItem('display_style');
   },
   note_count: function(){
-    console.log('notes', settings.notes.length)
-    if( settings.notes.length ){
+    console.log('notes', state.notes.length)
+    if( state.notes.length ){
       return true;
     } else {
       return false;
@@ -139,7 +139,7 @@ Template.main.helpers({
 
   },
   notes: function(){
-    return settings.notes;
+    return state.notes;
   }
 });
 
