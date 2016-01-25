@@ -4,7 +4,7 @@ update = function(){
 
   if( Meteor.user() && Meteor.user().active_system ){
     var active_system = Meteor.user().active_system;
-    settings.status.active_system = active_system;
+    state.status.active_system = active_system;
     console.log('...updating active system: ', active_system);
   } else {
     console.log('...nothing to update yet...');
@@ -12,7 +12,7 @@ update = function(){
 
   if( active_system){
 
-    settings.status.inCompliance = true;
+    state.status.inCompliance = true;
 
     System_data.find({system_id: active_system}).forEach(function(input_doc){
       settings.system[input_doc.section_name] = settings.system[input_doc.section_name] || {};
@@ -33,7 +33,7 @@ update = function(){
     //console.log('section_list', section_list);
     var not_defined = [];
     section_list.forEach(function(section_name){
-      if( section_defined(settings.status.active_system, section_name) ){
+      if( section_defined(state.status.active_system, section_name) ){
         state.webpage.section_activated[section_name] = true;
         $('#tab_'+section_name).html('<i class="fa fa-check-square"></i> ' + f.pretty_name(section_name) );
         // '<i class="fa fa-check-square"></i> ' + section_name

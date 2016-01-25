@@ -32,7 +32,7 @@ f.mk_sheet_num['W-003'] = function(settings){
   var table_width = 100 + 125;
 
   for( var section_name in settings.system ){
-    //if( section_defined(settings.status.active_system, section_name) ){
+    //if( section_defined(state.status.active_system, section_name) ){
       var section = settings.system[section_name];
 
       var n = Object.keys(section).length;

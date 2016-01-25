@@ -26,7 +26,7 @@ f.mk_sheet_num['W-001'] = function(settings){
 
   ////////////////////////////////////////
   //#array
-  if( section_defined(settings.status.active_system, 'array') ){
+  if( section_defined(state.status.active_system, 'array') ){
     d.section('array');
 
 
@@ -110,8 +110,8 @@ f.mk_sheet_num['W-001'] = function(settings){
   ///////////////////////////////
   // combiner box
 
-  //if( section_defined(settings.status.active_system, 'DC') ){
-  if( section_defined(settings.status.active_system, 'inverter') ){
+  //if( section_defined(state.status.active_system, 'DC') ){
+  if( section_defined(state.status.active_system, 'inverter') ){
     d.section("combiner");
 
 
@@ -412,7 +412,7 @@ f.mk_sheet_num['W-001'] = function(settings){
 
 
   //#AC_discconect
-  if( section_defined(settings.status.active_system, 'inverter') ){
+  if( section_defined(state.status.active_system, 'inverter') ){
     d.section("AC_discconect");
 
     d.text(
@@ -718,7 +718,7 @@ f.mk_sheet_num['W-001'] = function(settings){
 
   d.text( [x,y], 'General Notes', 'text', 'table');
 
-  if( section_defined(settings.status.active_system, 'inverter') && section_defined(settings.status.active_system, 'array') ){
+  if( section_defined(state.status.active_system, 'inverter') && section_defined(state.status.active_system, 'array') ){
     y += 20;
     d.text(
       [x,y],

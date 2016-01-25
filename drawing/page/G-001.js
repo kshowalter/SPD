@@ -38,7 +38,7 @@ f.mk_sheet_num['G-001'] = function(settings){
   x = size.drawing.w*1/4;
   y = 160;
 
-  if( section_defined(settings.status.active_system, 'location')  ){
+  if( section_defined(state.status.active_system, 'location')  ){
     d.text(
       [x,y],
       [
