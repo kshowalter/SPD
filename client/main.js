@@ -302,7 +302,6 @@ var setup_system = function(){
   console.log('--Switching to new system');
   //subscribe['main']();
   Meteor.subscribe('system_data', function(){
-    //settings = mk_settings();
     var active_system = Meteor.user().active_system
     settings.system = User_systems.findOne({system_id: active_system}).system_settings || settings.system;
     update();
