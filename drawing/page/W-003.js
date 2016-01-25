@@ -56,12 +56,12 @@ f.mk_sheet_num['W-003'] = function(settings){
       var r = 1;
       var value;
       for( var value_name in section ){
-        if( settings.inputs[section_name][value_name] && settings.inputs[section_name][value_name].onDrawing === false ){
+        if( state.inputs[section_name][value_name] && state.inputs[section_name][value_name].onDrawing === false ){
           continue;
         }
-        var label = settings.inputs[section_name] &&
-            settings.inputs[section_name][value_name] &&
-            settings.inputs[section_name][value_name].label;
+        var label = state.inputs[section_name] &&
+            state.inputs[section_name][value_name] &&
+            state.inputs[section_name][value_name].label;
         var parameter_name = label || f.pretty_name(value_name);
         t.cell(r,1).text( parameter_name );
         if( typeof section[value_name] === 'undefined' || section[value_name] === null) {

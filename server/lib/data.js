@@ -77,9 +77,9 @@ processData = function(FSEC_database, tables) {
   settings = mk_inputs(settings);
 
   Inputs.remove({});
-  for( var section_name in settings.inputs ){
-    for( var value_name in settings.inputs[section_name]){
-      var input = settings.inputs[section_name][value_name];
+  for( var section_name in state.inputs ){
+    for( var value_name in state.inputs[section_name]){
+      var input = state.inputs[section_name][value_name];
       Inputs.insert(input);
     }
   }

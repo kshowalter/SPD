@@ -6,6 +6,7 @@
 
 settings = mk_settings();
 state = mk_state();
+settings.state = state;
 settings = mk_inputs(settings);
 f.g = settings;
 settings.f = f;

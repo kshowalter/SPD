@@ -265,7 +265,7 @@ var resize_sections = function(){
 Template.tabs.onRendered(function(){
   f.are_we_there_yet(function(){
     return (
-      $('.user_input_container').length === Object.keys(settings.inputs).length &&
+      $('.user_input_container').length === Object.keys(state.inputs).length &&
       subscriptions_ready() &&
       Meteor.userId() &&
       Meteor.user().active_system
@@ -307,7 +307,7 @@ var setup_system = function(){
     update();
     if(state.webpage.setup_needed){
       f.are_we_there_yet(function(){
-        return $('.user_input_container').length === Object.keys(settings.inputs).length;
+        return $('.user_input_container').length === Object.keys(state.inputs).length;
       },function(){
         setup_webpage();
         update();
