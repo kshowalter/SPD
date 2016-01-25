@@ -24,6 +24,12 @@ f.mk_sheet_num['W-003'] = function(settings){
 
   d.layer('table');
 
+  var col_widths = [
+    null,
+    125,
+    125
+  ];
+  var table_width = 100 + 125;
 
   for( var section_name in settings.system ){
     //if( section_defined(settings.status.active_system, section_name) ){
@@ -39,41 +45,43 @@ f.mk_sheet_num['W-003'] = function(settings){
 
       if( (y+h) > ( settings.drawing_settings.size.drawing.h * 0.8 ) ) {
         y = size.drawing.frame_padding*6 +20;
-        x += w*1.5;
+        x += table_width*1.2;
       }
 
+      d.text( [x+table_width/2, y-row_height], f.pretty_name(section_name),'table' );
+
       var t = d.table(n_rows,n_cols).loc(x,y);
-      t.row_size('all', row_height).col_size(1, 100).col_size(2, 125);
-      w = 100+80;
+      t.row_size('all', row_height).col_size(1, col_widths[1]).col_size(2, col_widths[2]);
 
       var r = 1;
       var value;
       for( var value_name in section ){
+        if( settings.inputs[section_name][value_name] && settings.inputs[section_name][value_name].onDrawing === false ){
+          continue;
+        }
         var label = settings.inputs[section_name] &&
             settings.inputs[section_name][value_name] &&
             settings.inputs[section_name][value_name].label;
         var parameter_name = label || f.pretty_name(value_name);
         t.cell(r,1).text( parameter_name );
         if( typeof section[value_name] === 'undefined' || section[value_name] === null) {
-          value = '-';
+          value = false;
         } else if( section[value_name].constructor === Array ){
-          value = section[value_name].toString();
+          value = section[value_name].join(', ');
         } else if( section[value_name].constructor === Object ){
-          value = '( )';
+          //value = '( )';
+          value = 'false';
         } else if( isNaN(section[value_name]) ){
           value = section[value_name];
         } else {
           value = parseFloat(section[value_name]).toFixed(2);
         }
-        t.cell(r,2).text( value );
-        r++;
+        if( value ){
+          t.cell(r,2).text( value );
+          r++;
+        }
 
       }
-
-      d.text( [x+w/2, y-row_height], f.pretty_name(section_name),'table' );
-
-
-
 
       t.all_cells().forEach(function(cell){
         cell.font('table').border('all');

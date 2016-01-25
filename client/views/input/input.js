@@ -50,13 +50,25 @@ Template.input.events({
   },
   'change .input': function(event){
     var active_system = Meteor.users.findOne({_id:Meteor.userId()}).active_system;
-    var value = event.target.value;
-
-    number = Number(value);
-    if( ! isNaN(number) ){
-      value = number;
+    if( event.target.type === 'checkbox'){
+      if( event.target.checked ){
+        value = 'Yes';
+      } else {
+        value = undefined;
+      }
+    } else {
+      var value = event.target.value;
+      number = Number(value);
+      if( ! isNaN(number) ){
+        value = number;
+      }
     }
-    System_data.update(this._id, {$set: {value: value}});
+
+    if( value === undefined ){
+      System_data.update(this._id, {$unset: {value: ''}});
+    } else {
+      System_data.update(this._id, {$set: {value: value}});
+    }
     update_options(active_system, this.section_name, this.value_name);
   },
 });
