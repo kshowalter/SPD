@@ -26,14 +26,15 @@ f.mk_sheet_num['W-003'] = function(settings){
 
   var col_widths = [
     null,
-    125,
-    125
+    175,
+    100
   ];
-  var table_width = 100 + 125;
+  var table_width = col_widths[1] + col_widths[2];
 
-  for( var section_name in state.system ){
-    //if( section_defined(state.status.active_system, section_name) ){
-      var section = state.system[section_name];
+  for( var section_name in state.system_display ){
+    if( section_defined(state.status.active_system, section_name) ){
+      console.log('section', section_name);
+      var section = state.system_display[section_name];
 
       var n = Object.keys(section).length;
 
@@ -41,9 +42,9 @@ f.mk_sheet_num['W-003'] = function(settings){
       var n_cols = 2;
 
       var row_height = 15;
-      h = n_rows*row_height;
+      table_height = n_rows*row_height;
 
-      if( (y+h) > ( settings.drawing_settings.size.drawing.h * 0.8 ) ) {
+      if( (y+table_height+50) > ( settings.drawing_settings.size.drawing.h * 0.8 ) ) {
         y = size.drawing.frame_padding*6 +20;
         x += table_width*1.2;
       }
@@ -54,32 +55,15 @@ f.mk_sheet_num['W-003'] = function(settings){
       t.row_size('all', row_height).col_size(1, col_widths[1]).col_size(2, col_widths[2]);
 
       var r = 1;
-      var value;
       for( var value_name in section ){
-        if( state.inputs[section_name][value_name] && state.inputs[section_name][value_name].onDrawing === false ){
-          continue;
-        }
         var label = state.inputs[section_name] &&
             state.inputs[section_name][value_name] &&
             state.inputs[section_name][value_name].label;
         var parameter_name = label || f.pretty_name(value_name);
         t.cell(r,1).text( parameter_name );
-        if( typeof section[value_name] === 'undefined' || section[value_name] === null) {
-          value = false;
-        } else if( section[value_name].constructor === Array ){
-          value = section[value_name].join(', ');
-        } else if( section[value_name].constructor === Object ){
-          //value = '( )';
-          value = 'false';
-        } else if( isNaN(section[value_name]) ){
-          value = section[value_name];
-        } else {
-          value = parseFloat(section[value_name]).toFixed(2);
-        }
-        if( value ){
-          t.cell(r,2).text( value );
-          r++;
-        }
+
+        t.cell(r,2).text( state.system_display[section_name][value_name] );
+        r++;
 
       }
 
@@ -90,22 +74,11 @@ f.mk_sheet_num['W-003'] = function(settings){
       t.mk();
 
       //*/
-      y += h + 30;
-
-
-
-    //} else {
-
-      //console.log('not defined: ', section_name, section);
-    //}
-
-
-
-
+      y += table_height + 50;
+    }
   }
 
   d.layer();
-
 
   return d;
 };
