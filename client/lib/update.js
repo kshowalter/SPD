@@ -146,7 +146,22 @@ update = function(){
     });
 
 
-
+    ////////////////
+    // Module info
+    state.system['module'] = {};
+    [
+      'pmp',
+      'isc',
+      'voc',
+      'imp',
+      'vmp',
+      'width',
+      'length',
+      'max_series_fuse',
+      'ul1703',
+    ].forEach(function(value_name){
+      state.system['module'][value_name] = state.system.array.module[value_name];
+    });
 
 
     ////////////////
@@ -161,7 +176,9 @@ update = function(){
         var section = state.system[section_name];
         var value;
         for( var value_name in section ){
-          if( state.inputs[section_name][value_name] && state.inputs[section_name][value_name].onDrawing === false ){
+          if( state.inputs[section_name] &&
+              state.inputs[section_name][value_name] &&
+              state.inputs[section_name][value_name].onDrawing === false ){
             //console.log('value_name', section_name, value_name);
             continue;
           }
@@ -191,8 +208,6 @@ update = function(){
         }
       }
     }
-
-
 
 
 

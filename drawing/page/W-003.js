@@ -33,7 +33,6 @@ f.mk_sheet_num['W-003'] = function(settings){
 
   for( var section_name in state.system_display ){
     if( section_defined(state.status.active_system, section_name) ){
-      console.log('section', section_name);
       var section = state.system_display[section_name];
 
       var n = Object.keys(section).length;
