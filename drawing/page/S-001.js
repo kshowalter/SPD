@@ -3,10 +3,6 @@ f.mk_sheet_num['S-001'] = function(settings){
 
   d = Drawing(settings);
 
-  var sheet_section = 'S';
-  var sheet_num = '01';
-  //d.append(mk_border(settings, sheet_section, sheet_num ));
-
   var size = settings.drawing_settings.size;
   var loc = settings.drawing_settings.loc;
   var system = state.system;

@@ -2,10 +2,6 @@ f.mk_sheet_num['G-002'] = function(settings){
 
   var d = Drawing(settings);
 
-  var sheet_section = 'A';
-  var sheet_num = '00';
-  //d.append(mk_border(settings, sheet_section, sheet_num ));
-
   var size = settings.drawing_settings.size;
   var loc = settings.drawing_settings.loc;
 
@@ -14,13 +10,10 @@ f.mk_sheet_num['G-002'] = function(settings){
 
 
   x = size.drawing.w * 1/2;
-  y = 50;
+  y = 60;
 
-  y += 10;
   w = size.drawing.w * 1 * 0.95;
-  //h = size.drawing.h       * 0.75;
   h = 475;
-
 
   d.text(
     [x,y],
@@ -28,7 +21,6 @@ f.mk_sheet_num['G-002'] = function(settings){
     'text',
     'title1'
   );
-
 
   x -= ( w/2 );
   y += 25;
@@ -41,8 +33,9 @@ f.mk_sheet_num['G-002'] = function(settings){
       '600 amps maximim DC current.',
       ' ',
       'Requirments:',
-      'The Licensed Solar Installer shall comply with the requirements of the Authority Having Jurisdiction (AHJ)',
-      '    and use properly licensed subcontractors for work in conjunction with the PV installation that exceeds the scope of their license.',
+      '  The Licensed Solar Installer shall comply with the requirements of the',
+      '  Authority Having Jurisdiction (AHJ) and use properly licensed subcontractors for',
+      '  work in conjunction with the PV installation that exceeds the scope of their license.',
       'The PV array design and components will:',
       ' - Be installed on defined, permitted roof structure.',
       ' - Comply with all requirements of the Authority Having Jurisdiction for fire ratings.',
@@ -61,7 +54,21 @@ f.mk_sheet_num['G-002'] = function(settings){
   );
 
 
+  x = size.drawing.w * 1/2;
+  y = 60;
 
+  x += size.drawing.w * 0.05
+  y += 25;
+
+  d.text(
+    [x,y],
+    [
+      'Instructions:',
+      'Follow NEC and local signage requirments.',
+    ],
+    'text',
+    'notes'
+  );
 
 
   //////
