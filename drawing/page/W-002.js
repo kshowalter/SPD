@@ -15,8 +15,32 @@ f.mk_sheet_num['W-002'] = function(settings){
   var x;
   var y;
 
-  x = 500;
-  y = 325;
+  x = size.drawing.w * 1/2;
+  y = 50;
+
+  d.text(
+    [x,y],
+    'General Instructions:',
+    'text',
+    'title1'
+  );
+
+  y += 25;
+  x -= 200;
+
+  d.text(
+    [x,y],
+    [
+      'Follow NEC and local signage requirments.',
+    ],
+    'text',
+    'notes'
+  );
+
+
+
+
+  /*
 
   var electical_notes = [
     "1:   ALL ASPECTS OF THE ELECTRICAL WORK REQUIRED TO COMPLETE THE",
@@ -111,7 +135,7 @@ f.mk_sheet_num['W-002'] = function(settings){
   ], 'table', 'table' );
   d.rect( [ x ,y+10+h/2 ], [w,h], 'table' );
 
-
+  //*/
 
   return d;
 };
