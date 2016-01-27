@@ -360,8 +360,10 @@ input {
   display: inline-block;
   padding: 3px 10px;
   margin: 5px;
-  white-space: nowrap;
   height: 34px;
+  /*
+  white-space: nowrap;
+  */
 
 }
 .user_input_label{
