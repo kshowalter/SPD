@@ -40,6 +40,14 @@ Template.input.helpers({
       return false;
     }
   },
+  checked: function(){
+    //console.log(this);
+    if( this.value === "Yes"){
+      return true;
+    } else {
+      return false;
+    }
+  },
 });
 
 
@@ -54,7 +62,7 @@ Template.input.events({
       if( event.target.checked ){
         value = 'Yes';
       } else {
-        value = undefined;
+        value = false;
       }
     } else {
       var value = event.target.value;
