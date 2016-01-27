@@ -680,6 +680,7 @@ f.mk_sheet_num['W-001'] = function(settings){
 
 
   // voltage drop
+  /*
   d.section("voltage drop");
 
 
@@ -695,6 +696,7 @@ f.mk_sheet_num['W-001'] = function(settings){
   y += 10;
 
   d.text( [x,y], 'Voltage Drop', 'text', 'table');
+  //*/
 
 
   // general notes
