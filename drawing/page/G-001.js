@@ -2,10 +2,6 @@ f.mk_sheet_num['G-001'] = function(settings){
 
   var d = Drawing(settings);
 
-  var sheet_section = 'A';
-  var sheet_num = '00';
-  //d.append(mk_border(settings, sheet_section, sheet_num ));
-
   var size = settings.drawing_settings.size;
   var loc = settings.drawing_settings.loc;
 
@@ -74,11 +70,7 @@ f.mk_sheet_num['G-001'] = function(settings){
       'notes'
     );
 
-
-
-
   }
-
 
 
 
@@ -86,6 +78,8 @@ f.mk_sheet_num['G-001'] = function(settings){
 
   //////
   // table of contents
+  x = size.drawing.frame_padding*6;
+  y = y;
 
   var n_rows = settings.drawing_settings.sheets.length;
   var n_cols = 2;
@@ -93,10 +87,7 @@ f.mk_sheet_num['G-001'] = function(settings){
   w = 0;
   col_widths.forEach(function(x){w+=x});
   h = n_rows*20;
-  x = size.drawing.frame_padding*6;
-  y = size.drawing.h - size.drawing.frame_padding - size.drawing.titlebox.bottom.h;
-  y += -20 * n_rows;
-  y += -40; // the last number is the gap to the title box
+
   d.text( [x+w/2, y-20], 'Contents', null, 'table_large' );
 
   var t = d.table(n_rows,n_cols).loc(x,y);
@@ -108,33 +99,62 @@ f.mk_sheet_num['G-001'] = function(settings){
 
   });
 
-
   t.all_cells().forEach(function(cell){
     cell.font('table_large_left').border('all');
   });
 
   t.mk();
 
-  /*
-  console.log(table_parts);
-  d.append(table_parts);
-  d.text([size.drawing.w/3,size.drawing.h/3], 'X', 'table');
-  d.rect([size.drawing.w/3-5,size.drawing.h/3-5],[10,10],'box');
-
-  t.cell(2,2).border('all').text('cell 2,2');
-  t.cell(3,3).border('all').text('cell 3,3');
-  t.cell(4,4).border('all').text('cell 4,4');
-  t.cell(5,5).border('all').text('cell 5,5');
+  ////////
 
 
 
-  t.cell(4,6).border('all').text('cell 4,6');
-  t.cell(4,7).border('all').text('cell 4,7');
-  t.cell(5,6).border('all').text('cell 5,6');
-  t.cell(5,7).border('all').text('cell 5,7');
 
 
-  //*/
+
+  ///////////
+  // Site layout
+  if( section_defined(state.status.active_system, 'location') && section_defined(state.status.active_system, 'roof') ){
+
+    x = settings.drawing_settings.size.drawing.w * 3/4 - 50;
+    y = settings.drawing_settings.size.drawing.h * 1/2 - 50;
+
+    var rotations = {
+      'S' :0,
+      'SW':45,
+      'W' :90,
+      'NW':135,
+      'N' :180,
+      'NE':-135,
+      'E' :-90,
+      'SE':-45,
+    };
+
+    var road_offset = 100;
+    var road_location = {
+      'S' :{x:x,                  y:y+road_offset},
+      'SW':{x:x-road_offset*0.7,  y:y+road_offset*0.7},
+      'W' :{x:x-road_offset,      y:y},
+      'NW':{x:x-road_offset*0.7,  y:y-road_offset*0.7},
+      'N' :{x:x,                  y:y-road_offset},
+      'NE':{x:x+road_offset*0.7,  y:y-road_offset*0.7},
+      'E' :{x:x+road_offset,      y:y},
+      'SE':{x:x+road_offset*0.7,  y:y+road_offset*0.7},
+    };
+
+    d.block('simple_house', {x:x, y:y} )
+      .rotate(rotations[state.system.roof.direction]);
+
+    d.block('road', road_location[state.system.location.road_direction] )
+      .rotate(rotations[state.system.location.road_direction]);
+
+    d.block( 'north arrow_up', {x:x+250, y:y} );
+
+  }
+
+
+
+
 
   return d;
 };

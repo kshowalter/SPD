@@ -365,8 +365,9 @@ input {
 
 }
 .user_input_label{
+  /*
   white-space: normal;
-
+  */
 }
 
 .user_input select {
