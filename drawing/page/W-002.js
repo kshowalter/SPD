@@ -22,7 +22,7 @@ f.mk_sheet_num['W-002'] = function(settings){
 
   var col_widths = [
     null,
-    175,
+    150,
     100
   ];
   var table_width = col_widths[1] + col_widths[2];

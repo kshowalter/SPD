@@ -79,7 +79,7 @@ f.mk_sheet_num['G-001'] = function(settings){
   //////
   // table of contents
   x = size.drawing.frame_padding*6;
-  y = y;
+  y = size.drawing.h - size.drawing.frame_padding - size.drawing.titlebox.bottom.h;
 
   var n_rows = settings.drawing_settings.sheets.length;
   var n_cols = 2;
@@ -87,6 +87,9 @@ f.mk_sheet_num['G-001'] = function(settings){
   w = 0;
   col_widths.forEach(function(x){w+=x});
   h = n_rows*20;
+
+  y += -20 * n_rows;
+  y += -40; // the last number is the gap to the title box
 
   d.text( [x+w/2, y-20], 'Contents', null, 'table_large' );
 
