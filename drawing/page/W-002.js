@@ -8,24 +8,17 @@ f.mk_sheet_num['W-002'] = function(settings){
   var size = settings.drawing_settings.size;
   var loc = settings.drawing_settings.loc;
 
-
-  //d.text(
-  //  [size.drawing.w/2, size.drawing.h/2],
-  //  'Calculation Sheet',
-  //  'text',
-  //  'title2'
-  //);
-
-
   x = size.drawing.frame_padding*6;
-  y = size.drawing.frame_padding*6 +20;
+
+  var top = size.drawing.frame_padding*6 +10;
+  y = top;
 
   d.layer('table');
 
   var col_widths = [
     null,
-    150,
-    100
+    105,
+    105
   ];
   var table_width = col_widths[1] + col_widths[2];
 
@@ -41,9 +34,9 @@ f.mk_sheet_num['W-002'] = function(settings){
       var row_height = 15;
       table_height = n_rows*row_height;
 
-      if( (y+table_height+50) > ( settings.drawing_settings.size.drawing.h * 0.8 ) ) {
-        y = size.drawing.frame_padding*6 +20;
-        x += table_width*1.2;
+      if( (y+table_height+50) > ( settings.drawing_settings.size.drawing.h * 0.9 ) ) {
+        y = top;
+        x += table_width*1.1;
       }
 
       d.text( [x+table_width/2, y-row_height], f.pretty_name(section_name),'table' );
