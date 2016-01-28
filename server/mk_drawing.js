@@ -1,9 +1,6 @@
 mk_drawing = function(system_id){
   console.log('Making: ', system_id);
 
-
-
-
   var system_settings = mk_settings();
 
   var state = mk_state();
@@ -21,13 +18,13 @@ mk_drawing = function(system_id){
   state.webpage.selected_modules = User_systems.findOne({system_id: system_id}).selected_modules ||
     state.webpage.selected_modules;
 
-
   state.status.active_system = system_id;
+
+  state.system_display = mk_system_display(state);
 
   system_settings = calculate(system_settings);
   system_settings = update_drawing(system_settings);
   var svgs = system_settings.drawing.svgs;
-
 
   svgs_strings = [];
 

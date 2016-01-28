@@ -1,4 +1,5 @@
 f.mk_sheet_num['G-001'] = function(settings){
+  var state = settings.state;
 
   var d = Drawing(settings);
 
@@ -33,7 +34,7 @@ f.mk_sheet_num['G-001'] = function(settings){
 
   x = size.drawing.w*1/4;
   y = 160;
-
+  //console.log( '|_ location', state.status.active_system, section_defined(state.status.active_system, 'location') );
   if( section_defined(state.status.active_system, 'location')  ){
     d.text(
       [x,y],

@@ -1,4 +1,6 @@
 f.mk_sheet_num['W-002'] = function(settings){
+  var state = settings.state;
+
   var f = settings.f;
 
   d = Drawing(settings);

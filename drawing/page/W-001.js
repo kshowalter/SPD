@@ -1,4 +1,6 @@
 f.mk_sheet_num['W-001'] = function(settings){
+  var state = settings.state;
+
   var d = Drawing(settings);
 
   var f = settings.f;
@@ -24,11 +26,9 @@ f.mk_sheet_num['W-001'] = function(settings){
   if( section_defined(state.status.active_system, 'array') ){
     d.section('array');
 
-
     x = loc.array.right - size.string.w;
     y = loc.array.upper;
     //y -= size.string.h/2;
-
 
     //for( var i=0; i<system.DC.string_num; i++ ) {
     for( var i in _.range(system.array.number_of_strings)) {

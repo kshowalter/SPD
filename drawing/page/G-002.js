@@ -1,5 +1,6 @@
 f.mk_sheet_num['G-002'] = function(settings){
-
+  var state = settings.state;
+  
   var d = Drawing(settings);
 
   var size = settings.drawing_settings.size;

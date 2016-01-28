@@ -11,7 +11,6 @@ Router.route('/drawing/:system_id', function () {
   var svgs = mk_drawing(system_id);
 
 
-
   //console.log(svgs[0].outerHTML);
 
   //var htmls = [];
