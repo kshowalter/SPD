@@ -146,22 +146,6 @@ update = function(){
     });
 
 
-    ////////////////
-    // Module info
-    state.system['module'] = {};
-    [
-      'pmp',
-      'isc',
-      'voc',
-      'imp',
-      'vmp',
-      'width',
-      'length',
-      'max_series_fuse',
-      'ul1703',
-    ].forEach(function(value_name){
-      state.system['module'][value_name] = state.system.array.module[value_name];
-    });
 
 
     ////////////////

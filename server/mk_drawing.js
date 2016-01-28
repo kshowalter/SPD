@@ -20,10 +20,12 @@ mk_drawing = function(system_id){
 
   state.status.active_system = system_id;
 
-  state.system_display = mk_system_display(state);
-
   system_settings = calculate(system_settings);
+
+  system_settings.state.system_display = mk_system_display(system_settings.state);
+
   system_settings = update_drawing(system_settings);
+
   var svgs = system_settings.drawing.svgs;
 
   svgs_strings = [];
