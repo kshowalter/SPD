@@ -34,7 +34,7 @@ f.mk_sheet_num['S-001'] = function(settings){
 
   d.text(
     [settings.drawing_settings.size.drawing.w/2, 40],
-    'Roof section 1, ' + system.roof.direction + ' side of building',
+    'Roof section 1, ' + system.roof.side_of_building + ' side of building',
     'title',
     'title1'
   );
@@ -61,7 +61,7 @@ f.mk_sheet_num['S-001'] = function(settings){
   d.block( 'slope_arrow_down', {x:x, y:y} );
 
   y+=100;
-  d.block( 'north arrow_up', {x:x, y:y} ).rotate(rotations[state.system.roof.direction]);
+  d.block( 'north arrow_up', {x:x, y:y} ).rotate(rotations[state.system.roof.side_of_building]);
 
 
   var detail_x = 70;
