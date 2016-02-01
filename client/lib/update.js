@@ -1,6 +1,6 @@
 update = function(){
-  console.log('current settings:', settings);
-  console.log('current state:', state);
+  //console.log('current settings:', settings);
+  //console.log('current state:', state);
 
   if( Meteor.user() && Meteor.user().active_system ){
     var active_system = Meteor.user().active_system;
