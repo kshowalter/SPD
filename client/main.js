@@ -171,7 +171,15 @@ Template.main.events({
   'click #delete_system': function(){
     if( confirm('delete system:'+Meteor.user().active_system) ){
       Meteor.call('delete_system', function(err, id){
-        console.log('created ID: ', id);
+        console.log('system deleted: ', id);
+      });
+      f.change_system_id('');
+    }
+  },
+  'click #clear_user': function(){
+    if( confirm('DELETE ALL SYSTEMS?') ){
+      Meteor.call('clear_user', function(err, id){
+        console.log('cleared');
       });
       f.change_system_id('');
     }

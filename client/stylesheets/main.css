@@ -291,6 +291,11 @@ img { border: 0; }
   background: #b2d6ff;
 }
 
+#clear_user {
+  color: #7d0000;
+}
+
+
   /*
 .drawing_button a{
   text-align: center;

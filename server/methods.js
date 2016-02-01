@@ -28,7 +28,7 @@ Meteor.methods({
 
     var old_system_number = Meteor.user().last_system_number || 0;
     var system_number = old_system_number + 1;
-    Meteor.users.update(this.userId, 
+    Meteor.users.update(this.userId,
       {$set:
         {last_system_number: system_number}
       }
@@ -63,6 +63,29 @@ Meteor.methods({
       { $set: {active_system: new_system_id } }
     );
   },
+  clear_user: function(){
+    var user_system_list = User_systems.find({user_id:this.userId}).map(function(system){
+      return system.system_id;
+    });
+    console.log(user_system_list);
+    user_system_list.forEach(function(system_id){
+      System_data.remove({system_id:system_id});
+    });
+    User_systems.remove({user_id:this.userId});
+    /*
+    User_systems.find({user_id:this.userId}).map(function(system){
+    });
+    */
+
+    Meteor.users.update(
+      this.userId,
+      { $unset: {active_system: ''} }
+    );
+  },
+
+
+
+
   new_active_system: function(system_id){
     var user_id = this.userId;
     Meteor.users.update(
