@@ -105,15 +105,22 @@ img { border: 0; }
 
 
 .menu_bar {
-  /*
-  border: 2px solid #F2EB41;
-  */
   border: 1px solid lightgrey;
   background: WhiteSmoke;
-  margin: 10px;
-  padding: 5px;
+  /*
+  border: 2px solid #F2EB41;
   height: 23px;
+  */
+  margin: 10px;
+
+  overflow: hidden;
+  display: inline-block; /* Necessary to trigger "hasLayout" in IE */
+  display: block; /* Sets element back to block */
+
+  padding: 10px;
+  padding-bottom: 0px;
 }
+
 
 .menu_bar_title {
   /*
