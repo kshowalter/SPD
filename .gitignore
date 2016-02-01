@@ -1,4 +1,4 @@
-packages/
+packages/*
 
 reporting/gitlog.txt
 reporting/*.docx
