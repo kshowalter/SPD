@@ -9,6 +9,9 @@
           </span>
         {{/with}}
       {{/each}}
+      <span class='tab tab_inactive summary_tab_inactive' id="tab_summary" onclick="f.show_tab('inputs','summary')">
+        <i class="fa fa-list-ul"></i> Summary
+      </span>
 
     </div>
     <div class="tabs_box table">
@@ -38,6 +41,17 @@
         {{/with}}
         </div>
       {{/each}}
+      <div class="tab_content row" id="section_summary" style="display: none;">
+        <span class="cell">
+          <span class="info">
+          </span>
+          <span class="user_input_container">
+            {{> summary}}
+          </span>
+        </span>
+      </div>
+
+
     </div>
   </div>
 
