@@ -29,7 +29,7 @@ f.mk_sheet_num['G-002'] = function(settings){
     [x,y],
     [
       'System Limitations:',
-      'The array must be installed on a building with a risk category of II',
+      'The array must be installed on a residential building with a risk category of II',
       '10 kW maximum, grid connected, no battery backup.',
       'Roodtop mounted, no more than 9 inches above the roof surface.',
       '600 amps maximim DC current.',
