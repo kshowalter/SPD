@@ -149,8 +149,8 @@ f.mk_sheet_num['G-001'] = function(settings){
     d.block('simple_house', {x:x, y:y} )
       .rotate(rotations[state.system.roof.side_of_building]);
 
-    d.block('road', road_location[state.system.location.road_direction] )
-      .rotate(rotations[state.system.location.road_direction]);
+    d.block('road', road_location[state.system.location.direction_to_road] )
+      .rotate(rotations[state.system.location.direction_to_road]);
 
     d.block( 'north arrow_up', {x:x+250, y:y} );
 
