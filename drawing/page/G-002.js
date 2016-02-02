@@ -31,10 +31,10 @@ f.mk_sheet_num['G-002'] = function(settings){
       'System Limitations:',
       'The array must be installed on a residential building with a risk category of II',
       '10 kW maximum, grid connected, no battery backup.',
-      'Roodtop mounted, no more than 9 inches above the roof surface.',
-      '600 amps maximim DC current.',
+      'Rooftop mounted, no more than 9 inches above the roof surface.',
+      '600 amps maximum DC current.',
       ' ',
-      'Requirments:',
+      'Requirements:',
       '  The Licensed Solar Installer shall comply with the requirements of the',
       '  Authority Having Jurisdiction (AHJ) and use properly licensed subcontractors for',
       '  work in conjunction with the PV installation that exceeds the scope of their license.',
@@ -66,7 +66,7 @@ f.mk_sheet_num['G-002'] = function(settings){
     [x,y],
     [
       'Instructions:',
-      'Follow NEC and local signage requirments.',
+      'Follow NEC and local signage requirements.',
     ],
     'text',
     'notes'
