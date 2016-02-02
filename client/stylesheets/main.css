@@ -142,8 +142,12 @@ img { border: 0; }
 }
 
 
+
 #login-dropdown-list {
-    left: -180px;
+  position: fixed;
+  left: auto;
+  right: 25px;
+  top: 70px;
 }
 
 /***********/
