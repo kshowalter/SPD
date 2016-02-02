@@ -78,6 +78,13 @@ Template.main.helpers({
   active_system: function(){
     return Meteor.user().active_system;
   },
+  disable_system_name_input: function(){
+    if(Meteor.user().active_system){
+      return false;
+    } else {
+      return true;
+    }
+  },
   system_name: function(){
     /*
     //*/

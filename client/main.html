@@ -27,7 +27,7 @@
           {{/each}}
           <option value="new">new</option>
         </select>
-        <input id="system_name" type="text" value="{{system_name}}">
+        <input id="system_name" type="text" value="{{system_name}}" autocomplete="off" disabled="{{disable_system_name_input}}">
         <a class='button' href='#' id='new_system' title='Add new system'><i class="fa fa-plus"></i></a>
         <a class='button' href='#' id='delete_system' title='Delete current system'><i class="fa fa-trash-o"></i></a>
         <a class='button' href='#' id='clear_user' title='Delete all systems'><i class="fa fa-bomb"></i></a>

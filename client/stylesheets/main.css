@@ -301,6 +301,9 @@ img { border: 0; }
   color: #7d0000;
 }
 
+#system_name:disabled {
+  background: WhiteSmoke;
+}
 
   /*
 .drawing_button a{
