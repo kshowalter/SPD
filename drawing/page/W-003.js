@@ -1,13 +1,9 @@
-f.mk_sheet_num['W-00x'] = function(settings){
+f.mk_sheet_num['W-003'] = function(settings){
   var state = settings.state;
 
   var f = settings.f;
 
   d = Drawing(settings);
-
-  var sheet_section = 'PV';
-  var sheet_num = '02';
-  //d.append(mk_border(settings, sheet_section, sheet_num ));
 
   var size = settings.drawing_settings.size;
   var loc = settings.drawing_settings.loc;
@@ -17,6 +13,7 @@ f.mk_sheet_num['W-00x'] = function(settings){
   var x;
   var y;
 
+  /*
   x = size.drawing.w * 1/2;
   y = 50;
 
@@ -33,7 +30,6 @@ f.mk_sheet_num['W-00x'] = function(settings){
 
 
 
-  /*
 
   var electical_notes = [
     "1:   ALL ASPECTS OF THE ELECTRICAL WORK REQUIRED TO COMPLETE THE",
@@ -76,6 +72,7 @@ f.mk_sheet_num['W-00x'] = function(settings){
   h = 405;
   d.rect( [ x+w/2-5 ,y+h/2-10 ], [w,h], 'table' );
 
+  //*/
 
   var labels_x = 120;
   var labels_y = 60;
@@ -128,7 +125,6 @@ f.mk_sheet_num['W-00x'] = function(settings){
   ], 'table', 'table' );
   d.rect( [ x ,y+10+h/2 ], [w,h], 'table' );
 
-  //*/
 
   return d;
 };
