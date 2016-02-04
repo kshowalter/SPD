@@ -1,6 +1,21 @@
 Template.summary.helpers({
-  sections: function(){
-    return state.webpage.sections;
+  errors: function(){
+    return state.errors;
+  },
+  warnings: function(){
+    return state.warnings;
+  },
+  notes: function(){
+    return state.notes;
+  },
+  isErrors: function(){
+    return state.errors.length;
+  },
+  isWarnings: function(){
+    return state.warnings.length;
+  },
+  isNotes: function(){
+    return state.notes.length;
   },
 });
 

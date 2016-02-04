@@ -1,7 +1,40 @@
 <Template name="summary">
+  {{#if isErrors}}
+    <h3>Errors:</h3>
+    <div>
+      {{#each errors}}
+        <span>
+          <i class="fa fa-exclamation-triangle"></i> {{this}}
+        </span>
+      {{/each}}
+    </div>
+  {{/if}}
+
+  {{#if isWarnings}}
+    <h3>Warnings:</h3>
+    <div>
+      {{#each warnings}}
+        <span>
+          <i class="fa fa-exclamation"></i> {{this}}
+        </span>
+      {{/each}}
+    </div>
+  {{/if}}
+
+  {{#if isNotes}}
+    <h3>Notes:</h3>
+    <div>
+      {{#each notes}}
+        <span>
+          <i class="fa fa-sticky-note"></i> {{this}}
+        </span>
+      {{/each}}
+    </div>
+  {{/if}}
+
+  <h3>Drawing:</h3>
 
   <a class='button' href="#" id="request_drawing">request drawing</a>
-
 
   <div id='summary_ drawing_output'>
     <span id='drawing_download_status'></span>
