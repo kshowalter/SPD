@@ -66,6 +66,7 @@ f.mk_sheet_num['G-002'] = function(settings){
     [x,y],
     [
       'Instructions:',
+      'Wood structural members must be a 2x4 or larger.',
       'Follow NEC and local signage requirements.',
     ],
     'text',
