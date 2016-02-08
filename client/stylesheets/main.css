@@ -540,6 +540,12 @@ input {
 
 
 
+#section_summary ul {
+  padding: 0px;
+  list-style-type: none;
+
+}
+
 /***********/
 /* Drawing */
 

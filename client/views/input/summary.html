@@ -1,47 +1,43 @@
 <Template name="summary">
   {{#if isErrors}}
     <h3>Errors:</h3>
-    <div>
+    <ul>
       {{#each errors}}
-        <span>
+        <li>
           <i class="fa fa-exclamation-triangle"></i> {{this}}
-        </span>
+        </li>
       {{/each}}
-    </div>
+    </ul>
   {{/if}}
 
   {{#if isWarnings}}
     <h3>Warnings:</h3>
-    <div>
+    <ul>
       {{#each warnings}}
-        <span>
+        <li>
           <i class="fa fa-exclamation"></i> {{this}}
-        </span>
+        </li>
       {{/each}}
-    </div>
+    </ul>
   {{/if}}
 
   {{#if isNotes}}
     <h3>Notes:</h3>
-    <div>
+    <ul>
       {{#each notes}}
-        <span>
+        <li>
           <i class="fa fa-sticky-note"></i> {{this}}
-        </span>
+        </li>
       {{/each}}
-    </div>
+    </ul>
   {{/if}}
 
   <h3>Drawing:</h3>
 
-  <a class='button' href="#" id="request_drawing">request drawing</a>
 
-  <div id='summary_ drawing_output'>
-    <span id='drawing_download_status'></span>
-    <br>
-    <br>
-    <a id='close_download_box' class='button' href=#>close</a>
-  </div>
+  <span id='summary_drawing_download_status'>
+    <a class='button' href="#" id="summary_request_drawing">request drawing</a>
+  </span>
 
 
 </Template>

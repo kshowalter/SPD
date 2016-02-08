@@ -1,6 +1,19 @@
 update = function(){
   //console.log('current settings:', settings);
-  //console.log('current state:', state);
+  console.log('current state:', state);
+
+  //$('#summary_drawing_download_status').empty();
+
+  var request_drawing_button = $('<a>', {
+    id: 'summary_request_drawing',
+    class: 'button',
+    href: '#',
+    text: 'request drawing',
+  });
+  $('#summary_drawing_download_status')
+    .empty()
+    .append(request_drawing_button);
+
 
   if( Meteor.user() && Meteor.user().active_system ){
     var active_system = Meteor.user().active_system;
@@ -36,7 +49,7 @@ update = function(){
       if( section_defined(state.status.active_system, section_name) ){
         state.webpage.section_activated[section_name] = true;
         $('#tab_'+section_name).html('<i class="fa fa-check-square"></i> ' + f.pretty_name(section_name) );
-        // '<i class="fa fa-check-square"></i> ' + section_name
+        // '<i class='fa fa-check-square'></i> ' + section_name
       } else {
         not_defined.push(section_name);
         state.webpage.section_activated[section_name] = false;
@@ -130,19 +143,19 @@ update = function(){
     };
     $('.preview_cell').remove();
     state.webpage.sections.forEach(function(section_name){
-        if(preview_table[section_name]) {
-          preview_table[section_name].forEach(function(preview_svg){
-            var svg_drawing_container = $('<span>')
-              .addClass('cell')
-              .addClass('preview_cell');
-            $('#section_'+section_name).append(svg_drawing_container);
-            svg_drawing_container.append(
-                $(preview_svg).clone()
-                    .attr('class', 'svg_drawing_preview')
-                //$('<br>')
-            );
-          });
-        }
+      if(preview_table[section_name]) {
+        preview_table[section_name].forEach(function(preview_svg){
+          var svg_drawing_container = $('<span>')
+            .addClass('cell')
+            .addClass('preview_cell');
+          $('#section_'+section_name).append(svg_drawing_container);
+          svg_drawing_container.append(
+              $(preview_svg).clone()
+                  .attr('class', 'svg_drawing_preview')
+              //$('<br>')
+          );
+        });
+      }
     });
 
 
