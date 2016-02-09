@@ -36,22 +36,22 @@ var request_drawing = function(){
 
 Template.summary.helpers({
   errors: function(){
-    return state.errors;
+    return state.notes.errors;
   },
   warnings: function(){
-    return state.warnings;
+    return state.notes.warnings;
   },
   notes: function(){
-    return state.notes;
+    return state.notes.info;
   },
   isErrors: function(){
-    return state.errors.length;
+    return state.notes.errors.length;
   },
   isWarnings: function(){
-    return state.warnings.length;
+    return state.notes.warnings.length;
   },
   isNotes: function(){
-    return state.notes.length;
+    return state.notes.info.length;
   },
 });
 

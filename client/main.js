@@ -145,9 +145,6 @@ Template.main.helpers({
     }
 
   },
-  notes: function(){
-    return state.notes;
-  }
 });
 
 
