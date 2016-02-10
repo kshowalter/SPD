@@ -1,4 +1,6 @@
 mk_drawing = function(system_id){
+  // This is the counterpart of 'update' on the browser
+
   console.log('Making: ', system_id);
 
   var system_settings = mk_settings();
@@ -22,18 +24,16 @@ mk_drawing = function(system_id){
 
   system_settings = calculate(system_settings);
 
-  system_settings.state.system_display = mk_system_display(system_settings.state);
-
   system_settings = update_drawing(system_settings);
 
-  var svgs = system_settings.drawing.svgs;
 
+  // Convert svgs to strings for storage
   svgs_strings = [];
-
-  svgs.forEach(function(svg){
+  system_settings.drawing.svgs.forEach(function(svg){
     svgs_strings.push(svg.outerHTML);
   });
 
+  // Store svg strings
   User_systems.upsert(
     {system_id:system_id},
     {$set:
@@ -50,5 +50,4 @@ mk_drawing = function(system_id){
   );
 
   return svgs;
-
 };
