@@ -24,6 +24,10 @@ update = function(){
 
     f.request_geocode();
 
+    Meteor.call('get_location_information', state.system, function(err, returned){
+      console.log('location returned: ', returned);
+    });
+
     settings = calculate(settings);
     settings = update_drawing(settings);
 

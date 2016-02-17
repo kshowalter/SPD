@@ -15,6 +15,9 @@ Accounts.onCreateUser(function(options, user) {
     system_number: system_number,
     user_id: user_id,
     system_id: system_id,
+    system_settings: {},
+    svgs: [],
+    geocode_info: {}
   };
   User_systems.insert(new_system_info);
 

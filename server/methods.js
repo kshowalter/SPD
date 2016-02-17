@@ -39,6 +39,9 @@ Meteor.methods({
       system_number: system_number,
       user_id: user_id,
       system_id: system_id,
+      system_settings: {},
+      svgs: [],
+      geocode_info: {}
     };
     User_systems.insert(new_system_info);
 
@@ -155,4 +158,96 @@ Meteor.methods({
       }
     );
   },
+  get_location_information: function(system_settings){
+    var system_id = Meteor.users.findOne({_id:this.userId}).active_system;
+
+
+    var location_input = {
+      address: System_data.findOne({system_id: system_id, section_name:'location', value_name:'address'}).value,
+      city: System_data.findOne({system_id: system_id, section_name:'location', value_name:'city'}).value,
+      zip_code: System_data.findOne({system_id: system_id, section_name:'location', value_name:'zip_code'}).value,
+    };
+
+    var geocode_info = User_systems.findOne({system_id: system_id}).geocode_info;
+    console.log( 'geocode_info', geocode_info );
+
+
+
+    if( geocode_info.address  !== location_input.address ||
+        geocode_info.city     !== location_input.city ||
+        geocode_info.zip_code !== location_input.zip_code ){
+      geocode_info.new_address = true;
+      geocode_info.address  = location_input.address;
+      geocode_info.city     = location_input.city;
+      geocode_info.zip_code = location_input.zip_code;
+
+      var address = encodeURIComponent([
+        geocode_info.address,
+        geocode_info.city,
+        'FL',
+        geocode_info.zip_code
+      ].join(', ') );
+
+      console.log('address', encodeURIComponent);
+
+      var url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' +
+        address +
+        'key=' + 'AIzaSyDX7ifC3rpZmFT4G-NNzPdFkomoM3uI-ME';
+
+      //console.log(url);
+      try{
+
+        location_data = Meteor.http.call('GET', url);
+
+        if( location_data.results[0].geometry.location !== undefined ){
+          console.log('New location from address', location_data);
+          var lat = location_data.results[0].geometry.location.lat;
+          var lon = location_data.results[0].geometry.location.lng;
+          geocode_info.data = location_data;
+          geocode_info.lat = lat;
+          geocode_info.lon = lon;
+
+          geocode_info.closest_station = wind_stations.get_closest(lat, lon);
+
+          if( geocode_info.new_address ){
+            permit.getWind(geocode_info.lat, geocode_info.lat, function(windData) {
+              var geocode_info = User_systems.upgetOne({system_id:system_id}).geocode_info;
+              geocode_info.windData = windData;
+              User_systems.update(
+                {system_id:system_id},
+                {$set:
+                  {geocode_info:geocode_info}
+                }
+              );
+            });
+            geocode_info.new_address.new_address = false;
+          }
+
+        } else {
+          console.log('Address not found ' + crossMark);
+        }
+
+      } catch(e) {
+        console.log('geocode error: ', e);
+      }
+
+
+
+    } else {
+      console.log('Address unchanged');
+    }
+
+
+    User_systems.update(
+      {system_id:system_id},
+      {$set:
+        {geocode_info:geocode_info}
+      }
+    );
+
+  },
+
+
+
+
 });

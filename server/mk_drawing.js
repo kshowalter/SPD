@@ -12,18 +12,19 @@ mk_drawing = function(system_id){
   system_settings.f = f;
   system_settings = mk_section_info(system_settings);
 
+  // Load system state
+  // TODO: define what user input needs to be recorded from the state, and how to store it in the database
   System_data.find({system_id: system_id}).forEach(function(input_doc){
     state.system[input_doc.section_name] = state.system[input_doc.section_name] || {};
     state.system[input_doc.section_name][input_doc.value_name] = input_doc.value;
   });
-
   state.webpage.selected_modules = User_systems.findOne({system_id: system_id}).selected_modules ||
     state.webpage.selected_modules;
 
   state.status.active_system = system_id;
 
+  // redo system calculations
   system_settings = calculate(system_settings);
-
   system_settings = update_drawing(system_settings);
 
 
@@ -32,7 +33,6 @@ mk_drawing = function(system_id){
   system_settings.drawing.svgs.forEach(function(svg){
     svgs_strings.push(svg.outerHTML);
   });
-
   // Store svg strings
   User_systems.upsert(
     {system_id:system_id},
@@ -49,5 +49,5 @@ mk_drawing = function(system_id){
     }
   );
 
-  return svgs;
+  return system_settings.drawing.svgs;
 };
