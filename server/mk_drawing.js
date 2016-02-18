@@ -24,8 +24,7 @@ mk_drawing = function(system_id){
   state.status.active_system = system_id;
 
   // redo system calculations
-  system_settings = calculate(system_settings);
-  system_settings = update_drawing(system_settings);
+  settings = process_system(system_settings);
 
 
   // Convert svgs to strings for storage

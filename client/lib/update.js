@@ -28,8 +28,9 @@ update = function(){
       console.log('location returned: ', returned);
     });
 
-    settings = calculate(settings);
-    settings = update_drawing(settings);
+    settings = process_system(settings);
+
+
 
     Meteor.call('save_system_settings', state.system, function(err, returned){
       //console.log('returned: ', returned);
