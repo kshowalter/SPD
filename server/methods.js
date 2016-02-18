@@ -210,8 +210,9 @@ Meteor.methods({
           geocode_info.closest_station = wind_stations.get_closest(lat, lon);
 
           if( geocode_info.new_address ){
+            /*
             permit.getWind(geocode_info.lat, geocode_info.lat, function(windData) {
-              var geocode_info = User_systems.upgetOne({system_id:system_id}).geocode_info;
+              var geocode_info = User_systems.getOne({system_id:system_id}).geocode_info;
               geocode_info.windData = windData;
               User_systems.update(
                 {system_id:system_id},
@@ -221,6 +222,7 @@ Meteor.methods({
               );
             });
             geocode_info.new_address.new_address = false;
+            */
           }
 
         } else {
