@@ -344,16 +344,16 @@ f.mk_sheet_num['W-001'] = function(settings){
     d.section("inverter symbol");
 
     x = loc.inverter.x;
-    y = loc.inverter.y;
+    y = loc.inverter.y + size.inverter.symbol_h/2;
 
     w = size.inverter.symbol_w;
     h = size.inverter.symbol_h;
 
     var space = w*1/12;
 
+
     // Inverter symbol
     d.layer('box');
-
     // box
     d.rect(
       [x,y],
@@ -363,7 +363,6 @@ f.mk_sheet_num['W-001'] = function(settings){
     d.line([
       [x-w/2, y+h/2],
       [x+w/2, y-h/2],
-
     ]);
     // DC
     d.line([
@@ -382,23 +381,17 @@ f.mk_sheet_num['W-001'] = function(settings){
       [x - w/2 + space*5, y - h/2 + space*2],
       [x - w/2 + space*6, y - h/2 + space*2],
     ]);
-
     // AC
-    d.line([
-      [x + w/2 - space, y + h/2 - space*1.5],
-      [x + w/2 - space*2, y + h/2 - space*1.5],
-    ]);
-    d.line([
-      [x + w/2 - space*3, y + h/2 - space*1.5],
-      [x + w/2 - space*4, y + h/2 - space*1.5],
-    ]);
-    d.line([
-      [x + w/2 - space*5, y + h/2 - space*1.5],
-      [x + w/2 - space*6, y + h/2 - space*1.5],
-    ]);
+
+    x = x + 3.5;
+    y = y + 3.5;
+
+    d.path(
+      'm '+x+','+y+' c 0,5 7.5,5 7.5,0 0,-5 7.5,-5 7.5,0',
+      'box'
+    );
+
     d.layer();
-
-
 
   }
 
@@ -406,43 +399,22 @@ f.mk_sheet_num['W-001'] = function(settings){
 
 
 
-  //#AC_discconect
+
+
+
+  //#AC_disconnect
   if( section_defined(state.status.active_system, 'inverter') ){
     d.section("AC_discconect");
 
     d.text(
-      [loc.AC_disc.x, loc.AC_disc.y + size.AC_disc.h/2 + 10],
+      [loc.AC_disc.x, loc.AC_disc.y - size.AC_disc.h *1/3 ],
       [
-        'AC Disconect'
+        'AC',
+        'Disconect'
       ],
       'text',
       'label_center'
     );
-
-    // AC wire/conduit callout
-    x = loc.AC_disc.x - 75;
-    y = loc.AC_disc.y + 45;
-    d.ellipse(
-      [x, y],
-      [10, 40],
-      'wire_callout'
-    );
-    d.line([
-        [x,      y + 40/2],
-        [x +10 , y + 40/2 + 30 ]
-      ],
-      'wire_callout'
-    );
-    d.text(
-      [x +10 +3, y + 40/2 + 30 ],
-      [
-        '<Wire in ',
-        'conduit>'
-      ],
-      'text',
-      'label_left'
-    );
-
 
     x = loc.AC_disc.x;
     y = loc.AC_disc.y;
@@ -462,30 +434,6 @@ f.mk_sheet_num['W-001'] = function(settings){
 
   //#AC load center
     d.section("AC load center");
-
-    // DC1 wire/conduit callout
-    x = loc.AC_loadcenter.x - 80;
-    y = loc.AC_loadcenter.y + 25;
-    d.ellipse(
-      [x, y],
-      [10, 50],
-      'wire_callout'
-    );
-    d.line([
-        [x,      y - 50/2],
-        [x -10 , y - 50/2 -30 ]
-      ],
-      'wire_callout'
-    );
-    d.text(
-      [x -10 -3 , y - 50/2 -30 ],
-      [
-        '<Wire in ',
-        'conduit>'
-      ],
-      'text',
-      'label_right'
-    );
 
     var breaker_spacing = size.AC_loadcenter.breakers.spacing;
     x = loc.AC_loadcenter.x;
@@ -510,11 +458,11 @@ f.mk_sheet_num['W-001'] = function(settings){
 
     y = loc.AC_loadcenter.breakers.top;
     y += size.AC_loadcenter.breakers.spacing/2;
-    for( var i=0; i<size.AC_loadcenter.breakers.num; i++){
-      d.rect([x-padding-w/2,y],[w,h],'box');
-      d.rect([x+padding+w/2,y],[w,h],'box');
-      y += breaker_spacing;
-    }
+    //for( var i=0; i<size.AC_loadcenter.breakers.num; i++){
+    //  d.rect([x-padding-w/2,y],[w,h],'box');
+    //  d.rect([x+padding+w/2,y],[w,h],'box');
+    //  y += breaker_spacing;
+    //}
 
     var s, l;
 
@@ -530,83 +478,139 @@ f.mk_sheet_num['W-001'] = function(settings){
 
 
 
-    // AC d.lines
+
+
+
+    // AC lines
     d.section("AC lines");
 
     x = loc.inverter.bottom_right.x;
     y = loc.inverter.bottom_right.y;
-    x -= size.terminal_diam * (system.inverter.num_conductors+1);
-    y -= size.terminal_diam;
+    x -= size.terminal_diam;
+    y -= size.terminal_diam *2;
 
     var conduit_y = loc.AC_conduit.y;
     padding = size.terminal_diam;
     //var AC_d.layer_names = ['AC_ground', 'AC_neutral', 'AC_L1', 'AC_L2', 'AC_L2'];
 
+    var x_terminal = x;
     for( var i=0; i < system.inverter.num_conductors; i++ ){
+      x = x_terminal;
+      var line_name = system.inverter.conductors[i];
       d.block('terminal', [x,y] );
-      d.layer('AC_'+system.inverter.conductors[i]);
+      d.layer('AC_'+line_name);
       d.line([
         [x, y],
-        [x, loc.AC_disc.bottom - padding*2 - padding*i  ],
-        [loc.AC_disc.left, loc.AC_disc.bottom - padding*2 - padding*i ],
+        [ loc.AC_disc.left + ( size.AC_disc.w - size.disconect.l )/2, y ]
       ]);
-      x += size.terminal_diam;
+      x = loc.AC_disc.left + ( size.AC_disc.w - size.disconect.l )/2; // move to start of disconect
+      if( ['ground', 'neutral'].indexOf(line_name)+1 ){
+        d.line([
+          [ x, y],
+          [ x + size.disconect.l, y ]
+        ]);
+      } else {
+        d.block('disconect', {
+          x: x,
+          y: y
+        });
+      }
+      d.line([
+        [ x + size.disconect.l, y ],
+        [ loc.AC_disc.right, y ]
+      ]);
+      d.line([
+        [ loc.AC_disc.right, y ],
+        [ loc.AC_loadcenter.left + size.terminal_diam*2, y ]
+      ]);
+      y -= size.terminal_diam *2;
+      if( line_name === 'ground' ){
+        y -= size.terminal_diam *2;
+      }
     }
     d.layer();
 
-    x = loc.AC_disc.x;
-    y = loc.AC_disc.y + size.AC_disc.h/2;
-    y -= padding*2;
 
-    if( system.inverter.conductors && system.inverter.conductors.indexOf('ground')+1 ) {
-      d.layer('AC_ground');
-      d.line([
-        [ x-size.AC_disc.w/2, y ],
-        [ x+size.AC_disc.w/2+padding*2, y ],
-        [ x+size.AC_disc.w/2+padding*2, conduit_y + breaker_spacing*2 ],
-        [ loc.AC_loadcenter.left+padding*2, conduit_y + breaker_spacing*2 ],
-        //[ loc.AC_loadcenter.left+padding*2, y ],
-        //[ loc.AC_loadcenter.groundbar.x-padding, y ],
-        //[ loc.AC_loadcenter.groundbar.x-padding, loc.AC_loadcenter.groundbar.y+size.AC_loadcenter.groundbar.h/2 ],
-        [ loc.AC_loadcenter.left+padding*2, loc.AC_loadcenter.groundbar.y ],
-        [ loc.AC_loadcenter.groundbar.x-size.AC_loadcenter.groundbar.w/2, loc.AC_loadcenter.groundbar.y ],
-      ]);
-    }
 
-    if( system.inverter.conductors && system.inverter.conductors.indexOf('neutral')+1 ) {
-      y -= padding;
-      d.layer('AC_neutral');
-      d.line([
-        [ x-size.AC_disc.w/2, y ],
-        [ x+padding*3*2, y ],
-        [ x+padding*3*2, conduit_y + breaker_spacing*1 ],
-        [ loc.AC_loadcenter.neutralbar.x, conduit_y + breaker_spacing*1 ],
-        [ loc.AC_loadcenter.neutralbar.x,
-          loc.AC_loadcenter.neutralbar.y-size.AC_loadcenter.neutralbar.h/2 ],
-        ]);
-    }
 
-    for( var i=1; i <= 3; i++ ) {
-      if( system.inverter.conductors && system.inverter.conductors.indexOf('L'+i)+1 ) {
-        y -= padding;
-        d.layer('AC_L'+i);
-        d.line([
-          [ x-size.AC_disc.w/2, y ],
-          [ x+padding*3*(2-i), y ],
-          [ x+padding*3*(2-i), loc.AC_disc.switch_bottom ],
-        ]);
-        d.block('terminal', [ x-padding*(i-2)*3, loc.AC_disc.switch_bottom ] );
-        d.block('terminal', [ x-padding*(i-2)*3, loc.AC_disc.switch_top ] );
-        d.line([
-          [ x-padding*(i-2)*3, loc.AC_disc.switch_top ],
-          [ x-padding*(i-2)*3, conduit_y-breaker_spacing*(i-1) ],
-          [ loc.AC_loadcenter.breakers.left, conduit_y-breaker_spacing*(i-1) ],
-        ]);
-      }
-    }
+    // AC wire/conduit callout
+    x = loc.AC_disc.left - 15;
+    y = loc.AC_disc.y + 20;
+
+    d.ellipse(
+      [x, y],
+      [10, 50],
+      'wire_callout'
+    );
+    d.line([
+        [ x,      y + 50/2],
+        [ loc.AC_disc.x-10 , y + 50/2 + 30 ]
+      ],
+      'wire_callout'
+    );
+
+    d.text(
+      [ loc.AC_disc.x , y + 50/2 + 30 ],
+      [
+        '(Z)'
+      ],
+      'text',
+      'label_center'
+    );
+
+    x = loc.AC_disc.right + 15;
+    y = loc.AC_disc.y + 20;
+
+    d.ellipse(
+      [x, y],
+      [10, 50],
+      'wire_callout'
+    );
+    d.line([
+        [ x,                 y + 50/2],
+        [ loc.AC_disc.x+10 , y + 50/2 + 30 ]
+      ],
+      'wire_callout'
+    );
+
+    /*
+    x = loc.inverter.bottom_right.x;
+    y = loc.inverter.bottom_right.y;
+    d.ellipse(
+      [x, y],
+      [10, 50],
+      'wire_callout'
+    );
+    d.line([
+        [x,      y + 50/2],
+        [x -10 , y + 50/2 +30 ]
+      ],
+      'wire_callout'
+    );
+    d.text(
+      [x -10 -3 , y + 50/2 +30 ],
+      [
+        '<Z>'
+      ],
+      'text',
+      'label_right'
+    );
+    */
 
 
   }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
