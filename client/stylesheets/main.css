@@ -564,17 +564,6 @@ input {
 
 
 
-
-
-path {
-  stroke: steelblue;
-  stroke-width: 1;
-  fill: none;
-}
-
-
-
-
 svg {
   border-color: #690000;
   border-width: 0.05em;
