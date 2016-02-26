@@ -75,15 +75,16 @@ f.mk_sheet_num['W-001'] = function(settings){
       //[ loc.array.left , loc.array.lower + size.wire_offset.ground ],
       [ loc.array.left, loc.array.lower_limit + size.wire_offset.ground ],
       [ loc.array.right+size.wire_offset.ground , loc.array.lower_limit + size.wire_offset.ground ],
-      [ loc.array.right+size.wire_offset.ground , loc.DC_jb_box.y + size.wire_offset.ground],
-      [ loc.DC_jb_box.x , loc.DC_jb_box.y+size.wire_offset.ground],
+      [ loc.array.right+size.wire_offset.ground , loc.DC_ground.y],
+      [ loc.DC_jb_box.x , loc.DC_ground.y],
+
     ]);
-    d.block( 'terminal', [ loc.DC_jb_box.x , loc.DC_jb_box.y+size.wire_offset.ground]);
+    d.block( 'terminal', [ loc.DC_jb_box.x , loc.DC_ground.y]);
     d.line([
-      [ loc.DC_jb_box.x , loc.DC_jb_box.y+size.wire_offset.ground],
-      [ loc.DC_combiner.x , loc.DC_jb_box.y+size.wire_offset.ground],
+      [ loc.DC_jb_box.x , loc.DC_ground.y],
+      [ loc.DC_combiner.x , loc.DC_ground.y],
     ]);
-    d.block( 'terminal', [ loc.DC_combiner.x , loc.DC_jb_box.y+size.wire_offset.ground]);
+    d.block( 'terminal', [ loc.DC_combiner.x , loc.DC_ground.y]);
     d.layer();
 
 
@@ -134,15 +135,15 @@ f.mk_sheet_num['W-001'] = function(settings){
 
     // DC ground run from combiner to inverter
     d.line([
-      [ loc.DC_combiner.x +5/2, loc.DC_jb_box.y+size.wire_offset.ground],
-      [ loc.DC_disconect.x, loc.DC_jb_box.y+size.wire_offset.ground],
+      [ loc.DC_combiner.x +5/2, loc.DC_ground.y],
+      [ loc.DC_disconect.x, loc.DC_ground.y],
     ], 'DC_ground');
-    d.block( 'terminal', [ loc.DC_disconect.x , loc.DC_jb_box.y+size.wire_offset.ground]);
+    d.block( 'terminal', [ loc.DC_disconect.x , loc.DC_ground.y]);
     d.line([
-      [ loc.DC_disconect.x , loc.DC_jb_box.y+size.wire_offset.ground],
-      [ loc.inverter.left_terminal , loc.DC_jb_box.y+size.wire_offset.ground],
+      [ loc.DC_disconect.x , loc.DC_ground.y],
+      [ loc.inverter.left_terminal , loc.DC_ground.y],
     ], 'DC_ground');
-    d.block( 'terminal', [ loc.inverter.left_terminal , loc.DC_jb_box.y+size.wire_offset.ground]);
+    d.block( 'terminal', [ loc.inverter.left_terminal , loc.DC_ground.y]);
 
 
   }
@@ -660,6 +661,13 @@ f.mk_sheet_num['W-001'] = function(settings){
       var line_name = system.inverter.conductors[i];
       d.block('terminal', [x,y] );
       d.layer('AC_'+line_name);
+      // TODO: add line labels
+      //d.text(
+      //  [x+20,y-size.terminal_diam],
+      //  line_name,
+      //  'text',
+      //  'label_left'
+      //)
       d.line([
         [x, y],
         [ loc.AC_disc.left + ( size.AC_disc.w - size.disconect.l )/2, y ]
