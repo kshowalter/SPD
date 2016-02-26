@@ -112,7 +112,37 @@ f.mk_sheet_num['G-001'] = function(settings){
   ////////
 
 
+  // general notes
+  d.section("general notes");
 
+  x = loc.system_spec_box.x;
+  y = loc.system_spec_box.y;
+  w = size.system_spec_box.w;
+  h = size.system_spec_box.h;
+
+  d.layer('table');
+  d.rect( [x,y], [w,h] );
+
+  y -= h/2;
+  y += 10;
+
+  d.text( [x,y], 'System description', 'text', 'table');
+
+  if( section_defined(state.status.active_system, 'inverter') && section_defined(state.status.active_system, 'array') ){
+    y += 20;
+    d.text(
+      [x,y],
+      [
+        "System size: " + Math.round(state.system.array.pmp/1000, 1) + "kW",
+        state.system.inverter.inverter_make + ", " + state.system.inverter.inverter_model,
+        state.system.array.module_make + ", " + state.system.array.module_model,
+      ],
+      'text',
+      'table'
+    );
+  }
+
+  d.section();
 
 
 
