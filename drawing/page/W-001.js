@@ -27,7 +27,7 @@ f.mk_sheet_num['W-001'] = function(settings){
   if( section_defined(state.status.active_system, 'array') ){
     d.section('array');
 
-    x = loc.array.right - size.string.w;
+    x = loc.array.right - size.string.w/2;
     y = loc.array.upper;
     //y -= size.string.h/2;
 
@@ -72,9 +72,8 @@ f.mk_sheet_num['W-001'] = function(settings){
     // DC ground run from array to combiner
     d.layer('DC_ground');
     d.line([
-      //[ loc.array.left , loc.array.lower + size.wire_offset.ground ],
-      [ loc.array.left, loc.array.lower_limit + size.wire_offset.ground ],
-      [ loc.array.right+size.wire_offset.ground , loc.array.lower_limit + size.wire_offset.ground ],
+      //[ loc.array.left, loc.array.lower_limit + size.wire_offset.ground ],
+      //[ loc.array.right+size.wire_offset.ground , loc.array.lower_limit + size.wire_offset.ground ],
       [ loc.array.right+size.wire_offset.ground , loc.DC_ground.y],
       [ loc.DC_jb_box.x , loc.DC_ground.y],
 
