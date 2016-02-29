@@ -40,7 +40,9 @@ f.mk_sheet_num['W-001'] = function(settings){
       d.layer('DC_pos');
       d.line([
         [ x , loc.array.upper ],
-        [ x , loc.DC_jb_box.y-offset_wire ],
+        [ x , loc.array.upper-offset_wire ],
+        [ loc.array.right+offset_wire, loc.array.upper-offset_wire ],
+        [ loc.array.right+offset_wire, loc.DC_jb_box.y-offset_wire ],
         [ loc.DC_jb_box.x , loc.DC_jb_box.y-offset_wire],
       ]);
       d.block( 'terminal', [ loc.DC_jb_box.x , loc.DC_jb_box.y-offset_wire]);
