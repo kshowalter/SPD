@@ -133,9 +133,6 @@ Template.main.helpers({
       return false;
     }
   },
-  is_display_sytle: function(style){
-    return style === sessionStorage.getItem('display_style');
-  },
   note_count: function(){
     console.log('notes', state.notes.length)
     if( state.notes.length ){

@@ -44,14 +44,7 @@
 
     {{#if system_ready}}
 
-      {{#if is_display_sytle 'drawers'}}
-        {{#each sections}}
-          {{> drawer}}
-        {{/each}}
-      {{else}} {{#if is_display_sytle 'tabs'}}
-        {{> tabs}}
-      {{/if}}
-      {{/if}}
+      {{> tabs}}
 
       {{> drawing_section}}
 

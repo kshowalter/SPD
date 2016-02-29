@@ -7,10 +7,7 @@ setup_webpage = function(){
     $(this).fadeOut(300);
   });
 
-  if( sessionStorage.getItem('display_style') === 'tabs' ){
-    f.show_tab('inputs', storage.selected_inputs_tab || 'location' );
-    //f.show_tab('drawing', storage.selected_tab.drawing);
-  }
+  f.show_tab('inputs', storage.selected_inputs_tab || 'location' );
 
   /*
   var lat_fl_center = 27.75;
