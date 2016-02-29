@@ -91,7 +91,7 @@ f.mk_sheet_num['W-001'] = function(settings){
     y = loc.DC_jb_box.y;
     w = size.DC_jb_box.w;
     h = size.DC_jb_box.h;
-    label = ['Junction','Box'];
+    label = ['JUNCTION','BOX'];
     d.rect(
       [x,y],
       [w,h],
@@ -177,7 +177,7 @@ f.mk_sheet_num['W-001'] = function(settings){
     y = loc.DC_combiner.y;
     w = size.DC_combiner.w;
     h = size.DC_combiner.h;
-    label = ['Combiner','Box'];
+    label = ['COMBINER','BOX'];
     d.rect(
       [x,y],
       [w,h],
@@ -207,7 +207,7 @@ f.mk_sheet_num['W-001'] = function(settings){
     y = loc.DC_disconect.y;
     w = size.DC_disconect.w;
     h = size.DC_disconect.h;
-    label = ['DC','Disconect'];
+    label = ['DC','DISCONECT'];
     d.rect(
       [x,y],
       [w,h],
@@ -273,15 +273,16 @@ f.mk_sheet_num['W-001'] = function(settings){
     x = ( (loc.DC_combiner.x + size.DC_combiner.w/2) + (loc.DC_disconect.x - size.DC_disconect.w/2) )/2 ;
     y = loc.DC_disconect.y + size.DC_disconect.h/2 - h/2;
     d.ellipse([x, y],[w, h],'wire_callout');
+
     d.line(
       [
         [ x, y + h/2],
-        [ x + 16, y + h/2 + 32 ]
+        [ loc.DC_disconect.x - 10, y + h/2 + 32 ]
       ],
       'wire_callout'
     );
     d.text(
-      [ x + 16 + 10, y + h/2 + 32 ],
+      [ loc.DC_disconect.x, y + h/2 + 32 ],
       ['(4)'],
       'text',
       'label_center'
@@ -296,15 +297,9 @@ f.mk_sheet_num['W-001'] = function(settings){
     d.line(
       [
         [ x, y + h/2],
-        [ x + 16, y + h/2 + 32 ]
+        [ loc.DC_disconect.x + 10, y + h/2 + 32 ]
       ],
       'wire_callout'
-    );
-    d.text(
-      [ x + 16 + 10, y + h/2 + 32 ],
-      ['(5)'],
-      'text',
-      'label_center'
     );
 
 
@@ -510,9 +505,16 @@ f.mk_sheet_num['W-001'] = function(settings){
     // Label at top (Inverter, make, model, ...)
     d.layer('text');
     d.text(
+      [loc.inverter.x, loc.inverter.top - 27/2 ],
+      [
+        'INVERTER',
+      ],
+      'text',
+      'label'
+    );
+    d.text(
       [loc.inverter.x, loc.inverter.top + size.inverter.text_gap ],
       [
-        'Inverter',
         state.system.inverter.inverter_make,
         state.system.inverter.inverter_model
       ],
@@ -591,7 +593,7 @@ f.mk_sheet_num['W-001'] = function(settings){
       [loc.AC_disc.x, loc.AC_disc.y - size.AC_disc.h/2 - 27 ],
       [
         'AC',
-        'Disconect'
+        'DISCONECT'
       ],
       'text',
       'label_center'
@@ -629,8 +631,8 @@ f.mk_sheet_num['W-001'] = function(settings){
     d.text(
       [ x, y-h/2-27 ],
       [
-        'Load',
-        'Center'
+        'LOAD',
+        'CENTER'
       ],
       'text',
       'label_center'
@@ -767,7 +769,7 @@ f.mk_sheet_num['W-001'] = function(settings){
     d.text(
       [ loc.AC_disc.x , y + 60/2 + 30 ],
       [
-        '(6,7)'
+        '(5)'
       ],
       'text',
       'label_center'
@@ -813,25 +815,34 @@ f.mk_sheet_num['W-001'] = function(settings){
 
 
   if( system.inverter.num_conductors ) {
-    var n_rows = 10;
-    var n_cols = 9;
+    var n_rows = 8;
+    var n_cols = 14;
     var row_height = 15;
-    var column_width = [
-      25,
-      150,
-      75,
-      75,
-      75,
-      90
-    ];
+    var row_width = 50;
+    var column_width = [];
+    column_width[1] = 25;
+    column_width[2] = 135;
+    column_width[3] = 55;
+    column_width[4] = 65;
+    column_width[5] = 55;
+    column_width[6] = 50;
+    column_width[7] = 30;
+    column_width[8] = 50;
+    column_width[9] = 55;
+    column_width[10] = 50;
+    column_width[11] = 45;
+    column_width[12] = 30;
+    column_width[13] = 55;
+    column_width[14] = 40;
 
     h = n_rows*row_height;
 
     var t = d.table(n_rows,n_cols).loc(x,y);
     t.row_size('all', row_height);
+    t.col_size('all', row_width);
 
     column_width.forEach(function(size, i){
-      t.col_size(i+1, size);
+      t.col_size(i, size);
     });
 
     t.all_cells().forEach(function(cell){
@@ -839,28 +850,66 @@ f.mk_sheet_num['W-001'] = function(settings){
     });
 
     var wire_section_list = [
-      ['1','Intermodule Wiring (factory integrated)'],
-      ['2','PV DC Source Circuits'],
-      ['3','PV DC Output Circuits'],
-      ['4','Inverter DC Input Circuit'], // (same as PV output circuits for single combiner)'],
-      ['5','Inverter AC Output Circuit'],
-      ['6','Service Equipment'],
-      ['7','Grounding Electrode Conductor']
+      ['1','INTERMODULE WIRING'],
+      ['2','PV DC SOURCE CIRCUITS'],
+      ['3','PV DC OUTPUT CIRCUITS'],
+      ['3','INVERTER DC INPUT CIRCUIT'], // (SAME AS PV OUTPUT CIRCUITS FOR SINGLE COMBINER)'],
+      ['4','INVERTER AC OUTPUT CIRCUIT'],
+      ['?','GROUNDING ELECTRODE']
     ].forEach(function(label, i){
       t.cell(i+3,1).font('table').text( label[0] );
       t.cell(i+3,2).font('table_left').text( label[1] );
     });
 
-    //t.cell(1,1).border('B', false);
     //t.cell(1,3).border('R', false);
+    t.cell(1,1).border('B', false);
+    t.cell(1,1).font('table_center').text('SYM.');
 
-    t.cell(1,3).font('table_left').text('Conductor');
-    //t.cell(2,3).font('table').text('Conductors');
-    //t.cell(2,3).font('table').text('AWG');
-    //t.cell(2,4).font('table').text('Type');
-    t.cell(1,4).font('table_left').text('Conduit');
-    t.cell(1,5).font('table_left').text('Overcurrent');
-    t.cell(1,6).font('table_left').text('Connector/Terminal ');
+    t.cell(1,2).border('B', false);
+    t.cell(1,2).font('table_center').text('CIRCUIT');
+
+    t.cell(1,3).border('B', false);
+    t.cell(1,3).font('table_center').text('310.15(B)');
+    t.cell(2,3).font('table_center').text('AMPACITY');
+
+    t.cell(1,4).border('B', false);
+    t.cell(1,4).font('table_center').text('TEMPERATURE');
+    t.cell(2,4).font('table_center').text('RACEWAY FILL');
+
+    t.cell(1,5).border('B', false);
+    t.cell(1,5).font('table_center').text('ADJUSTED');
+    t.cell(2,5).font('table_center').text('AMPACITY');
+
+    t.cell(1,6).border('B', false);
+    t.cell(1,6).font('table_center').text('REQUIRED');
+    t.cell(2,6).font('table_center').text('AMPACITY');
+
+    t.cell(1,7).border('B', false);
+    t.cell(1,7).font('table_center').text('SETS');
+
+    t.cell(1,8).border('B', false);
+    t.cell(1,8).font('table_center').text('MATERIAL');
+
+    t.cell(1,9).border('B', false);
+    t.cell(1,9).font('table_center').text('INSULATION');
+
+    t.cell(1,10).border('B', false);
+    t.cell(1,10).font('table_center').text('RACEWAY');
+
+    t.cell(1,11).border('B', false);
+    t.cell(1,11).font('table_center').text('MIN. SIZE');
+    t.cell(2,11).font('table_center').text('(AWG)');
+
+    t.cell(1,12).border('B', false);
+    t.cell(1,12).font('table_center').text('QTY');
+
+    t.cell(1,13).border('B', false);
+    t.cell(1,13).font('table_center').text('CONDUCTOR');
+
+    t.cell(1,14).border('B', false);
+    t.cell(1,14).font('table_center').text('RUN');
+    t.cell(2,14).font('table_center').text('(1-Way)');
+
 
     //for( i=1; i<=system.inverter.num_conductors; i++){
     //  t.cell(2+i,1).font('table').text(i.toString());
@@ -869,7 +918,6 @@ f.mk_sheet_num['W-001'] = function(settings){
 
 
     //d.text( [x+w/2, y-row_height], f.pretty_name(section_name),'table' );
-
 
     t.mk();
 
