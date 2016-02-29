@@ -12,8 +12,7 @@ setup_webpage = function(){
     //f.show_tab('drawing', storage.selected_tab.drawing);
   }
 
-
-
+  /*
   var lat_fl_center = 27.75;
   var lon_fl_center = -84.0;
 
@@ -28,7 +27,6 @@ setup_webpage = function(){
     iconColor: 'yellow'
   });
 
-
   var map_road  = state.system_data.maps.map_road = L.map( 'map_road', {
     center: [lat_fl_center, lon_fl_center],
     zoom: 6
@@ -40,6 +38,8 @@ setup_webpage = function(){
   }).addTo( map_road );
 
   state.system_data.maps.marker_road = L.marker([lat,lon], {icon: sun_marker}).addTo(map_road);
+
+  //*/
 
   //map_road.on('click', f.set_coordinates_from_map );
 
