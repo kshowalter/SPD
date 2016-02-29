@@ -1,10 +1,19 @@
 Template.input.helpers({
+  isMultiLabel: function(){
+    if( typeof this.label === 'object' ){
+      return true;
+    } else {
+      return false;
+    }
+  },
   label: function(){
     //console.log( "label", this.label );
     if( typeof this.label === 'string' ){
+      return [this.label];
+    } else if( typeof this.label === 'object' ){
       return this.label;
     } else {
-      return f.pretty_name(this.value_name);
+      return [f.pretty_name(this.value_name)];
     }
   },
   is: function(a,b){

@@ -1,6 +1,14 @@
 <template name="input">
   <span class="user_input">
-    <span class="user_input_label" title="{{note}}">{{label}}: </span>
+    {{#if isMultiLabel}}
+      {{#each label}}
+        <div class="user_input_label" title="{{note}}">{{this}}</div>
+      {{/each}}
+    {{else}}
+      {{#each label}}
+        <span class="user_input_label" title="{{note}}">{{this}}</span>
+      {{/each}}
+    {{/if}}
     {{#if isType 'select'}}
       <select class="input {{this.input_type}}" >
         <option selected="selected"></option>
