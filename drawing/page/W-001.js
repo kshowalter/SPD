@@ -72,11 +72,10 @@ f.mk_sheet_num['W-001'] = function(settings){
     // DC ground run from array to combiner
     d.layer('DC_ground');
     d.line([
-      //[ loc.array.left, loc.array.lower_limit + size.wire_offset.ground ],
-      //[ loc.array.right+size.wire_offset.ground , loc.array.lower_limit + size.wire_offset.ground ],
+      [ loc.array.left+7, loc.array.lower_limit + size.wire_offset.ground ],
+      [ loc.array.right+size.wire_offset.ground , loc.array.lower_limit + size.wire_offset.ground ],
       [ loc.array.right+size.wire_offset.ground , loc.DC_ground.y],
       [ loc.DC_jb_box.x , loc.DC_ground.y],
-
     ]);
     d.block( 'terminal', [ loc.DC_jb_box.x , loc.DC_ground.y]);
     d.line([
@@ -99,7 +98,7 @@ f.mk_sheet_num['W-001'] = function(settings){
       'box'
     );
     d.text(
-      [ x, y - h/2 - 25],
+      [ x, y - h/2 - 27],
       label,
       'text',
       'label_center'
@@ -119,6 +118,12 @@ f.mk_sheet_num['W-001'] = function(settings){
       [ loc.inverter.left_terminal , loc.DC_jb_box.y-offset_wire],
     ], 'DC_pos');
     d.block( 'terminal', [ loc.inverter.left_terminal , loc.DC_jb_box.y-offset_wire]);
+    d.text(
+      [ loc.inverter.left_terminal-30 , loc.DC_jb_box.y-offset_wire-size.terminal_diam],
+      'DC+',
+      'text',
+      'line_label_left'
+    );
 
     // DC negative run from combiner to inverter
     d.line([
@@ -131,10 +136,16 @@ f.mk_sheet_num['W-001'] = function(settings){
       [ loc.inverter.left_terminal , loc.DC_jb_box.y+offset_wire],
     ], 'DC_neg');
     d.block( 'terminal', [ loc.inverter.left_terminal , loc.DC_jb_box.y+offset_wire]);
+    d.text(
+      [ loc.inverter.left_terminal-30 , loc.DC_jb_box.y+offset_wire-size.terminal_diam],
+      'DC-',
+      'text',
+      'line_label_left'
+    );
 
     // DC ground run from combiner to inverter
     d.line([
-      [ loc.DC_combiner.x +5/2, loc.DC_ground.y],
+      [ loc.DC_combiner.x, loc.DC_ground.y],
       [ loc.DC_disconect.x, loc.DC_ground.y],
     ], 'DC_ground');
     d.block( 'terminal', [ loc.DC_disconect.x , loc.DC_ground.y]);
@@ -143,6 +154,12 @@ f.mk_sheet_num['W-001'] = function(settings){
       [ loc.inverter.left_terminal , loc.DC_ground.y],
     ], 'DC_ground');
     d.block( 'terminal', [ loc.inverter.left_terminal , loc.DC_ground.y]);
+    d.text(
+      [ loc.inverter.left_terminal-30 , loc.DC_ground.y-size.terminal_diam],
+      'G',
+      'text',
+      'line_label_left'
+    );
 
 
   }
@@ -167,7 +184,7 @@ f.mk_sheet_num['W-001'] = function(settings){
       'box'
     );
     d.text(
-      [ x, y - h/2 - 25],
+      [ x, y - h/2 - 27],
       label,
       'text',
       'label_center'
@@ -197,7 +214,7 @@ f.mk_sheet_num['W-001'] = function(settings){
       'box'
     );
     d.text(
-      [ x, y - h/2 - 25],
+      [ x, y - h/2 - 27],
       label,
       'text',
       'label_center'
@@ -210,10 +227,10 @@ f.mk_sheet_num['W-001'] = function(settings){
 
 
 
-    //
+    // Conduit: array to JB
     w = 15;
     h = 120;
-    x = loc.DC_jb_box.x - size.DC_jb_box.w/2 - 15;
+    x = loc.DC_jb_box.x - size.DC_jb_box.w/2 - 20
     y = loc.DC_jb_box.y + size.DC_jb_box.h/2 - h/2;
     d.ellipse([x, y],[w, h],'wire_callout');
     d.line(
@@ -230,10 +247,10 @@ f.mk_sheet_num['W-001'] = function(settings){
       'label_center'
     );
 
-    //
+    // Conduit: JB to combiner
     w = 15;
     h = 120;
-    x = loc.DC_combiner.x - size.DC_combiner.w/2 - 15;
+    x = ( (loc.DC_jb_box.x + size.DC_jb_box.w/2) + (loc.DC_combiner.x - size.DC_combiner.w/2) )/2 ;
     y = loc.DC_combiner.y + size.DC_combiner.h/2 - h/2;
     d.ellipse([x, y],[w, h],'wire_callout');
     d.line(
@@ -250,10 +267,10 @@ f.mk_sheet_num['W-001'] = function(settings){
       'label_center'
     );
 
-    //
+    // Conduit: combiner to disconect
     w = 15;
     h = 100;
-    x = loc.DC_disconect.x - size.DC_disconect.w/2 - 15;
+    x = ( (loc.DC_combiner.x + size.DC_combiner.w/2) + (loc.DC_disconect.x - size.DC_disconect.w/2) )/2 ;
     y = loc.DC_disconect.y + size.DC_disconect.h/2 - h/2;
     d.ellipse([x, y],[w, h],'wire_callout');
     d.line(
@@ -270,10 +287,10 @@ f.mk_sheet_num['W-001'] = function(settings){
       'label_center'
     );
 
-    //
+    // Conduit: disconect to inverter
     w = 15;
     h = 100;
-    x = loc.inverter.x - size.inverter.w/2 - 15;
+    x = loc.DC_disconect.x + size.DC_disconect.w/2 + 15;
     y = loc.inverter.y + size.inverter.h/2 - h/2;
     d.ellipse([x, y],[w, h],'wire_callout');
     d.line(
@@ -289,6 +306,8 @@ f.mk_sheet_num['W-001'] = function(settings){
       'text',
       'label_center'
     );
+
+
 
 
 
@@ -569,7 +588,7 @@ f.mk_sheet_num['W-001'] = function(settings){
     d.section("AC_discconect");
 
     d.text(
-      [loc.AC_disc.x, loc.AC_disc.y - size.AC_disc.h *1/3 ],
+      [loc.AC_disc.x, loc.AC_disc.y - size.AC_disc.h/2 - 27 ],
       [
         'AC',
         'Disconect'
@@ -607,13 +626,14 @@ f.mk_sheet_num['W-001'] = function(settings){
       'box'
     );
 
-    d.text([x,y-h*0.4],
+    d.text(
+      [ x, y-h/2-27 ],
       [
         'Load',
         'Center'
       ],
       'text',
-      'label'
+      'label_center'
     );
 
     // AC bus bars
@@ -632,10 +652,10 @@ f.mk_sheet_num['W-001'] = function(settings){
     l = loc.AC_loadcenter.neutralbar;
     s = size.AC_loadcenter.neutralbar;
     d.rect([l.x,l.y], [s.w,s.h], 'AC_neutral' );
+
     l = loc.AC_loadcenter.groundbar;
     s = size.AC_loadcenter.groundbar;
-    d.rect([l.x,l.y], [s.w,s.h], 'AC_ground' );
-
+    d.rect([l.x,l.y], [s.w,s.h], 'AC_ground_block' );
     d.block('ground', [l.x,l.y+s.h/2]);
 
 
@@ -661,12 +681,19 @@ f.mk_sheet_num['W-001'] = function(settings){
       d.block('terminal', [x,y] );
       d.layer('AC_'+line_name);
       // TODO: add line labels
-      //d.text(
-      //  [x+20,y-size.terminal_diam],
-      //  line_name,
-      //  'text',
-      //  'label_left'
-      //)
+      line_labels = {
+        'L1': 'L1',
+        'L2': 'L2',
+        'L3': 'L3',
+        'neutral': 'N',
+        'ground': 'G',
+      };
+      d.text(
+        [x+10,y-size.terminal_diam],
+        line_labels[line_name],
+        'text',
+        'line_label_left'
+      );
       d.line([
         [x, y],
         [ loc.AC_disc.left + ( size.AC_disc.w - size.disconect.l )/2, y ]
@@ -722,23 +749,23 @@ f.mk_sheet_num['W-001'] = function(settings){
 
 
 
-    // AC wire/conduit callout
-    x = loc.AC_disc.left - 20;
-    y = loc.AC_disc.y + 20;
+    // Conduit: inverter to AC diconect
+    x = loc.AC_disc.left - ( (loc.AC_loadcenter.x - size.AC_loadcenter.w/2) - (loc.AC_disc.x + size.AC_disc.w/2) )/2;
+    y = loc.AC_disc.y + size.AC_disc.h/2 - 60/2;
     d.ellipse(
       [x, y],
-      [10, 50],
+      [10, 60],
       'wire_callout'
     );
     d.line(
       [
-        [ x,      y + 50/2],
-        [ loc.AC_disc.x - 15 , y + 50/2 + 30 ]
+        [ x,      y + 60/2],
+        [ loc.AC_disc.x - 15 , y + 60/2 + 30 ]
       ],
       'wire_callout'
     );
     d.text(
-      [ loc.AC_disc.x , y + 50/2 + 30 ],
+      [ loc.AC_disc.x , y + 60/2 + 30 ],
       [
         '(6,7)'
       ],
@@ -746,18 +773,18 @@ f.mk_sheet_num['W-001'] = function(settings){
       'label_center'
     );
 
-    x = loc.AC_disc.right + 20;
-    y = loc.AC_disc.y + 20;
-
+    // Conduit: AC diconect to load center
+    x = ( (loc.AC_disc.x + size.AC_disc.w/2) + (loc.AC_loadcenter.x - size.AC_loadcenter.w/2) )/2 ;
+    y = loc.AC_disc.y + size.AC_disc.h/2 - 60/2;
     d.ellipse(
       [x, y],
-      [10, 50],
+      [10, 60],
       'wire_callout'
     );
     d.line(
       [
-        [ x,                 y + 50/2],
-        [ loc.AC_disc.x + 15 , y + 50/2 + 30 ]
+        [ x,                 y + 60/2],
+        [ loc.AC_disc.x + 15 , y + 60/2 + 30 ]
       ],
       'wire_callout'
     );
