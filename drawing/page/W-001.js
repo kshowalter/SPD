@@ -277,7 +277,7 @@ f.mk_sheet_num['W-001'] = function(settings){
     ], 'DC_pos');
     d.block( 'terminal', [ loc.inverter.left_terminal , loc.DC_jb_box.y-offset_wire]);
     d.text(
-      [ loc.inverter.left_terminal-30 , loc.DC_jb_box.y-offset_wire-size.terminal_diam],
+      [ loc.inverter.left_terminal-25 , loc.DC_jb_box.y-offset_wire-size.terminal_diam],
       'DC+',
       'text',
       'line_label_left'
@@ -295,7 +295,7 @@ f.mk_sheet_num['W-001'] = function(settings){
     ], 'DC_neg');
     d.block( 'terminal', [ loc.inverter.left_terminal , loc.DC_jb_box.y+offset_wire]);
     d.text(
-      [ loc.inverter.left_terminal-30 , loc.DC_jb_box.y+offset_wire-size.terminal_diam],
+      [ loc.inverter.left_terminal-25 , loc.DC_jb_box.y+offset_wire-size.terminal_diam],
       'DC-',
       'text',
       'line_label_left'
@@ -310,11 +310,11 @@ f.mk_sheet_num['W-001'] = function(settings){
     d.block( 'terminal', [ loc.DC_disconect.x , loc.DC_ground.y]);
     d.line([
       [ loc.DC_disconect.x , loc.DC_ground.y],
-      [ loc.inverter.left_terminal , loc.DC_ground.y],
+      [ loc.inverter.right_terminal , loc.DC_ground.y],
     ], 'DC_ground');
-    d.block( 'terminal', [ loc.inverter.left_terminal , loc.DC_ground.y]);
+    //d.block( 'terminal', [ loc.inverter.x , loc.DC_ground.y]);
     d.text(
-      [ loc.inverter.left_terminal-30 , loc.DC_ground.y-size.terminal_diam],
+      [ loc.inverter.left_terminal-25 , loc.DC_ground.y-size.terminal_diam],
       'G',
       'text',
       'line_label_left'
@@ -403,7 +403,7 @@ f.mk_sheet_num['W-001'] = function(settings){
     d.section("inverter symbol");
 
     x = loc.inverter.x;
-    y = loc.inverter.y + size.inverter.symbol_h/2 + 15;
+    y = loc.inverter.y + size.inverter.symbol_h/2;
 
     w = size.inverter.symbol_w;
     h = size.inverter.symbol_h;
@@ -537,9 +537,8 @@ f.mk_sheet_num['W-001'] = function(settings){
     // AC lines
     d.section("AC lines");
 
-    x = loc.inverter.bottom_right.x;
+    x = loc.inverter.right_terminal;
     y = loc.inverter.bottom_right.y;
-    x -= size.terminal_diam;
     y -= size.terminal_diam *2;
 
     padding = size.terminal_diam;
