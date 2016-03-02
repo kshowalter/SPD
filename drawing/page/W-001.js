@@ -136,7 +136,14 @@ f.mk_sheet_num['W-001'] = function(settings){
         [ loc.DC_jb_box.x , loc.DC_jb_box.y-offset_wire],
         [ loc.DC_combiner.x - size.DC_combiner.components_width/2, loc.DC_jb_box.y-offset_wire],
       ]);
-      d.block( 'fuse', [ loc.DC_combiner.x - size.DC_combiner.components_width/2, loc.DC_jb_box.y-offset_wire]);
+      if( system.array.number_of_strings > 2){
+        d.block( 'fuse', [ loc.DC_combiner.x - size.DC_combiner.components_width/2, loc.DC_jb_box.y-offset_wire]);
+      } else {
+        d.line([
+          [ loc.DC_combiner.x - size.DC_combiner.components_width/2, loc.DC_jb_box.y-offset_wire],
+          [ loc.DC_combiner.x - size.DC_combiner.components_width/2 + size.fuse.l, loc.DC_jb_box.y-offset_wire],
+        ]);
+      }
       d.line([
         [ loc.DC_combiner.x - size.DC_combiner.components_width/2 + size.fuse.l, loc.DC_jb_box.y-offset_wire],
         [ loc.DC_combiner.x - size.DC_combiner.components_width/2 + size.fuse.l + size.DC_combiner.fuse_to_bus_spacing, loc.DC_jb_box.y-offset_wire],
@@ -148,7 +155,14 @@ f.mk_sheet_num['W-001'] = function(settings){
         [ loc.DC_jb_box.x , loc.DC_jb_box.y+offset_wire],
         [ loc.DC_combiner.x - size.DC_combiner.components_width/2, loc.DC_jb_box.y+offset_wire],
       ]);
-      d.block( 'fuse', [ loc.DC_combiner.x - size.DC_combiner.components_width/2, loc.DC_jb_box.y+offset_wire]);
+      if( system.array.number_of_strings > 2){
+        d.block( 'fuse', [ loc.DC_combiner.x - size.DC_combiner.components_width/2, loc.DC_jb_box.y+offset_wire]);
+      } else {
+        d.line([
+          [ loc.DC_combiner.x - size.DC_combiner.components_width/2, loc.DC_jb_box.y+offset_wire],
+          [ loc.DC_combiner.x - size.DC_combiner.components_width/2 + size.fuse.l, loc.DC_jb_box.y+offset_wire],
+        ]);
+      }
       d.line([
         [ loc.DC_combiner.x - size.DC_combiner.components_width/2 + size.fuse.l, loc.DC_jb_box.y+offset_wire],
         [ loc.DC_combiner.x - size.DC_combiner.components_width/2 + size.fuse.l + size.DC_combiner.fuse_to_bus_spacing, loc.DC_jb_box.y+offset_wire],
