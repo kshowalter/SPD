@@ -19,11 +19,7 @@ f.mk_sheet_num['W-001'] = function(settings){
 
 
 
-  ////////////////////////////////////////
-  //#array
-
-
-  //*
+  // if 'array' section is defined:
   if( section_defined(state.status.active_system, 'array') ){
     d.section('array');
 
@@ -102,16 +98,99 @@ f.mk_sheet_num['W-001'] = function(settings){
 
 
 
-
+    // Conduit: array to JB
+    w = 15;
+    h = 120;
+    x = loc.DC_jb_box.x - size.DC_jb_box.w/2 - 20;
+    y = loc.DC_jb_box.y + size.DC_jb_box.h/2 - h/2;
+    d.ellipse([x, y],[w, h],'wire_callout');
+    d.line(
+      [
+        [ x, y + h/2],
+        [ x + 16, y + h/2 + 32 ]
+      ],
+      'wire_callout'
+    );
+    d.text(
+      [ x + 16 + 10, y + h/2 + 32 ],
+      ['(2)'],
+      'text',
+      'label_center'
+    );
 
 
   }
-  //*/
 
 
 
 
-  //if( section_defined(state.status.active_system, 'DC') ){
+  // if 'array' and 'inverter' sections are defined:
+  if( section_defined(state.status.active_system, 'array') && section_defined(state.status.active_system, 'inverter') ){
+
+    // DC JB to combiner
+    for( var i in _.range(system.array.number_of_strings)) {
+      var offset_wire = size.wire_offset.min + ( size.wire_offset.base * i );
+
+      d.layer('DC_pos');
+      d.line([
+        [ loc.DC_jb_box.x , loc.DC_jb_box.y-offset_wire],
+        [ loc.DC_combiner.x - size.DC_combiner.components_width/2, loc.DC_jb_box.y-offset_wire],
+      ]);
+      d.block( 'fuse', [ loc.DC_combiner.x - size.DC_combiner.components_width/2, loc.DC_jb_box.y-offset_wire]);
+      d.line([
+        [ loc.DC_combiner.x - size.DC_combiner.components_width/2 + size.fuse.l, loc.DC_jb_box.y-offset_wire],
+        [ loc.DC_combiner.x - size.DC_combiner.components_width/2 + size.fuse.l + size.DC_combiner.fuse_to_bus_spacing, loc.DC_jb_box.y-offset_wire],
+      ]);
+
+      // negative home run
+      d.layer('DC_neg');
+      d.line([
+        [ loc.DC_jb_box.x , loc.DC_jb_box.y+offset_wire],
+        [ loc.DC_combiner.x - size.DC_combiner.components_width/2, loc.DC_jb_box.y+offset_wire],
+      ]);
+      d.block( 'fuse', [ loc.DC_combiner.x - size.DC_combiner.components_width/2, loc.DC_jb_box.y+offset_wire]);
+      d.line([
+        [ loc.DC_combiner.x - size.DC_combiner.components_width/2 + size.fuse.l, loc.DC_jb_box.y+offset_wire],
+        [ loc.DC_combiner.x - size.DC_combiner.components_width/2 + size.fuse.l + size.DC_combiner.fuse_to_bus_spacing, loc.DC_jb_box.y+offset_wire],
+      ]);
+      d.layer();
+
+      x -= size.string.w;
+    }
+
+    // DC ground run from JB to combiner
+    d.line([
+      [ loc.DC_jb_box.x , loc.DC_ground.y],
+      [ loc.DC_combiner.x , loc.DC_ground.y],
+    ],'DC_ground');
+
+
+
+
+    // Conduit: JB to combiner
+    w = 15;
+    h = 120;
+    x = ( (loc.DC_jb_box.x + size.DC_jb_box.w/2) + (loc.DC_combiner.x - size.DC_combiner.w/2) )/2 ;
+    y = loc.DC_combiner.y + size.DC_combiner.h/2 - h/2;
+    d.ellipse([x, y],[w, h],'wire_callout');
+    d.line(
+      [
+        [ x, y + h/2],
+        [ x + 16, y + h/2 + 32 ]
+      ],
+      'wire_callout'
+    );
+    d.text(
+      [ x + 16 + 10, y + h/2 + 32 ],
+      ['(3)'],
+      'text',
+      'label_center'
+    );
+
+
+  }
+
+  // if 'inverter' section is defined:
   if( section_defined(state.status.active_system, 'inverter') ){
 
 
@@ -167,36 +246,7 @@ f.mk_sheet_num['W-001'] = function(settings){
 
 
 
-    // DC JB to combiner
-    for( var i in _.range(system.array.number_of_strings)) {
-      var offset_wire = size.wire_offset.min + ( size.wire_offset.base * i );
 
-      d.layer('DC_pos');
-      d.line([
-        [ loc.DC_jb_box.x , loc.DC_jb_box.y-offset_wire],
-        [ loc.DC_combiner.x - size.DC_combiner.components_width/2, loc.DC_jb_box.y-offset_wire],
-      ]);
-      d.block( 'fuse', [ loc.DC_combiner.x - size.DC_combiner.components_width/2, loc.DC_jb_box.y-offset_wire]);
-      d.line([
-        [ loc.DC_combiner.x - size.DC_combiner.components_width/2 + size.fuse.l, loc.DC_jb_box.y-offset_wire],
-        [ loc.DC_combiner.x - size.DC_combiner.components_width/2 + size.fuse.l + size.DC_combiner.fuse_to_bus_spacing, loc.DC_jb_box.y-offset_wire],
-      ]);
-
-      // negative home run
-      d.layer('DC_neg');
-      d.line([
-        [ loc.DC_jb_box.x , loc.DC_jb_box.y+offset_wire],
-        [ loc.DC_combiner.x - size.DC_combiner.components_width/2, loc.DC_jb_box.y+offset_wire],
-      ]);
-      d.block( 'fuse', [ loc.DC_combiner.x - size.DC_combiner.components_width/2, loc.DC_jb_box.y+offset_wire]);
-      d.line([
-        [ loc.DC_combiner.x - size.DC_combiner.components_width/2 + size.fuse.l, loc.DC_jb_box.y+offset_wire],
-        [ loc.DC_combiner.x - size.DC_combiner.components_width/2 + size.fuse.l + size.DC_combiner.fuse_to_bus_spacing, loc.DC_jb_box.y+offset_wire],
-      ]);
-      d.layer();
-
-      x -= size.string.w;
-    }
 
 
     var offset_wire = size.wire_offset.min + ( size.wire_offset.base * 0 );
@@ -237,11 +287,7 @@ f.mk_sheet_num['W-001'] = function(settings){
       'line_label_left'
     );
 
-    // DC ground run from JB to inverter
-    d.line([
-      [ loc.DC_jb_box.x , loc.DC_ground.y],
-      [ loc.DC_combiner.x , loc.DC_ground.y],
-    ]);
+    // DC ground run from DC_combiner to inverter
     d.block( 'terminal', [ loc.DC_combiner.x , loc.DC_ground.y]);
     d.line([
       [ loc.DC_combiner.x, loc.DC_ground.y],
@@ -262,45 +308,9 @@ f.mk_sheet_num['W-001'] = function(settings){
 
 
 
-    // Conduit: array to JB
-    w = 15;
-    h = 120;
-    x = loc.DC_jb_box.x - size.DC_jb_box.w/2 - 20
-    y = loc.DC_jb_box.y + size.DC_jb_box.h/2 - h/2;
-    d.ellipse([x, y],[w, h],'wire_callout');
-    d.line(
-      [
-        [ x, y + h/2],
-        [ x + 16, y + h/2 + 32 ]
-      ],
-      'wire_callout'
-    );
-    d.text(
-      [ x + 16 + 10, y + h/2 + 32 ],
-      ['(2)'],
-      'text',
-      'label_center'
-    );
 
-    // Conduit: JB to combiner
-    w = 15;
-    h = 120;
-    x = ( (loc.DC_jb_box.x + size.DC_jb_box.w/2) + (loc.DC_combiner.x - size.DC_combiner.w/2) )/2 ;
-    y = loc.DC_combiner.y + size.DC_combiner.h/2 - h/2;
-    d.ellipse([x, y],[w, h],'wire_callout');
-    d.line(
-      [
-        [ x, y + h/2],
-        [ x + 16, y + h/2 + 32 ]
-      ],
-      'wire_callout'
-    );
-    d.text(
-      [ x + 16 + 10, y + h/2 + 32 ],
-      ['(3)'],
-      'text',
-      'label_center'
-    );
+
+
 
     // Conduit: combiner to disconect
     w = 15;
@@ -336,189 +346,6 @@ f.mk_sheet_num['W-001'] = function(settings){
       ],
       'wire_callout'
     );
-
-
-
-
-
-
-
-
-    /*
-    for( i in _.range(system.array.number_of_strings)) {
-      offset = size.wire_offset.min + ( size.wire_offset.base * i );
-
-      d.layer('DC_pos');
-      d.line(
-        [
-          [ x , y-offset],
-          [ x , y-offset],
-        ]
-      );
-      d.block( 'terminal', {
-        x: x,
-        y: y-offset,
-      });
-      d.line(
-        [
-          [ x , y-offset],
-          [ loc.DC_disconect.x-offset , y-offset],
-          [ loc.DC_disconect.x-offset , loc.DC_disconect.y+size.DC_disconect.h/2-size.terminal_diam],
-          [ loc.DC_disconect.x-offset , loc.DC_disconect.y+size.DC_disconect.h/2-size.terminal_diam-size.terminal_diam*3],
-        ]
-      );
-      d.block( 'terminal', {
-        x: loc.DC_disconect.x-offset,
-        y: loc.DC_disconect.y+size.DC_disconect.h/2-size.terminal_diam
-      });
-
-      d.layer('DC_neg');
-      d.line(
-        [
-          [ x, y+offset],
-          [ x-size.fuse.l/2 , y+offset],
-        ]
-      );
-      d.block( 'fuse', {
-        x: x ,
-        y: y+offset,
-      });
-      d.line([
-        [ x+size.fuse.l/2 , y+offset],
-        [ loc.DC_disconect.x+offset , y+offset],
-        [ loc.DC_disconect.x+offset , loc.DC_disconect.y+size.DC_disconect.h/2-size.terminal_diam],
-        [ loc.DC_disconect.x+offset , loc.DC_disconect.y+size.DC_disconect.h/2-size.terminal_diam-size.terminal_diam*3],
-      ]);
-      d.block( 'terminal', {
-        x: loc.DC_disconect.x+offset,
-        y: loc.DC_disconect.y+size.DC_disconect.h/2-size.terminal_diam
-      });
-      d.layer();
-    }
-
-    //d.layer('DC_ground');
-    //d.line([
-    //    [ loc.array.left , loc.array.lower + size.module.w + size.wire_offset.ground ],
-    //    [ loc.array.right+size.wire_offset.ground , loc.array.lower + size.module.w + size.wire_offset.ground ],
-    //    [ loc.array.right+size.wire_offset.ground , loc.array.y + size.module.w + size.wire_offset.ground],
-    //    [ loc.array.x , loc.array.y+size.module.w+size.wire_offset.ground],
-    //]);
-
-    //d.layer();
-
-    // Ground
-    //offset = size.wire_offset.gap + size.wire_offset.ground;
-    offset = size.wire_offset.ground;
-
-    d.layer('DC_ground');
-    d.line([
-      [ x , y+offset],
-      [ x , y+offset],
-    ]);
-    d.block( 'terminal', {
-      x: x,
-      y: y+offset,
-    });
-    d.line([
-      [ x , y+offset],
-      [ loc.DC_disconect.x+offset , y+offset],
-      [ loc.DC_disconect.x+offset , loc.DC_disconect.y+size.DC_disconect.h/2-size.terminal_diam],
-      [ loc.DC_disconect.x+offset , loc.DC_disconect.y+size.DC_disconect.h/2-size.terminal_diam-size.terminal_diam*3],
-    ]);
-    d.block( 'terminal', {
-      x: loc.DC_disconect.x+offset,
-      y: loc.DC_disconect.y+size.DC_disconect.h/2-size.terminal_diam
-    });
-    d.layer();
-
-
-
-
-
-    ///////////////////////////////
-    // DC disconect
-    d.section("DC diconect");
-
-    d.text(
-      [loc.DC_disconect.x - size.DC_disconect.w/2 - 5, loc.DC_disconect.y],
-      [
-        'DC disconect'
-      ],
-      'text',
-      'label_right'
-    );
-
-    d.rect(
-      [loc.DC_disconect.x, loc.DC_disconect.y],
-      [size.DC_disconect.w,size.DC_disconect.h],
-      'box'
-    );
-
-
-
-
-    // DC disconect combiner d.lines
-
-    x = loc.DC_disconect.x;
-    y = loc.DC_disconect.y + size.DC_disconect.h/2;
-
-    if( system.array.number_of_strings > 1){
-      var offset_min = size.wire_offset.min;
-      var offset_max = size.wire_offset.min + ( (system.array.number_of_strings -1) * size.wire_offset.base );
-      d.line([
-        [ x-offset_min, y-size.terminal_diam-size.terminal_diam*3],
-        [ x-offset_max, y-size.terminal_diam-size.terminal_diam*3],
-      ], 'DC_pos');
-      d.line([
-        [ x+offset_min, y-size.terminal_diam-size.terminal_diam*3],
-        [ x+offset_max, y-size.terminal_diam-size.terminal_diam*3],
-      ], 'DC_neg');
-    }
-
-    // Inverter conection
-    //d.line([
-    //    [ x-offset_min, y-size.terminal_diam-size.terminal_diam*3],
-    //    [ x-offset_min, y-size.terminal_diam-size.terminal_diam*3],
-    //],'DC_pos');
-
-    //offset = offset_max - offset_min;
-    offset = size.wire_offset.min;
-
-    // neg
-    d.line([
-      [ x+offset, y-size.terminal_diam-size.terminal_diam*3],
-      [ x+offset, loc.inverter.y+size.inverter.h/2-size.terminal_diam ],
-    ],'DC_neg');
-    d.block( 'terminal', {
-      x: x+offset,
-      y: loc.inverter.y+size.inverter.h/2-size.terminal_diam,
-    });
-
-    // pos
-    d.line([
-      [ x-offset, y-size.terminal_diam-size.terminal_diam*3],
-      [ x-offset, loc.inverter.y+size.inverter.h/2-size.terminal_diam ],
-    ],'DC_pos');
-    d.block( 'terminal', {
-      x: x-offset,
-      y: loc.inverter.y+size.inverter.h/2-size.terminal_diam,
-    });
-
-    // ground
-    //offset = size.wire_offset.gap + size.wire_offset.ground;
-    offset = size.wire_offset.ground;
-    d.line([
-      [ x+offset, y-size.terminal_diam-size.terminal_diam*3],
-      [ x+offset, loc.inverter.y+size.inverter.h/2-size.terminal_diam ],
-    ],'DC_ground');
-    d.block( 'terminal', {
-      x: x+offset,
-      y: loc.inverter.y+size.inverter.h/2-size.terminal_diam,
-    });
-
-    //*/
-
-
 
 
 
@@ -611,17 +438,10 @@ f.mk_sheet_num['W-001'] = function(settings){
 
     d.layer();
 
-  }
 
 
 
 
-
-
-
-
-  //#AC_disconnect
-  if( section_defined(state.status.active_system, 'inverter') ){
     d.section("AC_discconect");
 
     d.text(
@@ -849,7 +669,7 @@ f.mk_sheet_num['W-001'] = function(settings){
 
 
 
-  if( system.inverter.num_conductors ) {
+  if( true ) {
     var n_rows = 8;
     var n_cols = 14;
     var row_height = 15;
