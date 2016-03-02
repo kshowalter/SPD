@@ -31,7 +31,8 @@ f.mk_sheet_num['W-001'] = function(settings){
     y = loc.array.upper;
     //y -= size.string.h/2;
 
-    // DC run from array to combiner
+
+    // DC run from array to JB
     for( var i in _.range(system.array.number_of_strings)) {
       var offset_wire = size.wire_offset.min + ( size.wire_offset.base * i );
 
@@ -46,11 +47,6 @@ f.mk_sheet_num['W-001'] = function(settings){
         [ loc.DC_jb_box.x , loc.DC_jb_box.y-offset_wire],
       ]);
       d.block( 'terminal', [ loc.DC_jb_box.x , loc.DC_jb_box.y-offset_wire]);
-      d.line([
-        [ loc.DC_jb_box.x , loc.DC_jb_box.y-offset_wire],
-        [ loc.DC_combiner.x -5/2 , loc.DC_jb_box.y-offset_wire],
-      ]);
-      //d.block( 'terminal', [ loc.DC_combiner.x , loc.DC_jb_box.y-offset_wire]);
 
       // negative home run
       d.layer('DC_neg');
@@ -62,16 +58,18 @@ f.mk_sheet_num['W-001'] = function(settings){
         [ loc.DC_jb_box.x , loc.DC_jb_box.y+offset_wire],
       ]);
       d.block( 'terminal', [ loc.DC_jb_box.x , loc.DC_jb_box.y+offset_wire]);
+
       d.line([
-        [ loc.DC_jb_box.x , loc.DC_jb_box.y+offset_wire],
-        [ loc.DC_combiner.x -5/2, loc.DC_jb_box.y+offset_wire],
-      ]);
-      //d.block( 'terminal', [ loc.DC_combiner.x , loc.DC_jb_box.y+offset_wire]);
+        [ x-size.module.frame.w/2+5, loc.array.lower ],
+        [ x-size.module.frame.w/2+5, loc.array.lower_limit + size.wire_offset.ground ],
+      ], 'DC_ground');
 
       x -= size.string.w;
     }
 
-    // DC ground run from array to combiner
+
+
+    // DC ground run from array to JB
     d.layer('DC_ground');
     d.line([
       [ loc.array.left+7, loc.array.lower_limit + size.wire_offset.ground ],
@@ -80,11 +78,7 @@ f.mk_sheet_num['W-001'] = function(settings){
       [ loc.DC_jb_box.x , loc.DC_ground.y],
     ]);
     d.block( 'terminal', [ loc.DC_jb_box.x , loc.DC_ground.y]);
-    d.line([
-      [ loc.DC_jb_box.x , loc.DC_ground.y],
-      [ loc.DC_combiner.x , loc.DC_ground.y],
-    ]);
-    d.block( 'terminal', [ loc.DC_combiner.x , loc.DC_ground.y]);
+
     d.layer();
 
 
@@ -107,61 +101,8 @@ f.mk_sheet_num['W-001'] = function(settings){
     );
 
 
-    var offset_wire = size.wire_offset.min + ( size.wire_offset.base * 0 );
 
-    // DC ground run from combiner to inverter
-    d.line([
-      [ loc.DC_combiner.x +5/2 , loc.DC_jb_box.y-offset_wire],
-      [ loc.DC_disconect.x - size.disconect.l/2 , loc.DC_jb_box.y-offset_wire],
-    ], 'DC_pos');
-    d.block( 'disconect', [ loc.DC_disconect.x - size.disconect.l/2 , loc.DC_jb_box.y-offset_wire]);
-    d.line([
-      [ loc.DC_disconect.x + size.disconect.l/2 , loc.DC_jb_box.y-offset_wire],
-      [ loc.inverter.left_terminal , loc.DC_jb_box.y-offset_wire],
-    ], 'DC_pos');
-    d.block( 'terminal', [ loc.inverter.left_terminal , loc.DC_jb_box.y-offset_wire]);
-    d.text(
-      [ loc.inverter.left_terminal-30 , loc.DC_jb_box.y-offset_wire-size.terminal_diam],
-      'DC+',
-      'text',
-      'line_label_left'
-    );
 
-    // DC negative run from combiner to inverter
-    d.line([
-      [ loc.DC_combiner.x +5/2 , loc.DC_jb_box.y+offset_wire],
-      [ loc.DC_disconect.x - size.disconect.l/2  , loc.DC_jb_box.y+offset_wire],
-    ], 'DC_neg');
-    d.block( 'disconect', [ loc.DC_disconect.x -size.disconect.l/2 , loc.DC_jb_box.y+offset_wire]);
-    d.line([
-      [ loc.DC_disconect.x + size.disconect.l/2  , loc.DC_jb_box.y+offset_wire],
-      [ loc.inverter.left_terminal , loc.DC_jb_box.y+offset_wire],
-    ], 'DC_neg');
-    d.block( 'terminal', [ loc.inverter.left_terminal , loc.DC_jb_box.y+offset_wire]);
-    d.text(
-      [ loc.inverter.left_terminal-30 , loc.DC_jb_box.y+offset_wire-size.terminal_diam],
-      'DC-',
-      'text',
-      'line_label_left'
-    );
-
-    // DC ground run from combiner to inverter
-    d.line([
-      [ loc.DC_combiner.x, loc.DC_ground.y],
-      [ loc.DC_disconect.x, loc.DC_ground.y],
-    ], 'DC_ground');
-    d.block( 'terminal', [ loc.DC_disconect.x , loc.DC_ground.y]);
-    d.line([
-      [ loc.DC_disconect.x , loc.DC_ground.y],
-      [ loc.inverter.left_terminal , loc.DC_ground.y],
-    ], 'DC_ground');
-    d.block( 'terminal', [ loc.inverter.left_terminal , loc.DC_ground.y]);
-    d.text(
-      [ loc.inverter.left_terminal-30 , loc.DC_ground.y-size.terminal_diam],
-      'G',
-      'text',
-      'line_label_left'
-    );
 
 
   }
@@ -192,14 +133,15 @@ f.mk_sheet_num['W-001'] = function(settings){
       'label_center'
     );
 
+    var x = x + size.DC_combiner.components_width/2 - size.bus_bar.w/2;
     d.rect(
       [ x, y + (size.wire_offset.min + ( size.wire_offset.base * 5 ))/2 + size.wire_offset.min/2],
-      [ 5,      size.wire_offset.min + ( size.wire_offset.base * 5 )                         ],
+      [ size.bus_bar.w,      size.wire_offset.min + ( size.wire_offset.base * 5 )                         ],
       'DC_neg'
     );
     d.rect(
       [ x, y - (size.wire_offset.min + ( size.wire_offset.base * 5 ))/2 - size.wire_offset.min/2],
-      [ 5,      size.wire_offset.min + ( size.wire_offset.base * 5 )                         ],
+      [ size.bus_bar.w,      size.wire_offset.min + ( size.wire_offset.base * 5 )                         ],
       'DC_pos'
     );
 
@@ -225,7 +167,98 @@ f.mk_sheet_num['W-001'] = function(settings){
 
 
 
+    // DC JB to combiner
+    for( var i in _.range(system.array.number_of_strings)) {
+      var offset_wire = size.wire_offset.min + ( size.wire_offset.base * i );
 
+      d.layer('DC_pos');
+      d.line([
+        [ loc.DC_jb_box.x , loc.DC_jb_box.y-offset_wire],
+        [ loc.DC_combiner.x - size.DC_combiner.components_width/2, loc.DC_jb_box.y-offset_wire],
+      ]);
+      d.block( 'fuse', [ loc.DC_combiner.x - size.DC_combiner.components_width/2, loc.DC_jb_box.y-offset_wire]);
+      d.line([
+        [ loc.DC_combiner.x - size.DC_combiner.components_width/2 + size.fuse.l, loc.DC_jb_box.y-offset_wire],
+        [ loc.DC_combiner.x - size.DC_combiner.components_width/2 + size.fuse.l + size.DC_combiner.fuse_to_bus_spacing, loc.DC_jb_box.y-offset_wire],
+      ]);
+
+      // negative home run
+      d.layer('DC_neg');
+      d.line([
+        [ loc.DC_jb_box.x , loc.DC_jb_box.y+offset_wire],
+        [ loc.DC_combiner.x - size.DC_combiner.components_width/2, loc.DC_jb_box.y+offset_wire],
+      ]);
+      d.block( 'fuse', [ loc.DC_combiner.x - size.DC_combiner.components_width/2, loc.DC_jb_box.y+offset_wire]);
+      d.line([
+        [ loc.DC_combiner.x - size.DC_combiner.components_width/2 + size.fuse.l, loc.DC_jb_box.y+offset_wire],
+        [ loc.DC_combiner.x - size.DC_combiner.components_width/2 + size.fuse.l + size.DC_combiner.fuse_to_bus_spacing, loc.DC_jb_box.y+offset_wire],
+      ]);
+      d.layer();
+
+      x -= size.string.w;
+    }
+
+
+    var offset_wire = size.wire_offset.min + ( size.wire_offset.base * 0 );
+
+    // DC ground run from combiner to inverter
+    d.line([
+      [ loc.DC_combiner.x + size.DC_combiner.components_width/2, loc.DC_jb_box.y-offset_wire],
+      [ loc.DC_disconect.x - size.disconect.l/2 , loc.DC_jb_box.y-offset_wire],
+    ], 'DC_pos');
+    d.block( 'disconect', [ loc.DC_disconect.x - size.disconect.l/2 , loc.DC_jb_box.y-offset_wire]);
+    d.line([
+      [ loc.DC_disconect.x + size.disconect.l/2 , loc.DC_jb_box.y-offset_wire],
+      [ loc.inverter.left_terminal , loc.DC_jb_box.y-offset_wire],
+    ], 'DC_pos');
+    d.block( 'terminal', [ loc.inverter.left_terminal , loc.DC_jb_box.y-offset_wire]);
+    d.text(
+      [ loc.inverter.left_terminal-30 , loc.DC_jb_box.y-offset_wire-size.terminal_diam],
+      'DC+',
+      'text',
+      'line_label_left'
+    );
+
+    // DC negative run from combiner to inverter
+    d.line([
+      [ loc.DC_combiner.x + size.DC_combiner.components_width/2, loc.DC_jb_box.y+offset_wire],
+      [ loc.DC_disconect.x - size.disconect.l/2  , loc.DC_jb_box.y+offset_wire],
+    ], 'DC_neg');
+    d.block( 'disconect', [ loc.DC_disconect.x -size.disconect.l/2 , loc.DC_jb_box.y+offset_wire]);
+    d.line([
+      [ loc.DC_disconect.x + size.disconect.l/2  , loc.DC_jb_box.y+offset_wire],
+      [ loc.inverter.left_terminal , loc.DC_jb_box.y+offset_wire],
+    ], 'DC_neg');
+    d.block( 'terminal', [ loc.inverter.left_terminal , loc.DC_jb_box.y+offset_wire]);
+    d.text(
+      [ loc.inverter.left_terminal-30 , loc.DC_jb_box.y+offset_wire-size.terminal_diam],
+      'DC-',
+      'text',
+      'line_label_left'
+    );
+
+    // DC ground run from JB to inverter
+    d.line([
+      [ loc.DC_jb_box.x , loc.DC_ground.y],
+      [ loc.DC_combiner.x , loc.DC_ground.y],
+    ]);
+    d.block( 'terminal', [ loc.DC_combiner.x , loc.DC_ground.y]);
+    d.line([
+      [ loc.DC_combiner.x, loc.DC_ground.y],
+      [ loc.DC_disconect.x, loc.DC_ground.y],
+    ], 'DC_ground');
+    d.block( 'terminal', [ loc.DC_disconect.x , loc.DC_ground.y]);
+    d.line([
+      [ loc.DC_disconect.x , loc.DC_ground.y],
+      [ loc.inverter.left_terminal , loc.DC_ground.y],
+    ], 'DC_ground');
+    d.block( 'terminal', [ loc.inverter.left_terminal , loc.DC_ground.y]);
+    d.text(
+      [ loc.inverter.left_terminal-30 , loc.DC_ground.y-size.terminal_diam],
+      'G',
+      'text',
+      'line_label_left'
+    );
 
 
 
@@ -343,7 +376,7 @@ f.mk_sheet_num['W-001'] = function(settings){
       d.line(
         [
           [ x, y+offset],
-          [ x-size.fuse.w/2 , y+offset],
+          [ x-size.fuse.l/2 , y+offset],
         ]
       );
       d.block( 'fuse', {
@@ -351,7 +384,7 @@ f.mk_sheet_num['W-001'] = function(settings){
         y: y+offset,
       });
       d.line([
-        [ x+size.fuse.w/2 , y+offset],
+        [ x+size.fuse.l/2 , y+offset],
         [ loc.DC_disconect.x+offset , y+offset],
         [ loc.DC_disconect.x+offset , loc.DC_disconect.y+size.DC_disconect.h/2-size.terminal_diam],
         [ loc.DC_disconect.x+offset , loc.DC_disconect.y+size.DC_disconect.h/2-size.terminal_diam-size.terminal_diam*3],
