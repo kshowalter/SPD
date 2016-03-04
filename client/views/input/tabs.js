@@ -23,7 +23,7 @@ Template.tabs.helpers({
   },
   inputs: function(){
     var section_name = this.toString();
-    var inputs = System_data.find({ type:'user', system_id: Meteor.user().active_system, section_name:section_name }, {sort:['order']} );
+    var inputs = System_data.find({ type:'user', system_id: Meteor.user().active_system, section_name:section_name, disabled:false }, {sort:['order']} );
     //console.log(section_name, 'inputs:', inputs.fetch());
     return inputs;
   },
