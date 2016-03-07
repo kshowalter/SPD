@@ -311,7 +311,7 @@ var setup_system = function(){
   console.log('--Switching to new system');
   //subscribe['main']();
   Meteor.subscribe('system_data', function(){
-    var active_system = Meteor.user().active_system
+    var active_system = Meteor.user().active_system;
     state.system = User_systems.findOne({system_id: active_system}).system_settings || state.system;
     update();
     if(state.webpage.setup_needed){
