@@ -5,6 +5,39 @@ if(top != window) {
 window.storage = sessionStorage;
 //storage.selected_tab = storage.selected_tab || {};
 
+
+settings = mk_settings();
+state = mk_state();
+settings.state = state;
+
+// make inputs
+settings = mk_inputs(settings);
+section_list = _.uniq(_.keys(settings.state.inputs));
+state.webpage.sections = section_list;
+state.webpage.section_manual_toggled = {};
+state.webpage.section_activated = {};
+
+state.webpage.sections.forEach( function(section_name){
+  state.webpage.section_manual_toggled[section_name] = false;
+  state.webpage.section_activated[section_name] = false;
+});
+state.system = f.blank_copy(state.inputs); // make system section blank
+state.system.array.module = {};
+////////
+
+
+
+f.g = settings;
+settings.f = f;
+
+settings = mk_section_info(settings);
+
+state.webpage.window_width = window.innerWidth;
+state.webpage.window_height = window.innerHeight;
+
+
+
+
 ////////////////////////
 /*
 |*|  IE-specific polyfill which enables the passage of arbitrary arguments to the
@@ -318,8 +351,8 @@ var setup_system = function(){
       f.are_we_there_yet(function(){
         return $('.user_input_container').length - 1 === Object.keys(state.inputs).length;
       },function(){
-        setup_webpage();
         update();
+        setup_webpage();
       });
       state.webpage.setup_needed = false;
     }

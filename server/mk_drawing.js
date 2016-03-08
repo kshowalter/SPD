@@ -8,7 +8,21 @@ mk_drawing = function(system_id){
   var state = mk_state();
   system_settings.state = state;
 
-  settings = mk_inputs(settings);
+  // make inputs
+  system_settings = mk_inputs(system_settings);
+  section_list = _.uniq(_.keys(system_settings.state.inputs));
+  state.webpage.sections = section_list;
+  state.webpage.section_manual_toggled = {};
+  state.webpage.section_activated = {};
+
+  state.webpage.sections.forEach( function(section_name){
+      state.webpage.section_manual_toggled[section_name] = false;
+      state.webpage.section_activated[section_name] = false;
+  });
+  state.system = f.blank_copy(state.inputs); // make system section blank
+  state.system.array.module = {};
+  ////////
+
   system_settings.f = f;
   system_settings = mk_section_info(system_settings);
 
@@ -24,12 +38,7 @@ mk_drawing = function(system_id){
   state.status.active_system = system_id;
 
 
-
-
-  settings = process_system(system_settings);
-
-
-
+  system_settings = process_system(system_settings);
 
 
   // Convert svgs to strings for storage

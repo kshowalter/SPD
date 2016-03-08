@@ -38,7 +38,7 @@ update = function(){
 
 
 
-    Meteor.call('save_system_settings', state.system, function(err, returned){
+    Meteor.call('save_system_settings', settings.state.system, function(err, returned){
       //console.log('returned: ', returned);
     });
 

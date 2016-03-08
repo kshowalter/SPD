@@ -1,16 +1,5 @@
 Meteor.methods({
    connect: function(){
-    //console.log(this.userId, Meteor.user());
-
-    //Inputs.find().forEach(function(input){
-    //  System_data.upsert({
-    //    user_id: this.userId,
-    //    type: 'input',
-    //    value_name: input.value_name,
-    //    section_name: input.section_name,
-    //  });
-    //});
-
     return Random.id();
   },
   reset: function(){
@@ -149,14 +138,24 @@ Meteor.methods({
       }
     );
   },
-  save_system_settings: function(system_settings){
+  save_system_settings: function(system){
     var active_system = Meteor.users.findOne({_id:this.userId}).active_system;
     User_systems.upsert(
       {system_id: active_system },
       {$set:
-        {system_settings:system_settings}
+        {system_settings:system}
       }
     );
+    for( var section_name in system ){
+      for( var value_name in system[section_name] ){
+        System_data.upsert(
+          {system_id: active_system, section_name: section_name, value_name: value_name },
+          {$set:
+            {value: system[section_name][value_name] }
+          }
+        );
+      }
+    }
   },
   get_location_information: function(system_settings){
     var system_id = Meteor.users.findOne({_id:this.userId}).active_system;
