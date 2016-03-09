@@ -14,6 +14,13 @@ update = function(){
   }
 
   if( active_system){
+
+    // Request a geocode update on server
+    Meteor.call('get_location_information', state.system, function(err, returned){
+      console.log('location returned: ', returned);
+    });
+
+    // Update local state with server recorded user inputs
     System_data.find({system_id: active_system}).forEach(function(input_doc){
       state.system[input_doc.section_name] = state.system[input_doc.section_name] || {};
       state.system[input_doc.section_name][input_doc.value_name] = input_doc.value;
@@ -22,20 +29,13 @@ update = function(){
     state.webpage.selected_modules = User_systems.findOne({system_id: active_system}).selected_modules ||
       state.webpage.selected_modules;
 
-    f.request_geocode();
-
-    Meteor.call('get_location_information', state.system, function(err, returned){
-      console.log('location returned: ', returned);
-    });
+    //f.request_geocode();
 
 
 
-
+    // Calculate system specs and drawing from user inputs
     settings = process_system(settings);
-
-
-
-
+    ///////////////////////
 
 
     Meteor.call('save_system_settings', settings.state.system, function(err, returned){
