@@ -137,6 +137,21 @@ Meteor.methods({
         {selected_modules:selected_modules}
       }
     );
+    var select_modules_string = '';
+    selected_modules.slice(1).forEach(function(row, r){
+      row.slice(1).forEach(function(column, c){
+        if(column){
+          select_modules_string +=  (r+1) + ',' + (c+1) + ' ';
+        }
+      });
+    });
+    System_data.upsert(
+      {system_id: active_system, section_name: 'array', value_name: 'selected_modules' },
+      {$set:{
+        value: select_modules_string
+
+      }}
+    );
   },
   save_system_settings: function(system){
     var active_system = Meteor.users.findOne({_id:this.userId}).active_system;
@@ -146,16 +161,16 @@ Meteor.methods({
         {system_settings:system}
       }
     );
-    for( var section_name in system ){
-      for( var value_name in system[section_name] ){
-        System_data.upsert(
-          {system_id: active_system, section_name: section_name, value_name: value_name },
-          {$set:
-            {value: system[section_name][value_name] }
-          }
-        );
-      }
-    }
+    //for( var section_name in system ){
+    //  for( var value_name in system[section_name] ){
+    //    System_data.upsert(
+    //      {system_id: active_system, section_name: section_name, value_name: value_name },
+    //      {$set:
+    //        {value: system[section_name][value_name] }
+    //      }
+    //    );
+    //  }
+    //}
   },
   get_location_information: function(system_settings){
     var system_id = Meteor.users.findOne({_id:this.userId}).active_system;
@@ -232,19 +247,42 @@ Meteor.methods({
         console.log('geocode error: ', e);
       }
 
-
-
     } else {
       console.log('Address unchanged');
     }
 
+    [
+      'lat',
+      'lon'
+    ].forEach(function(name){
+      System_data.upsert(
+        {system_id: system_id, section_name: 'location', value_name: name },
+        {$set:
+          {value: geocode_info[name] }
+        }
+      );
 
-    User_systems.update(
-      {system_id:system_id},
-      {$set:
-        {geocode_info:geocode_info}
-      }
-    );
+    });
+
+    [
+      'Elev.',
+      'High Temp 0.4%',
+      'High Temp 2% Avg.',
+      'Distance above roof 0.5"',
+      'Distance above roof 3.5"',
+      'Distance above roof 12"',
+      'Extreme min',
+      'lat',
+      'lon'
+    ].forEach(function(name){
+      System_data.upsert(
+        {system_id: system_id, section_name: 'closest_station', value_name: name },
+        {$set:
+          {value: geocode_info.closest_station[name] }
+        }
+      );
+    });
+
 
   },
 
