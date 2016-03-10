@@ -38,7 +38,11 @@ mk_drawing = function(system_id){
   state.status.active_system = system_id;
 
 
+
+  // Calculate system specs and drawing from user inputs
   system_settings = process_system(system_settings);
+  ///////////////////////////////////////////
+
 
 
   // Convert svgs to strings for storage

@@ -175,7 +175,6 @@ Meteor.methods({
   get_location_information: function(system_settings){
     var system_id = Meteor.users.findOne({_id:this.userId}).active_system;
 
-
     var location_input = {
       address: System_data.findOne({system_id: system_id, section_name:'location', value_name:'address'}).value,
       city: System_data.findOne({system_id: system_id, section_name:'location', value_name:'city'}).value,
@@ -185,15 +184,13 @@ Meteor.methods({
     var geocode_info = User_systems.findOne({system_id: system_id}).geocode_info;
     console.log( 'geocode_info', geocode_info );
 
-
-
     if( geocode_info.address  !== location_input.address ||
         geocode_info.city     !== location_input.city ||
         geocode_info.zip_code !== location_input.zip_code ){
       geocode_info.new_address = true;
-      geocode_info.address  = location_input.address;
-      geocode_info.city     = location_input.city;
-      geocode_info.zip_code = location_input.zip_code;
+      geocode_info.address     = location_input.address;
+      geocode_info.city        = location_input.city;
+      geocode_info.zip_code    = location_input.zip_code;
 
       var address = encodeURIComponent([
         geocode_info.address,
@@ -256,7 +253,7 @@ Meteor.methods({
       'lon'
     ].forEach(function(name){
       System_data.upsert(
-        {system_id: system_id, section_name: 'location', value_name: name },
+        {system_id: system_id, section_name: 'geolocation', value_name: name },
         {$set:
           {value: geocode_info[name] }
         }
@@ -264,6 +261,7 @@ Meteor.methods({
 
     });
 
+    console.log(geocode_info, geocode_info.closest_station);
     [
       'Elev.',
       'High Temp 0.4%',
@@ -283,7 +281,7 @@ Meteor.methods({
       );
     });
 
-
+    return 'geocode complete';
   },
 
 
