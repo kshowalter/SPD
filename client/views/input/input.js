@@ -16,6 +16,9 @@ Template.input.helpers({
       return [f.pretty_name(this.value_name)];
     }
   },
+  units: function(){
+    return this.units;
+  },
   is: function(a,b){
     return a === b;
   },
