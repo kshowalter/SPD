@@ -377,13 +377,16 @@ input {
 
   display: inline-block;
   padding: 3px 10px;
-  margin: 5px;
+  margin: 0px;
   height: 34px;
   /*
   white-space: nowrap;
   */
 
 }
+
+
+
 .user_input_label{
   /*
   white-space: normal;
@@ -596,7 +599,7 @@ svg {
 
 .user_input select, select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
     display: inline-block;
-    margin-bottom: 9px;
+    margin-bottom: 5px;
     font-size: 14px;
     line-height: 21.875px;
 }
