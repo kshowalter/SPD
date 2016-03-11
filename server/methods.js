@@ -173,6 +173,7 @@ Meteor.methods({
     //}
   },
   get_location_information: function(system_settings){
+    console.log('---/Start geocode\\-----');
     var system_id = Meteor.users.findOne({_id:this.userId}).active_system;
 
     var location_input = {
@@ -183,11 +184,23 @@ Meteor.methods({
 
     var geocode_info = User_systems.findOne({system_id: system_id}).geocode_info;
     console.log( 'geocode_info', geocode_info );
+    console.log( 'location_input', location_input );
 
-    if( geocode_info.address  !== location_input.address ||
+    // If the user has input a complete address, and it is different than the last cycle, geocode it.
+    if( location_input.address  !== undefined &&
+        location_input.city     !== undefined &&
+        location_input.zip_code !== undefined){
+      console.log('address entered');
+      if( geocode_info.address  !== location_input.address ||
         geocode_info.city     !== location_input.city ||
         geocode_info.zip_code !== location_input.zip_code ){
-      geocode_info.new_address = true;
+          console.log('new address');
+          geocode_info.new_address = true;
+        }
+    }
+
+
+    if( geocode_info.new_address ){
       geocode_info.address     = location_input.address;
       geocode_info.city        = location_input.city;
       geocode_info.zip_code    = location_input.zip_code;
@@ -199,31 +212,56 @@ Meteor.methods({
         geocode_info.zip_code
       ].join(', ') );
 
-      console.log('address', encodeURIComponent);
-
       var url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' +
         address +
         'key=' + 'AIzaSyDX7ifC3rpZmFT4G-NNzPdFkomoM3uI-ME';
 
-      //console.log(url);
       try{
+        location_data = HTTP.call('GET', url);
+        var result = location_data.data.results[0];
 
-        location_data = Meteor.http.call('GET', url);
-
-        if( location_data.results[0].geometry.location !== undefined ){
-          console.log('New location from address', location_data);
-          var lat = location_data.results[0].geometry.location.lat;
-          var lon = location_data.results[0].geometry.location.lng;
+        if( location_data && result.geometry.location !== undefined ){
+          console.log('New location from address');//, location_data);
+          var lat = result.geometry.location.lat;
+          var lon = result.geometry.location.lng;
           geocode_info.data = location_data;
           geocode_info.lat = lat;
           geocode_info.lon = lon;
 
-          geocode_info.closest_station = wind_stations.get_closest(lat, lon);
+          [
+            'lat',
+            'lon'
+          ].forEach(function(name){
+            System_data.upsert(
+              {system_id: system_id, section_name: 'geolocation', value_name: name },
+              {$set:
+                {value: geocode_info[name] }
+              }
+            );
+          });
 
-          if( geocode_info.new_address ){
-            /*
-            permit.getWind(geocode_info.lat, geocode_info.lat, function(windData) {
-              var geocode_info = User_systems.getOne({system_id:system_id}).geocode_info;
+          var closest_station = wind_stations.get_closest(lat, lon);
+          [
+            'Elev.',
+            'High Temp 0.4%',
+            'High Temp 2% Avg.',
+            'Distance above roof 0.5"',
+            'Distance above roof 3.5"',
+            'Distance above roof 12"',
+            'Extreme min',
+            'lat',
+            'lon'
+          ].forEach(function(name){
+            var safeName = name.replace('.','');
+            System_data.upsert(
+              {system_id: system_id, section_name: 'closest_station', value_name: safeName },
+              {$set:
+                {value: closest_station[name] }
+              }
+            );
+          });
+          permit.getWind(geocode_info.lat, geocode_info.lat, function(windData) {
+            if( windData && ! _.isEmpty({}) ){
               geocode_info.windData = windData;
               User_systems.update(
                 {system_id:system_id},
@@ -231,10 +269,24 @@ Meteor.methods({
                   {geocode_info:geocode_info}
                 }
               );
-            });
-            geocode_info.new_address.new_address = false;
-            */
-          }
+              [
+                'risk_category1',
+                'risk_category2',
+                'risk_category3'
+              ].forEach(function(name){
+                System_data.upsert(
+                  {system_id: system_id, section_name: 'windData', value_name: name },
+                  {$set:
+                    {value: windData[name] }
+                  }
+                );
+              });
+            } else {
+              console.log('windData not returned');
+            }
+          });
+
+          geocode_info.new_address.new_address = false;
 
         } else {
           console.log('Address not found ' + crossMark);
@@ -247,39 +299,6 @@ Meteor.methods({
     } else {
       console.log('Address unchanged');
     }
-
-    [
-      'lat',
-      'lon'
-    ].forEach(function(name){
-      System_data.upsert(
-        {system_id: system_id, section_name: 'geolocation', value_name: name },
-        {$set:
-          {value: geocode_info[name] }
-        }
-      );
-
-    });
-
-    console.log(geocode_info, geocode_info.closest_station);
-    [
-      'Elev.',
-      'High Temp 0.4%',
-      'High Temp 2% Avg.',
-      'Distance above roof 0.5"',
-      'Distance above roof 3.5"',
-      'Distance above roof 12"',
-      'Extreme min',
-      'lat',
-      'lon'
-    ].forEach(function(name){
-      System_data.upsert(
-        {system_id: system_id, section_name: 'closest_station', value_name: name },
-        {$set:
-          {value: geocode_info.closest_station[name] }
-        }
-      );
-    });
 
     return 'geocode complete';
   },
