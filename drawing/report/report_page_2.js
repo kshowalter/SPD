@@ -1,4 +1,4 @@
-f.mk_report_page_num[1] = function(settings){
+f.mk_report_page_num[2] = function(settings){
   var state = settings.state;
 
   var d = Drawing(settings);
