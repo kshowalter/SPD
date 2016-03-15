@@ -14,7 +14,7 @@ f.mk_sheet_num['W-003'] = function(settings){
   var y;
 
   /*
-  x = size.drawing.w * 1/2;
+  x = size.sheet.w * 1/2;
   y = 50;
 
   d.text(
@@ -126,7 +126,7 @@ f.mk_sheet_num['W-003'] = function(settings){
 
   //*/
   d.text( [
-    size.drawing.w * 1/10,
+    size.sheet.w * 1/10,
     100
   ], [
     'ALL LABELS TO COMPLY WITH [2011 NEC 110.21] OR',
@@ -167,7 +167,7 @@ f.mk_sheet_num['W-003'] = function(settings){
   ], 'table', 'system_label_left' );
 
   d.text( [
-    size.drawing.w * 1/2,
+    size.sheet.w * 1/2,
     100
   ], [
     'AT NEW PV COMBINING PANELBOARD AT SERVICE ENTRANCE:',

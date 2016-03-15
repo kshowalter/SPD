@@ -10,10 +10,10 @@ f.mk_sheet_num['G-002'] = function(settings){
   d.layer('text');
 
 
-  x = size.drawing.w * 1/2;
+  x = size.sheet.w * 1/2;
   y = 60;
 
-  w = size.drawing.w * 1 * 0.95;
+  w = size.sheet.w * 1 * 0.95;
   h = 475;
 
   d.text(
@@ -56,10 +56,10 @@ f.mk_sheet_num['G-002'] = function(settings){
   );
 
 
-  x = size.drawing.w * 1/2;
+  x = size.sheet.w * 1/2;
   y = 60;
 
-  x += size.drawing.w * 0.05
+  x += size.sheet.w * 0.05
   y += 25;
 
   d.text(

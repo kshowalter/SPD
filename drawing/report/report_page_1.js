@@ -9,7 +9,7 @@ f.mk_report_page_num[1] = function(settings){
   var x, y, h, w;
   d.layer('text');
 
-  var x = size.drawing.w*1/2;
+  var x = size.sheet.w*1/2;
   var y = 50;
 
 }
