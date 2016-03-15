@@ -78,7 +78,7 @@ var landing_notes = {
 Template.landing.helpers({
   landing_sections: function(){
     return Object.keys(landing_notes);
-  }
+  },
   landing_section: function(name){
     return landing_notes[name];
   }
