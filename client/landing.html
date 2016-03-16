@@ -9,9 +9,9 @@
     <h2>System limitations</h2>
 
     {{#each landing_sections}}
-      <h3>{{this}}:</h3>
+      <h3>{{title}}:</h3>
       <ul>
-        {{#each landing_section this}}
+        {{#each landing_section section_name}}
         <li>{{this}}</li>
         {{/each}}
       </ul>

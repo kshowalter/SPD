@@ -46,7 +46,7 @@ var landing_notes = {
     'Other junction boxes and enclosures',
     'All electrical terminals in dc circuits rated for 90°C'
   ],
-  structrual: [
+  structrual_restrictions: [
     'Buildings shall be Risk Caterory II structures, single-family residential buildings only.',
     'Buildings shall have 2x4 pre-engineered truss systems, 24" OC spacing minimum.',
     'Building and roof structure shall have been permitted under requirements of the FBC or a defined permittted structure at the time of construction.',
@@ -77,7 +77,12 @@ var landing_notes = {
 
 Template.landing.helpers({
   landing_sections: function(){
-    return Object.keys(landing_notes);
+    return Object.keys(landing_notes).map(function(section_name){
+      return {
+        title: f.pretty_name(section_name),
+        section_name: section_name
+      };
+    });
   },
   landing_section: function(name){
     return landing_notes[name];
