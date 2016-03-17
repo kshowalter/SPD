@@ -7,8 +7,11 @@ Template.drawing_section.helpers({
     return Meteor.user().active_system;
   },
   sheets: function(){
-    return settings.drawing_settings.sheets;
+    return [].concat( settings.drawing_settings.sheets, settings.report_settings.pages );
   },
+  id: function(){
+    return f.name_to_id(this.num);
+  }
 });
 
 Template.drawing_section.events({

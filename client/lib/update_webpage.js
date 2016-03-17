@@ -36,10 +36,18 @@ update_webpage = function(settings){
 
 
   settings.drawing_settings.sheets.forEach(function(sheet_info, index){
-    $('.tab_content#section_'+sheet_info.num)
+    $('.tab_content#section_'+f.name_to_id(sheet_info.num))
       .empty()
       .append($(
         settings.drawing.svgs[index]
+      ));
+  });
+
+  settings.report_settings.pages.forEach(function(sheet_info, index){
+    $('.tab_content#section_'+f.name_to_id(sheet_info.num))
+      .empty()
+      .append($(
+        settings.report.svgs[index]
       ));
   });
 
