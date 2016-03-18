@@ -71,6 +71,15 @@ img { border: 0; }
 /*****************/
 /* page sections */
 
+.landing {
+  margin: 10px;
+  padding: 10px;
+  background-color: WhiteSmoke;
+
+}
+
+
+
 .page {
   /*
 	background: WhiteSmoke;

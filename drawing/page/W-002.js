@@ -8,9 +8,9 @@ f.mk_sheet_num['W-002'] = function(settings){
   var size = settings.drawing_settings.size;
   var loc = settings.drawing_settings.loc;
 
-  x = size.drawing.frame_padding*6;
+  x = size.sheet.frame_padding*6;
 
-  var top = size.drawing.frame_padding*6 +10;
+  var top = size.sheet.frame_padding*6 +10;
   y = top;
 
   d.layer('table');
@@ -34,7 +34,7 @@ f.mk_sheet_num['W-002'] = function(settings){
       var row_height = 15;
       table_height = n_rows*row_height;
 
-      if( (y+table_height+50) > ( settings.drawing_settings.size.drawing.h * 0.9 ) ) {
+      if( (y+table_height+50) > ( settings.drawing_settings.size.sheet.h * 0.9 ) ) {
         y = top;
         x += table_width*1.1;
       }

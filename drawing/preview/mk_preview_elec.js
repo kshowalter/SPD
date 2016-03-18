@@ -7,7 +7,7 @@ f.mk_preview['elec'] = function(settings){
     h: 700,
   };
 
-  settings.drawing_settings.size.drawing;
+  settings.drawing_settings.size.sheet;
 
 
   var size = settings.drawing_settings.size;

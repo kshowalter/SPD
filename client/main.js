@@ -85,18 +85,18 @@ if( ! sessionStorage.getItem('display_style') ){
 }
 
 //----status bar ----//
-  var version_string = 'Preview'+moment().format('YYYYMMDD');
-  //g.settings.version_string = version_string;
-  var boot_time = moment();
-  var status_id = 'status';
+var version_string = 'Preview'+moment().format('YYYYMMDD');
+//g.settings.version_string = version_string;
+var boot_time = moment();
+var status_id = 'status';
 
-  //setInterval(function(){
-  //  f.update_status_bar(status_id, boot_time, version_string);
-  //},1000);
+//setInterval(function(){
+//  f.update_status_bar(status_id, boot_time, version_string);
+//},1000);
 
-  //Meteor.setTimeout(function(){
-  //  update();
-  //}, 2000);
+//Meteor.setTimeout(function(){
+//  update();
+//}, 2000);
 //----status bar ----//
 
 
@@ -240,10 +240,10 @@ Template.main.events({
     var active_system = Meteor.user().active_system;
     $('#drawing_output').fadeIn(420);
     $('#drawing_download_status')
-      .empty()
-      .append(
-        $('<p>').html('generating drawing files...')
-      );
+    .empty()
+    .append(
+      $('<p>').html('generating drawing files...')
+    );
     Meteor.call("download", function(error, result){
       if(error){
         console.log("error", error);
@@ -251,27 +251,27 @@ Template.main.events({
       if(result){
         console.log('result: ', result);
         $('#drawing_download_status')
-          .empty()
-          .append(
-            $('<a>', {
-              id: 'view_drawing',
-              class: 'button',
-              href: 'drawing/'+active_system,
-              text: 'View drawing',
-              target: '_blank',
+        .empty()
+        .append(
+          $('<a>', {
+            id: 'view_drawing',
+            class: 'button',
+            href: 'drawing/'+active_system,
+            text: 'View drawing',
+            target: '_blank',
 
-            })
-          )
-          .append(
-            $('<a>', {
-              id: 'view_drawing',
-              class: 'button',
-							//href: 'http://10.173.64.204:8004/drawing/'+active_system,
-							href: 'permit/'+active_system,
-              text: 'Download drawing',
-              target: '_blank',
-            })
-          );
+          })
+        )
+        .append(
+          $('<a>', {
+            id: 'view_drawing',
+            class: 'button',
+            //href: 'http://10.173.64.204:8004/drawing/'+active_system,
+            href: 'permit/'+active_system,
+            text: 'Download drawing',
+            target: '_blank',
+          })
+        );
       }
     });
   },
@@ -326,17 +326,17 @@ Template.tabs.onRendered(function(){
 document.addEventListener('keydown', function(e) {
   // console.log(e.keyCode);
   if( e.keyCode === 115 ){
-      if( typeof style_changed === 'undefined' ){
-        var display_style = sessionStorage.getItem('display_style');
-        if( display_style === 'drawers'){
-          display_style = 'tabs';
-        } else {
-          display_style = 'drawers';
-        }
-        sessionStorage.setItem('display_style', display_style);
-        window.style_changed = true;
-        console.log('style_changed');
+    if( typeof style_changed === 'undefined' ){
+      var display_style = sessionStorage.getItem('display_style');
+      if( display_style === 'drawers'){
+        display_style = 'tabs';
+      } else {
+        display_style = 'drawers';
       }
+      sessionStorage.setItem('display_style', display_style);
+      window.style_changed = true;
+      console.log('style_changed');
+    }
   }
 });
 

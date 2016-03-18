@@ -1,9 +1,10 @@
 update = function(){
   // This is the counterpart of 'mk_drawing' on the server
+  console.log('---/update\\---');
 
   var state = settings.state;
   //console.log('current settings:', settings);
-  console.log('current state:', state);
+  //console.log('current state:', state);
 
   if( Meteor.user() && Meteor.user().active_system ){
     var active_system = Meteor.user().active_system;
@@ -12,11 +13,11 @@ update = function(){
   } else {
     console.log('...nothing to update yet...');
   }
-
   if( active_system){
 
     // Request a geocode update on server
     Meteor.call('get_location_information', state.system, function(err, returned){
+      if( err ) console.log('err: ', err);
       console.log('location returned: ', returned);
     });
 
@@ -38,9 +39,9 @@ update = function(){
     ///////////////////////
 
 
-    Meteor.call('save_system_settings', settings.state.system, function(err, returned){
-      //console.log('returned: ', returned);
-    });
+    //Meteor.call('save_system_settings', settings.state.system, function(err, returned){
+    //  //console.log('returned: ', returned);
+    //});
 
     settings = update_webpage(settings);
   }

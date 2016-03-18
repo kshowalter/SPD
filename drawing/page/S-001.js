@@ -33,7 +33,7 @@ f.mk_sheet_num['S-001'] = function(settings){
   // Title
 
   d.text(
-    [settings.drawing_settings.size.drawing.w/2, 40],
+    [settings.drawing_settings.size.sheet.w/2, 40],
     'Roof section 1, ' + system.roof.side_of_building + ' side of building',
     'title',
     'title1'
@@ -44,7 +44,7 @@ f.mk_sheet_num['S-001'] = function(settings){
   //////
   // roof detail
 
-  x = settings.drawing_settings.size.drawing.w/2;
+  x = settings.drawing_settings.size.sheet.w/2;
   y = 120;
 
   var rotations = {

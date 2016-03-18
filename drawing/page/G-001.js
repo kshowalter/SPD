@@ -9,7 +9,7 @@ f.mk_sheet_num['G-001'] = function(settings){
   var x, y, h, w;
   d.layer('text');
 
-  var x = size.drawing.w*1/2;
+  var x = size.sheet.w*1/2;
   var y = 50;
 
   d.text(
@@ -32,7 +32,7 @@ f.mk_sheet_num['G-001'] = function(settings){
     'title2'
   );
 
-  x = size.drawing.w*1/4;
+  x = size.sheet.w*1/4;
   y = 160;
   //console.log( '|_ location', state.status.active_system, section_defined(state.status.active_system, 'location') );
   if( section_defined(state.status.active_system, 'location')  ){
@@ -79,8 +79,8 @@ f.mk_sheet_num['G-001'] = function(settings){
 
   //////
   // table of contents
-  x = size.drawing.frame_padding*6;
-  y = size.drawing.h - size.drawing.frame_padding - size.drawing.titlebox.bottom.h;
+  x = size.sheet.frame_padding*6;
+  y = size.sheet.h - size.sheet.frame_padding - size.sheet.titlebox.bottom.h;
 
   var n_rows = settings.drawing_settings.sheets.length;
   var n_cols = 2;
@@ -150,8 +150,8 @@ f.mk_sheet_num['G-001'] = function(settings){
   // Site layout
   if( section_defined(state.status.active_system, 'location') && section_defined(state.status.active_system, 'roof') ){
 
-    x = settings.drawing_settings.size.drawing.w * 3/4 - 50;
-    y = settings.drawing_settings.size.drawing.h * 1/2 - 50;
+    x = settings.drawing_settings.size.sheet.w * 3/4 - 50;
+    y = settings.drawing_settings.size.sheet.h * 1/2 - 50;
 
     var rotations = {
       'S' :0,
