@@ -8,6 +8,8 @@
     "globals": {
         "$": true,
         "_": true,
-        "moment": true
+        "moment": true,
+        "g": true,
+        "L": true
     }
 }

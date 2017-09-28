@@ -1,0 +1,43 @@
+<Template name="summary">
+  {{#if isErrors}}
+    <h3>Errors:</h3>
+    <ul>
+      {{#each errors}}
+        <li>
+          <i class="fa fa-exclamation-triangle"></i> {{this}}
+        </li>
+      {{/each}}
+    </ul>
+  {{/if}}
+
+  {{#if isWarnings}}
+    <h3>Warnings:</h3>
+    <ul>
+      {{#each warnings}}
+        <li>
+          <i class="fa fa-exclamation"></i> {{this}}
+        </li>
+      {{/each}}
+    </ul>
+  {{/if}}
+
+  {{#if isNotes}}
+    <h3>Notes:</h3>
+    <ul>
+      {{#each notes}}
+        <li>
+          <i class="fa fa-sticky-note"></i> {{this}}
+        </li>
+      {{/each}}
+    </ul>
+  {{/if}}
+
+  <h3>Drawing:</h3>
+
+
+  <span id='summary_drawing_download_status'>
+    <a class='button' href="#" id="summary_request_drawing">request drawing</a>
+  </span>
+
+
+</Template>

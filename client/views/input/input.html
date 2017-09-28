@@ -1,0 +1,49 @@
+<template name="input">
+  <span class="user_input">
+    {{#if isMultiLabel}}
+      {{#each label}}
+        <div class="user_input_label" title="{{note}}">{{this}}</div>
+      {{/each}}
+    {{else}}
+      {{#each label}}
+        <span class="user_input_label" title="{{note}}">{{this}}</span>
+      {{/each}}
+    {{/if}}
+
+    {{#if isType 'select'}}
+      <select class="input {{this.input_type}}" >
+        <option selected="selected"></option>
+        {{#each options}}
+          <option value="{{option_value}}" selected={{selected}}>{{option_value}}</option>
+        {{/each}}
+      </select>
+    {{else}} {{#if isType 'radio'}}
+      <radiogroup class="input {{this.input_type}}" >
+        {{#each options}}
+          <radio label="{{this.value}}" selected={{selected}}></radio>
+          <span></span>
+        {{/each}}
+      </radiogroup>
+    {{else}} {{#if isType 'text_input'}}
+      <input class="input {{this.input_type}}" type="text" value="{{value}}">
+    {{else}} {{#if isType 'number_input'}}
+      <input class="input {{this.input_type}}" type="text" value="{{value}}">
+    {{else}} {{#if isType 'confirm'}}
+      <div>
+        <input class="input {{this.input_type}}" type="checkbox" value="{{this.value_name}}" checked="{{checked}}" >
+        Yes
+      </div>
+    {{else}}
+      <span>undefined</span>
+    {{/if}}
+    {{/if}}
+    {{/if}}
+    {{/if}}
+    {{/if}}
+
+    {{#if units}}
+      <span>({{units}})</span>
+    {{/if}}
+
+  </span>
+</template>

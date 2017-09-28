@@ -1,0 +1,23 @@
+<template name='landing'>
+  <div class='landing'>
+
+    <h1>Welcome to the Solar Plans Designer.</h1>
+
+    <p>Plese sign-in above.</p>
+
+
+    <h2>System limitations</h2>
+
+    {{#each landing_sections}}
+      <h3>{{title}}:</h3>
+      <ul>
+        {{#each landing_section section_name}}
+        <li>{{this}}</li>
+        {{/each}}
+      </ul>
+    {{/each}}
+
+
+
+  </div>
+</template>

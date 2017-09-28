@@ -1,0 +1,19 @@
+<template name="drawing_section">
+
+  <div class="tabs_container" id="drawing">
+    <div class="tab_title_bar">
+      {{#each sheets}}
+        <span class='tab tab_inactive' id="tab_{{id}}" onclick="f.show_tab('drawing','{{id}}')">
+          {{this.num}}
+        </span>
+      {{/each}}
+    </div>
+    <div class="tabs_box drawing_container">
+      {{#each sheets}}
+        <div class="tab_content drawing_container" id="section_{{id}}" style="display: none;">
+        </div>
+      {{/each}}
+    </div>
+
+  </div>
+</template>

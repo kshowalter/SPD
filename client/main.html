@@ -1,0 +1,68 @@
+<head>
+  <title>Solar Plans Designer</title>
+</head>
+
+<body>
+
+
+</body>
+
+<template name="main">
+
+  <div class='menu_bar'>
+
+    <img src="SPD_logo.png" alt="" height=28 class='menu_bar_logo'>
+    <span class='menu_bar_title'>Solar Plans Designer</span>
+
+    <span class='menu_bar_right'>
+      {{> loginButtons}} &nbsp;&nbsp;
+      <a class='button' href='#' id='help_button' title='Display help'><i class="fa fa-info-circle"></i> <i class="fa fa-question-circle"></i></a>
+      {{#if currentUser}}
+        <span>System:</span>
+        <select class="" id='system_id' title="Reload page to fix display issues.">
+          <!-- <option selected="selected" disabled="disabled" hidden="hidden"></option> -->
+          <option value="" selected="selected"></option>
+          {{#each system_ids}}
+            <option value="{{system_id}}" selected={{system_selected}}>{{name}} [{{system_number}}]</option>
+          {{/each}}
+          <option value="new">new</option>
+        </select>
+        <input id="system_name" type="text" value="{{system_name}}" autocomplete="off" disabled="{{disable_system_name_input}}">
+        <a class='button' href='#' id='new_system' title='Add new system'><i class="fa fa-plus"></i></a>
+        <a class='button' href='#' id='delete_system' title='Delete current system'><i class="fa fa-trash-o"></i></a>
+        <a class='button' href='#' id='clear_user' title='Delete all systems'><i class="fa fa-bomb"></i></a>
+        <span>&nbsp;</span> <!-- TODO: find alterative to this -->
+      {{/if}}
+    </span>
+
+
+  </div>
+
+  <div class="page">
+
+  {{#if currentUser}}
+
+    {{#if system_ready}}
+
+      {{> tabs}}
+
+      {{> drawing_section}}
+
+
+    {{/if}}
+
+  {{else}}
+
+    {{> landing}}
+
+  {{/if}}
+
+
+
+
+  </div>
+
+  {{> help}}
+
+
+</template>

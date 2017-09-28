@@ -1,0 +1,621 @@
+
+/***********/
+/* fonts */
+/*
+@font-face {
+font-family: "Open Sans";
+src: url(Open_Sans/OpenSans-Regular.ttf) format("truetype");
+}
+@font-face {
+font-family: "Roboto";
+src: url(Open_Sans/Roboto-Regular.ttf) format("truetype");
+}
+*/
+
+/***********/
+/* misc */
+
+a {
+  text-decoration: none;
+}
+
+
+table
+{
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+
+body {
+  /*
+  font-family: 'Roboto', sans-serif;
+  font-family: 'Open Sans', sans-serif;
+  background: #DFDFDF;
+  */
+  font-family: sans-serif;
+
+  background: #7885ac;
+}
+
+
+/*
+http://stackoverflow.com/questions/4918018/eliminate-padding-margin-around-pics-in-td-elements
+Finally, I add this line, which removes that stupid spacing which appears all the time, the one that isn't padding, margin or anything.
+*/
+table, tr, td, th, tbody, thead{vertical-align:baseline}
+
+h1, h2, h3, h4, h5, h6, th, td, caption { font-weight:normal; }
+
+th, td {
+  text-align: left;
+}
+
+img { border: 0; }
+
+
+
+.table {
+}
+.row {
+  display: inline-block;
+}
+.cell {
+  display: inline-block;
+  vertical-align: top;
+  margin: 5px;
+}
+
+
+
+/*****************/
+/* page sections */
+
+.landing {
+  margin: 10px;
+  padding: 10px;
+  background-color: WhiteSmoke;
+
+}
+
+
+
+.page {
+  /*
+	background: WhiteSmoke;
+	*/
+  margin: 10px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#inputs {
+  /*
+  width: 100%;
+  width: 1400px;
+  float: left;
+  margin-right: 30px;
+  */
+}
+#drawing {
+  /*
+  float: left;
+  */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+
+/*************/
+/* text */
+
+
+
+
+.menu_bar {
+  border: 1px solid lightgrey;
+  background: WhiteSmoke;
+  /*
+  border: 2px solid #F2EB41;
+  height: 23px;
+  */
+  margin: 10px;
+
+  overflow: hidden;
+  display: inline-block; /* Necessary to trigger "hasLayout" in IE */
+  display: block; /* Sets element back to block */
+
+  padding: 10px;
+  padding-bottom: 0px;
+}
+
+
+.menu_bar_title {
+  /*
+  color: #1E367C;
+  */
+  color: #7885ac;
+	font-weight: bold;
+  position: relative;
+  top: -8px;
+  margin-left: 5px;
+}
+.menu_bar_logo {
+  margin-left: -2px;
+  margin-top: -2px;
+
+}
+.menu_bar_right {
+	float: right;
+}
+
+
+
+#login-dropdown-list {
+  position: fixed;
+  left: auto;
+  right: 25px;
+  top: 70px;
+}
+
+/***********/
+/* drawers */
+
+.drawer {
+  padding: 2px;
+  background: WhiteSmoke;
+
+  margin-bottom: 0px;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: grey;
+  margin-right: 5px;
+  border-right-width: 1px;
+  border-right-style: solid;
+  border-right-color: grey;
+  margin-left: 5px;
+  border-left-width: 1px;
+  border-left-style: solid;
+  border-left-color: grey;
+}
+
+
+.drawer_container {
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.title_bar {
+  font-weight: bold;
+  background: #bbc3e4;
+  color: #424242;
+  border: 1px solid grey;
+  padding: 0px;
+  padding-left: 6px;
+}
+
+.title_bar_text {
+  font-weight: bold;
+  color: #424242;
+
+
+}
+
+
+
+
+
+
+.tabs_container {
+  /*
+  width: 100%;
+  */
+	margin-top: 15px;
+}
+.tab_title_bar {
+  padding-left: 10px;
+}
+.tab {
+  font-weight: bold;
+  color: #424242;
+  margin: 0px;
+  padding: 7px 10px;
+  border-right: 1px solid lightgrey;
+  border-left: 1px solid lightgrey;
+  border-top: 1px solid lightgrey;
+  display: inline-block;
+  text-align: center;
+}
+
+.tab_active {
+  background: WhiteSmoke;
+}
+
+.tab_inactive {
+  background: #b6bed7;
+}
+
+.tabs_box {
+  padding: 2px;
+  background: WhiteSmoke;
+  border: 1px solid lightgrey;
+}
+
+
+
+
+.title_bar_active {
+
+}
+
+.title_bar_inactive {
+  color: #909090;
+  background: #DFDFDF;
+  border: 1px solid #909090;
+}
+
+
+
+.user_input_container {
+
+}
+
+
+.svg_drawing_preview {
+  height: 400px;
+  background: white;
+  margin: 5px;
+  /*float: left;*/
+  display: inline-block;
+  vertical-align: top;
+}
+
+
+.param_table{
+  margin: 7px;
+
+}
+
+
+/***********/
+/* misc */
+
+
+
+.button{
+  padding: 2px 5px;
+  margin: 2px;
+  background: #ededed;
+  border: 1px solid #909090;
+	color: black;
+
+}
+
+
+.button_float_right{
+  padding: 2px;
+  margin: 2px;
+  float: right;
+  background: #b2d6ff;
+}
+
+.drawing_button{
+  width: 100px;
+  margin: 0 auto;
+  /*
+  float: center;
+  margin-top: -10px;
+  */
+  background: #b2d6ff;
+}
+
+#clear_user {
+  color: #7d0000;
+}
+
+#system_name:disabled {
+  background: WhiteSmoke;
+}
+
+  /*
+.drawing_button a{
+  text-align: center;
+}
+  */
+
+
+.geocode_line{
+  margin: 15px;
+
+}
+/* http://usabilitypost.com/2012/01/10/pressed-button-state-with-css3/# */
+.geocode_button {
+  padding: 5px;
+
+  background: #4479BA;
+  color: #FFF;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  border: solid 1px #20538D;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+.geocode_display {
+  padding: 5px;
+
+
+}
+
+
+#map_road {
+  width: 400px;
+  height: 400px;
+}
+#map_sat {
+  width: 400px;
+  height: 400px;
+}
+
+
+
+/**************/
+/* selectors */
+input {
+  padding-left: 5px;
+}
+
+.user_input_description {
+    position: absolute;
+    display: none;
+    background: #ccc;
+    border: 1px solid;
+    width: 1000;
+}
+
+.user_input {
+  /*
+  background: #d9dce6;
+  background: WhiteSmoke;
+  border: 1px solid lightgrey;
+  background: #eaeaea;
+  */
+
+  display: inline-block;
+  padding: 3px 10px;
+  margin: 0px;
+  height: 34px;
+  /*
+  white-space: nowrap;
+  */
+
+}
+
+
+
+.user_input_label{
+  /*
+  white-space: normal;
+  */
+}
+
+.user_input select {
+  /*
+  background: transparent;
+  */
+  background-color: White;
+  padding: 5px;
+  line-height: 1;
+  border: 0;
+  border-radius: 0;
+  margin: 0px;
+  padding: 1px 3px 1px 3px;
+
+}
+
+.user_input .number_input {
+  background: White;
+  margin: 0px 2px 0px 5px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  width: 40px;
+  border: solid 1px #dcdcdc;
+  transition: box-shadow 0.3s, border 0.3s;
+}
+.number_input[type="text"]:focus,
+.number_input[type="text"].focus {
+  border: solid 1px #707070;
+  box-shadow: 0 0 5px 1px #969696;
+}
+
+.user_input .text_input {
+  margin: 0px 2px 0px 5px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  width: 300px;
+  border: 1px solid #dcdcdc;
+  transition: box-shadow 0.3s, border 0.3s;
+}
+.text_input[type="text"]:focus,
+.text_input[type="text"].focus {
+  border: solid 1px #707070;
+  box-shadow: 0 0 5px 1px #969696;
+}
+
+
+/*
+#section_module .title_bar { background: #ffb300; }
+#section_array .title_bar { background: #ff5d00; }
+#section_DC .title_bar { background: #b092c4; }
+#section_inverter .title_bar { background: #86c974; }
+#section_AC .title_bar { background: #8188a1; }
+*/
+
+/*************/
+/* sections */
+
+.status_bar{
+  position: fixed;
+  top: 0px;
+  width: 100%;
+  height: 15px;
+
+  padding:2px;
+  margin: 0;
+
+  background: Lavender;
+  border-color: black;
+  border-width: 0.1em;
+  border-bottom-style: solid;
+  font-size: 0.7em;
+
+  text-align: center;
+}
+
+#drawing_output{
+  display: none;
+  position: fixed;
+  top: 20px;
+  width: 300px;
+  height: 140px;
+  position: fixed;
+  padding:2px;
+  margin-top: 30px;
+  margin-right: 10px;
+  margin-left: auto;
+  background: #ededed;
+  border: 1px solid #909090;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+
+#close_download_box{
+  clear: both;
+}
+
+#status {
+  float: right;
+
+}
+
+#help{
+  display: none;
+  position: fixed;
+  top: 70px;
+  width: 800px;
+  height: 800px;
+  position: absolute;
+  margin-right: auto;
+  margin-left: auto;
+  background: #ededed;
+  border: 1px solid #909090;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  padding: 10px;
+}
+
+.login{
+  float: left;
+
+}
+
+
+#system_frame {
+  float: left;
+  margin-right: 25px;
+  width: 100%;
+}
+
+#config_frame {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  /*height: 100px;*/
+}
+
+#drawing_frame_preview {
+  float: left;
+  background: WhiteSmoke;
+}
+
+#drawing_frame {
+  float: left;
+  background: WhiteSmoke;
+  width:100%;
+}
+
+
+
+#section_summary ul {
+  padding: 0px;
+  list-style-type: none;
+
+}
+
+/***********/
+/* Drawing */
+
+
+
+
+.drawing {
+  margin: 10px;
+}
+
+
+
+
+/***********/
+/* SVG */
+
+
+
+svg {
+  border-color: #690000;
+  border-width: 0.05em;
+  border-style: solid;
+  background: white;
+}
+
+.drawing_container {
+  /*
+  */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+
+.awesome-marker i {
+  font-size: 18px;
+  margin-top: 5px;
+}
+
+
+
+.location_table table, th, td{
+  padding: 3px;
+  border:1px solid #9d9d9d;
+}
+
+/* Added CSS to help with form fields being easier to read */
+
+.user_input select, select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+    display: inline-block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    line-height: 21.875px;
+}
+.user_input select, select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+    background-color: #FFF;
+    border: 1px solid #CCC;
+    border-radius: 3px;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.18) inset;
+    transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
+}

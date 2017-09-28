@@ -1,8 +1,10 @@
-gitlog.txt
-share_drive
-node_modules/*
-!node_modules/app
+packages/*
 
-reporting
+reporting/gitlog.txt
+reporting/*.docx
+
 \#*
 .\#*
+.idea/*
+!private/.#pdf
+passenger.3000*

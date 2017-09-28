@@ -1,0 +1,18 @@
+type ,make ,model ,pmp ,isc ,voc ,imp ,vmp ,width ,length ,dc+AF8-max+AF8-power ,dc+AF8-volts+AF8-low ,dc+AF8-volts+AF8-high ,ac+AF8-volts+AF8-low ,ac+AF8-volts+AF8-high 
+modules,SolarWorld,Protect SW 275 mono,275,9.58,39.4,8.94,31,40.42,55.42,,,,,
+modules,SolarWorld,Protect SW 270 mono,270,9.44,39.2,8.81,30.9,40.42,55.42,,,,,
+modules,Suniva,255+AC0-60+AC0-4+AC0-1B0,255,8.96,38.1,8.45,30.2,30.42,60.42,,,,,
+modules,Suniva,265+AC0-60+AC0-4+AC0-100,265,9.12,38.3,8.64,30.7,30.42,60.42,,,,,
+modules,Suniva,320+AC0-72+AC0-4+AC0-100,320,9.2,46.1,8.69,36.8,30.42,60.42,,,,,
+modules,Suniva,315+AC0-72+AC0-4+AC0-100,315,9.1,45.9,8.62,36.5,30.42,60.42,,,,,
+modules,Suniva,325+AC0-72+AC0-4+AC0-100,325,9.27,46.3,8.77,37,30.42,60.42,,,,,
+modules,SolarWorld,Protect SW 265 mono,265,9.31,39,8.69,30.8,40.42,55.42,,,,,
+modules,Suniva,310+AC0-72+AC0-4+AC0-100,310,9.06,45.7,8.56,36.2,30.42,60.42,,,,,
+modules,Suniva,270+AC0-60+AC0-4+AC0-1B0,270,9.18,38.4,8.7,31,30.42,60.42,,,,,
+modules,Suniva,270+AC0-60+AC0-4+AC0-100,270,9.15,38.5,8.68,31.1,30.42,60.42,,,,,
+modules,Suniva,260+AC0-60+AC0-4+AC0-1B0,260,9.01,38.3,8.52,30.5,30.42,60.42,,,,,
+modules,Suniva,265+AC0-60+AC0-4+AC0-1B0,265,9.12,38.3,8.64,30.7,30.42,60.42,,,,,
+modules,Suniva,260+AC0-60+AC0-4+AC0-100,260,9.08,38.1,8.6,30.2,30.42,60.42,,,,,
+inverters,SMA,SI3500,,,,,,,,3800,150,450,180,250
+inverters,SMA,SI5000,,,,,,,,5500,400,600,400,500
+inverters,SMA,SI3000,,,,,,,,3300,150,350,180,250
